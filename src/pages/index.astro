@@ -1,0 +1,173 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Card from '../components/Card.astro';
+---
+
+<BaseLayout title="Home" description="A free resource helping trauma therapists reference evidence-based protocols and helping families understand their child's treatment.">
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-forest-50 to-cream py-16 sm:py-24">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h1 class="font-serif text-4xl sm:text-5xl font-semibold text-charcoal mb-6">
+        Trauma Therapy Reference Guide
+      </h1>
+      <p class="text-xl text-charcoal/80 leading-relaxed max-w-2xl mx-auto mb-10">
+        Free, evidence-based resources for trauma therapists and the families they serve. Quick reference guides you can trust.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="/clinicians"
+          class="inline-flex items-center justify-center px-6 py-3 bg-forest-500 text-white font-medium rounded-md hover:bg-forest-600 transition-colors"
+        >
+          For Clinicians
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+        <a
+          href="/families"
+          class="inline-flex items-center justify-center px-6 py-3 bg-wood-100 text-charcoal font-medium rounded-md hover:bg-wood-200 transition-colors"
+        >
+          For Families
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- What We Offer Section -->
+  <section class="py-16 sm:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="font-serif text-3xl font-semibold text-charcoal mb-4">
+          What You'll Find Here
+        </h2>
+        <p class="text-charcoal/70 max-w-2xl mx-auto">
+          Designed by clinicians, reviewed by experts, and built for busy professionals and concerned families.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <Card title="For Clinicians" variant="featured">
+          <p class="text-charcoal/80 text-sm leading-relaxed mb-4">
+            Quick reference guides for evidence-based trauma protocols. Perfect for newly trained therapists who need a refresher between supervision sessions.
+          </p>
+          <ul class="text-sm text-charcoal/70 space-y-2 mb-4">
+            <li class="flex items-start gap-2">
+              <svg class="w-5 h-5 text-forest-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              EMDR 8-phase protocol reference
+            </li>
+            <li class="flex items-start gap-2">
+              <svg class="w-5 h-5 text-forest-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              Key scripts and questions
+            </li>
+            <li class="flex items-start gap-2">
+              <svg class="w-5 h-5 text-forest-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              Clinical considerations
+            </li>
+          </ul>
+          <a href="/clinicians" class="text-forest-600 font-medium text-sm hover:text-forest-500 transition-colors">
+            Browse clinician resources &rarr;
+          </a>
+        </Card>
+
+        <Card title="For Families">
+          <p class="text-charcoal/80 text-sm leading-relaxed mb-4">
+            Understand what your child is experiencing in trauma therapy. Written in plain language by therapists who work with families every day.
+          </p>
+          <ul class="text-sm text-charcoal/70 space-y-2 mb-4">
+            <li class="flex items-start gap-2">
+              <svg class="w-5 h-5 text-forest-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              What is EMDR therapy?
+            </li>
+            <li class="flex items-start gap-2">
+              <svg class="w-5 h-5 text-forest-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              What to expect at each stage
+            </li>
+            <li class="flex items-start gap-2">
+              <svg class="w-5 h-5 text-forest-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              How to support your child
+            </li>
+          </ul>
+          <a href="/families" class="text-forest-600 font-medium text-sm hover:text-forest-500 transition-colors">
+            Browse family resources &rarr;
+          </a>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  <!-- Current Protocols Section -->
+  <section class="py-16 sm:py-20 bg-wood-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="font-serif text-3xl font-semibold text-charcoal mb-4">
+          Available Protocols
+        </h2>
+        <p class="text-charcoal/70 max-w-2xl mx-auto">
+          We're starting with EMDR, with more evidence-based protocols coming soon.
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <Card href="/clinicians/emdr" title="EMDR" variant="featured">
+          <p class="text-charcoal/80 text-sm mb-3">
+            Eye Movement Desensitization and Reprocessing — the complete 8-phase protocol.
+          </p>
+          <span class="inline-block text-xs font-medium px-2 py-1 bg-forest-100 text-forest-700 rounded">
+            Available Now
+          </span>
+        </Card>
+
+        <Card title="TF-CBT">
+          <p class="text-charcoal/80 text-sm mb-3">
+            Trauma-Focused Cognitive Behavioral Therapy reference guide.
+          </p>
+          <span class="inline-block text-xs font-medium px-2 py-1 bg-wood-200 text-wood-700 rounded">
+            Coming Soon
+          </span>
+        </Card>
+
+        <Card title="PCIT">
+          <p class="text-charcoal/80 text-sm mb-3">
+            Parent-Child Interaction Therapy protocol reference.
+          </p>
+          <span class="inline-block text-xs font-medium px-2 py-1 bg-wood-200 text-wood-700 rounded">
+            Coming Soon
+          </span>
+        </Card>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Section -->
+  <section class="py-16 sm:py-20">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="font-serif text-3xl font-semibold text-charcoal mb-6">
+        Built for Trust
+      </h2>
+      <p class="text-charcoal/70 leading-relaxed mb-8">
+        This site is created by licensed trauma therapists with specialized training in evidence-based treatments. Our content is based on established protocols and reviewed for accuracy. We don't sell anything — this is a free resource for our professional community and the families we serve.
+      </p>
+      <a
+        href="/about"
+        class="text-forest-600 font-medium hover:text-forest-500 transition-colors"
+      >
+        Learn more about us &rarr;
+      </a>
+    </div>
+  </section>
+</BaseLayout>

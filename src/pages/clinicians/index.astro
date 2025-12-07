@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Card from '../../components/Card.astro';
+---
+
+<BaseLayout title="For Clinicians" description="Quick reference guides for trauma therapists using evidence-based protocols.">
+  <section class="py-10 sm:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Header -->
+      <div class="max-w-3xl mb-12">
+        <h1 class="font-serif text-4xl font-semibold text-charcoal mb-4">
+          Clinician Resources
+        </h1>
+        <p class="text-lg text-charcoal/80 leading-relaxed">
+          Quick reference guides for evidence-based trauma protocols. Designed for newly trained therapists who need a refresher, not a replacement for proper training and supervision.
+        </p>
+      </div>
+
+      <!-- Protocols Grid -->
+      <div class="mb-16">
+        <h2 class="font-serif text-2xl font-semibold text-charcoal mb-6">
+          Available Protocols
+        </h2>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Card href="/clinicians/emdr" title="EMDR Protocol" variant="featured">
+            <p class="text-charcoal/80 text-sm leading-relaxed mb-4">
+              Complete 8-phase EMDR protocol reference. Includes key scripts, assessment components, and clinical considerations.
+            </p>
+            <div class="flex items-center gap-2 text-sm text-forest-600">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              8 phases available
+            </div>
+          </Card>
+
+          <Card title="TF-CBT Protocol">
+            <p class="text-charcoal/80 text-sm leading-relaxed mb-4">
+              Trauma-Focused Cognitive Behavioral Therapy reference guide for child and adolescent trauma treatment.
+            </p>
+            <span class="inline-block text-xs font-medium px-2 py-1 bg-wood-200 text-wood-700 rounded">
+              Coming Soon
+            </span>
+          </Card>
+
+          <Card title="PCIT Protocol">
+            <p class="text-charcoal/80 text-sm leading-relaxed mb-4">
+              Parent-Child Interaction Therapy protocol for behavioral problems and attachment concerns.
+            </p>
+            <span class="inline-block text-xs font-medium px-2 py-1 bg-wood-200 text-wood-700 rounded">
+              Coming Soon
+            </span>
+          </Card>
+        </div>
+      </div>
+
+      <!-- How to Use Section -->
+      <div class="bg-wood-50 rounded-lg p-8 max-w-3xl">
+        <h2 class="font-serif text-xl font-semibold text-charcoal mb-4">
+          How to Use These Guides
+        </h2>
+        <div class="space-y-4 text-charcoal/80">
+          <p>
+            These reference guides are designed to support your clinical practice, not replace formal training. They assume you have completed appropriate training in each protocol.
+          </p>
+          <ul class="list-disc list-inside space-y-2 text-sm">
+            <li>Use as a quick refresher before sessions</li>
+            <li>Reference key scripts and assessment questions</li>
+            <li>Review clinical considerations and common challenges</li>
+            <li>Access phase-by-phase guidance during consultation</li>
+          </ul>
+          <p class="text-sm">
+            Always follow your training, supervision guidance, and professional judgment when implementing any protocol.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

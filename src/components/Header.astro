@@ -1,0 +1,86 @@
+---
+const currentPath = Astro.url.pathname;
+
+const navLinks = [
+  { href: '/', label: 'Home' },
+  { href: '/clinicians', label: 'For Clinicians' },
+  { href: '/families', label: 'For Families' },
+  { href: '/about', label: 'About' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') {
+    return currentPath === '/';
+  }
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="bg-white border-b border-wood-200">
+  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16">
+      <a href="/" class="font-serif text-xl font-semibold text-forest-600 hover:text-forest-500 transition-colors">
+        Trauma Therapy Guide
+      </a>
+
+      <!-- Mobile menu button -->
+      <button
+        type="button"
+        class="md:hidden p-2 rounded-md text-charcoal hover:bg-wood-100 transition-colors"
+        aria-label="Toggle menu"
+        id="mobile-menu-button"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <!-- Desktop navigation -->
+      <ul class="hidden md:flex items-center gap-8">
+        {navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class:list={[
+                'text-sm font-medium transition-colors',
+                isActive(link.href)
+                  ? 'text-forest-600'
+                  : 'text-charcoal hover:text-forest-500'
+              ]}
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <!-- Mobile navigation -->
+    <ul class="hidden md:hidden pb-4 space-y-2" id="mobile-menu">
+      {navLinks.map((link) => (
+        <li>
+          <a
+            href={link.href}
+            class:list={[
+              'block px-3 py-2 rounded-md text-sm font-medium transition-colors',
+              isActive(link.href)
+                ? 'bg-forest-50 text-forest-600'
+                : 'text-charcoal hover:bg-wood-50'
+            ]}
+          >
+            {link.label}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const button = document.getElementById('mobile-menu-button');
+  const menu = document.getElementById('mobile-menu');
+
+  button?.addEventListener('click', () => {
+    menu?.classList.toggle('hidden');
+  });
+</script>

@@ -1,0 +1,165 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Card from '../../components/Card.astro';
+---
+
+<BaseLayout title="For Families" description="Understanding trauma therapy - a guide for parents and caregivers supporting their child's treatment.">
+  <section class="py-10 sm:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Header -->
+      <div class="max-w-3xl mb-12">
+        <h1 class="font-serif text-4xl font-semibold text-charcoal mb-4">
+          For Families
+        </h1>
+        <p class="text-lg text-charcoal/80 leading-relaxed">
+          Your child has started trauma therapy, and you want to understand what's happening and how you can help. You're in the right place.
+        </p>
+      </div>
+
+      <!-- Reassurance Section -->
+      <div class="bg-forest-50 rounded-lg p-8 mb-12 max-w-3xl">
+        <h2 class="font-serif text-xl font-semibold text-charcoal mb-4">
+          You're Not Alone
+        </h2>
+        <p class="text-charcoal/80 leading-relaxed mb-4">
+          It's natural to have questions and concerns about your child's therapy. Learning about the treatment process can help you feel more confident and better equipped to support your child's healing journey.
+        </p>
+        <p class="text-charcoal/80 leading-relaxed">
+          The guides on this site are written in plain language by trauma therapists who work with families every day. We explain what happens in therapy without overwhelming jargon.
+        </p>
+      </div>
+
+      <!-- Treatment Guides -->
+      <div class="mb-16">
+        <h2 class="font-serif text-2xl font-semibold text-charcoal mb-6">
+          Understanding Your Child's Treatment
+        </h2>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Card href="/families/emdr" title="What is EMDR?" variant="featured">
+            <p class="text-charcoal/80 text-sm leading-relaxed mb-4">
+              EMDR (Eye Movement Desensitization and Reprocessing) helps the brain process traumatic memories. Learn what your child experiences and how you can support them.
+            </p>
+            <span class="inline-block text-xs font-medium px-2 py-1 bg-forest-100 text-forest-700 rounded">
+              Available Now
+            </span>
+          </Card>
+
+          <Card title="What is TF-CBT?">
+            <p class="text-charcoal/80 text-sm leading-relaxed mb-4">
+              Trauma-Focused Cognitive Behavioral Therapy helps children and teens process trauma through structured activities.
+            </p>
+            <span class="inline-block text-xs font-medium px-2 py-1 bg-wood-200 text-wood-700 rounded">
+              Coming Soon
+            </span>
+          </Card>
+
+          <Card title="What is PCIT?">
+            <p class="text-charcoal/80 text-sm leading-relaxed mb-4">
+              Parent-Child Interaction Therapy strengthens the parent-child bond and teaches effective parenting skills.
+            </p>
+            <span class="inline-block text-xs font-medium px-2 py-1 bg-wood-200 text-wood-700 rounded">
+              Coming Soon
+            </span>
+          </Card>
+        </div>
+      </div>
+
+      <!-- What to Expect Section -->
+      <div class="max-w-3xl">
+        <h2 class="font-serif text-2xl font-semibold text-charcoal mb-6">
+          What to Expect
+        </h2>
+
+        <div class="space-y-6 text-charcoal/80">
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-8 h-8 bg-forest-100 text-forest-700 rounded-full flex items-center justify-center font-semibold text-sm">
+              1
+            </div>
+            <div>
+              <h3 class="font-semibold text-charcoal mb-1">Building Trust</h3>
+              <p class="text-sm leading-relaxed">
+                The first sessions focus on helping your child feel safe with their therapist. The therapist will explain what therapy will be like and answer your questions.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-8 h-8 bg-forest-100 text-forest-700 rounded-full flex items-center justify-center font-semibold text-sm">
+              2
+            </div>
+            <div>
+              <h3 class="font-semibold text-charcoal mb-1">Learning Coping Skills</h3>
+              <p class="text-sm leading-relaxed">
+                Before processing trauma, your child will learn techniques to manage stress and feel safe. These are skills they can use anywhere.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-8 h-8 bg-forest-100 text-forest-700 rounded-full flex items-center justify-center font-semibold text-sm">
+              3
+            </div>
+            <div>
+              <h3 class="font-semibold text-charcoal mb-1">Processing Memories</h3>
+              <p class="text-sm leading-relaxed">
+                When ready, your child will work through difficult memories in a safe, controlled way. This helps the brain heal from trauma.
+              </p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <div class="flex-shrink-0 w-8 h-8 bg-forest-100 text-forest-700 rounded-full flex items-center justify-center font-semibold text-sm">
+              4
+            </div>
+            <div>
+              <h3 class="font-semibold text-charcoal mb-1">Healing and Growth</h3>
+              <p class="text-sm leading-relaxed">
+                As therapy progresses, your child will develop new, healthier ways of thinking about themselves and their experiences.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Support Tips -->
+      <div class="mt-12 p-6 border border-wood-200 rounded-lg max-w-3xl">
+        <h3 class="font-serif text-lg font-semibold text-charcoal mb-4">
+          How You Can Help
+        </h3>
+        <ul class="space-y-3 text-sm text-charcoal/80">
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-forest-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Be patient — healing takes time and isn't always linear
+          </li>
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-forest-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Keep communication open without pushing
+          </li>
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-forest-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Maintain routines and stability at home
+          </li>
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-forest-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Ask the therapist how to support specific skills at home
+          </li>
+          <li class="flex items-start gap-2">
+            <svg class="w-5 h-5 text-forest-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            </svg>
+            Take care of yourself too — your wellbeing matters
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

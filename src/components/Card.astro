@@ -1,0 +1,32 @@
+---
+interface Props {
+  href?: string;
+  title: string;
+  description?: string;
+  variant?: 'default' | 'featured';
+}
+
+const { href, title, description, variant = 'default' } = Astro.props;
+
+const Tag = href ? 'a' : 'div';
+const baseClasses = 'block bg-white border rounded-lg p-6 transition-all duration-200';
+const variantClasses = {
+  default: 'border-wood-200 shadow-sm hover:shadow-md hover:border-forest-300',
+  featured: 'border-forest-300 shadow-md hover:shadow-lg hover:border-forest-400',
+};
+---
+
+<Tag
+  href={href}
+  class:list={[baseClasses, variantClasses[variant], href && 'cursor-pointer']}
+>
+  <h3 class="font-serif text-lg font-semibold text-forest-700 mb-2">
+    {title}
+  </h3>
+  {description && (
+    <p class="text-charcoal/80 text-sm leading-relaxed">
+      {description}
+    </p>
+  )}
+  <slot />
+</Tag>

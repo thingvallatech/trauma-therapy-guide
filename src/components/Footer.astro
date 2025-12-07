@@ -1,0 +1,53 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-forest-900 text-wood-100 mt-auto">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <h3 class="font-serif text-lg font-semibold text-white mb-4">Trauma Therapy Guide</h3>
+        <p class="text-wood-200 text-sm leading-relaxed">
+          A free resource for trauma therapists and families navigating evidence-based treatment.
+        </p>
+      </div>
+
+      <div>
+        <h4 class="font-semibold text-white mb-4">Quick Links</h4>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="/clinicians" class="text-wood-200 hover:text-white transition-colors">
+              For Clinicians
+            </a>
+          </li>
+          <li>
+            <a href="/families" class="text-wood-200 hover:text-white transition-colors">
+              For Families
+            </a>
+          </li>
+          <li>
+            <a href="/about" class="text-wood-200 hover:text-white transition-colors">
+              About
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-semibold text-white mb-4">Resources</h4>
+        <ul class="space-y-2 text-sm">
+          <li>
+            <a href="/clinicians/emdr" class="text-wood-200 hover:text-white transition-colors">
+              EMDR Protocol
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-forest-700 mt-8 pt-8 text-center text-sm text-wood-300">
+      <p>&copy; {currentYear} Trauma Therapy Guide. For educational purposes only.</p>
+      <p class="mt-2">This site does not provide medical advice. Always consult qualified professionals.</p>
+    </div>
+  </div>
+</footer>

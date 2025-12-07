@@ -1,0 +1,58 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import PhaseNav from '../components/PhaseNav.astro';
+import Callout from '../components/Callout.astro';
+
+interface Props {
+  phase: number;
+  title: string;
+  shortTitle: string;
+  description: string;
+  goals: string[];
+}
+
+const { phase, title, shortTitle, description, goals } = Astro.props;
+---
+
+<BaseLayout title={`Phase ${phase}: ${shortTitle} - EMDR`} description={description}>
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+    <!-- Breadcrumb -->
+    <nav class="text-sm mb-6">
+      <ol class="flex items-center gap-2 text-charcoal/60">
+        <li><a href="/clinicians" class="hover:text-forest-600 transition-colors">Clinicians</a></li>
+        <li>/</li>
+        <li><a href="/clinicians/emdr" class="hover:text-forest-600 transition-colors">EMDR</a></li>
+        <li>/</li>
+        <li class="text-charcoal">Phase {phase}</li>
+      </ol>
+    </nav>
+
+    <!-- Header -->
+    <header class="mb-8">
+      <p class="text-forest-600 font-medium mb-2">Phase {phase} of 8</p>
+      <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-charcoal mb-4">
+        {title}
+      </h1>
+      <p class="text-lg text-charcoal/80 leading-relaxed">
+        {description}
+      </p>
+    </header>
+
+    <!-- Goals -->
+    <Callout type="tip" title="Phase Goals">
+      <ul class="list-disc list-inside space-y-1">
+        {goals.map((goal) => (
+          <li>{goal}</li>
+        ))}
+      </ul>
+    </Callout>
+
+    <!-- Main content -->
+    <article class="prose mt-8">
+      <slot />
+    </article>
+
+    <!-- Navigation -->
+    <PhaseNav currentPhase={phase} />
+  </div>
+</BaseLayout>

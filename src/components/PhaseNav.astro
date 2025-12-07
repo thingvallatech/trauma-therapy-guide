@@ -1,0 +1,65 @@
+---
+interface Props {
+  currentPhase: number;
+  totalPhases?: number;
+}
+
+const { currentPhase, totalPhases = 8 } = Astro.props;
+
+const phases = [
+  { num: 1, shortTitle: 'History' },
+  { num: 2, shortTitle: 'Preparation' },
+  { num: 3, shortTitle: 'Assessment' },
+  { num: 4, shortTitle: 'Desensitization' },
+  { num: 5, shortTitle: 'Installation' },
+  { num: 6, shortTitle: 'Body Scan' },
+  { num: 7, shortTitle: 'Closure' },
+  { num: 8, shortTitle: 'Reevaluation' },
+];
+
+const prevPhase = currentPhase > 1 ? phases[currentPhase - 2] : null;
+const nextPhase = currentPhase < totalPhases ? phases[currentPhase] : null;
+---
+
+<nav class="flex justify-between items-center py-6 border-t border-wood-200 mt-8">
+  {prevPhase ? (
+    <a
+      href={`/clinicians/emdr/phase-${prevPhase.num}`}
+      class="flex items-center gap-2 text-forest-600 hover:text-forest-500 transition-colors group"
+    >
+      <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+      <span class="text-sm">
+        <span class="block text-charcoal/60 text-xs">Previous</span>
+        <span class="font-medium">Phase {prevPhase.num}: {prevPhase.shortTitle}</span>
+      </span>
+    </a>
+  ) : (
+    <div></div>
+  )}
+
+  <a
+    href="/clinicians/emdr"
+    class="text-sm text-charcoal/60 hover:text-forest-600 transition-colors"
+  >
+    All Phases
+  </a>
+
+  {nextPhase ? (
+    <a
+      href={`/clinicians/emdr/phase-${nextPhase.num}`}
+      class="flex items-center gap-2 text-forest-600 hover:text-forest-500 transition-colors group text-right"
+    >
+      <span class="text-sm">
+        <span class="block text-charcoal/60 text-xs">Next</span>
+        <span class="font-medium">Phase {nextPhase.num}: {nextPhase.shortTitle}</span>
+      </span>
+      <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+      </svg>
+    </a>
+  ) : (
+    <div></div>
+  )}
+</nav>

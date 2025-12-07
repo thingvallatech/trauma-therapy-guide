@@ -1,0 +1,25 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import PhaseLayout from '../../../layouts/PhaseLayout.astro';
+
+export async function getStaticPaths() {
+  const phases = await getCollection('emdr-phases');
+  return phases.map((phase) => ({
+    params: { phase: `phase-${phase.data.phase}` },
+    props: { phase },
+  }));
+}
+
+const { phase } = Astro.props;
+const { Content } = await phase.render();
+---
+
+<PhaseLayout
+  phase={phase.data.phase}
+  title={phase.data.title}
+  shortTitle={phase.data.shortTitle}
+  description={phase.data.description}
+  goals={phase.data.goals}
+>
+  <Content />
+</PhaseLayout>
