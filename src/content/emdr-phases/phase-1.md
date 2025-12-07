@@ -2,11 +2,11 @@
 phase: 1
 title: "History and Treatment Planning"
 shortTitle: "History"
-description: "Gathering comprehensive client information, establishing the therapeutic relationship, and creating a treatment plan."
+description: "Gathering comprehensive client information, assessing risk factors, and creating a treatment plan with identified targets."
 goals:
   - "Establish therapeutic alliance"
   - "Gather comprehensive client history"
-  - "Assess client readiness for EMDR"
+  - "Assess risk factors and readiness"
   - "Identify targets for processing"
 ---
 
@@ -14,46 +14,82 @@ goals:
 
 Phase 1 establishes the foundation for all subsequent EMDR work. This phase involves comprehensive history-taking, case conceptualization, and treatment planning.
 
-## Key Components
+## Intake Assessment Components
 
-### Client History
+### Client Information
+- DOB/Age
+- Caregiver's Name and Relation
+- Date of Referral and Intake
+- Counselor assigned
 
-Gather information about:
+### Risk Assessment
+Assess for risk factors before proceeding with treatment planning.
 
-- **Presenting problem** — Current symptoms and their impact on daily functioning
-- **Trauma history** — Past experiences that may be contributing to current symptoms
-- **Medical history** — Relevant health conditions and medications
-- **Previous treatment** — What has been tried before and outcomes
-- **Strengths and resources** — Coping skills, support systems
+### Client Goals
+Document what the client hopes to achieve through treatment.
 
-### Assessing Readiness
+### Client Strengths
+Identify existing coping skills, support systems, and resources.
 
-Before proceeding with EMDR processing, evaluate:
+### Trauma History
+Gather detailed history of traumatic experiences.
 
-- **Stability** — Is the client stable enough for trauma processing?
-- **Ego strength** — Can they tolerate distressing material?
-- **Life circumstances** — Are there ongoing crises that need to be addressed first?
-- **Dissociation** — Screen for dissociative symptoms that may require modified protocols
+### Triggers
+Document triggers identified by caregivers at intake and ongoing.
 
-### Target Selection
+### Attachment Styles
+Consider using the Attachment Style Questionnaire – Short Form (ASQ-SF) for ages 15+.
 
-Identify potential targets using:
+### Clinical Considerations
+- Medical history and special considerations
+- Current medications
+- Previous treatment history
 
-- **Touchstone memories** — Earlier experiences that set the template
-- **Current triggers** — Present-day situations causing distress
-- **Future templates** — Desired future scenarios
+## Clinical Assessments
+
+Administer appropriate assessments:
+- **UCLA PTSD Reaction Index** — Trauma symptom measure
+- **Dissociation screening** — Essential before processing
+- **Affect tolerance assessment** — Can client manage distress?
+- **Avoidance types** — Identify patterns of avoidance
+- **Trauma phobias** — Specific fears related to trauma
+
+## Treatment Planning
+
+### Target Identification Methods
+
+**Trace Back Procedure:**
+Identify targets by tracing current symptoms back to their origins.
+
+**Affect Scan Procedure:**
+Use current emotional and body sensations to identify connected memories.
+
+### Three-Pronged Approach
+
+Create a treatment plan addressing:
+
+| Category | Description |
+|----------|-------------|
+| **Past** | Trauma memories that set the template |
+| **Present** | Current symptoms and triggers |
+| **Future** | Desired future scenarios |
 
 ## Quick Reference
 
-1. Build rapport and explain EMDR
-2. Take comprehensive history
-3. Identify negative cognitions and target memories
-4. Assess client's readiness and stability
-5. Develop treatment plan with client
+1. Complete intake assessment
+2. Assess risk factors and stability
+3. Administer clinical measures
+4. Identify client goals and strengths
+5. Document trauma history
+6. Identify triggers
+7. Create target sequence using Trace Back or Affect Scan
+8. Develop treatment plan
 
 ## Clinical Considerations
 
 - Allow adequate time for thorough history-taking
-- Use standardized measures when appropriate (PCL-5, IES-R, etc.)
+- Use standardized measures appropriate for client's age
 - Document informed consent for EMDR treatment
 - Consider cultural factors in case conceptualization
+- Ensure client has adequate support system
+- Screen for dissociation before proceeding to processing

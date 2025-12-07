@@ -2,87 +2,120 @@
 phase: 3
 title: "Assessment"
 shortTitle: "Assessment"
-description: "Activating the target memory and establishing baseline measurements for processing."
+description: "Activating the target memory and establishing baseline measurements including image, cognitions, emotions, SUD, and body location."
 goals:
-  - "Identify and activate target memory"
+  - "Identify target image"
   - "Develop negative and positive cognitions"
-  - "Establish VOC and SUD baseline"
-  - "Identify body sensations"
+  - "Establish VOC and SUD baselines"
+  - "Identify emotions and body sensations"
 ---
 
 ## Overview
 
 Phase 3 activates the target memory network by identifying all components needed for processing. This structured assessment creates the foundation for the desensitization work.
 
-## Key Components
+## Opening Script
 
-### Target Image
+> "Now that we've identified a memory to work on, we're going to go through a process to fully assess it. This will help us ensure we have all the important aspects of the memory before we begin reprocessing. I'll guide you step by step. Just let me know whatever comes to mind, and there are no right or wrong answers."
 
-Ask the client:
+## Assessment Components
 
-> "What image represents the worst part of the incident?"
+### Step 1: Target Image
 
-The image should be a specific snapshot, not a movie.
+> "I invite you to bring up the memory we discussed and notice the image that represents the worst part of it now. Picture it as clearly as you can. Where are you? Who is there? What is happening?"
+>
+> "What image or part of this memory stands out for you now?"
 
-### Negative Cognition (NC)
+*For titration:* "What image or part of the memory is easiest to notice now?"
 
-Identify the irrational, negative self-belief:
+### Step 2: Negative Cognition (NC)
 
-> "What words go best with that image that express your negative belief about yourself now?"
+> "As you focus on that part of the memory/image, what negative belief do you have about yourself now that goes along with it?"
 
-Common themes: responsibility, safety, control/choice
+*If the client struggles, provide a list of common negative cognitions.*
 
-**Examples:**
-- "I am powerless"
-- "I am not safe"
-- "It's my fault"
-- "I should have done something"
+### Step 3: Positive Cognition (PC)
 
-### Positive Cognition (PC)
+> "Now, what would you like to believe about yourself instead? What positive belief would you rather hold about yourself?"
 
-Identify the desired belief:
+*Help the client refine their positive cognition if needed.*
 
-> "When you bring up that image, what would you like to believe about yourself now?"
+### Step 4: Validity of Cognition (VOC)
 
-The PC should be:
-- Realistic and achievable
-- In the present tense
-- Self-referencing
-- Matching the NC theme
+> "On a scale from 1 to 7, with 1 being completely false and 7 being completely true, how true does this positive belief feel to you right now?"
 
-### Validity of Cognition (VOC)
+### Step 5: Emotions
 
-Rate the PC on a scale of 1-7:
+> "As you think about that part of the memory/image and the negative belief, what emotions come up for you?"
 
-> "When you think of the incident, how true do those words [PC] feel to you now, on a scale of 1-7, where 1 feels completely false and 7 feels completely true?"
+### Step 6: Subjective Units of Disturbance (SUD)
 
-### Emotions
+> "On a scale from 0 to 10, with 0 meaning no disturbance at all and 10 being the most disturbance you can imagine, how disturbing does this memory feel to you right now?"
 
-Identify the emotions:
+### Step 7: Body Location
 
-> "When you bring up that image and those words [NC], what emotion(s) do you feel now?"
+> "As you notice those feelings and thoughts, scan your body. Where do you feel it the most? It might be tightness in your chest, a lump in your throat, or a sensation somewhere else. What do you notice?"
 
-### Subjective Units of Disturbance (SUD)
+## Common Cognitions Reference
 
-Rate distress on a scale of 0-10:
+### Responsibility / Defectiveness / Shame
 
-> "On a scale of 0-10, where 0 is no disturbance and 10 is the highest disturbance you can imagine, how disturbing does it feel to you now?"
+| Negative Cognition | Positive Cognition |
+|-------------------|-------------------|
+| I am bad | I am a good person |
+| I am not good enough | I am good enough |
+| I am worthless | I am worthy / I have value |
+| I am shameful | I am okay as I am |
+| I am not lovable | I am lovable |
+| I don't deserve love | I deserve love |
+| I am permanently damaged | I am whole |
+| I am a failure | I can succeed |
+| There is something wrong with me | I am okay the way I am |
 
-### Body Location
+### Safety / Vulnerability / Trust
 
-Identify where sensations are felt:
+| Negative Cognition | Positive Cognition |
+|-------------------|-------------------|
+| I am in danger | I am safe now |
+| I cannot protect myself | I can protect myself |
+| I cannot trust anyone | I can choose whom to trust |
+| I cannot trust myself | I can trust myself |
+| I have to be perfect | I can be myself / I am enough |
+| I cannot let my guard down | I can relax now |
 
-> "Where do you feel it in your body?"
+### Power / Control / Choice
+
+| Negative Cognition | Positive Cognition |
+|-------------------|-------------------|
+| I am powerless | I have power now |
+| I am helpless | I can help myself |
+| I am out of control | I am in control now |
+| I cannot stand it | I can handle it |
+| I have no control | I have choices |
+| I am weak | I am strong |
+
+### Guilt / Responsibility
+
+| Negative Cognition | Positive Cognition |
+|-------------------|-------------------|
+| I should have done something | I did the best I could |
+| It's my fault | It's not my fault |
+| I did something wrong | I can learn from this |
+| I cannot be forgiven | I can forgive myself |
+
+## Closing Script
+
+> "Thank you for sharing all of that. Now that we have fully assessed this memory, we're ready to move into the next phase, which is the desensitization process. We'll begin that in our next steps together."
 
 ## Quick Reference
 
-1. Target image — worst part of incident
-2. Negative cognition — irrational self-belief
-3. Positive cognition — desired belief
-4. VOC — how true PC feels (1-7)
-5. Emotions — current feelings
-6. SUD — disturbance level (0-10)
-7. Body location — where sensations are felt
+1. **Image** — worst part of incident
+2. **NC** — negative self-belief
+3. **PC** — desired positive belief
+4. **VOC** — how true PC feels (1-7)
+5. **Emotions** — current feelings
+6. **SUD** — disturbance level (0-10)
+7. **Body** — location of sensations
 
 ## Clinical Considerations
 
@@ -91,3 +124,5 @@ Identify where sensations are felt:
 - VOC below 7 is expected at this stage
 - High SUD is normal and expected
 - Body location will be used later in Phase 6
+- Document client's preferred resources before starting
+- Start with earliest memory, worst memory, and most recent
