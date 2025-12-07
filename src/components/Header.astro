@@ -16,10 +16,13 @@ function isActive(href: string): boolean {
 }
 ---
 
-<header class="bg-white border-b border-wood-200">
+<header class="bg-white/95 backdrop-blur-sm border-b border-wood-200 sticky top-0 z-50">
+  <!-- Colorful top accent line -->
+  <div class="h-1 bg-gradient-to-r from-forest-500 via-teal-500 to-coral-400"></div>
   <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-16">
-      <a href="/" class="font-serif text-xl font-semibold text-forest-600 hover:text-forest-500 transition-colors">
+      <a href="/" class="group flex items-center gap-2 font-serif text-xl font-semibold text-forest-600 hover:text-forest-500 transition-colors">
+        <span class="w-8 h-8 bg-gradient-to-br from-forest-500 to-teal-500 rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-sm group-hover:shadow-md transition-shadow">T</span>
         Trauma Therapy Guide
       </a>
 

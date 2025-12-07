@@ -1,0 +1,408 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PhaseNav from '../../../components/PhaseNav.astro';
+---
+
+<BaseLayout title="Phase 8: Reevaluation - EMDR" description="Assessing treatment progress at the start of each session, checking target stability, and guiding ongoing treatment planning.">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+    <!-- Breadcrumb -->
+    <nav class="text-sm mb-6 no-print">
+      <ol class="flex items-center gap-2 text-charcoal/60">
+        <li><a href="/clinicians" class="hover:text-forest-600 transition-colors">Clinicians</a></li>
+        <li>/</li>
+        <li><a href="/clinicians/emdr" class="hover:text-forest-600 transition-colors">EMDR</a></li>
+        <li>/</li>
+        <li class="text-charcoal">Phase 8</li>
+      </ol>
+    </nav>
+
+    <!-- Header with visual emphasis -->
+    <header class="mb-10">
+      <div class="flex items-start justify-between flex-wrap gap-4">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 bg-gradient-to-br from-forest-500 to-forest-600 rounded-2xl flex items-center justify-center text-white font-serif text-2xl font-bold shadow-lg">
+            8
+          </div>
+          <div>
+            <p class="text-forest-600 font-medium text-sm uppercase tracking-wide">Phase 8 of 8</p>
+            <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-charcoal">
+              Reevaluation
+            </h1>
+          </div>
+        </div>
+        <button
+          onclick="window.print()"
+          class="no-print inline-flex items-center gap-2 px-4 py-2 bg-white border border-wood-300 text-charcoal rounded-lg hover:bg-wood-50 transition-colors text-sm shadow-sm"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+          </svg>
+          Print
+        </button>
+      </div>
+    </header>
+
+    <!-- Goals as horizontal pills -->
+    <div class="flex flex-wrap gap-2 mb-10">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-100 text-forest-700 rounded-full text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Evaluate treatment effects
+      </span>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-100 text-forest-700 rounded-full text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Check stability
+      </span>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-100 text-forest-700 rounded-full text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Identify additional targets
+      </span>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-100 text-forest-700 rounded-full text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Ensure comprehensive treatment
+      </span>
+    </div>
+
+    <!-- Two column layout for main content -->
+    <div class="grid lg:grid-cols-3 gap-6">
+
+      <!-- Left column: Main content cards -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- Overview Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+          <div class="bg-gradient-to-r from-forest-500 to-forest-600 px-5 py-3">
+            <h2 class="text-white font-semibold flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Overview
+            </h2>
+          </div>
+          <div class="p-5">
+            <p class="text-sm text-charcoal/80 mb-4">Phase 8 occurs at the beginning of each session after processing has begun, and throughout treatment. It ensures that processing gains are maintained and guides ongoing treatment planning.</p>
+            <div class="bg-forest-50 rounded-lg p-4 border-l-4 border-forest-500">
+              <p class="text-sm text-charcoal italic">"Reevaluation occurs at the beginning of each session. This is where we check in on the progress of the work we've done so far and ensure that the positive changes are lasting."</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Reevaluation Steps Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+          <div class="bg-gradient-to-r from-teal-500 to-teal-600 px-5 py-3">
+            <h2 class="text-white font-semibold flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              Reevaluation Steps
+            </h2>
+          </div>
+          <div class="p-5 space-y-4">
+            <!-- Step 1 -->
+            <div class="border-l-4 border-teal-400 pl-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 bg-teal-500 text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                <h3 class="font-semibold text-charcoal">General Check-In</h3>
+              </div>
+              <div class="bg-teal-50 rounded-lg p-3">
+                <p class="text-sm text-charcoal italic">"How have you been since our last session? What has stood out to you? Have any changes or memories come up?"</p>
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="border-l-4 border-lavender-400 pl-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 bg-lavender-500 text-white rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                <h3 class="font-semibold text-charcoal">Assess the Target Memory</h3>
+              </div>
+              <div class="bg-lavender-50 rounded-lg p-3 mb-2">
+                <p class="text-sm text-charcoal italic">"Let's bring up the target memory we worked on last time. When you think about that memory now, what comes up for you?"</p>
+              </div>
+              <div class="grid sm:grid-cols-2 gap-2 text-sm">
+                <div class="bg-forest-100 rounded p-2 text-forest-800">
+                  <strong>SUD 0-2:</strong> Proceed with reinforcing
+                </div>
+                <div class="bg-coral-100 rounded p-2 text-coral-800">
+                  <strong>SUD 3+:</strong> Check for new material/blocks
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="border-l-4 border-sunny-400 pl-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 bg-sunny-500 text-white rounded-full flex items-center justify-center text-xs font-bold">3</span>
+                <h3 class="font-semibold text-charcoal">Assess the Positive Cognition</h3>
+              </div>
+              <div class="bg-sunny-50 rounded-lg p-3">
+                <p class="text-sm text-charcoal italic">"Think about the positive belief we installed last time. How true does it feel to you now on a scale of 1 to 7?"</p>
+              </div>
+              <p class="text-xs text-charcoal/60 mt-2">If VOC below 7, explore possible reasons and consider reprocessing.</p>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="border-l-4 border-coral-400 pl-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 bg-coral-500 text-white rounded-full flex items-center justify-center text-xs font-bold">4</span>
+                <h3 class="font-semibold text-charcoal">Body Scan Reassessment</h3>
+              </div>
+              <div class="bg-coral-50 rounded-lg p-3">
+                <p class="text-sm text-charcoal italic">"Let's do a quick body scan. Bring up the target memory and the positive belief, and notice if there's any discomfort or tension in your body."</p>
+              </div>
+              <p class="text-xs text-charcoal/60 mt-2">If lingering tension, process with BLS. If clear, continue reinforcing progress.</p>
+            </div>
+
+            <!-- Steps 5-7 -->
+            <div class="border-l-4 border-forest-400 pl-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 bg-forest-500 text-white rounded-full flex items-center justify-center text-xs font-bold">5</span>
+                <h3 class="font-semibold text-charcoal">Address New Material</h3>
+              </div>
+              <div class="bg-forest-50 rounded-lg p-3">
+                <p class="text-sm text-charcoal italic">"If anything new has come up, or if there's still unresolved material, we can continue to process it."</p>
+              </div>
+            </div>
+
+            <div class="border-l-4 border-teal-400 pl-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 bg-teal-500 text-white rounded-full flex items-center justify-center text-xs font-bold">6</span>
+                <h3 class="font-semibold text-charcoal">Check Current Distress</h3>
+              </div>
+              <div class="bg-teal-50 rounded-lg p-3">
+                <p class="text-sm text-charcoal italic">"On a scale from 0 to 10, how much distress does this memory still bring up for you?"</p>
+              </div>
+            </div>
+
+            <div class="border-l-4 border-lavender-400 pl-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 bg-lavender-500 text-white rounded-full flex items-center justify-center text-xs font-bold">7</span>
+                <h3 class="font-semibold text-charcoal">Reinforce Progress</h3>
+              </div>
+              <div class="bg-lavender-50 rounded-lg p-3">
+                <p class="text-sm text-charcoal italic">"Now that we've processed the memory and emotions, let's focus on the positive belief. Does it feel more integrated now?"</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Three-Pronged Protocol Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+          <div class="bg-gradient-to-r from-lavender-600 to-lavender-700 px-5 py-3">
+            <h2 class="text-white font-semibold flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+              </svg>
+              Three-Pronged Protocol
+            </h2>
+          </div>
+          <div class="p-5">
+            <p class="text-sm text-charcoal/70 mb-4">Ensure comprehensive treatment of all three prongs. Treatment is complete when all are addressed:</p>
+            <div class="space-y-3">
+              <div class="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-coral-50 to-coral-100 border border-coral-200">
+                <div class="w-16 flex-shrink-0">
+                  <span class="inline-block px-3 py-1.5 bg-coral-500 text-white text-sm font-bold rounded-lg">PAST</span>
+                </div>
+                <div>
+                  <p class="font-semibold text-charcoal">Past Memories</p>
+                  <p class="text-sm text-charcoal/70">Original events that set the template</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-sunny-50 to-sunny-100 border border-sunny-200">
+                <div class="w-16 flex-shrink-0">
+                  <span class="inline-block px-3 py-1.5 bg-sunny-500 text-white text-sm font-bold rounded-lg">PRESENT</span>
+                </div>
+                <div>
+                  <p class="font-semibold text-charcoal">Present Triggers</p>
+                  <p class="text-sm text-charcoal/70">Current situations that activate distress</p>
+                </div>
+              </div>
+              <div class="flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-teal-50 to-teal-100 border border-teal-200">
+                <div class="w-16 flex-shrink-0">
+                  <span class="inline-block px-3 py-1.5 bg-teal-500 text-white text-sm font-bold rounded-lg">FUTURE</span>
+                </div>
+                <div>
+                  <p class="font-semibold text-charcoal">Future Templates</p>
+                  <p class="text-sm text-charcoal/70">Positive future scenarios</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TICES Log Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+          <div class="bg-gradient-to-r from-sunny-500 to-sunny-600 px-5 py-3">
+            <h2 class="text-white font-semibold flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+              </svg>
+              TICES Log
+            </h2>
+          </div>
+          <div class="p-5">
+            <p class="text-sm text-charcoal/70 mb-4">Recommend clients track between-session experiences:</p>
+            <div class="bg-sunny-50 rounded-lg p-4 border-l-4 border-sunny-500 mb-4">
+              <p class="text-sm text-charcoal italic">"Did you notice any changes about your target problem since your last session? Write down what triggered you, what picture/image came to mind, thoughts, emotions, body sensations, and how much it bothered you on the SUD scale."</p>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-sm border border-wood-200 rounded-lg">
+                <thead class="bg-wood-100">
+                  <tr>
+                    <th class="px-2 py-2 text-left font-medium text-charcoal">Date</th>
+                    <th class="px-2 py-2 text-left font-medium text-charcoal">Trigger</th>
+                    <th class="px-2 py-2 text-left font-medium text-charcoal">Picture</th>
+                    <th class="px-2 py-2 text-left font-medium text-charcoal">Thoughts</th>
+                    <th class="px-2 py-2 text-left font-medium text-charcoal">Emotions</th>
+                    <th class="px-2 py-2 text-left font-medium text-charcoal">Body</th>
+                    <th class="px-2 py-2 text-left font-medium text-charcoal">SUD</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="border-t border-wood-100">
+                    <td class="px-2 py-3 text-charcoal/40">&nbsp;</td>
+                    <td class="px-2 py-3 text-charcoal/40">&nbsp;</td>
+                    <td class="px-2 py-3 text-charcoal/40">&nbsp;</td>
+                    <td class="px-2 py-3 text-charcoal/40">&nbsp;</td>
+                    <td class="px-2 py-3 text-charcoal/40">&nbsp;</td>
+                    <td class="px-2 py-3 text-charcoal/40">&nbsp;</td>
+                    <td class="px-2 py-3 text-charcoal/40">&nbsp;</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right column: Sidebar content -->
+      <div class="space-y-6">
+
+        <!-- Session Opening Checklist -->
+        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden sticky top-24">
+          <div class="bg-forest-900 px-4 py-3">
+            <h2 class="text-white font-semibold text-sm flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+              Session Opening
+            </h2>
+          </div>
+          <div class="p-4">
+            <ol class="space-y-2 text-sm">
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</span>
+                <span>General check-in since last session</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</span>
+                <span>Assess previous target (SUD, new material)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</span>
+                <span>Check VOC of installed PC</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">4</span>
+                <span>Body scan reassessment</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">5</span>
+                <span>Determine session focus</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Treatment Planning -->
+        <div class="bg-gradient-to-br from-teal-50 to-forest-50 rounded-xl border border-teal-200 overflow-hidden">
+          <div class="px-4 py-3 border-b border-teal-200">
+            <h2 class="font-semibold text-teal-800 text-sm flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              Treatment Planning
+            </h2>
+          </div>
+          <ol class="p-4 space-y-2 text-sm">
+            <li class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</span>
+              <span>Evaluate symptom improvement</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</span>
+              <span>Check target completion</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</span>
+              <span>Assess for new targets</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">4</span>
+              <span>Ensure three-pronged approach</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">5</span>
+              <span>Plan for termination when goals met</span>
+            </li>
+          </ol>
+        </div>
+
+        <!-- Clinical Considerations -->
+        <div class="bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-xl border border-amber-200 overflow-hidden">
+          <div class="px-4 py-3 border-b border-amber-200">
+            <h2 class="font-semibold text-amber-800 text-sm flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              Clinical Notes
+            </h2>
+          </div>
+          <ul class="p-4 space-y-2 text-sm text-amber-900/80">
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              If SUD increases, more processing needed
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              New material may reveal additional targets
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              Use standardized measures (UCLA, PCL-5)
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              Collaborate on treatment priorities
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              Document progress systematically
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              TICES log helps identify patterns
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              Plan termination when all targets complete
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="phase-nav mt-10">
+      <PhaseNav currentPhase={8} />
+    </div>
+  </div>
+</BaseLayout>

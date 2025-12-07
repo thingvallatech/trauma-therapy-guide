@@ -1,0 +1,362 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="EMDR Intake Assessment Form - Printable" description="Printable intake assessment form for EMDR Phase 1 history and treatment planning.">
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; }
+      .print-page {
+        page-break-after: always;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .print-page:last-child { page-break-after: avoid; }
+      input, textarea {
+        border: 1px solid #ccc !important;
+        background: white !important;
+      }
+      .print-container {
+        max-width: 100% !important;
+        padding: 0.5in !important;
+      }
+    }
+    @media screen {
+      .print-field {
+        min-height: 1.5rem;
+      }
+    }
+    .form-line {
+      border-bottom: 1px solid #d4c4ad;
+      min-height: 1.5rem;
+      display: block;
+    }
+  </style>
+
+  <!-- Print header bar -->
+  <div class="no-print bg-forest-600 text-white py-3 sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="/clinicians/emdr/phase-1" class="text-white/80 hover:text-white transition-colors flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Phase 1
+        </a>
+        <span class="text-white/40">|</span>
+        <span class="text-sm">EMDR Intake Assessment Form</span>
+      </div>
+      <button
+        onclick="window.print()"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-white text-forest-700 rounded-lg hover:bg-forest-50 transition-colors text-sm font-medium"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+        </svg>
+        Print Form
+      </button>
+    </div>
+  </div>
+
+  <div class="print-container max-w-4xl mx-auto px-4 py-8">
+
+    <!-- Page 1: Client Information & History -->
+    <div class="print-page">
+      <header class="mb-6 border-b-2 border-forest-500 pb-4">
+        <h1 class="font-serif text-2xl font-bold text-charcoal">EMDR Intake Assessment</h1>
+        <p class="text-sm text-charcoal/60">Phase 1: History & Treatment Planning</p>
+      </header>
+
+      <!-- Client Information Section -->
+      <section class="mb-6">
+        <h2 class="text-sm font-bold text-forest-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+          <span class="w-6 h-6 bg-forest-500 text-white rounded flex items-center justify-center text-xs">1</span>
+          Client Information
+        </h2>
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="text-xs font-medium text-charcoal/60 block mb-1">Client Name</label>
+            <div class="form-line"></div>
+          </div>
+          <div>
+            <label class="text-xs font-medium text-charcoal/60 block mb-1">DOB / Age</label>
+            <div class="form-line"></div>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mb-4">
+          <div>
+            <label class="text-xs font-medium text-charcoal/60 block mb-1">Caregiver's Name</label>
+            <div class="form-line"></div>
+          </div>
+          <div>
+            <label class="text-xs font-medium text-charcoal/60 block mb-1">Relation to Client</label>
+            <div class="form-line"></div>
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <label class="text-xs font-medium text-charcoal/60 block mb-1">Date of Referral</label>
+            <div class="form-line"></div>
+          </div>
+          <div>
+            <label class="text-xs font-medium text-charcoal/60 block mb-1">Date of Intake</label>
+            <div class="form-line"></div>
+          </div>
+          <div>
+            <label class="text-xs font-medium text-charcoal/60 block mb-1">Counselor</label>
+            <div class="form-line"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Risk Assessment Section -->
+      <section class="mb-6">
+        <h2 class="text-sm font-bold text-forest-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+          <span class="w-6 h-6 bg-forest-500 text-white rounded flex items-center justify-center text-xs">2</span>
+          Risk Assessment
+        </h2>
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 mb-3">
+          <p class="text-xs text-amber-800 font-medium">Assess for risk factors before treatment planning</p>
+        </div>
+        <div class="border border-wood-200 rounded-lg p-3 min-h-[80px]">
+          <label class="text-xs font-medium text-charcoal/60 block mb-1">Risk Factors Identified:</label>
+          <div class="space-y-2">
+            <div class="form-line"></div>
+            <div class="form-line"></div>
+            <div class="form-line"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Goals & Strengths Section -->
+      <section class="mb-6">
+        <h2 class="text-sm font-bold text-forest-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+          <span class="w-6 h-6 bg-forest-500 text-white rounded flex items-center justify-center text-xs">3</span>
+          Client Goals & Strengths
+        </h2>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="border border-wood-200 rounded-lg p-3">
+            <label class="text-xs font-medium text-charcoal/60 block mb-2">Client's Goals:</label>
+            <div class="space-y-2">
+              <div class="form-line"></div>
+              <div class="form-line"></div>
+              <div class="form-line"></div>
+            </div>
+          </div>
+          <div class="border border-wood-200 rounded-lg p-3">
+            <label class="text-xs font-medium text-charcoal/60 block mb-2">Client's Strengths:</label>
+            <div class="space-y-2">
+              <div class="form-line"></div>
+              <div class="form-line"></div>
+              <div class="form-line"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Trauma History Section -->
+      <section class="mb-6">
+        <h2 class="text-sm font-bold text-forest-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+          <span class="w-6 h-6 bg-forest-500 text-white rounded flex items-center justify-center text-xs">4</span>
+          Trauma History
+        </h2>
+        <div class="border border-wood-200 rounded-lg p-3 min-h-[120px]">
+          <div class="space-y-2">
+            <div class="form-line"></div>
+            <div class="form-line"></div>
+            <div class="form-line"></div>
+            <div class="form-line"></div>
+            <div class="form-line"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Triggers Section -->
+      <section class="mb-6">
+        <h2 class="text-sm font-bold text-forest-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+          <span class="w-6 h-6 bg-forest-500 text-white rounded flex items-center justify-center text-xs">5</span>
+          Triggers
+        </h2>
+        <p class="text-xs text-charcoal/60 mb-2 italic">Identified by caregivers at intake and ongoing</p>
+        <div class="border border-wood-200 rounded-lg p-3 min-h-[80px]">
+          <div class="space-y-2">
+            <div class="form-line"></div>
+            <div class="form-line"></div>
+            <div class="form-line"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Attachment Style Section -->
+      <section>
+        <h2 class="text-sm font-bold text-forest-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+          <span class="w-6 h-6 bg-forest-500 text-white rounded flex items-center justify-center text-xs">6</span>
+          Attachment Style
+        </h2>
+        <p class="text-xs text-charcoal/60 mb-2 italic">ASQ-SF recommended for ages 15+</p>
+        <div class="border border-wood-200 rounded-lg p-3">
+          <div class="space-y-2">
+            <div class="form-line"></div>
+            <div class="form-line"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Page 2: Clinical Assessments & Treatment Plan -->
+    <div class="print-page mt-8">
+      <header class="mb-6 border-b-2 border-forest-500 pb-4">
+        <h1 class="font-serif text-2xl font-bold text-charcoal">EMDR Intake Assessment</h1>
+        <p class="text-sm text-charcoal/60">Phase 1: Clinical Assessments & Treatment Planning (Page 2)</p>
+      </header>
+
+      <!-- Clinical Considerations Section -->
+      <section class="mb-6">
+        <h2 class="text-sm font-bold text-forest-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+          <span class="w-6 h-6 bg-forest-500 text-white rounded flex items-center justify-center text-xs">7</span>
+          Clinical, Medical & Special Considerations
+        </h2>
+        <div class="border border-wood-200 rounded-lg p-3 min-h-[80px]">
+          <div class="space-y-2">
+            <div class="form-line"></div>
+            <div class="form-line"></div>
+            <div class="form-line"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Current Resources Section -->
+      <section class="mb-6">
+        <h2 class="text-sm font-bold text-forest-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+          <span class="w-6 h-6 bg-forest-500 text-white rounded flex items-center justify-center text-xs">8</span>
+          Client's Current Resources
+        </h2>
+        <div class="border border-wood-200 rounded-lg p-3 min-h-[80px]">
+          <div class="space-y-2">
+            <div class="form-line"></div>
+            <div class="form-line"></div>
+            <div class="form-line"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Clinical Assessments Section -->
+      <section class="mb-6">
+        <h2 class="text-sm font-bold text-forest-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+          <span class="w-6 h-6 bg-forest-500 text-white rounded flex items-center justify-center text-xs">9</span>
+          Clinical Assessments
+        </h2>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="flex items-center gap-2 p-2 border border-wood-200 rounded">
+            <span class="w-4 h-4 border-2 border-forest-400 rounded flex-shrink-0"></span>
+            <span class="text-sm">UCLA PTSD Reaction Index</span>
+          </div>
+          <div class="flex items-center gap-2 p-2 border border-amber-300 bg-amber-50 rounded">
+            <span class="w-4 h-4 border-2 border-amber-400 rounded flex-shrink-0"></span>
+            <span class="text-sm font-medium">Dissociation Screening</span>
+          </div>
+          <div class="flex items-center gap-2 p-2 border border-wood-200 rounded">
+            <span class="w-4 h-4 border-2 border-forest-400 rounded flex-shrink-0"></span>
+            <span class="text-sm">Affect Tolerance</span>
+          </div>
+          <div class="flex items-center gap-2 p-2 border border-wood-200 rounded">
+            <span class="w-4 h-4 border-2 border-forest-400 rounded flex-shrink-0"></span>
+            <span class="text-sm">Avoidance Types</span>
+          </div>
+          <div class="flex items-center gap-2 p-2 border border-wood-200 rounded">
+            <span class="w-4 h-4 border-2 border-forest-400 rounded flex-shrink-0"></span>
+            <span class="text-sm">Trauma Phobias</span>
+          </div>
+        </div>
+        <div class="mt-3 border border-wood-200 rounded-lg p-3">
+          <label class="text-xs font-medium text-charcoal/60 block mb-2">Assessment Notes:</label>
+          <div class="space-y-2">
+            <div class="form-line"></div>
+            <div class="form-line"></div>
+            <div class="form-line"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Treatment Plan Table -->
+      <section>
+        <h2 class="text-sm font-bold text-forest-700 uppercase tracking-wide mb-3 flex items-center gap-2">
+          <span class="w-6 h-6 bg-forest-500 text-white rounded flex items-center justify-center text-xs">10</span>
+          Treatment Plan
+        </h2>
+        <table class="w-full border-collapse text-sm">
+          <thead>
+            <tr class="bg-forest-100">
+              <th class="border border-forest-300 px-2 py-2 text-left font-medium text-forest-800">Past Trauma Memories</th>
+              <th class="border border-forest-300 px-2 py-2 text-left font-medium text-forest-800 w-14">Age</th>
+              <th class="border border-forest-300 px-2 py-2 text-left font-medium text-forest-800">Present Symptoms</th>
+              <th class="border border-forest-300 px-2 py-2 text-left font-medium text-forest-800">Triggers</th>
+              <th class="border border-forest-300 px-2 py-2 text-left font-medium text-forest-800">Future</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+            </tr>
+            <tr>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+            </tr>
+            <tr>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+            </tr>
+            <tr>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+            </tr>
+            <tr>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+            </tr>
+            <tr>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+            </tr>
+            <tr>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+            </tr>
+            <tr>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+              <td class="border border-wood-200 px-2 py-3"></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="text-xs text-charcoal/60 mt-2 italic">Note: Process earliest memory first (touchstone), then worst event, then remaining targets chronologically.</p>
+      </section>
+    </div>
+
+  </div>
+</BaseLayout>

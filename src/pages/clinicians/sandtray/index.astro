@@ -1,0 +1,356 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Sand Tray Therapy - Clinician Resources" description="Video demonstrations and resources for sand tray therapy techniques with children and adolescents.">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+    <!-- Breadcrumb -->
+    <nav class="text-sm mb-6">
+      <ol class="flex items-center gap-2 text-charcoal/60">
+        <li><a href="/clinicians" class="hover:text-forest-600 transition-colors">Clinicians</a></li>
+        <li>/</li>
+        <li class="text-charcoal">Sand Tray Therapy</li>
+      </ol>
+    </nav>
+
+    <!-- Header -->
+    <header class="mb-12">
+      <div class="flex items-center gap-4 mb-4">
+        <div class="w-16 h-16 bg-gradient-to-br from-amber-500 to-amber-600 rounded-2xl flex items-center justify-center shadow-lg">
+          <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-charcoal">
+            Sand Tray Therapy
+          </h1>
+          <p class="text-amber-600 font-medium">Video Demonstrations & Resources</p>
+        </div>
+      </div>
+      <p class="text-lg text-charcoal/80 max-w-3xl leading-relaxed">
+        Visual learning resources for sand tray therapy techniques. Watch demonstrations, learn setup procedures, and explore symbolic meanings of miniatures.
+      </p>
+    </header>
+
+    <!-- Featured Video Section -->
+    <section class="mb-12">
+      <div class="bg-gradient-to-br from-charcoal to-charcoal/90 rounded-2xl overflow-hidden">
+        <div class="grid lg:grid-cols-5 gap-0">
+          <!-- Video Embed -->
+          <div class="lg:col-span-3 aspect-video bg-black">
+            <iframe
+              class="w-full h-full"
+              src="https://www.youtube-nocookie.com/embed/5qkaOYng1JU"
+              title="Introduction to Sand Tray Therapy"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerpolicy="strict-origin-when-cross-origin"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <!-- Video Info -->
+          <div class="lg:col-span-2 p-6 lg:p-8 flex flex-col justify-center">
+            <span class="inline-flex items-center gap-1.5 px-2 py-1 bg-amber-500/20 text-amber-400 text-xs font-medium rounded mb-3 w-fit">
+              <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              Featured Video
+            </span>
+            <h2 class="font-serif text-xl text-white font-semibold mb-2">What is Sand Tray Therapy?</h2>
+            <p class="text-white/70 text-sm mb-4">
+              Introduction to sand tray therapy—what it is, how it works, and why it's effective for children and adults.
+            </p>
+            <div class="flex items-center gap-4 text-white/50 text-xs">
+              <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                5 min
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quick Start Cards -->
+    <section class="mb-12">
+      <h2 class="font-serif text-2xl font-semibold text-charcoal mb-6">Getting Started</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        <!-- Room Setup -->
+        <a href="/clinicians/sandtray/setup" class="group bg-white rounded-xl border border-wood-200 overflow-hidden hover:shadow-lg hover:border-amber-300 transition-all">
+          <div class="aspect-video bg-gradient-to-br from-amber-100 to-amber-50 flex items-center justify-center">
+            <svg class="w-16 h-16 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+          </div>
+          <div class="p-5">
+            <h3 class="font-semibold text-charcoal group-hover:text-amber-600 transition-colors mb-2">Room Setup & Materials</h3>
+            <p class="text-sm text-charcoal/70">Tray specifications, sand types, shelving arrangements, and essential starter collections.</p>
+          </div>
+        </a>
+
+        <!-- Miniature Categories -->
+        <a href="/clinicians/sandtray/miniatures" class="group bg-white rounded-xl border border-wood-200 overflow-hidden hover:shadow-lg hover:border-amber-300 transition-all">
+          <div class="aspect-video bg-gradient-to-br from-teal-100 to-teal-50 flex items-center justify-center">
+            <svg class="w-16 h-16 text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+          </div>
+          <div class="p-5">
+            <h3 class="font-semibold text-charcoal group-hover:text-teal-600 transition-colors mb-2">Miniature Categories</h3>
+            <p class="text-sm text-charcoal/70">Essential categories, symbolic meanings, and building a balanced collection.</p>
+          </div>
+        </a>
+
+        <!-- Session Flow -->
+        <a href="/clinicians/sandtray/session-flow" class="group bg-white rounded-xl border border-wood-200 overflow-hidden hover:shadow-lg hover:border-amber-300 transition-all">
+          <div class="aspect-video bg-gradient-to-br from-forest-100 to-forest-50 flex items-center justify-center">
+            <svg class="w-16 h-16 text-forest-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+          </div>
+          <div class="p-5">
+            <h3 class="font-semibold text-charcoal group-hover:text-forest-600 transition-colors mb-2">Session Flow & Process</h3>
+            <p class="text-sm text-charcoal/70">Introduction scripts, witnessing techniques, processing questions, and closure.</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- External Video Resources Section -->
+    <section class="mb-12">
+      <div class="flex items-center justify-between mb-6">
+        <h2 class="font-serif text-2xl font-semibold text-charcoal">Recommended Videos</h2>
+      </div>
+
+      <div class="bg-wood-50 rounded-xl p-6 mb-6">
+        <p class="text-sm text-charcoal/80 mb-4">
+          Quality sand tray therapy demonstrations are available through professional training organizations. Here are some recommended resources:
+        </p>
+        <div class="grid md:grid-cols-2 gap-4">
+          <a href="https://www.youtube.com/results?search_query=sandtray+therapy+demonstration" target="_blank" rel="noopener" class="flex items-center gap-3 bg-white rounded-lg p-4 border border-wood-200 hover:border-amber-300 hover:shadow-md transition-all group">
+            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-red-600" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+            </div>
+            <div>
+              <span class="font-medium text-charcoal group-hover:text-amber-600 transition-colors">Search YouTube</span>
+              <p class="text-xs text-charcoal/60">Sand tray therapy demonstrations</p>
+            </div>
+          </a>
+          <a href="https://www.youtube.com/@APT4PlayTherapy" target="_blank" rel="noopener" class="flex items-center gap-3 bg-white rounded-lg p-4 border border-wood-200 hover:border-amber-300 hover:shadow-md transition-all group">
+            <div class="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              </svg>
+            </div>
+            <div>
+              <span class="font-medium text-charcoal group-hover:text-teal-600 transition-colors">APT YouTube Channel</span>
+              <p class="text-xs text-charcoal/60">Association for Play Therapy</p>
+            </div>
+          </a>
+          <a href="https://southernsandtray.com/top-10-must-watch-play-therapy-videos/" target="_blank" rel="noopener" class="flex items-center gap-3 bg-white rounded-lg p-4 border border-wood-200 hover:border-amber-300 hover:shadow-md transition-all group">
+            <div class="w-10 h-10 bg-amber-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+              </svg>
+            </div>
+            <div>
+              <span class="font-medium text-charcoal group-hover:text-amber-600 transition-colors">Top 10 Play Therapy Videos</span>
+              <p class="text-xs text-charcoal/60">Southern Sandtray Institute</p>
+            </div>
+          </a>
+          <a href="https://www.psychotherapy.net/videos/approach/play-therapy" target="_blank" rel="noopener" class="flex items-center gap-3 bg-white rounded-lg p-4 border border-wood-200 hover:border-amber-300 hover:shadow-md transition-all group">
+            <div class="w-10 h-10 bg-forest-100 rounded-lg flex items-center justify-center flex-shrink-0">
+              <svg class="w-5 h-5 text-forest-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+              </svg>
+            </div>
+            <div>
+              <span class="font-medium text-charcoal group-hover:text-forest-600 transition-colors">Psychotherapy.net</span>
+              <p class="text-xs text-charcoal/60">Professional training videos</p>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- APT Play Therapy Video -->
+      <div class="bg-white rounded-xl border border-wood-200 overflow-hidden">
+        <div class="grid lg:grid-cols-2 gap-0">
+          <div class="aspect-video bg-black">
+            <iframe
+              class="w-full h-full"
+              src="https://www.youtube-nocookie.com/embed/IhFhfamS_uI"
+              title="APT: Andrew - Play Therapy"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <div class="p-6 flex flex-col justify-center">
+            <span class="text-xs font-medium text-teal-600 mb-2 block">Association for Play Therapy</span>
+            <h3 class="font-serif text-xl font-semibold text-charcoal mb-2">Andrew: Meeting Kids Where They Are</h3>
+            <p class="text-sm text-charcoal/70 mb-4">
+              This APT video demonstrates the importance of talking to kids at their level, presented with warmth and humor. Frequently used in professional trainings to illustrate child-centered communication.
+            </p>
+            <a href="https://www.youtube.com/watch?v=IhFhfamS_uI" target="_blank" rel="noopener" class="text-sm text-teal-600 hover:text-teal-700 font-medium inline-flex items-center gap-1">
+              Watch on YouTube
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Techniques Section -->
+    <section class="mb-12">
+      <h2 class="font-serif text-2xl font-semibold text-charcoal mb-6">Directive Techniques</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- Technique Card -->
+        <a href="/clinicians/sandtray/techniques/world-building" class="group bg-white rounded-xl border border-wood-200 p-6 hover:shadow-lg hover:border-amber-300 transition-all">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-charcoal group-hover:text-amber-600 transition-colors mb-2">"Build Your World"</h3>
+              <p class="text-sm text-charcoal/70 mb-3">Non-directive prompt allowing free expression. Best for initial sessions and ongoing processing.</p>
+              <span class="text-xs text-amber-600 font-medium">View technique →</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/clinicians/sandtray/techniques/safe-place" class="group bg-white rounded-xl border border-wood-200 p-6 hover:shadow-lg hover:border-teal-300 transition-all">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-teal-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-charcoal group-hover:text-teal-600 transition-colors mb-2">"Create a Safe Place"</h3>
+              <p class="text-sm text-charcoal/70 mb-3">Resource-building technique. Use early in treatment to establish safety and coping.</p>
+              <span class="text-xs text-teal-600 font-medium">View technique →</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/clinicians/sandtray/techniques/family-tray" class="group bg-white rounded-xl border border-wood-200 p-6 hover:shadow-lg hover:border-forest-300 transition-all">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-forest-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6 text-forest-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-charcoal group-hover:text-forest-600 transition-colors mb-2">"Show Me Your Family"</h3>
+              <p class="text-sm text-charcoal/70 mb-3">Family systems exploration. Reveals dynamics, roles, and relational patterns.</p>
+              <span class="text-xs text-forest-600 font-medium">View technique →</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="/clinicians/sandtray/techniques/bridge-tray" class="group bg-white rounded-xl border border-wood-200 p-6 hover:shadow-lg hover:border-lavender-300 transition-all">
+          <div class="flex items-start gap-4">
+            <div class="w-12 h-12 bg-lavender-100 rounded-xl flex items-center justify-center flex-shrink-0">
+              <svg class="w-6 h-6 text-lavender-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+              </svg>
+            </div>
+            <div class="flex-1">
+              <h3 class="font-semibold text-charcoal group-hover:text-lavender-600 transition-colors mb-2">"The Bridge" Technique</h3>
+              <p class="text-sm text-charcoal/70 mb-3">Transition-focused prompt. Explores past to present or problem to solution.</p>
+              <span class="text-xs text-lavender-600 font-medium">View technique →</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Resources Section -->
+    <section class="mb-12">
+      <h2 class="font-serif text-2xl font-semibold text-charcoal mb-6">Additional Resources</h2>
+      <div class="grid md:grid-cols-2 gap-6">
+        <!-- Books -->
+        <div class="bg-wood-50 rounded-xl p-6">
+          <h3 class="font-semibold text-charcoal mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-wood-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
+            Recommended Reading
+          </h3>
+          <ul class="space-y-3 text-sm">
+            <li class="flex items-start gap-2">
+              <span class="text-wood-400">•</span>
+              <span><strong>"Sandtray Therapy"</strong> - Homeyer & Sweeney</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-wood-400">•</span>
+              <span><strong>"The Handbook of Sandplay Therapy"</strong> - Barbara Turner</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-wood-400">•</span>
+              <span><strong>"Sandplay Therapy with Children"</strong> - Yasenik & Gardner</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-wood-400">•</span>
+              <span><strong>"Images of the Self"</strong> - Estelle Weinrib</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Training -->
+        <div class="bg-amber-50 rounded-xl p-6">
+          <h3 class="font-semibold text-charcoal mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+            </svg>
+            Training Organizations
+          </h3>
+          <ul class="space-y-3 text-sm">
+            <li class="flex items-start gap-2">
+              <span class="text-amber-400">•</span>
+              <a href="https://www.sandplay.org" target="_blank" rel="noopener" class="text-amber-700 hover:underline">Sandplay Therapists of America (STA)</a>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-400">•</span>
+              <a href="https://www.isst-society.com" target="_blank" rel="noopener" class="text-amber-700 hover:underline">International Society for Sandplay Therapy</a>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-400">•</span>
+              <span>APT Approved Play Therapy Programs</span>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-400">•</span>
+              <span>University Extension Courses</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Clinical Note -->
+    <div class="bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-xl border border-amber-200 p-6">
+      <div class="flex items-start gap-4">
+        <div class="w-10 h-10 bg-amber-200 rounded-lg flex items-center justify-center flex-shrink-0">
+          <svg class="w-5 h-5 text-amber-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+        </div>
+        <div>
+          <h3 class="font-semibold text-amber-800 mb-2">Training Reminder</h3>
+          <p class="text-sm text-amber-900/80">
+            Sand tray therapy requires specialized training beyond general play therapy skills. These resources supplement formal training and should not replace supervised clinical experience. Jungian sandplay therapy has additional certification requirements through STA/ISST.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

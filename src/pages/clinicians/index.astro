@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Card from '../../components/Card.astro';
 ---
 
 <BaseLayout title="For Clinicians" description="Quick reference guides for trauma therapists using evidence-based protocols.">
@@ -16,47 +15,211 @@ import Card from '../../components/Card.astro';
         </p>
       </div>
 
-      <!-- Protocols Grid -->
+      <!-- Available Now - Featured Section -->
       <div class="mb-16">
-        <h2 class="font-serif text-2xl font-semibold text-charcoal mb-6">
-          Available Protocols
-        </h2>
+        <div class="flex items-center gap-3 mb-6">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-forest-500 text-white text-sm font-medium rounded-full">
+            <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+            Available Now
+          </span>
+        </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card href="/clinicians/emdr" title="EMDR Protocol" variant="featured">
-            <p class="text-charcoal/80 text-sm leading-relaxed mb-4">
-              Complete 8-phase EMDR protocol reference. Includes key scripts, assessment components, and clinical considerations.
-            </p>
-            <div class="flex items-center gap-2 text-sm text-forest-600">
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              8 phases available
+        <!-- EMDR Featured Card -->
+        <a
+          href="/clinicians/emdr"
+          class="block group relative bg-gradient-to-br from-forest-500 to-forest-700 rounded-2xl p-8 text-white overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+        >
+          <!-- Background pattern -->
+          <div class="absolute inset-0 opacity-10">
+            <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <defs>
+                <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                  <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#grid)" />
+            </svg>
+          </div>
+
+          <div class="relative flex flex-col md:flex-row md:items-center gap-6">
+            <div class="flex-shrink-0">
+              <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </div>
             </div>
-          </Card>
 
-          <Card title="TF-CBT Protocol">
-            <p class="text-charcoal/80 text-sm leading-relaxed mb-4">
-              Trauma-Focused Cognitive Behavioral Therapy reference guide for child and adolescent trauma treatment.
-            </p>
-            <span class="inline-block text-xs font-medium px-2 py-1 bg-wood-200 text-wood-700 rounded">
-              Coming Soon
-            </span>
-          </Card>
+            <div class="flex-1">
+              <h2 class="font-serif text-2xl md:text-3xl font-semibold mb-2 group-hover:underline decoration-2 underline-offset-4">
+                EMDR Protocol
+              </h2>
+              <p class="text-white/90 mb-4 max-w-xl">
+                Complete 8-phase EMDR protocol reference. Includes key scripts, assessment components, cognition tables, and clinical considerations.
+              </p>
+              <div class="flex flex-wrap gap-3">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white/20 rounded-full text-sm backdrop-blur-sm">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  8 Phases
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white/20 rounded-full text-sm backdrop-blur-sm">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Full Scripts
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white/20 rounded-full text-sm backdrop-blur-sm">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Print Ready
+                </span>
+              </div>
+            </div>
 
-          <Card title="PCIT Protocol">
-            <p class="text-charcoal/80 text-sm leading-relaxed mb-4">
-              Parent-Child Interaction Therapy protocol for behavioral problems and attachment concerns.
-            </p>
-            <span class="inline-block text-xs font-medium px-2 py-1 bg-wood-200 text-wood-700 rounded">
-              Coming Soon
-            </span>
-          </Card>
+            <div class="flex-shrink-0 hidden md:block">
+              <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                <svg class="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Sand Tray Section -->
+      <div class="mb-16">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-500 text-white text-sm font-medium rounded-full">
+            <span class="w-2 h-2 bg-white rounded-full animate-pulse"></span>
+            Available Now
+          </span>
+        </div>
+
+        <!-- Sand Tray Card -->
+        <a
+          href="/clinicians/sandtray"
+          class="block group relative bg-gradient-to-br from-amber-500 to-amber-700 rounded-2xl p-8 text-white overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+        >
+          <!-- Background pattern -->
+          <div class="absolute inset-0 opacity-10">
+            <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+              <defs>
+                <pattern id="dots" width="10" height="10" patternUnits="userSpaceOnUse">
+                  <circle cx="2" cy="2" r="1" fill="currentColor"/>
+                </pattern>
+              </defs>
+              <rect width="100%" height="100%" fill="url(#dots)" />
+            </svg>
+          </div>
+
+          <div class="relative flex flex-col md:flex-row md:items-center gap-6">
+            <div class="flex-shrink-0">
+              <div class="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center backdrop-blur-sm">
+                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                </svg>
+              </div>
+            </div>
+
+            <div class="flex-1">
+              <h2 class="font-serif text-2xl md:text-3xl font-semibold mb-2 group-hover:underline decoration-2 underline-offset-4">
+                Sand Tray Therapy
+              </h2>
+              <p class="text-white/90 mb-4 max-w-xl">
+                Video demonstrations and visual resources for sand tray therapy. Includes setup guides, miniature categories, session flow, and directive techniques.
+              </p>
+              <div class="flex flex-wrap gap-3">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white/20 rounded-full text-sm backdrop-blur-sm">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Video-Focused
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white/20 rounded-full text-sm backdrop-blur-sm">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Setup Guides
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-white/20 rounded-full text-sm backdrop-blur-sm">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  Techniques
+                </span>
+              </div>
+            </div>
+
+            <div class="flex-shrink-0 hidden md:block">
+              <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center group-hover:bg-white/30 transition-colors">
+                <svg class="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Coming Soon Section -->
+      <div class="mb-16">
+        <div class="flex items-center gap-3 mb-6">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-wood-200 text-wood-700 text-sm font-medium rounded-full">
+            Coming Soon
+          </span>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <!-- TF-CBT Card -->
+          <div class="bg-white border border-wood-200 rounded-xl p-6 opacity-75">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-wood-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-wood-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-serif text-lg font-semibold text-charcoal mb-2">TF-CBT Protocol</h3>
+                <p class="text-charcoal/70 text-sm leading-relaxed mb-3">
+                  Trauma-Focused Cognitive Behavioral Therapy reference guide for child and adolescent trauma treatment.
+                </p>
+                <span class="inline-block text-xs font-medium px-2 py-1 bg-wood-100 text-wood-600 rounded">
+                  In Development
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- PCIT Card -->
+          <div class="bg-white border border-wood-200 rounded-xl p-6 opacity-75">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 bg-wood-100 rounded-xl flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-wood-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-serif text-lg font-semibold text-charcoal mb-2">PCIT Protocol</h3>
+                <p class="text-charcoal/70 text-sm leading-relaxed mb-3">
+                  Parent-Child Interaction Therapy protocol for behavioral problems and attachment concerns.
+                </p>
+                <span class="inline-block text-xs font-medium px-2 py-1 bg-wood-100 text-wood-600 rounded">
+                  In Development
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       <!-- How to Use Section -->
-      <div class="bg-wood-50 rounded-lg p-8 max-w-3xl">
+      <div class="bg-wood-50 rounded-xl p-8 max-w-3xl">
         <h2 class="font-serif text-xl font-semibold text-charcoal mb-4">
           How to Use These Guides
         </h2>

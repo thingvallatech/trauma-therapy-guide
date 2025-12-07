@@ -1,0 +1,383 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PhaseNav from '../../../components/PhaseNav.astro';
+---
+
+<BaseLayout title="Phase 2: Preparation - EMDR" description="Preparing the client for EMDR processing by teaching stabilization techniques, establishing safety resources, and introducing bilateral stimulation.">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+    <!-- Breadcrumb -->
+    <nav class="text-sm mb-6 no-print">
+      <ol class="flex items-center gap-2 text-charcoal/60">
+        <li><a href="/clinicians" class="hover:text-forest-600 transition-colors">Clinicians</a></li>
+        <li>/</li>
+        <li><a href="/clinicians/emdr" class="hover:text-forest-600 transition-colors">EMDR</a></li>
+        <li>/</li>
+        <li class="text-charcoal">Phase 2</li>
+      </ol>
+    </nav>
+
+    <!-- Header with visual emphasis -->
+    <header class="mb-10">
+      <div class="flex items-start justify-between flex-wrap gap-4">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center text-white font-serif text-2xl font-bold shadow-lg">
+            2
+          </div>
+          <div>
+            <p class="text-teal-600 font-medium text-sm uppercase tracking-wide">Phase 2 of 8</p>
+            <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-charcoal">
+              Preparation
+            </h1>
+          </div>
+        </div>
+        <button
+          onclick="window.print()"
+          class="no-print inline-flex items-center gap-2 px-4 py-2 bg-white border border-wood-300 text-charcoal rounded-lg hover:bg-wood-50 transition-colors text-sm shadow-sm"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+          </svg>
+          Print
+        </button>
+      </div>
+    </header>
+
+    <!-- Goals as horizontal pills -->
+    <div class="flex flex-wrap gap-2 mb-10">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-100 text-teal-700 rounded-full text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Psychoeducation
+      </span>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-100 text-teal-700 rounded-full text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Assess readiness
+      </span>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-100 text-teal-700 rounded-full text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Introduce BLS
+      </span>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-100 text-teal-700 rounded-full text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Establish resources
+      </span>
+    </div>
+
+    <!-- Two column layout for main content -->
+    <div class="grid lg:grid-cols-3 gap-6">
+
+      <!-- Left column: Main content cards -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- Psychoeducation Script Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+          <div class="bg-gradient-to-r from-teal-500 to-teal-600 px-5 py-3">
+            <h2 class="text-white font-semibold flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+              </svg>
+              Psychoeducation Script
+            </h2>
+          </div>
+          <div class="p-5">
+            <div class="bg-forest-50 rounded-lg p-4 border-l-4 border-forest-500 mb-4">
+              <p class="text-sm text-charcoal italic leading-relaxed">
+                "Think of your brain like a streaming service with different channels. When something really stressful or upsetting happens, it's like one channel gets stuck, replaying the same scene over and over. No matter how much time passes, that memory can still pop up with the same intensity, making you feel like you're stuck in the past."
+              </p>
+            </div>
+            <div class="bg-forest-50 rounded-lg p-4 border-l-4 border-forest-500 mb-4">
+              <p class="text-sm text-charcoal italic leading-relaxed">
+                "EMDR helps 'unstick' that channel so your brain can process the memory the way it was meant to—like any other event from your past, without it constantly interrupting your present. We do this using bilateral stimulation, which is like pressing 'play' instead of 'rewind.'"
+              </p>
+            </div>
+
+            <div class="mt-5 pt-4 border-t border-wood-100">
+              <h3 class="text-sm font-semibold text-charcoal/60 uppercase tracking-wide mb-3">Child-Friendly Version</h3>
+              <div class="bg-coral-50 rounded-lg p-4 border-l-4 border-coral-400">
+                <p class="text-sm text-charcoal italic leading-relaxed">
+                  "Your brain is like a train on a track. Most of the time, it moves forward just fine. But if something really upsetting happens, it's like the train gets stuck on a broken piece of track and can't move on. EMDR helps fix that track so your brain train can keep going."
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Readiness Signs Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+          <div class="bg-gradient-to-r from-coral-500 to-coral-600 px-5 py-3">
+            <h2 class="text-white font-semibold flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              Signs Client is NOT Ready
+            </h2>
+          </div>
+          <div class="p-5">
+            <div class="grid sm:grid-cols-2 gap-3">
+              <div class="flex items-start gap-2 p-2 bg-coral-50 rounded-lg">
+                <span class="text-coral-500 mt-0.5">×</span>
+                <span class="text-sm text-charcoal">Suicidal ideation or crisis</span>
+              </div>
+              <div class="flex items-start gap-2 p-2 bg-coral-50 rounded-lg">
+                <span class="text-coral-500 mt-0.5">×</span>
+                <span class="text-sm text-charcoal">Active self-harming behaviors</span>
+              </div>
+              <div class="flex items-start gap-2 p-2 bg-coral-50 rounded-lg">
+                <span class="text-coral-500 mt-0.5">×</span>
+                <span class="text-sm text-charcoal">Addictive behaviors</span>
+              </div>
+              <div class="flex items-start gap-2 p-2 bg-coral-50 rounded-lg">
+                <span class="text-coral-500 mt-0.5">×</span>
+                <span class="text-sm text-charcoal">Lengthy anger outbursts</span>
+              </div>
+              <div class="flex items-start gap-2 p-2 bg-coral-50 rounded-lg">
+                <span class="text-coral-500 mt-0.5">×</span>
+                <span class="text-sm text-charcoal">Unable to experience positive emotions</span>
+              </div>
+              <div class="flex items-start gap-2 p-2 bg-coral-50 rounded-lg">
+                <span class="text-coral-500 mt-0.5">×</span>
+                <span class="text-sm text-charcoal">Cannot tolerate calmness</span>
+              </div>
+              <div class="flex items-start gap-2 p-2 bg-coral-50 rounded-lg">
+                <span class="text-coral-500 mt-0.5">×</span>
+                <span class="text-sm text-charcoal">New medications (allow stabilization)</span>
+              </div>
+              <div class="flex items-start gap-2 p-2 bg-coral-50 rounded-lg">
+                <span class="text-coral-500 mt-0.5">×</span>
+                <span class="text-sm text-charcoal">Inability to stay present</span>
+              </div>
+              <div class="flex items-start gap-2 p-2 bg-coral-50 rounded-lg">
+                <span class="text-coral-500 mt-0.5">×</span>
+                <span class="text-sm text-charcoal">Trance states or memory lapses</span>
+              </div>
+              <div class="flex items-start gap-2 p-2 bg-coral-50 rounded-lg">
+                <span class="text-coral-500 mt-0.5">×</span>
+                <span class="text-sm text-charcoal">Trauma ongoing or occurring presently</span>
+              </div>
+              <div class="flex items-start gap-2 p-2 bg-coral-50 rounded-lg">
+                <span class="text-coral-500 mt-0.5">×</span>
+                <span class="text-sm text-charcoal">Stability concerns (lack of support)</span>
+              </div>
+              <div class="flex items-start gap-2 p-2 bg-coral-50 rounded-lg">
+                <span class="text-coral-500 mt-0.5">×</span>
+                <span class="text-sm text-charcoal">Upcoming court proceedings</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Resource Exercises Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+          <div class="bg-gradient-to-r from-lavender-500 to-lavender-600 px-5 py-3">
+            <h2 class="text-white font-semibold flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+              </svg>
+              Resource Exercises
+            </h2>
+          </div>
+          <div class="p-5">
+            <div class="grid sm:grid-cols-2 gap-4">
+              <div class="border-2 border-lavender-200 rounded-xl p-4 hover:border-lavender-400 transition-colors">
+                <div class="w-10 h-10 bg-lavender-100 rounded-lg flex items-center justify-center mb-3">
+                  <svg class="w-5 h-5 text-lavender-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                  </svg>
+                </div>
+                <h3 class="font-semibold text-charcoal mb-1">Safe Place</h3>
+                <p class="text-sm text-charcoal/70 italic">"Imagine a place where you feel safe. What do you see, hear, and feel there?"</p>
+              </div>
+              <div class="border-2 border-teal-200 rounded-xl p-4 hover:border-teal-400 transition-colors">
+                <div class="w-10 h-10 bg-teal-100 rounded-lg flex items-center justify-center mb-3">
+                  <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                  </svg>
+                </div>
+                <h3 class="font-semibold text-charcoal mb-1">Container</h3>
+                <p class="text-sm text-charcoal/70 italic">"If distressing thoughts arise, visualize placing them in a secure container."</p>
+              </div>
+              <div class="border-2 border-sunny-200 rounded-xl p-4 hover:border-sunny-400 transition-colors">
+                <div class="w-10 h-10 bg-sunny-100 rounded-lg flex items-center justify-center mb-3">
+                  <svg class="w-5 h-5 text-sunny-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                  </svg>
+                </div>
+                <h3 class="font-semibold text-charcoal mb-1">Light Stream</h3>
+                <p class="text-sm text-charcoal/70 italic">"Imagine a warm, healing light flowing through the body."</p>
+              </div>
+              <div class="border-2 border-forest-200 rounded-xl p-4 hover:border-forest-400 transition-colors">
+                <div class="w-10 h-10 bg-forest-100 rounded-lg flex items-center justify-center mb-3">
+                  <svg class="w-5 h-5 text-forest-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                  </svg>
+                </div>
+                <h3 class="font-semibold text-charcoal mb-1">Breathing</h3>
+                <p class="text-sm text-charcoal/70 italic">"Breathe in for four counts, hold for four, exhale for four."</p>
+              </div>
+            </div>
+
+            <div class="mt-5 pt-4 border-t border-wood-100">
+              <h3 class="text-sm font-semibold text-charcoal/60 uppercase tracking-wide mb-3">Stop Signal</h3>
+              <div class="bg-wood-50 rounded-lg p-4">
+                <p class="text-sm text-charcoal italic">"If you need to pause, use a stop signal like raising your hand or saying 'stop.' What feels natural to you?"</p>
+                <p class="text-xs text-charcoal/60 mt-2">For younger children, create a personalized stop sign.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- BLS Options Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+          <div class="bg-gradient-to-r from-forest-500 to-forest-600 px-5 py-3">
+            <h2 class="text-white font-semibold flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+              </svg>
+              Bilateral Stimulation Options
+            </h2>
+          </div>
+          <div class="p-5">
+            <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+              <div class="bg-forest-50 rounded-lg p-2 text-center text-sm text-charcoal">Eye movement tracking</div>
+              <div class="bg-forest-50 rounded-lg p-2 text-center text-sm text-charcoal">Puppet tracking</div>
+              <div class="bg-forest-50 rounded-lg p-2 text-center text-sm text-charcoal">Wand following</div>
+              <div class="bg-teal-50 rounded-lg p-2 text-center text-sm text-charcoal">Hand taps</div>
+              <div class="bg-teal-50 rounded-lg p-2 text-center text-sm text-charcoal">Butterfly Hug</div>
+              <div class="bg-teal-50 rounded-lg p-2 text-center text-sm text-charcoal">Gorilla Tapping</div>
+              <div class="bg-lavender-50 rounded-lg p-2 text-center text-sm text-charcoal">Brushes</div>
+              <div class="bg-lavender-50 rounded-lg p-2 text-center text-sm text-charcoal">Drum beat</div>
+              <div class="bg-lavender-50 rounded-lg p-2 text-center text-sm text-charcoal">Tappers</div>
+              <div class="bg-sunny-50 rounded-lg p-2 text-center text-sm text-charcoal">Magic Headphones</div>
+              <div class="bg-sunny-50 rounded-lg p-2 text-center text-sm text-charcoal">Marching in place</div>
+              <div class="bg-sunny-50 rounded-lg p-2 text-center text-sm text-charcoal">Bilateral ball toss</div>
+              <div class="bg-coral-50 rounded-lg p-2 text-center text-sm text-charcoal">Bilateral dance</div>
+              <div class="bg-coral-50 rounded-lg p-2 text-center text-sm text-charcoal">Bilateral drawing</div>
+              <div class="bg-coral-50 rounded-lg p-2 text-center text-sm text-charcoal">Hopscotch</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right column: Sticky Sidebar -->
+      <div class="lg:col-span-1">
+        <div class="lg:sticky lg:top-24 space-y-6">
+          <!-- Quick Checklist -->
+          <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+          <div class="bg-teal-900 px-4 py-3">
+            <h2 class="text-white font-semibold text-sm flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+              Quick Checklist
+            </h2>
+          </div>
+          <div class="p-4">
+            <ol class="space-y-2 text-sm">
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</span>
+                <span>Explain EMDR with age-appropriate metaphor</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</span>
+                <span>Assess readiness markers</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</span>
+                <span>Teach Safe Place exercise</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">4</span>
+                <span>Teach Container exercise</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">5</span>
+                <span>Practice breathing techniques</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">6</span>
+                <span>Establish stop signal</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">7</span>
+                <span>Introduce & practice BLS method</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">8</span>
+                <span>Reinforce client's control</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Clinical Considerations -->
+        <div class="bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-xl border border-amber-200 overflow-hidden">
+          <div class="px-4 py-3 border-b border-amber-200">
+            <h2 class="font-semibold text-amber-800 text-sm flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              Clinical Notes
+            </h2>
+          </div>
+          <ul class="p-4 space-y-2 text-sm text-amber-900/80">
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              Preparation length varies by client complexity
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              Some clients need extensive stabilization
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              Complex trauma may require extended Phase 2
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              <strong>Ensure resources are strong before Phase 3</strong>
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              Practice between sessions to strengthen
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              Document preferred resources & BLS method
+            </li>
+          </ul>
+        </div>
+
+        <!-- Closing Script -->
+        <div class="bg-gradient-to-br from-forest-50 to-teal-50 rounded-xl border border-forest-200 overflow-hidden">
+          <div class="px-4 py-3 border-b border-forest-200">
+            <h2 class="font-semibold text-forest-800 text-sm flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              Closing Script
+            </h2>
+          </div>
+          <div class="p-4">
+            <p class="text-sm text-forest-800 italic">
+              "You've done great. Use these skills if anything comes up between sessions. You are in control. We'll move at your pace. Do you feel ready to begin processing next time?"
+            </p>
+          </div>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="phase-nav mt-10">
+      <PhaseNav currentPhase={2} />
+    </div>
+  </div>
+</BaseLayout>

@@ -28,6 +28,54 @@
   --color-wood-800: #523A27;
   --color-wood-900: #362016;
 
+  /* Warm accent - Terracotta/Coral */
+  --color-coral-50: #FEF5F3;
+  --color-coral-100: #FCE8E4;
+  --color-coral-200: #FAD4CC;
+  --color-coral-300: #F5B5A8;
+  --color-coral-400: #ED8B78;
+  --color-coral-500: #E07055;
+  --color-coral-600: #CB5540;
+  --color-coral-700: #AA4534;
+  --color-coral-800: #8C3C2F;
+  --color-coral-900: #74352C;
+
+  /* Calm accent - Soft Teal */
+  --color-teal-50: #F0FDFA;
+  --color-teal-100: #CCFBF1;
+  --color-teal-200: #99F6E4;
+  --color-teal-300: #5EEAD4;
+  --color-teal-400: #2DD4BF;
+  --color-teal-500: #14B8A6;
+  --color-teal-600: #0D9488;
+  --color-teal-700: #0F766E;
+  --color-teal-800: #115E59;
+  --color-teal-900: #134E4A;
+
+  /* Warm purple - Lavender */
+  --color-lavender-50: #FAF5FF;
+  --color-lavender-100: #F3E8FF;
+  --color-lavender-200: #E9D5FF;
+  --color-lavender-300: #D8B4FE;
+  --color-lavender-400: #C084FC;
+  --color-lavender-500: #A855F7;
+  --color-lavender-600: #9333EA;
+  --color-lavender-700: #7E22CE;
+  --color-lavender-800: #6B21A8;
+  --color-lavender-900: #581C87;
+
+  /* Sunny accent - Golden */
+  --color-sunny-50: #FFFBEB;
+  --color-sunny-100: #FEF3C7;
+  --color-sunny-200: #FDE68A;
+  --color-sunny-300: #FCD34D;
+  --color-sunny-400: #FBBF24;
+  --color-sunny-500: #F59E0B;
+  --color-sunny-600: #D97706;
+  --color-sunny-700: #B45309;
+  --color-sunny-800: #92400E;
+  --color-sunny-900: #78350F;
+
   --color-cream: #FDFBF7;
   --color-charcoal: #2C2C2C;
 
@@ -39,7 +87,12 @@
 /* Base styles */
 html {
   font-family: var(--font-sans);
-  background-color: var(--color-cream);
+  background:
+    radial-gradient(ellipse 100% 60% at 50% -20%, var(--color-forest-100) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 50% at 100% 100%, var(--color-wood-200) 0%, transparent 50%),
+    radial-gradient(ellipse 70% 40% at 0% 70%, var(--color-forest-100) 0%, transparent 45%),
+    var(--color-wood-50);
+  background-attachment: fixed;
   color: var(--color-charcoal);
   line-height: 1.6;
 }
@@ -109,4 +162,95 @@ a:focus-visible,
 button:focus-visible {
   outline: 2px solid var(--color-forest-500);
   outline-offset: 2px;
+}
+
+/* Print styles for clinical worksheets */
+@media print {
+  /* Hide navigation elements */
+  header, footer, nav, .no-print, .phase-nav {
+    display: none !important;
+  }
+
+  /* Reset background for printing */
+  html, body {
+    background: white !important;
+    color: black !important;
+    font-size: 11pt;
+    line-height: 1.4;
+  }
+
+  /* Page setup with note margin */
+  @page {
+    size: letter;
+    margin: 0.5in 2.5in 0.5in 0.75in; /* Extra right margin for notes */
+  }
+
+  /* Ensure content doesn't break awkwardly */
+  .worksheet-section {
+    page-break-inside: avoid;
+    break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+
+  /* Print-friendly worksheet cards */
+  .worksheet-card {
+    border: 1px solid #ccc !important;
+    background: white !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Note lines for writing */
+  .note-lines {
+    display: block !important;
+  }
+
+  .note-line {
+    border-bottom: 1px solid #ddd;
+    min-height: 1.5em;
+    margin-bottom: 0.25em;
+  }
+
+  /* Checkbox styling for print */
+  .print-checkbox {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 1px solid #333;
+    margin-right: 0.5em;
+    vertical-align: middle;
+  }
+
+  /* Headers */
+  h1 { font-size: 16pt; margin-bottom: 0.5rem; }
+  h2 { font-size: 13pt; margin-top: 1rem; margin-bottom: 0.25rem; }
+  h3 { font-size: 11pt; margin-top: 0.75rem; margin-bottom: 0.25rem; }
+
+  /* Compact spacing */
+  p, li { margin-bottom: 0.25rem; }
+  ul, ol { margin-bottom: 0.5rem; padding-left: 1.25rem; }
+}
+
+/* Screen: hide print-only elements */
+@media screen {
+  .print-only, .note-lines {
+    display: none;
+  }
+}
+
+/* Worksheet card styling (screen) */
+.worksheet-card {
+  background: white;
+  border: 1px solid var(--color-wood-200);
+  border-radius: 0.5rem;
+  padding: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.worksheet-card h3 {
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--color-forest-100);
 }

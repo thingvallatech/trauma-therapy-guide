@@ -20,11 +20,14 @@ const { title, description = 'A free resource for trauma therapists and families
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title} | Trauma Therapy Guide</title>
   </head>
-  <body class="min-h-screen flex flex-col bg-cream">
+  <body class="min-h-screen flex flex-col">
     <Header />
     <main class="flex-1">
       <slot />
     </main>
     <Footer />
+
+    <!-- GoatCounter Analytics -->
+    <script data-goatcounter="https://therapy.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   </body>
 </html>

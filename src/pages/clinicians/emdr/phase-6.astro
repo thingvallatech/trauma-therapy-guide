@@ -1,0 +1,330 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PhaseNav from '../../../components/PhaseNav.astro';
+---
+
+<BaseLayout title="Phase 6: Body Scan - EMDR" description="Identifying and processing any residual physical tension or sensation associated with the target memory.">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+    <!-- Breadcrumb -->
+    <nav class="text-sm mb-6 no-print">
+      <ol class="flex items-center gap-2 text-charcoal/60">
+        <li><a href="/clinicians" class="hover:text-forest-600 transition-colors">Clinicians</a></li>
+        <li>/</li>
+        <li><a href="/clinicians/emdr" class="hover:text-forest-600 transition-colors">EMDR</a></li>
+        <li>/</li>
+        <li class="text-charcoal">Phase 6</li>
+      </ol>
+    </nav>
+
+    <!-- Header with visual emphasis -->
+    <header class="mb-10">
+      <div class="flex items-start justify-between flex-wrap gap-4">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-teal-600 rounded-2xl flex items-center justify-center text-white font-serif text-2xl font-bold shadow-lg">
+            6
+          </div>
+          <div>
+            <p class="text-teal-600 font-medium text-sm uppercase tracking-wide">Phase 6 of 8</p>
+            <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-charcoal">
+              Body Scan
+            </h1>
+          </div>
+        </div>
+        <button
+          onclick="window.print()"
+          class="no-print inline-flex items-center gap-2 px-4 py-2 bg-white border border-wood-300 text-charcoal rounded-lg hover:bg-wood-50 transition-colors text-sm shadow-sm"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+          </svg>
+          Print
+        </button>
+      </div>
+    </header>
+
+    <!-- Goals as horizontal pills -->
+    <div class="flex flex-wrap gap-2 mb-10">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-100 text-teal-700 rounded-full text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Identify residual sensations
+      </span>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-100 text-teal-700 rounded-full text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Process physical disturbance
+      </span>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-100 text-teal-700 rounded-full text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Ensure complete processing
+      </span>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-teal-100 text-teal-700 rounded-full text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Clear somatic storage
+      </span>
+    </div>
+
+    <!-- Two column layout for main content -->
+    <div class="grid lg:grid-cols-3 gap-6">
+
+      <!-- Left column: Main content cards -->
+      <div class="lg:col-span-2 space-y-6">
+
+        <!-- Opening Script Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+          <div class="bg-gradient-to-r from-teal-500 to-teal-600 px-5 py-3">
+            <h2 class="text-white font-semibold flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+              </svg>
+              Opening Script
+            </h2>
+          </div>
+          <div class="p-5">
+            <div class="bg-teal-50 rounded-lg p-4 border-l-4 border-teal-500">
+              <p class="text-sm text-charcoal italic leading-relaxed">
+                "Now we're going to do a body scan. This helps us check if your body feels calm and if the positive thoughts are really sinking in. We want to see if there's any leftover stress or tension anywhere, so we can help it go away."
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Body Scan Steps Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+          <div class="bg-gradient-to-r from-lavender-500 to-lavender-600 px-5 py-3">
+            <h2 class="text-white font-semibold flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+              </svg>
+              Body Scan Steps
+            </h2>
+          </div>
+          <div class="p-5 space-y-4">
+            <!-- Step 1 -->
+            <div class="border-l-4 border-teal-400 pl-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 bg-teal-500 text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
+                <h3 class="font-semibold text-charcoal">Guide the Body Scan</h3>
+              </div>
+              <div class="bg-teal-50 rounded-lg p-3">
+                <p class="text-sm text-charcoal italic">"Bring up the original memory along with the positive belief we installed. As you hold them together, scan your body from head to toe. Just notice any sensations—tension, discomfort, warmth, or ease—without trying to change anything."</p>
+              </div>
+              <p class="text-xs text-charcoal/60 mt-2">Allow time for the client to scan and report any sensations.</p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="border-l-4 border-coral-400 pl-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 bg-coral-500 text-white rounded-full flex items-center justify-center text-xs font-bold">2</span>
+                <h3 class="font-semibold text-charcoal">Process Any Distress</h3>
+              </div>
+              <div class="bg-coral-50 rounded-lg p-3 mb-3">
+                <p class="text-sm text-charcoal italic">"Did you notice anything uncomfortable or distressing in your body?"</p>
+              </div>
+              <div class="grid sm:grid-cols-2 gap-3">
+                <div class="bg-forest-100 rounded-lg p-3">
+                  <p class="text-sm font-medium text-forest-800 mb-1">No distress:</p>
+                  <p class="text-xs text-forest-700">Proceed to closure or Future Template</p>
+                </div>
+                <div class="bg-coral-100 rounded-lg p-3">
+                  <p class="text-sm font-medium text-coral-800 mb-1">Distress present:</p>
+                  <p class="text-xs text-coral-700">Use BLS to process</p>
+                </div>
+              </div>
+              <div class="bg-wood-50 rounded-lg p-3 mt-3">
+                <p class="text-sm text-charcoal italic">"Let's focus on that sensation and notice whatever comes up."</p>
+                <p class="text-xs text-charcoal/60 mt-1">Begin BLS (24-36 passes). Continue until discomfort subsides.</p>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="border-l-4 border-forest-400 pl-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="w-6 h-6 bg-forest-500 text-white rounded-full flex items-center justify-center text-xs font-bold">3</span>
+                <h3 class="font-semibold text-charcoal">Reinforce Positive Integration</h3>
+              </div>
+              <div class="bg-forest-50 rounded-lg p-3">
+                <p class="text-sm text-charcoal italic">"If your body feels clear, focus again on the positive belief. As you hold that belief, notice any feelings of strength, calm, or confidence in your body."</p>
+              </div>
+              <div class="bg-teal-100 rounded-lg p-2 mt-2 text-center">
+                <p class="text-xs font-medium text-teal-800">Do a final set of BLS to reinforce</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Target Completion Criteria Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+          <div class="bg-gradient-to-r from-forest-600 to-forest-700 px-5 py-3">
+            <h2 class="text-white font-semibold flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Target Completion Criteria
+            </h2>
+          </div>
+          <div class="p-5">
+            <p class="text-sm text-charcoal/70 mb-4">Target is complete when all three are met:</p>
+            <div class="grid sm:grid-cols-3 gap-3">
+              <div class="bg-gradient-to-br from-coral-50 to-coral-100 rounded-xl p-4 text-center border border-coral-200">
+                <div class="w-10 h-10 bg-coral-500 text-white rounded-full flex items-center justify-center mx-auto mb-2 font-bold">0</div>
+                <p class="font-semibold text-charcoal">SUD = 0</p>
+                <p class="text-xs text-charcoal/60">(or ecological)</p>
+              </div>
+              <div class="bg-gradient-to-br from-sunny-50 to-sunny-100 rounded-xl p-4 text-center border border-sunny-200">
+                <div class="w-10 h-10 bg-sunny-500 text-white rounded-full flex items-center justify-center mx-auto mb-2 font-bold">7</div>
+                <p class="font-semibold text-charcoal">VOC = 7</p>
+                <p class="text-xs text-charcoal/60">(or ecological)</p>
+              </div>
+              <div class="bg-gradient-to-br from-teal-50 to-teal-100 rounded-xl p-4 text-center border border-teal-200">
+                <div class="w-10 h-10 bg-teal-500 text-white rounded-full flex items-center justify-center mx-auto mb-2">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <p class="font-semibold text-charcoal">Body Scan</p>
+                <p class="text-xs text-charcoal/60">Clear</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Future Template Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+          <div class="bg-gradient-to-r from-sunny-500 to-sunny-600 px-5 py-3">
+            <h2 class="text-white font-semibold flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
+              Future Template (Optional)
+            </h2>
+          </div>
+          <div class="p-5">
+            <p class="text-sm text-charcoal/70 mb-4">If time allows, proceed to Future Template before closure:</p>
+
+            <div class="space-y-3">
+              <div class="bg-sunny-50 rounded-lg p-4 border-l-4 border-sunny-500">
+                <p class="text-sm text-charcoal italic">"Now that we've worked through the hard memory and your brain feels stronger, let's think about something that might happen in the future—a situation where you can use your new strengths."</p>
+              </div>
+
+              <div class="bg-sunny-50 rounded-lg p-4 border-l-4 border-sunny-500">
+                <p class="text-sm text-charcoal italic">"Can you think of something that used to feel scary or hard—but now, with your strong thoughts like [state PC], you could handle it differently?"</p>
+              </div>
+
+              <div class="bg-sunny-50 rounded-lg p-4 border-l-4 border-sunny-500">
+                <p class="text-sm text-charcoal italic">"Let's imagine that scene in your mind—like a little movie. See yourself there, doing what you want to do. Notice what you're thinking, how your body feels, and how you're handling it."</p>
+              </div>
+
+              <div class="bg-teal-100 rounded-lg p-3 text-center">
+                <p class="text-sm font-medium text-teal-800">Begin BLS — Repeat to strengthen the template until positive</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right column: Sticky Sidebar -->
+      <div class="lg:col-span-1">
+        <div class="lg:sticky lg:top-24 space-y-6">
+          <!-- Quick Checklist -->
+          <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+          <div class="bg-teal-900 px-4 py-3">
+            <h2 class="text-white font-semibold text-sm flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
+              </svg>
+              Quick Reference
+            </h2>
+          </div>
+          <div class="p-4">
+            <ol class="space-y-2 text-sm">
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</span>
+                <span>Hold target + positive cognition</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</span>
+                <span>Scan body from head to toe</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</span>
+                <span>Report any tension or sensation</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">4</span>
+                <span>Process sensations with BLS until clear</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">5</span>
+                <span>Repeat body scan to confirm</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">6</span>
+                <span>Optional: Complete Future Template</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="w-5 h-5 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">7</span>
+                <span>Move to Closure (Phase 7)</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <!-- Clinical Considerations -->
+        <div class="bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-xl border border-amber-200 overflow-hidden">
+          <div class="px-4 py-3 border-b border-amber-200">
+            <h2 class="font-semibold text-amber-800 text-sm flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              Clinical Notes
+            </h2>
+          </div>
+          <ul class="p-4 space-y-2 text-sm text-amber-900/80">
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              Body sensations may reveal unprocessed material
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              New memories or emotions may emerge
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              This is not relaxation—it's processing
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              Some sensations may be somatic flashbacks
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              <strong>Don't skip this phase</strong> even if client seems complete
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              Document body scan results
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-amber-500 mt-1">•</span>
+              Future Template strengthens gains
+            </li>
+          </ul>
+        </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="phase-nav mt-10">
+      <PhaseNav currentPhase={6} />
+    </div>
+  </div>
+</BaseLayout>
