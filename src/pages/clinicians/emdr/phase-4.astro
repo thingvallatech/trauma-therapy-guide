@@ -30,15 +30,26 @@ import PhaseNav from '../../../components/PhaseNav.astro';
             </h1>
           </div>
         </div>
-        <button
-          onclick="window.print()"
-          class="no-print inline-flex items-center gap-2 px-4 py-2 bg-white border border-wood-300 text-charcoal rounded-lg hover:bg-wood-50 transition-colors text-sm shadow-sm"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-          </svg>
-          Print
-        </button>
+        <div class="flex items-center gap-2">
+          <a
+            href="/clinicians/emdr/phase-4-scripts"
+            class="no-print inline-flex items-center gap-2 px-4 py-2 bg-coral-600 text-white rounded-lg hover:bg-coral-700 transition-colors text-sm shadow-sm"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Print Scripts
+          </a>
+          <button
+            onclick="window.print()"
+            class="no-print inline-flex items-center gap-2 px-4 py-2 bg-white border border-wood-300 text-charcoal rounded-lg hover:bg-wood-50 transition-colors text-sm shadow-sm"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            </svg>
+            Print
+          </button>
+        </div>
       </div>
     </header>
 
@@ -231,38 +242,232 @@ import PhaseNav from '../../../components/PhaseNav.astro';
           </div>
         </div>
 
-        <!-- Cognitive Interweaves Card -->
+        <!-- Understanding Interweaves Card -->
         <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
           <div class="bg-gradient-to-r from-sunny-500 to-sunny-600 px-5 py-3">
             <h2 class="text-white font-semibold flex items-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
               </svg>
-              Cognitive Interweaves
+              Understanding Interweaves
             </h2>
           </div>
           <div class="p-5">
-            <p class="text-sm text-charcoal/70 mb-4">Use <strong>only</strong> when processing is stuck:</p>
-            <div class="space-y-3">
-              <div class="flex items-center gap-4 p-3 rounded-lg bg-gradient-to-r from-sunny-50 to-transparent">
-                <div class="w-24 flex-shrink-0">
-                  <span class="inline-block px-2 py-1 bg-sunny-500 text-white text-xs font-bold rounded">RESPONSIBILITY</span>
+            <!-- What are Interweaves -->
+            <div class="mb-5">
+              <h3 class="text-sm font-semibold text-charcoal mb-2">What Are Interweaves?</h3>
+              <p class="text-sm text-charcoal/70 leading-relaxed">
+                Interweaves are strategic therapeutic interventions used <strong>only when processing becomes stuck</strong>. They introduce new information or perspectives to help restart the client's adaptive information processing system. Think of them as gentle "jump starts" that provide what the client needs to continue processing on their own.
+              </p>
+            </div>
+
+            <!-- Signs of Stuck Processing -->
+            <div class="mb-5">
+              <h3 class="text-sm font-semibold text-charcoal mb-2">Signs Processing is Stuck</h3>
+              <div class="grid sm:grid-cols-2 gap-3">
+                <div class="bg-amber-50 rounded-lg p-3 border border-amber-200">
+                  <h4 class="text-xs font-semibold text-amber-800 uppercase tracking-wide mb-2">Looping</h4>
+                  <ul class="text-xs text-amber-900/80 space-y-1">
+                    <li>• Same material repeats 2-3 sets</li>
+                    <li>• SUD not changing</li>
+                    <li>• Returning to same emotion/image</li>
+                  </ul>
                 </div>
-                <p class="text-sm text-charcoal italic">"Whose fault was it really?"</p>
-              </div>
-              <div class="flex items-center gap-4 p-3 rounded-lg bg-gradient-to-r from-teal-50 to-transparent">
-                <div class="w-24 flex-shrink-0">
-                  <span class="inline-block px-2 py-1 bg-teal-500 text-white text-xs font-bold rounded">SAFETY</span>
+                <div class="bg-coral-50 rounded-lg p-3 border border-coral-200">
+                  <h4 class="text-xs font-semibold text-coral-800 uppercase tracking-wide mb-2">Blocking</h4>
+                  <ul class="text-xs text-coral-900/80 space-y-1">
+                    <li>• Client reports "nothing" or "blank"</li>
+                    <li>• Sudden dissociation or numbing</li>
+                    <li>• Avoidance of specific material</li>
+                  </ul>
                 </div>
-                <p class="text-sm text-charcoal italic">"Is it over? Are you safe now?"</p>
-              </div>
-              <div class="flex items-center gap-4 p-3 rounded-lg bg-gradient-to-r from-lavender-50 to-transparent">
-                <div class="w-24 flex-shrink-0">
-                  <span class="inline-block px-2 py-1 bg-lavender-500 text-white text-xs font-bold rounded">CHOICES</span>
+                <div class="bg-lavender-50 rounded-lg p-3 border border-lavender-200">
+                  <h4 class="text-xs font-semibold text-lavender-800 uppercase tracking-wide mb-2">Abreaction Stall</h4>
+                  <ul class="text-xs text-lavender-900/80 space-y-1">
+                    <li>• Intense emotion not shifting</li>
+                    <li>• Client overwhelmed for extended time</li>
+                    <li>• Hyper/hypo arousal persists</li>
+                  </ul>
                 </div>
-                <p class="text-sm text-charcoal italic">"What choices did you have as a child?"</p>
+                <div class="bg-teal-50 rounded-lg p-3 border border-teal-200">
+                  <h4 class="text-xs font-semibold text-teal-800 uppercase tracking-wide mb-2">Feeder Memory</h4>
+                  <ul class="text-xs text-teal-900/80 space-y-1">
+                    <li>• Earlier memory driving current block</li>
+                    <li>• Core belief preventing integration</li>
+                    <li>• May need to target earlier memory</li>
+                  </ul>
+                </div>
               </div>
             </div>
+
+            <!-- Before Using Interweaves -->
+            <div class="bg-forest-50 rounded-lg p-4 border-l-4 border-forest-500 mb-5">
+              <h4 class="text-sm font-semibold text-forest-800 mb-2">Before Using an Interweave, Try:</h4>
+              <ul class="text-sm text-forest-700 space-y-1">
+                <li>• Changing BLS speed, direction, or type</li>
+                <li>• Adjusting set length (longer for cognitive, shorter for emotional)</li>
+                <li>• Adding auditory or tactile BLS</li>
+                <li>• Asking client to verbalize what they're seeing</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Types of Interweaves Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+          <div class="bg-gradient-to-r from-teal-500 to-teal-600 px-5 py-3">
+            <h2 class="text-white font-semibold flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+              </svg>
+              Types of Interweaves
+            </h2>
+          </div>
+          <div class="p-5 space-y-4">
+
+            <!-- Cognitive Interweaves -->
+            <details class="border border-teal-200 rounded-lg overflow-hidden" open>
+              <summary class="bg-teal-50 px-4 py-3 cursor-pointer hover:bg-teal-100 transition-colors">
+                <span class="font-semibold text-teal-800">Cognitive Interweaves</span>
+                <span class="text-xs text-teal-600 ml-2">— Introduce new information or perspective</span>
+              </summary>
+              <div class="p-4 space-y-3">
+                <p class="text-sm text-charcoal/70">Use when client is stuck in irrational beliefs or distorted thinking:</p>
+                <div class="space-y-2">
+                  <div class="flex items-start gap-3 p-2 rounded bg-teal-50/50">
+                    <span class="inline-block px-2 py-0.5 bg-teal-500 text-white text-xs font-bold rounded flex-shrink-0">RESPONSIBILITY</span>
+                    <div>
+                      <p class="text-sm text-charcoal italic">"Whose fault was it really?"</p>
+                      <p class="text-xs text-charcoal/60 mt-1">"If this happened to a child you know, would you blame them?"</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-3 p-2 rounded bg-teal-50/50">
+                    <span class="inline-block px-2 py-0.5 bg-teal-500 text-white text-xs font-bold rounded flex-shrink-0">SAFETY</span>
+                    <div>
+                      <p class="text-sm text-charcoal italic">"Is it over? Are you safe now?"</p>
+                      <p class="text-xs text-charcoal/60 mt-1">"Where are you right now? Look around this room."</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-3 p-2 rounded bg-teal-50/50">
+                    <span class="inline-block px-2 py-0.5 bg-teal-500 text-white text-xs font-bold rounded flex-shrink-0">CHOICES</span>
+                    <div>
+                      <p class="text-sm text-charcoal italic">"What choices did you have as a child?"</p>
+                      <p class="text-xs text-charcoal/60 mt-1">"What options were available to you at that age?"</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </details>
+
+            <!-- Emotional Interweaves -->
+            <details class="border border-coral-200 rounded-lg overflow-hidden">
+              <summary class="bg-coral-50 px-4 py-3 cursor-pointer hover:bg-coral-100 transition-colors">
+                <span class="font-semibold text-coral-800">Emotional Interweaves</span>
+                <span class="text-xs text-coral-600 ml-2">— Access or validate blocked emotions</span>
+              </summary>
+              <div class="p-4 space-y-3">
+                <p class="text-sm text-charcoal/70">Use when emotions are blocked, minimized, or client is intellectualizing:</p>
+                <div class="space-y-2">
+                  <div class="flex items-start gap-3 p-2 rounded bg-coral-50/50">
+                    <span class="inline-block px-2 py-0.5 bg-coral-500 text-white text-xs font-bold rounded flex-shrink-0">ACCESSING</span>
+                    <div>
+                      <p class="text-sm text-charcoal italic">"What would you want to say to them if you could?"</p>
+                      <p class="text-xs text-charcoal/60 mt-1">"If your body could speak right now, what would it say?"</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-3 p-2 rounded bg-coral-50/50">
+                    <span class="inline-block px-2 py-0.5 bg-coral-500 text-white text-xs font-bold rounded flex-shrink-0">VALIDATION</span>
+                    <div>
+                      <p class="text-sm text-charcoal italic">"It makes sense you would feel that way."</p>
+                      <p class="text-xs text-charcoal/60 mt-1">"Any child in that situation would feel [emotion]."</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-3 p-2 rounded bg-coral-50/50">
+                    <span class="inline-block px-2 py-0.5 bg-coral-500 text-white text-xs font-bold rounded flex-shrink-0">PERMISSION</span>
+                    <div>
+                      <p class="text-sm text-charcoal italic">"It's okay to feel angry about what happened."</p>
+                      <p class="text-xs text-charcoal/60 mt-1">"What would it be like to let yourself feel that?"</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </details>
+
+            <!-- Somatic Interweaves -->
+            <details class="border border-lavender-200 rounded-lg overflow-hidden">
+              <summary class="bg-lavender-50 px-4 py-3 cursor-pointer hover:bg-lavender-100 transition-colors">
+                <span class="font-semibold text-lavender-800">Somatic Interweaves</span>
+                <span class="text-xs text-lavender-600 ml-2">— Release body-held trauma</span>
+              </summary>
+              <div class="p-4 space-y-3">
+                <p class="text-sm text-charcoal/70">Use when body sensations persist or defensive responses are stuck:</p>
+                <div class="space-y-2">
+                  <div class="flex items-start gap-3 p-2 rounded bg-lavender-50/50">
+                    <span class="inline-block px-2 py-0.5 bg-lavender-500 text-white text-xs font-bold rounded flex-shrink-0">MOVEMENT</span>
+                    <div>
+                      <p class="text-sm text-charcoal italic">"What does your body want to do right now?"</p>
+                      <p class="text-xs text-charcoal/60 mt-1">"If your hands/feet could move freely, what would they do?"</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-3 p-2 rounded bg-lavender-50/50">
+                    <span class="inline-block px-2 py-0.5 bg-lavender-500 text-white text-xs font-bold rounded flex-shrink-0">COMPLETION</span>
+                    <div>
+                      <p class="text-sm text-charcoal italic">"Push against my hands" (for fight response)</p>
+                      <p class="text-xs text-charcoal/60 mt-1">"Imagine your legs running you to safety" (for flight)</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-3 p-2 rounded bg-lavender-50/50">
+                    <span class="inline-block px-2 py-0.5 bg-lavender-500 text-white text-xs font-bold rounded flex-shrink-0">GROUNDING</span>
+                    <div>
+                      <p class="text-sm text-charcoal italic">"Feel your feet on the floor right now."</p>
+                      <p class="text-xs text-charcoal/60 mt-1">"Notice where your body feels calm or neutral."</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </details>
+
+            <!-- Attachment/Parts/Unmet Needs Interweaves -->
+            <details class="border border-forest-200 rounded-lg overflow-hidden">
+              <summary class="bg-forest-50 px-4 py-3 cursor-pointer hover:bg-forest-100 transition-colors">
+                <span class="font-semibold text-forest-800">Attachment, Parts & Unmet Needs</span>
+                <span class="text-xs text-forest-600 ml-2">— Repair developmental wounds</span>
+              </summary>
+              <div class="p-4 space-y-3">
+                <p class="text-sm text-charcoal/70">Use when attachment wounds, younger parts, or unmet needs block processing:</p>
+                <div class="space-y-2">
+                  <div class="flex items-start gap-3 p-2 rounded bg-forest-50/50">
+                    <span class="inline-block px-2 py-0.5 bg-forest-500 text-white text-xs font-bold rounded flex-shrink-0">YOUNGER SELF</span>
+                    <div>
+                      <p class="text-sm text-charcoal italic">"What does that younger part of you need to hear?"</p>
+                      <p class="text-xs text-charcoal/60 mt-1">"Can your adult self go comfort that child?"</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-3 p-2 rounded bg-forest-50/50">
+                    <span class="inline-block px-2 py-0.5 bg-forest-500 text-white text-xs font-bold rounded flex-shrink-0">PROTECTIVE PARTS</span>
+                    <div>
+                      <p class="text-sm text-charcoal italic">"What is this part trying to protect you from?"</p>
+                      <p class="text-xs text-charcoal/60 mt-1">"Can you thank this part for trying to keep you safe?"</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-3 p-2 rounded bg-forest-50/50">
+                    <span class="inline-block px-2 py-0.5 bg-forest-500 text-white text-xs font-bold rounded flex-shrink-0">UNMET NEEDS</span>
+                    <div>
+                      <p class="text-sm text-charcoal italic">"What did you need then that you didn't get?"</p>
+                      <p class="text-xs text-charcoal/60 mt-1">"Imagine receiving what you needed from a safe figure."</p>
+                    </div>
+                  </div>
+                  <div class="flex items-start gap-3 p-2 rounded bg-forest-50/50">
+                    <span class="inline-block px-2 py-0.5 bg-forest-500 text-white text-xs font-bold rounded flex-shrink-0">REPAIR</span>
+                    <div>
+                      <p class="text-sm text-charcoal italic">"Imagine a nurturing figure providing what was missing."</p>
+                      <p class="text-xs text-charcoal/60 mt-1">"What would it feel like to receive that care now?"</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </details>
+
           </div>
         </div>
 

@@ -1,0 +1,455 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Phase 3 Assessment Scripts - Printable" description="Printable EMDR assessment scripts, cognition reference tables, and target identification techniques.">
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; font-size: 10pt !important; }
+      .print-page {
+        page-break-after: always;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .print-page:last-child { page-break-after: avoid; }
+      .print-container {
+        max-width: 100% !important;
+        padding: 0.5in !important;
+      }
+    }
+    .script-box {
+      border-left: 3px solid #7c3aed;
+      background: #f5f3ff;
+      padding: 0.75rem 1rem;
+      margin: 0.5rem 0;
+      font-style: italic;
+    }
+    .notes-line {
+      border-bottom: 1px solid #d4c4ad;
+      min-height: 1.2rem;
+      display: block;
+    }
+  </style>
+
+  <!-- Print header bar -->
+  <div class="no-print bg-lavender-600 text-white py-3 sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="/clinicians/emdr/phase-3" class="text-white/80 hover:text-white transition-colors flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Phase 3
+        </a>
+        <span class="text-white/40">|</span>
+        <span class="text-sm">Phase 3 Assessment Scripts</span>
+      </div>
+      <button
+        onclick="window.print()"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-white text-lavender-700 rounded-lg hover:bg-lavender-50 transition-colors text-sm font-medium"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+        </svg>
+        Print Scripts
+      </button>
+    </div>
+  </div>
+
+  <div class="print-container max-w-4xl mx-auto px-4 py-8">
+
+    <!-- Page 1: Opening Script & Assessment Components -->
+    <div class="print-page">
+      <header class="mb-6 border-b-2 border-lavender-500 pb-4">
+        <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 3: Assessment Scripts</h1>
+        <p class="text-sm text-charcoal/60">Opening Script & Assessment Components</p>
+      </header>
+
+      <!-- Opening Script -->
+      <section class="mb-6">
+        <h2 class="text-lg font-bold text-lavender-700 mb-3">Opening Script</h2>
+        <div class="script-box text-sm leading-relaxed">
+          <p>"Now that we've identified a memory to work on, we're going to go through a process to fully assess it. I'll guide you step by step. Just let me know whatever comes to mind—there are no right or wrong answers. We're simply gathering information that will help us process this memory effectively."</p>
+        </div>
+      </section>
+
+      <!-- Assessment Components with Notes -->
+      <section>
+        <h2 class="text-lg font-bold text-lavender-700 mb-4">Assessment Components</h2>
+
+        <!-- Step 1 -->
+        <div class="mb-4 p-3 border border-lavender-200 rounded-lg">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-6 h-6 bg-lavender-500 text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
+            <h3 class="font-semibold text-charcoal">Target Image</h3>
+          </div>
+          <div class="script-box text-sm mb-2">
+            <p>"Bring up the memory and notice the image that represents the worst part of it now. What image or part of this memory stands out for you?"</p>
+          </div>
+          <label class="text-xs text-charcoal/60 block mb-1">Notes:</label>
+          <div class="notes-line"></div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="mb-4 p-3 border border-coral-200 rounded-lg bg-coral-50/30">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-6 h-6 bg-coral-500 text-white rounded-full flex items-center justify-center text-xs font-bold">2</span>
+            <h3 class="font-semibold text-charcoal">Negative Cognition (NC)</h3>
+          </div>
+          <div class="script-box text-sm mb-2" style="border-left-color: #f97316; background: #fff7ed;">
+            <p>"As you focus on that part of the memory, what negative belief do you have about yourself now that goes along with it?"</p>
+          </div>
+          <p class="text-xs text-charcoal/60 mb-1">Must be: Present tense, self-referencing, irrational/negative, generalizable</p>
+          <label class="text-xs text-charcoal/60 block mb-1">NC:</label>
+          <div class="notes-line"></div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="mb-4 p-3 border border-forest-200 rounded-lg bg-forest-50/30">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-6 h-6 bg-forest-500 text-white rounded-full flex items-center justify-center text-xs font-bold">3</span>
+            <h3 class="font-semibold text-charcoal">Positive Cognition (PC)</h3>
+          </div>
+          <div class="script-box text-sm mb-2" style="border-left-color: #2D5A3D; background: #f0fdf4;">
+            <p>"Now, what would you like to believe about yourself instead? What positive belief would you rather hold?"</p>
+          </div>
+          <p class="text-xs text-charcoal/60 mb-1">Must be: Present tense, self-referencing, achievable, empowering</p>
+          <label class="text-xs text-charcoal/60 block mb-1">PC:</label>
+          <div class="notes-line"></div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="mb-4 p-3 border border-teal-200 rounded-lg">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-6 h-6 bg-teal-500 text-white rounded-full flex items-center justify-center text-xs font-bold">4</span>
+            <h3 class="font-semibold text-charcoal">Validity of Cognition (VOC)</h3>
+          </div>
+          <div class="script-box text-sm mb-2" style="border-left-color: #0d9488; background: #f0fdfa;">
+            <p>"On a scale from 1 to 7, with 1 being completely false and 7 being completely true, how true does this positive belief '[PC]' feel to you right now when you think about the memory?"</p>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-sm">VOC: ______ / 7</span>
+            <span class="text-xs text-charcoal/60">(Expected: 1-4 at baseline)</span>
+          </div>
+        </div>
+
+        <!-- Step 5 -->
+        <div class="mb-4 p-3 border border-sunny-200 rounded-lg">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-6 h-6 bg-sunny-500 text-white rounded-full flex items-center justify-center text-xs font-bold">5</span>
+            <h3 class="font-semibold text-charcoal">Emotions</h3>
+          </div>
+          <div class="script-box text-sm mb-2" style="border-left-color: #eab308; background: #fefce8;">
+            <p>"As you think about that memory and the negative belief '[NC]', what emotions come up for you?"</p>
+          </div>
+          <label class="text-xs text-charcoal/60 block mb-1">Emotions:</label>
+          <div class="notes-line"></div>
+        </div>
+
+        <!-- Step 6 -->
+        <div class="mb-4 p-3 border border-coral-200 rounded-lg">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-6 h-6 bg-coral-500 text-white rounded-full flex items-center justify-center text-xs font-bold">6</span>
+            <h3 class="font-semibold text-charcoal">Subjective Units of Disturbance (SUD)</h3>
+          </div>
+          <div class="script-box text-sm mb-2" style="border-left-color: #f97316; background: #fff7ed;">
+            <p>"On a scale from 0 to 10, with 0 meaning no disturbance at all and 10 being the most disturbance you can imagine, how disturbing does this memory feel right now?"</p>
+          </div>
+          <div class="flex items-center gap-4">
+            <span class="text-sm">SUD: ______ / 10</span>
+            <span class="text-xs text-charcoal/60">(High SUD is normal and expected)</span>
+          </div>
+        </div>
+
+        <!-- Step 7 -->
+        <div class="p-3 border border-lavender-200 rounded-lg">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-6 h-6 bg-lavender-500 text-white rounded-full flex items-center justify-center text-xs font-bold">7</span>
+            <h3 class="font-semibold text-charcoal">Body Location</h3>
+          </div>
+          <div class="script-box text-sm mb-2">
+            <p>"Scan your body. Where do you feel it the most? It might be tightness, heaviness, a lump in your throat, or a sensation somewhere else."</p>
+          </div>
+          <label class="text-xs text-charcoal/60 block mb-1">Body Location:</label>
+          <div class="notes-line"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Page 2: Cognitions Reference -->
+    <div class="print-page">
+      <header class="mb-6 border-b-2 border-lavender-500 pb-4">
+        <h1 class="font-serif text-2xl font-bold text-charcoal">Common Cognitions Reference</h1>
+        <p class="text-sm text-charcoal/60">Negative and Positive Cognition Pairs by Theme</p>
+      </header>
+
+      <!-- Responsibility / Shame -->
+      <section class="mb-5">
+        <h2 class="text-sm font-bold text-charcoal/70 uppercase tracking-wide mb-2 px-2 py-1 bg-lavender-100 rounded">Responsibility / Defectiveness / Shame</h2>
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-wood-200">
+              <th class="text-left py-2 text-coral-600 font-semibold w-1/2">Negative Cognition (NC)</th>
+              <th class="text-left py-2 text-forest-600 font-semibold w-1/2">Positive Cognition (PC)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-wood-100">
+            <tr><td class="py-1.5">I am bad</td><td class="py-1.5">I am a good person</td></tr>
+            <tr><td class="py-1.5">I am not good enough</td><td class="py-1.5">I am good enough</td></tr>
+            <tr><td class="py-1.5">I am worthless</td><td class="py-1.5">I am worthy / I have value</td></tr>
+            <tr><td class="py-1.5">I am shameful</td><td class="py-1.5">I am okay as I am</td></tr>
+            <tr><td class="py-1.5">I am not lovable</td><td class="py-1.5">I am lovable</td></tr>
+            <tr><td class="py-1.5">I am permanently damaged</td><td class="py-1.5">I am whole / I can heal</td></tr>
+            <tr><td class="py-1.5">I don't deserve good things</td><td class="py-1.5">I deserve good things</td></tr>
+            <tr><td class="py-1.5">There is something wrong with me</td><td class="py-1.5">I am okay as I am</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Safety / Trust -->
+      <section class="mb-5">
+        <h2 class="text-sm font-bold text-charcoal/70 uppercase tracking-wide mb-2 px-2 py-1 bg-teal-100 rounded">Safety / Vulnerability / Trust</h2>
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-wood-200">
+              <th class="text-left py-2 text-coral-600 font-semibold w-1/2">Negative Cognition (NC)</th>
+              <th class="text-left py-2 text-forest-600 font-semibold w-1/2">Positive Cognition (PC)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-wood-100">
+            <tr><td class="py-1.5">I am in danger</td><td class="py-1.5">I am safe now</td></tr>
+            <tr><td class="py-1.5">I cannot protect myself</td><td class="py-1.5">I can protect myself / I can learn to protect myself</td></tr>
+            <tr><td class="py-1.5">I cannot trust anyone</td><td class="py-1.5">I can choose whom to trust</td></tr>
+            <tr><td class="py-1.5">I have to be perfect to be safe</td><td class="py-1.5">I am safe being myself</td></tr>
+            <tr><td class="py-1.5">It's not safe to show my feelings</td><td class="py-1.5">I can safely express my feelings</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Power / Control -->
+      <section class="mb-5">
+        <h2 class="text-sm font-bold text-charcoal/70 uppercase tracking-wide mb-2 px-2 py-1 bg-forest-100 rounded">Power / Control / Choice</h2>
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-wood-200">
+              <th class="text-left py-2 text-coral-600 font-semibold w-1/2">Negative Cognition (NC)</th>
+              <th class="text-left py-2 text-forest-600 font-semibold w-1/2">Positive Cognition (PC)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-wood-100">
+            <tr><td class="py-1.5">I am powerless</td><td class="py-1.5">I have power now / I have choices</td></tr>
+            <tr><td class="py-1.5">I am helpless</td><td class="py-1.5">I can help myself / I can get help</td></tr>
+            <tr><td class="py-1.5">I am out of control</td><td class="py-1.5">I am in control now</td></tr>
+            <tr><td class="py-1.5">I have no control</td><td class="py-1.5">I have choices now</td></tr>
+            <tr><td class="py-1.5">I am weak</td><td class="py-1.5">I am strong / I can be strong</td></tr>
+            <tr><td class="py-1.5">I am trapped</td><td class="py-1.5">I have options now</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Guilt -->
+      <section>
+        <h2 class="text-sm font-bold text-charcoal/70 uppercase tracking-wide mb-2 px-2 py-1 bg-coral-100 rounded">Guilt / Responsibility for Actions</h2>
+        <table class="w-full text-sm border-collapse">
+          <thead>
+            <tr class="border-b-2 border-wood-200">
+              <th class="text-left py-2 text-coral-600 font-semibold w-1/2">Negative Cognition (NC)</th>
+              <th class="text-left py-2 text-forest-600 font-semibold w-1/2">Positive Cognition (PC)</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-wood-100">
+            <tr><td class="py-1.5">I should have done something</td><td class="py-1.5">I did the best I could</td></tr>
+            <tr><td class="py-1.5">It's my fault</td><td class="py-1.5">It's not my fault / I am not to blame</td></tr>
+            <tr><td class="py-1.5">I cannot be forgiven</td><td class="py-1.5">I can forgive myself / I deserve forgiveness</td></tr>
+            <tr><td class="py-1.5">I should have known better</td><td class="py-1.5">I did what I knew how to do</td></tr>
+            <tr><td class="py-1.5">I am responsible for [other's behavior]</td><td class="py-1.5">I am only responsible for myself</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </div>
+
+    <!-- Page 3: Affect Scan Script -->
+    <div class="print-page">
+      <header class="mb-6 border-b-2 border-lavender-500 pb-4">
+        <h1 class="font-serif text-2xl font-bold text-charcoal">Affect Scan (Floatback) Technique</h1>
+        <p class="text-sm text-charcoal/60">Target Identification Script</p>
+      </header>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-bold text-teal-700 mb-3">Purpose</h2>
+        <p class="text-sm text-charcoal/80 mb-4">
+          The Affect Scan (also called Floatback) is used when a client experiences strong emotions or body sensations but cannot identify a specific target memory. This technique uses current emotional and somatic experience to bridge back to earlier memories that may be feeding the present distress. It's particularly useful for identifying touchstone memories—the earliest related memory in a memory network.
+        </p>
+      </section>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-bold text-teal-700 mb-3">When to Use</h2>
+        <ul class="text-sm text-charcoal/80 space-y-2 mb-4">
+          <li class="flex items-start gap-2">
+            <span class="text-teal-500 mt-0.5">•</span>
+            Client reports strong emotions but can't identify a specific memory
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-teal-500 mt-0.5">•</span>
+            Present-day triggers with unclear origins
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-teal-500 mt-0.5">•</span>
+            Need to identify the touchstone (earliest) memory in a network
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-teal-500 mt-0.5">•</span>
+            Client leads more with feelings than thoughts
+          </li>
+        </ul>
+      </section>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-bold text-teal-700 mb-3">Complete Script</h2>
+        <div class="bg-teal-50 border border-teal-200 rounded-lg p-4 space-y-4 text-sm">
+          <p class="italic">
+            "I'd like you to bring up that feeling you've been describing—[name the emotion]. Really let yourself feel it, just enough to notice it."
+          </p>
+          <p class="italic">
+            "Now, notice where you feel this in your body. Just scan and see where this feeling shows up physically... [pause] ...Where do you notice it?"
+          </p>
+          <p class="text-charcoal/70">[Wait for client response about body location]</p>
+          <p class="italic">
+            "Good. Now, keeping that feeling and that body sensation present, I'd like you to let your mind float back... like you're floating back through time... to an earlier time when you might have felt this same feeling in your body."
+          </p>
+          <p class="italic">
+            "It could be from any time in your life. Don't try to think of anything specific—just let your mind drift back and see what comes up. It might be an image, a memory, or just a sense of something. Whatever comes is okay."
+          </p>
+          <p class="text-charcoal/70">[Give client time—this may take 30-60 seconds of silence]</p>
+          <p class="italic">
+            "What comes up for you?"
+          </p>
+          <p class="text-charcoal/70">[If nothing comes up, try:]</p>
+          <p class="italic">
+            "Just notice whatever you're experiencing right now... even if it's blank or fuzzy, that's okay. Sometimes we need to sit with it a moment longer."
+          </p>
+          <p class="text-charcoal/70">[If a memory emerges, proceed with standard Phase 3 assessment]</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-teal-700 mb-3">Notes</h2>
+        <div class="border border-wood-200 rounded p-3 min-h-[100px]">
+          <div class="space-y-3">
+            <div class="notes-line"></div>
+            <div class="notes-line"></div>
+            <div class="notes-line"></div>
+            <div class="notes-line"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Page 4: Trace Back Script -->
+    <div class="print-page">
+      <header class="mb-6 border-b-2 border-lavender-500 pb-4">
+        <h1 class="font-serif text-2xl font-bold text-charcoal">Trace Back Technique</h1>
+        <p class="text-sm text-charcoal/60">Cognition-Based Target Identification Script</p>
+      </header>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-bold text-coral-600 mb-3">Purpose</h2>
+        <p class="text-sm text-charcoal/80 mb-4">
+          The Trace Back technique is similar to the Affect Scan but begins with a current problematic belief or cognition rather than an emotion. It traces the negative cognition back to its origins to find touchstone events. This is especially useful for clients who are more cognitively oriented or who present with strong negative self-beliefs but have difficulty connecting them to specific memories.
+        </p>
+      </section>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-bold text-coral-600 mb-3">When to Use</h2>
+        <ul class="text-sm text-charcoal/80 space-y-2 mb-4">
+          <li class="flex items-start gap-2">
+            <span class="text-coral-500 mt-0.5">•</span>
+            Client has strong negative self-beliefs but unclear source
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-coral-500 mt-0.5">•</span>
+            Multiple traumas and need to find touchstone
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-coral-500 mt-0.5">•</span>
+            Client leads more with thoughts than feelings
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-coral-500 mt-0.5">•</span>
+            When a negative cognition keeps appearing across different issues
+          </li>
+        </ul>
+      </section>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-bold text-coral-600 mb-3">Complete Script</h2>
+        <div class="bg-coral-50 border border-coral-200 rounded-lg p-4 space-y-4 text-sm">
+          <p class="italic">
+            "Let's work with this belief: '[Negative Cognition]'. I'd like you to say it to yourself now... '[NC]'."
+          </p>
+          <p class="italic">
+            "As you think about that belief, notice where you feel it in your body. Scan your body and tell me where you notice a sensation connected to that belief."
+          </p>
+          <p class="text-charcoal/70">[Wait for client response about body location]</p>
+          <p class="italic">
+            "Good. Now, holding that belief '[NC]' and noticing that feeling in your [body location], I'd like you to let your mind trace back... trace back through your life to find the earliest time you can remember feeling this way or believing this about yourself."
+          </p>
+          <p class="italic">
+            "Don't try to think or figure it out. Just hold the belief and the body feeling, and let your mind wander back through time. Whatever comes up is the right thing."
+          </p>
+          <p class="text-charcoal/70">[Give client time—this may take 30-60 seconds of silence]</p>
+          <p class="italic">
+            "What are you noticing? What comes to mind?"
+          </p>
+          <p class="text-charcoal/70">[If nothing comes up, try:]</p>
+          <p class="italic">
+            "Even if it's vague or you're not sure if it's 'the right' memory, what shows up when you think about when you first started believing '[NC]'?"
+          </p>
+          <p class="text-charcoal/70">[If a memory emerges, proceed with standard Phase 3 assessment]</p>
+        </div>
+      </section>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-bold text-coral-600 mb-3">Key Difference from Affect Scan</h2>
+        <div class="bg-wood-50 border border-wood-200 rounded-lg p-4 text-sm">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-wood-200">
+                <th class="text-left py-2 text-teal-600">Affect Scan</th>
+                <th class="text-left py-2 text-coral-600">Trace Back</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="py-2">Starts with emotion/feeling</td>
+                <td class="py-2">Starts with cognition/belief</td>
+              </tr>
+              <tr>
+                <td class="py-2">Uses body sensation as bridge</td>
+                <td class="py-2">Uses body sensation as bridge</td>
+              </tr>
+              <tr>
+                <td class="py-2">Best for feeling-oriented clients</td>
+                <td class="py-2">Best for thought-oriented clients</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-coral-600 mb-3">Notes</h2>
+        <div class="border border-wood-200 rounded p-3 min-h-[100px]">
+          <div class="space-y-3">
+            <div class="notes-line"></div>
+            <div class="notes-line"></div>
+            <div class="notes-line"></div>
+            <div class="notes-line"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+  </div>
+</BaseLayout>

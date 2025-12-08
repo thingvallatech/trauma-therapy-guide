@@ -30,15 +30,26 @@ import PhaseNav from '../../../components/PhaseNav.astro';
             </h1>
           </div>
         </div>
-        <button
-          onclick="window.print()"
-          class="no-print inline-flex items-center gap-2 px-4 py-2 bg-white border border-wood-300 text-charcoal rounded-lg hover:bg-wood-50 transition-colors text-sm shadow-sm"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-          </svg>
-          Print
-        </button>
+        <div class="no-print flex items-center gap-2">
+          <a
+            href="/clinicians/emdr/phase-3-scripts"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-lavender-600 text-white rounded-lg hover:bg-lavender-700 transition-colors text-sm shadow-sm"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Print Scripts
+          </a>
+          <button
+            onclick="window.print()"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-white border border-wood-300 text-charcoal rounded-lg hover:bg-wood-50 transition-colors text-sm shadow-sm"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            </svg>
+            Print Page
+          </button>
+        </div>
       </div>
     </header>
 
@@ -260,6 +271,92 @@ import PhaseNav from '../../../components/PhaseNav.astro';
                   </tbody>
                 </table>
               </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Target Identification Techniques Card -->
+        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+          <div class="bg-gradient-to-r from-teal-500 to-teal-600 px-5 py-3">
+            <h2 class="text-white font-semibold flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+              Target Identification Techniques
+            </h2>
+          </div>
+          <div class="p-5 space-y-6">
+            <!-- Affect Scan -->
+            <div>
+              <h3 class="font-semibold text-charcoal mb-2 flex items-center gap-2">
+                <span class="w-6 h-6 bg-teal-500 text-white rounded flex items-center justify-center text-xs font-bold">A</span>
+                Affect Scan (Floatback)
+              </h3>
+              <p class="text-sm text-charcoal/70 mb-3">
+                Used when client has difficulty identifying a specific target memory. The affect scan uses current emotional and somatic experience to bridge back to earlier memories that may be contributing to present distress.
+              </p>
+              <div class="bg-teal-50 border border-teal-200 rounded-lg p-4">
+                <p class="text-xs font-medium text-teal-700 mb-2">When to use:</p>
+                <ul class="text-sm text-charcoal/80 space-y-1">
+                  <li class="flex items-start gap-2">
+                    <span class="text-teal-500 mt-0.5">•</span>
+                    Client reports strong emotions but can't identify a specific memory
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-teal-500 mt-0.5">•</span>
+                    Present-day triggers with unclear origin
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-teal-500 mt-0.5">•</span>
+                    Identifying touchstone memories (earliest related memory)
+                  </li>
+                </ul>
+              </div>
+              <div class="mt-3 bg-teal-50 rounded-lg p-3 border-l-4 border-teal-500">
+                <p class="text-sm text-charcoal italic">
+                  "Notice the feeling in your body right now. Let your mind float back to an earlier time when you may have felt a similar feeling. It could be from any time in your life. Just let whatever comes up naturally..."
+                </p>
+              </div>
+            </div>
+
+            <!-- Trace Back -->
+            <div>
+              <h3 class="font-semibold text-charcoal mb-2 flex items-center gap-2">
+                <span class="w-6 h-6 bg-coral-500 text-white rounded flex items-center justify-center text-xs font-bold">T</span>
+                Trace Back Technique
+              </h3>
+              <p class="text-sm text-charcoal/70 mb-3">
+                Similar to affect scan but starts with a current problematic belief or cognition rather than an emotion. Traces the negative cognition back to its origins to find touchstone events.
+              </p>
+              <div class="bg-coral-50 border border-coral-200 rounded-lg p-4">
+                <p class="text-xs font-medium text-coral-700 mb-2">When to use:</p>
+                <ul class="text-sm text-charcoal/80 space-y-1">
+                  <li class="flex items-start gap-2">
+                    <span class="text-coral-500 mt-0.5">•</span>
+                    Client has strong negative self-beliefs but unclear source
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-coral-500 mt-0.5">•</span>
+                    Multiple traumas and need to find touchstone
+                  </li>
+                  <li class="flex items-start gap-2">
+                    <span class="text-coral-500 mt-0.5">•</span>
+                    When cognition-focused approach fits client better
+                  </li>
+                </ul>
+              </div>
+              <div class="mt-3 bg-coral-50 rounded-lg p-3 border-l-4 border-coral-500">
+                <p class="text-sm text-charcoal italic">
+                  "When you think about the belief '[NC]', notice where you feel it in your body. Now, let your mind trace back to the earliest time you can remember feeling this way or believing this about yourself..."
+                </p>
+              </div>
+            </div>
+
+            <!-- Key Difference Note -->
+            <div class="bg-wood-50 border border-wood-200 rounded-lg p-4">
+              <p class="text-sm text-charcoal/80">
+                <strong>Key Difference:</strong> Affect Scan starts with <em>emotions/body sensations</em>, while Trace Back starts with <em>negative cognitions/beliefs</em>. Both techniques help identify the underlying memories feeding current symptoms. Choose based on whether your client leads with feelings or thoughts.
+              </p>
             </div>
           </div>
         </div>

@@ -1,0 +1,478 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Phase 2 Preparation Scripts - Printable" description="Printable EMDR preparation scripts for teenagers and children, including resource development exercises.">
+  <style>
+    @media print {
+      .no-print { display: none !important; }
+      body { background: white !important; font-size: 10pt !important; }
+      .print-page {
+        page-break-after: always;
+        padding: 0 !important;
+        margin: 0 !important;
+      }
+      .print-page:last-child { page-break-after: avoid; }
+      .print-container {
+        max-width: 100% !important;
+        padding: 0.5in !important;
+      }
+    }
+    .script-box {
+      border-left: 3px solid #2D5A3D;
+      background: #f8faf8;
+      padding: 0.75rem 1rem;
+      margin: 0.5rem 0;
+      font-style: italic;
+    }
+    .script-box-teen {
+      border-left-color: #0d9488;
+      background: #f0fdfa;
+    }
+    .script-box-child {
+      border-left-color: #f59e0b;
+      background: #fffbeb;
+    }
+  </style>
+
+  <!-- Print header bar -->
+  <div class="no-print bg-teal-600 text-white py-3 sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="/clinicians/emdr/phase-2" class="text-white/80 hover:text-white transition-colors flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Phase 2
+        </a>
+        <span class="text-white/40">|</span>
+        <span class="text-sm">Phase 2 Preparation Scripts</span>
+      </div>
+      <button
+        onclick="window.print()"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-white text-teal-700 rounded-lg hover:bg-teal-50 transition-colors text-sm font-medium"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+        </svg>
+        Print Scripts
+      </button>
+    </div>
+  </div>
+
+  <div class="print-container max-w-4xl mx-auto px-4 py-8">
+
+    <!-- Page 1: Explaining EMDR Scripts -->
+    <div class="print-page">
+      <header class="mb-6 border-b-2 border-teal-500 pb-4">
+        <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 2: Preparation Scripts</h1>
+        <p class="text-sm text-charcoal/60">Explaining EMDR to Clients</p>
+      </header>
+
+      <!-- Teenager Version -->
+      <section class="mb-8">
+        <h2 class="text-lg font-bold text-teal-700 mb-3 flex items-center gap-2">
+          <span class="w-6 h-6 bg-teal-500 text-white rounded flex items-center justify-center text-xs">1</span>
+          Explaining EMDR – Teenager Script
+        </h2>
+
+        <div class="script-box script-box-teen text-sm leading-relaxed">
+          <p class="mb-3">"EMDR stands for Eye Movement Desensitization and Reprocessing. I know that's a mouthful, so let me explain what it actually means.</p>
+
+          <p class="mb-3">When something really stressful or scary happens, sometimes our brain has trouble processing it the way it normally would. It's like the memory gets stuck, and it can keep bothering us through nightmares, flashbacks, or feeling really anxious or upset when something reminds us of what happened.</p>
+
+          <p class="mb-3">EMDR helps your brain process those stuck memories. While you think about the difficult memory, I'll have you follow my fingers with your eyes, or we can use tapping or sounds instead. This back-and-forth movement helps your brain do what it naturally does during REM sleep when you're dreaming – it helps process and file away the memory so it doesn't feel so overwhelming anymore.</p>
+
+          <p class="mb-3">You don't have to tell me every detail of what happened. You're in control the whole time – you can stop whenever you need to. We'll also learn some coping skills first, so you have tools to help you feel calm and grounded.</p>
+
+          <p>The goal isn't to forget what happened – you'll still remember it. But after EMDR, most people find that the memory doesn't bother them as much. It feels more like something that happened in the past, rather than something that's happening right now."</p>
+        </div>
+      </section>
+
+      <!-- Child Version -->
+      <section>
+        <h2 class="text-lg font-bold text-amber-600 mb-3 flex items-center gap-2">
+          <span class="w-6 h-6 bg-amber-500 text-white rounded flex items-center justify-center text-xs">2</span>
+          Explaining EMDR – Child-Friendly Script (Ages 6-12)
+        </h2>
+
+        <div class="script-box script-box-child text-sm leading-relaxed">
+          <p class="mb-3">"I'm going to teach you something really cool that can help with those scary/upsetting feelings you've been having.</p>
+
+          <p class="mb-3">You know how when you fall asleep at night, your eyes move back and forth while you dream? That's your brain's way of sorting through everything that happened during the day – kind of like organizing your room, putting everything where it belongs.</p>
+
+          <p class="mb-3">Sometimes when something really scary or bad happens, our brain has trouble putting that memory away. It's like having a really messy pile that keeps falling over and making a mess everywhere. That's why you might have bad dreams, or feel scared or upset when something reminds you of what happened.</p>
+
+          <p class="mb-3">What we're going to do is help your brain organize that messy pile. While you think about what happened, you'll follow my fingers with your eyes, or we can tap on your hands, or listen to some beeping sounds. This helps your brain do its organizing job.</p>
+
+          <p class="mb-3">You're the boss the whole time. If you want to stop, just hold up your hand like this [demonstrate stop signal]. We'll also learn some cool tricks to help you feel calm and safe, like imagining a special safe place.</p>
+
+          <p>After we do this, you'll still remember what happened, but it won't feel so scary or upsetting anymore. It'll be more like an old story than something happening right now."</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Page 2: Signs of Readiness Checklist -->
+    <div class="print-page">
+      <header class="mb-6 border-b-2 border-teal-500 pb-4">
+        <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 2: Preparation Scripts</h1>
+        <p class="text-sm text-charcoal/60">Readiness Assessment</p>
+      </header>
+
+      <section class="mb-8">
+        <h2 class="text-lg font-bold text-teal-700 mb-4 flex items-center gap-2">
+          <span class="w-6 h-6 bg-teal-500 text-white rounded flex items-center justify-center text-xs">3</span>
+          Signs Client is NOT Ready for Processing
+        </h2>
+
+        <p class="text-sm text-charcoal/70 mb-4">Check any that apply. If multiple items are checked, extend Phase 2 preparation.</p>
+
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <div class="flex items-start gap-2 p-2 border border-wood-200 rounded">
+            <span class="w-4 h-4 border-2 border-amber-400 rounded flex-shrink-0 mt-0.5"></span>
+            <span>Unable to access or stay with distressing material briefly</span>
+          </div>
+          <div class="flex items-start gap-2 p-2 border border-wood-200 rounded">
+            <span class="w-4 h-4 border-2 border-amber-400 rounded flex-shrink-0 mt-0.5"></span>
+            <span>Cannot use stop signal or self-advocacy skills</span>
+          </div>
+          <div class="flex items-start gap-2 p-2 border border-wood-200 rounded">
+            <span class="w-4 h-4 border-2 border-amber-400 rounded flex-shrink-0 mt-0.5"></span>
+            <span>Dissociates or shuts down with minimal distress</span>
+          </div>
+          <div class="flex items-start gap-2 p-2 border border-wood-200 rounded">
+            <span class="w-4 h-4 border-2 border-amber-400 rounded flex-shrink-0 mt-0.5"></span>
+            <span>Resources/safe place not yet established</span>
+          </div>
+          <div class="flex items-start gap-2 p-2 border border-wood-200 rounded">
+            <span class="w-4 h-4 border-2 border-amber-400 rounded flex-shrink-0 mt-0.5"></span>
+            <span>Active suicidal/homicidal ideation</span>
+          </div>
+          <div class="flex items-start gap-2 p-2 border border-wood-200 rounded">
+            <span class="w-4 h-4 border-2 border-amber-400 rounded flex-shrink-0 mt-0.5"></span>
+            <span>Active substance abuse affecting stability</span>
+          </div>
+          <div class="flex items-start gap-2 p-2 border border-wood-200 rounded">
+            <span class="w-4 h-4 border-2 border-amber-400 rounded flex-shrink-0 mt-0.5"></span>
+            <span>Inadequate therapeutic alliance</span>
+          </div>
+          <div class="flex items-start gap-2 p-2 border border-wood-200 rounded">
+            <span class="w-4 h-4 border-2 border-amber-400 rounded flex-shrink-0 mt-0.5"></span>
+            <span>Significant life stressors/instability</span>
+          </div>
+          <div class="flex items-start gap-2 p-2 border border-wood-200 rounded">
+            <span class="w-4 h-4 border-2 border-amber-400 rounded flex-shrink-0 mt-0.5"></span>
+            <span>Cannot return to baseline within session</span>
+          </div>
+          <div class="flex items-start gap-2 p-2 border border-wood-200 rounded">
+            <span class="w-4 h-4 border-2 border-amber-400 rounded flex-shrink-0 mt-0.5"></span>
+            <span>Caregiver not supportive or available</span>
+          </div>
+        </div>
+
+        <div class="mt-4 p-3 bg-amber-50 border border-amber-200 rounded">
+          <p class="text-sm text-amber-800"><strong>Note:</strong> These are not contraindications for EMDR, but indicators that more preparation is needed. Continue building resources and stabilization skills before moving to Phase 3.</p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-lg font-bold text-forest-700 mb-4 flex items-center gap-2">
+          <span class="w-6 h-6 bg-forest-500 text-white rounded flex items-center justify-center text-xs">4</span>
+          Signs Client IS Ready for Processing
+        </h2>
+
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <div class="flex items-start gap-2 p-2 bg-forest-50 border border-forest-200 rounded">
+            <span class="w-4 h-4 border-2 border-forest-500 rounded flex-shrink-0 mt-0.5"></span>
+            <span>Can access safe place and feel calm</span>
+          </div>
+          <div class="flex items-start gap-2 p-2 bg-forest-50 border border-forest-200 rounded">
+            <span class="w-4 h-4 border-2 border-forest-500 rounded flex-shrink-0 mt-0.5"></span>
+            <span>Demonstrates use of stop signal</span>
+          </div>
+          <div class="flex items-start gap-2 p-2 bg-forest-50 border border-forest-200 rounded">
+            <span class="w-4 h-4 border-2 border-forest-500 rounded flex-shrink-0 mt-0.5"></span>
+            <span>Can tolerate brief distress without flooding</span>
+          </div>
+          <div class="flex items-start gap-2 p-2 bg-forest-50 border border-forest-200 rounded">
+            <span class="w-4 h-4 border-2 border-forest-500 rounded flex-shrink-0 mt-0.5"></span>
+            <span>Returns to baseline within session</span>
+          </div>
+          <div class="flex items-start gap-2 p-2 bg-forest-50 border border-forest-200 rounded">
+            <span class="w-4 h-4 border-2 border-forest-500 rounded flex-shrink-0 mt-0.5"></span>
+            <span>Understands EMDR process</span>
+          </div>
+          <div class="flex items-start gap-2 p-2 bg-forest-50 border border-forest-200 rounded">
+            <span class="w-4 h-4 border-2 border-forest-500 rounded flex-shrink-0 mt-0.5"></span>
+            <span>Caregiver informed and supportive</span>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Page 3: Safe Place Script -->
+    <div class="print-page">
+      <header class="mb-6 border-b-2 border-teal-500 pb-4">
+        <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 2: Resource Scripts</h1>
+        <p class="text-sm text-charcoal/60">Safe/Calm Place Exercise</p>
+      </header>
+
+      <!-- Teenager Version -->
+      <section class="mb-8">
+        <h2 class="text-lg font-bold text-teal-700 mb-3 flex items-center gap-2">
+          Safe/Calm Place – Teenager Script
+        </h2>
+
+        <div class="script-box script-box-teen text-sm leading-relaxed">
+          <p class="mb-3">"I'd like you to think of a place where you feel calm, peaceful, and safe. This can be a real place you've been to, or somewhere you imagine. It could be a beach, your room, a forest, anywhere that feels good to you. Take a moment to think of your place..."</p>
+
+          <p class="mb-3">[Wait for them to identify a place]</p>
+
+          <p class="mb-3">"Good. Now close your eyes if that's comfortable, or just look down. Imagine yourself in that place right now. Notice what you see around you... the colors, the shapes, whether it's bright or dim..."</p>
+
+          <p class="mb-3">"Now notice any sounds in your safe place... maybe it's quiet, or maybe there are soothing sounds like water, birds, or music..."</p>
+
+          <p class="mb-3">"Notice any smells... the air might smell fresh, or like the ocean, or like your favorite scent..."</p>
+
+          <p class="mb-3">"Notice how your body feels in this place... maybe your muscles are relaxed, you feel warm, comfortable..."</p>
+
+          <p class="mb-3">"Now focus on the pleasant feelings you have being in this safe place. Where do you feel those calm, peaceful feelings in your body?"</p>
+
+          <p class="mb-3">[Add bilateral stimulation – slow taps or eye movements, 6-8 sets]</p>
+
+          <p class="mb-3">"Now think of one word or phrase that represents this place for you – something you can use to bring back this feeling anytime you need it."</p>
+
+          <p>[Have them say the word while adding BLS. Practice recalling the place using just the word.]</p>
+        </div>
+      </section>
+
+      <!-- Child Version -->
+      <section>
+        <h2 class="text-lg font-bold text-amber-600 mb-3 flex items-center gap-2">
+          Safe/Calm Place – Child-Friendly Script
+        </h2>
+
+        <div class="script-box script-box-child text-sm leading-relaxed">
+          <p class="mb-3">"Let's create a special safe place just for you! Think of somewhere that makes you feel really happy, calm, and safe. It can be a real place or a pretend place – maybe your bedroom, grandma's house, a treehouse, a beach, or even a magical place from your imagination..."</p>
+
+          <p class="mb-3">[Wait for them to share their place]</p>
+
+          <p class="mb-3">"That sounds like a great safe place! Let's go there together in our imagination. Close your eyes or look at the floor... Now pretend you're really there..."</p>
+
+          <p class="mb-3">"Look around your safe place. What do you see? Tell me about it... [Let them describe] That's wonderful!"</p>
+
+          <p class="mb-3">"What sounds do you hear in your safe place? Is it quiet, or are there nice sounds?" [Let them share]</p>
+
+          <p class="mb-3">"How does it smell there? Any yummy or nice smells?" [Let them share]</p>
+
+          <p class="mb-3">"How does your body feel in your safe place? Maybe your tummy feels calm, or your shoulders feel relaxed like jelly..."</p>
+
+          <p class="mb-3">[Add slow butterfly hugs or tapping]</p>
+
+          <p class="mb-3">"Now let's give your safe place a special name – a magic word that helps you feel calm whenever you say it or think it. What should we call it?"</p>
+
+          <p>[Practice saying the word with butterfly hugs. Explain they can go to their safe place anytime they need to feel calm.]</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Page 4: Container Exercise -->
+    <div class="print-page">
+      <header class="mb-6 border-b-2 border-teal-500 pb-4">
+        <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 2: Resource Scripts</h1>
+        <p class="text-sm text-charcoal/60">Container Exercise</p>
+      </header>
+
+      <!-- Teenager Version -->
+      <section class="mb-8">
+        <h2 class="text-lg font-bold text-teal-700 mb-3 flex items-center gap-2">
+          Container Exercise – Teenager Script
+        </h2>
+
+        <div class="script-box script-box-teen text-sm leading-relaxed">
+          <p class="mb-3">"Sometimes difficult thoughts, feelings, or memories show up at times when we can't deal with them – like when you're at school, trying to sleep, or just going about your day. I'm going to teach you a technique to contain those things temporarily, so you can put them away until you're ready to deal with them in session."</p>
+
+          <p class="mb-3">"I'd like you to imagine some kind of container – something strong enough to hold whatever you put in it. It could be a safe, a vault, a lockbox, a trunk, a shipping container... anything that feels secure and unbreakable. What kind of container comes to mind?"</p>
+
+          <p class="mb-3">[Wait for their response]</p>
+
+          <p class="mb-3">"Good. Now imagine this container in detail. What color is it? What's it made of? How big is it? Does it have a lock, a lid, or some other way to close it securely?"</p>
+
+          <p class="mb-3">"This container has a special feature – it can hold anything. Feelings, memories, thoughts, images – anything that's bothering you. Nothing can escape from it unless you choose to let it out."</p>
+
+          <p class="mb-3">"Let's practice. Think of something mildly bothersome – nothing too big, just something annoying or slightly uncomfortable. Now imagine putting that into your container... Watch it go in... Now close and lock your container securely."</p>
+
+          <p class="mb-3">[Add slow bilateral stimulation]</p>
+
+          <p>"Your container is now holding that for you. You can open it when you're ready, like when we're in session together. Between sessions, if difficult things come up, you can imagine putting them in your container until we meet again."</p>
+        </div>
+      </section>
+
+      <!-- Child Version -->
+      <section>
+        <h2 class="text-lg font-bold text-amber-600 mb-3 flex items-center gap-2">
+          Container Exercise – Child-Friendly Script
+        </h2>
+
+        <div class="script-box script-box-child text-sm leading-relaxed">
+          <p class="mb-3">"Sometimes we have yucky feelings or scary thoughts that pop up when we don't want them to – like at school, or bedtime, or when we're trying to have fun. I'm going to teach you a magic trick to put those things away until we can work on them together!"</p>
+
+          <p class="mb-3">"First, let's imagine a super strong container – like a treasure chest, a magic box, a safe, or even a rocket ship that can fly far away! What kind of container sounds good to you?"</p>
+
+          <p class="mb-3">[Let them choose and describe it]</p>
+
+          <p class="mb-3">"Perfect! Now let's make it really special. What color is it? Is it big or small? Does it have a lock? Maybe it has a special password or magic spell to open it?"</p>
+
+          <p class="mb-3">"Here's the cool part – this container can hold ANYTHING. Bad dreams, scary memories, yucky feelings, mean thoughts – anything that bothers you. And nothing, absolutely nothing, can get out unless YOU say so."</p>
+
+          <p class="mb-3">"Let's practice! Think of something that's been a little bit annoying – maybe a time when you felt frustrated or a worry you have. Now imagine picking it up like a ball and putting it right into your container... Watch it go in... Now close the lid tight and lock it up!"</p>
+
+          <p class="mb-3">[Add butterfly hugs]</p>
+
+          <p>"Great job! Your container is keeping that safely tucked away. If something bothering shows up when you're not here with me, you can imagine putting it in your container until we meet again. Then we can look at it together when you're ready."</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Page 5: Lightstream Technique -->
+    <div class="print-page">
+      <header class="mb-6 border-b-2 border-teal-500 pb-4">
+        <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 2: Resource Scripts</h1>
+        <p class="text-sm text-charcoal/60">Lightstream Technique</p>
+      </header>
+
+      <!-- Teenager Version -->
+      <section class="mb-8">
+        <h2 class="text-lg font-bold text-teal-700 mb-3 flex items-center gap-2">
+          Lightstream – Teenager Script
+        </h2>
+
+        <div class="script-box script-box-teen text-sm leading-relaxed">
+          <p class="mb-3">"This is a technique to help reduce uncomfortable feelings or sensations in your body. First, I'd like you to scan your body and notice if there's anywhere you feel tension, discomfort, or unpleasant sensations. Take a moment... Where do you notice it?"</p>
+
+          <p class="mb-3">[Wait for response – note the location]</p>
+
+          <p class="mb-3">"Now, if that sensation had a shape, what shape would it be?"</p>
+          <p class="mb-3">"What size is it?"</p>
+          <p class="mb-3">"What color is it?"</p>
+          <p class="mb-3">"Does it have a temperature – warm or cold?"</p>
+          <p class="mb-3">"If it had a texture, what would it be like?"</p>
+
+          <p class="mb-3">"Now, I'd like you to imagine a healing light above your head. What color is this light – a color that feels healing, soothing, and positive to you?"</p>
+
+          <p class="mb-3">[Wait for their answer]</p>
+
+          <p class="mb-3">"Good. Imagine this [color] light beginning to flow down into the top of your head, like a gentle stream. Feel it flowing down through your head... your neck... your shoulders... flowing through your whole body..."</p>
+
+          <p class="mb-3">"As this light reaches the area where you noticed that [shape/color], let it flow around it and through it. The light begins to resonate with the disturbance, vibrating it, loosening it. Allow the light to carry away any tension or discomfort, letting it drain out through your fingertips and toes..."</p>
+
+          <p class="mb-3">[Add slow bilateral stimulation throughout]</p>
+
+          <p>"Let the light continue to flow until your whole body feels filled with this healing, soothing energy. Take your time... When you're ready, open your eyes."</p>
+        </div>
+      </section>
+
+      <!-- Child Version -->
+      <section>
+        <h2 class="text-lg font-bold text-amber-600 mb-3 flex items-center gap-2">
+          Lightstream – Child-Friendly Script
+        </h2>
+
+        <div class="script-box script-box-child text-sm leading-relaxed">
+          <p class="mb-3">"Let's do something magical! First, I want you to think about your body. Is there anywhere that feels a little yucky, tight, or uncomfortable? Maybe your tummy, your chest, your head? Take a moment to check..."</p>
+
+          <p class="mb-3">[Wait for response]</p>
+
+          <p class="mb-3">"If that yucky feeling was a shape, like a cloud or a blob, what would it look like?"</p>
+          <p class="mb-3">"What color is it?"</p>
+          <p class="mb-3">"Is it big or little?"</p>
+
+          <p class="mb-3">"Now, imagine way up above your head, there's a beautiful, magical light – like sunshine or starlight. What color is your magical light? Pick a color that makes you feel happy and calm!"</p>
+
+          <p class="mb-3">[Wait for their answer]</p>
+
+          <p class="mb-3">"Perfect! Now imagine that [color] light starting to pour down onto the top of your head, like a gentle waterfall of light. Feel it going down through your head... making it feel warm and tingly in a good way..."</p>
+
+          <p class="mb-3">"The light keeps flowing down through your neck... your shoulders... your arms... all the way down through your whole body like magic..."</p>
+
+          <p class="mb-3">"When the light gets to that yucky feeling, watch what happens! The light shines on it and starts to make it smaller and lighter. Maybe it's changing color too... The light is washing it away, like water washing away dirt..."</p>
+
+          <p class="mb-3">[Add butterfly hugs throughout]</p>
+
+          <p>"Keep letting the light flow until your whole body feels warm and calm and full of beautiful [color] light. Take as long as you need... When you're ready, you can open your eyes."</p>
+        </div>
+      </section>
+    </div>
+
+    <!-- Page 6: Breathing Techniques -->
+    <div class="print-page">
+      <header class="mb-6 border-b-2 border-teal-500 pb-4">
+        <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 2: Resource Scripts</h1>
+        <p class="text-sm text-charcoal/60">Breathing Techniques</p>
+      </header>
+
+      <!-- Teenager Version -->
+      <section class="mb-8">
+        <h2 class="text-lg font-bold text-teal-700 mb-3 flex items-center gap-2">
+          Breathing Techniques – Teenager Scripts
+        </h2>
+
+        <h3 class="font-medium text-charcoal mb-2">4-7-8 Breathing</h3>
+        <div class="script-box script-box-teen text-sm leading-relaxed mb-4">
+          <p class="mb-3">"This breathing technique activates your body's relaxation response. Here's how it works:</p>
+          <p class="mb-2">• Breathe in through your nose for 4 counts</p>
+          <p class="mb-2">• Hold your breath for 7 counts</p>
+          <p class="mb-2">• Breathe out slowly through your mouth for 8 counts</p>
+          <p class="mb-3">The exhale being longer than the inhale is what triggers the calming response. Let's practice together..."</p>
+          <p>[Practice 3-4 cycles together]</p>
+        </div>
+
+        <h3 class="font-medium text-charcoal mb-2">Box Breathing</h3>
+        <div class="script-box script-box-teen text-sm leading-relaxed">
+          <p class="mb-3">"Box breathing is used by Navy SEALs to stay calm under pressure. Imagine drawing a box in the air:</p>
+          <p class="mb-2">• Breathe in for 4 counts (drawing up the first side)</p>
+          <p class="mb-2">• Hold for 4 counts (drawing across the top)</p>
+          <p class="mb-2">• Breathe out for 4 counts (drawing down the other side)</p>
+          <p class="mb-2">• Hold for 4 counts (drawing across the bottom)</p>
+          <p class="mb-3">Repeat the box as many times as you need..."</p>
+          <p>[Practice 3-4 cycles together]</p>
+        </div>
+      </section>
+
+      <!-- Child Version -->
+      <section>
+        <h2 class="text-lg font-bold text-amber-600 mb-3 flex items-center gap-2">
+          Breathing Techniques – Child-Friendly Scripts
+        </h2>
+
+        <h3 class="font-medium text-charcoal mb-2">Balloon Breathing</h3>
+        <div class="script-box script-box-child text-sm leading-relaxed mb-4">
+          <p class="mb-3">"Let's pretend your tummy is a balloon! Put your hands on your belly...</p>
+          <p class="mb-3">Now breathe in slowly through your nose and watch your balloon get bigger and bigger... feel it push out against your hands...</p>
+          <p class="mb-3">Now let the air out slowly through your mouth – shhhhhhh – and feel your balloon getting smaller...</p>
+          <p class="mb-3">Let's do it again! Big balloon... [breathe in]... slowly let the air out... [breathe out]..."</p>
+          <p>[Practice 5-6 breaths, making it playful]</p>
+        </div>
+
+        <h3 class="font-medium text-charcoal mb-2">Hot Cocoa Breathing</h3>
+        <div class="script-box script-box-child text-sm leading-relaxed mb-4">
+          <p class="mb-3">"Pretend you're holding a cup of yummy hot cocoa! Cup your hands like you're holding the mug...</p>
+          <p class="mb-3">First, smell how good it smells – breathe in through your nose... mmmmm...</p>
+          <p class="mb-3">But it's too hot to drink! So blow on it gently to cool it down – breathe out slowly through your mouth...</p>
+          <p class="mb-3">Smell again... blow to cool it down... Let's do it a few more times until it's just right!"</p>
+          <p>[Practice 5-6 breaths]</p>
+        </div>
+
+        <h3 class="font-medium text-charcoal mb-2">Starfish Breathing</h3>
+        <div class="script-box script-box-child text-sm leading-relaxed">
+          <p class="mb-3">"Hold up one hand like a starfish with your fingers spread out. Use your other hand to trace around it...</p>
+          <p class="mb-3">Start at the bottom of your thumb. Breathe IN as you slide your finger UP the outside of your thumb...</p>
+          <p class="mb-3">Breathe OUT as you slide DOWN the other side into the valley...</p>
+          <p class="mb-3">Breathe IN going UP your pointer finger... OUT going down... Keep going all the way around your hand!"</p>
+          <p>[Demonstrate and practice together]</p>
+        </div>
+      </section>
+    </div>
+
+  </div>
+</BaseLayout>

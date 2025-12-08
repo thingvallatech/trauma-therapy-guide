@@ -1,0 +1,618 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Phase 4 Scripts: Desensitization & Interweaves - EMDR" description="Printable Phase 4 scripts including processing scripts and cognitive, emotional, somatic, and attachment interweaves.">
+  <style>
+    @media print {
+      @page {
+        size: letter;
+        margin: 0.5in;
+      }
+      body {
+        font-size: 10pt !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .print-page {
+        page-break-after: always;
+        break-after: page;
+      }
+      .print-page:last-child {
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+      .notes-line {
+        border-bottom: 1px solid #d1d5db;
+        min-height: 1.2rem;
+        margin-bottom: 0.3rem;
+      }
+      .script-box {
+        background-color: #f0fdfa !important;
+        border-left: 3px solid #14b8a6 !important;
+        padding: 0.5rem !important;
+      }
+    }
+
+    @media screen {
+      .print-page {
+        max-width: 8.5in;
+        margin: 2rem auto;
+        padding: 0.75in;
+        background: white;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        border-radius: 0.5rem;
+      }
+    }
+
+    .notes-line {
+      border-bottom: 1px solid #d1d5db;
+      min-height: 1.4rem;
+      margin-bottom: 0.4rem;
+    }
+
+    .script-box {
+      background-color: #f0fdfa;
+      border-left: 3px solid #14b8a6;
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+    }
+
+    .script-box-coral {
+      background-color: #fff7f5;
+      border-left: 3px solid #f97066;
+    }
+
+    .script-box-lavender {
+      background-color: #faf5ff;
+      border-left: 3px solid #a78bfa;
+    }
+
+    .script-box-forest {
+      background-color: #f0f5f1;
+      border-left: 3px solid #2D5A3D;
+    }
+
+    .script-box-amber {
+      background-color: #fffbeb;
+      border-left: 3px solid #f59e0b;
+    }
+
+    .interweave-type {
+      display: inline-block;
+      padding: 0.15rem 0.4rem;
+      font-size: 0.65rem;
+      font-weight: 700;
+      border-radius: 0.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.025em;
+    }
+  </style>
+
+  <!-- Screen header -->
+  <div class="no-print bg-coral-50 border-b border-coral-200">
+    <div class="max-w-5xl mx-auto px-4 py-4">
+      <nav class="text-sm mb-2">
+        <ol class="flex items-center gap-2 text-charcoal/60">
+          <li><a href="/clinicians" class="hover:text-forest-600 transition-colors">Clinicians</a></li>
+          <li>/</li>
+          <li><a href="/clinicians/emdr" class="hover:text-forest-600 transition-colors">EMDR</a></li>
+          <li>/</li>
+          <li><a href="/clinicians/emdr/phase-4" class="hover:text-forest-600 transition-colors">Phase 4</a></li>
+          <li>/</li>
+          <li class="text-charcoal">Print Scripts</li>
+        </ol>
+      </nav>
+      <div class="flex items-center justify-between">
+        <h1 class="font-serif text-2xl font-semibold text-charcoal">Phase 4 Scripts: Desensitization & Interweaves</h1>
+        <button
+          onclick="window.print()"
+          class="inline-flex items-center gap-2 px-4 py-2 bg-coral-600 text-white rounded-lg hover:bg-coral-700 transition-colors text-sm shadow-sm"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+          </svg>
+          Print All Pages
+        </button>
+      </div>
+      <p class="text-sm text-charcoal/70 mt-2">5 printable pages with processing scripts and interweave techniques</p>
+    </div>
+  </div>
+
+  <!-- PAGE 1: Core Processing Scripts -->
+  <div class="print-page">
+    <div class="flex items-center justify-between mb-4 pb-2 border-b-2 border-coral-500">
+      <div>
+        <h1 class="font-serif text-xl font-bold text-charcoal">Phase 4: Desensitization</h1>
+        <p class="text-xs text-charcoal/60">Core Processing Scripts</p>
+      </div>
+      <div class="text-right">
+        <p class="text-xs text-charcoal/60">Page 1 of 5</p>
+        <p class="text-xs text-charcoal/60">Client: ________________</p>
+      </div>
+    </div>
+
+    <!-- Setup Script -->
+    <div class="mb-4">
+      <h2 class="text-sm font-bold text-coral-700 uppercase tracking-wide mb-2">Setup Script</h2>
+      <div class="script-box">
+        <p class="text-sm italic leading-relaxed">
+          "Remember that this is not happening now and you are safe. I am right here with you. Let whatever happens happen, just notice what is coming up for you. Any thoughts, images, emotions and body sensations. Remember that there is no right or wrong, just watch what is coming up and notice them as you would observe the scenery from a moving train. You can use your stop signal if needed."
+        </p>
+      </div>
+    </div>
+
+    <!-- Beginning Processing -->
+    <div class="mb-4">
+      <h2 class="text-sm font-bold text-forest-700 uppercase tracking-wide mb-2">Beginning Processing Script</h2>
+      <div class="script-box script-box-forest">
+        <p class="text-sm italic leading-relaxed">
+          "Now I am inviting you to hold in your mind and body:<br/>
+          • The image<br/>
+          • The negative belief: ________________________________<br/>
+          • The emotions: ____________________________________<br/>
+          • That you feel in your ________________________________<br/><br/>
+          And I am going to [eye movements / taps / tones] for you to follow."
+        </p>
+      </div>
+      <div class="bg-teal-100 rounded p-2 text-center mt-2">
+        <p class="text-xs font-medium text-teal-800">Begin bilateral stimulation: 24-36 passes (~30 seconds)</p>
+      </div>
+    </div>
+
+    <!-- Between Sets -->
+    <div class="mb-4">
+      <h2 class="text-sm font-bold text-teal-700 uppercase tracking-wide mb-2">Between Sets</h2>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="border rounded-lg p-3">
+          <h3 class="text-xs font-semibold text-charcoal mb-2">After Each Set:</h3>
+          <div class="script-box text-xs">
+            <p class="italic">"Let's stop, take a breath, let it go… What are you noticing now?"</p>
+          </div>
+          <p class="text-xs text-charcoal/60 text-center my-1">or</p>
+          <div class="script-box text-xs">
+            <p class="italic">"What is happening now?"</p>
+          </div>
+        </div>
+        <div class="border rounded-lg p-3">
+          <h3 class="text-xs font-semibold text-charcoal mb-2">Continue Processing:</h3>
+          <div class="script-box script-box-forest text-xs">
+            <p class="italic">"Go with that."</p>
+          </div>
+          <p class="text-xs text-charcoal/60 text-center my-1">or</p>
+          <div class="script-box script-box-forest text-xs">
+            <p class="italic">"Notice that."</p>
+          </div>
+          <p class="text-xs text-charcoal/60 text-center mt-2">Resume BLS (24-36 passes)</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Return to Target -->
+    <div class="mb-4">
+      <h2 class="text-sm font-bold text-lavender-700 uppercase tracking-wide mb-2">Return to Target</h2>
+      <div class="script-box script-box-lavender">
+        <p class="text-sm italic mb-2">"When you go back to the original incident, what do you get now?"</p>
+        <p class="text-sm italic">"On a scale of 0-10, how disturbing does it feel now?"</p>
+      </div>
+      <p class="text-xs text-charcoal/60 mt-2">Use when: neutral/positive material reported, need to check if processing is complete, or significant shift occurred</p>
+    </div>
+
+    <!-- Session Notes -->
+    <div class="mt-4 pt-2 border-t border-wood-200">
+      <h3 class="text-xs font-semibold text-charcoal/60 uppercase tracking-wide mb-2">Session Notes</h3>
+      <div class="notes-line"></div>
+      <div class="notes-line"></div>
+      <div class="notes-line"></div>
+    </div>
+  </div>
+
+  <!-- PAGE 2: Signs of Stuck Processing & When to Intervene -->
+  <div class="print-page">
+    <div class="flex items-center justify-between mb-4 pb-2 border-b-2 border-amber-500">
+      <div>
+        <h1 class="font-serif text-xl font-bold text-charcoal">Stuck Processing</h1>
+        <p class="text-xs text-charcoal/60">Recognition & Decision Guide</p>
+      </div>
+      <div class="text-right">
+        <p class="text-xs text-charcoal/60">Page 2 of 5</p>
+        <p class="text-xs text-charcoal/60">Date: ________________</p>
+      </div>
+    </div>
+
+    <!-- Signs of Stuck Processing -->
+    <div class="mb-5">
+      <h2 class="text-sm font-bold text-amber-700 uppercase tracking-wide mb-3">Signs Processing is Stuck</h2>
+      <div class="grid grid-cols-2 gap-3">
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-3">
+          <h3 class="text-xs font-bold text-amber-800 uppercase mb-2">☐ Looping</h3>
+          <ul class="text-xs text-amber-900/80 space-y-1">
+            <li>☐ Same material repeats 2-3 sets</li>
+            <li>☐ SUD not changing</li>
+            <li>☐ Returning to same emotion/image</li>
+            <li>☐ Circular thinking patterns</li>
+          </ul>
+        </div>
+        <div class="bg-coral-50 border border-coral-200 rounded-lg p-3">
+          <h3 class="text-xs font-bold text-coral-800 uppercase mb-2">☐ Blocking</h3>
+          <ul class="text-xs text-coral-900/80 space-y-1">
+            <li>☐ Client reports "nothing" or "blank"</li>
+            <li>☐ Sudden dissociation or numbing</li>
+            <li>☐ Avoidance of specific material</li>
+            <li>☐ Intellectualizing instead of feeling</li>
+          </ul>
+        </div>
+        <div class="bg-lavender-50 border border-lavender-200 rounded-lg p-3">
+          <h3 class="text-xs font-bold text-lavender-800 uppercase mb-2">☐ Abreaction Stall</h3>
+          <ul class="text-xs text-lavender-900/80 space-y-1">
+            <li>☐ Intense emotion not shifting</li>
+            <li>☐ Client overwhelmed for extended time</li>
+            <li>☐ Hyper/hypo arousal persists</li>
+            <li>☐ Freeze response activated</li>
+          </ul>
+        </div>
+        <div class="bg-teal-50 border border-teal-200 rounded-lg p-3">
+          <h3 class="text-xs font-bold text-teal-800 uppercase mb-2">☐ Feeder Memory</h3>
+          <ul class="text-xs text-teal-900/80 space-y-1">
+            <li>☐ Earlier memory driving current block</li>
+            <li>☐ Core belief preventing integration</li>
+            <li>☐ "This always happens" statements</li>
+            <li>☐ May need to target earlier memory</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Before Using Interweaves -->
+    <div class="mb-5">
+      <h2 class="text-sm font-bold text-forest-700 uppercase tracking-wide mb-2">Before Using an Interweave, Try:</h2>
+      <div class="bg-forest-50 border-l-3 border-forest-500 p-3 rounded-r-lg">
+        <ul class="text-sm text-forest-800 space-y-1">
+          <li>☐ <strong>Change BLS:</strong> Speed up/slow down, change direction, switch type</li>
+          <li>☐ <strong>Adjust set length:</strong> Longer for cognitive stuck, shorter for emotional flooding</li>
+          <li>☐ <strong>Add modality:</strong> Combine eye movements with tapping or tones</li>
+          <li>☐ <strong>Verbalization:</strong> Ask client to describe what they're seeing out loud</li>
+          <li>☐ <strong>Focus shift:</strong> "Just notice that sensation in your body"</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Decision Tree -->
+    <div class="mb-4">
+      <h2 class="text-sm font-bold text-charcoal uppercase tracking-wide mb-2">Which Interweave to Use?</h2>
+      <div class="grid grid-cols-2 gap-3 text-xs">
+        <div class="border rounded-lg p-2">
+          <p class="font-semibold text-teal-700 mb-1">→ COGNITIVE</p>
+          <p class="text-charcoal/70">Irrational beliefs, self-blame, distorted thinking, stuck in "shoulds"</p>
+        </div>
+        <div class="border rounded-lg p-2">
+          <p class="font-semibold text-coral-700 mb-1">→ EMOTIONAL</p>
+          <p class="text-charcoal/70">Blocked emotions, intellectualizing, minimizing, unable to access feelings</p>
+        </div>
+        <div class="border rounded-lg p-2">
+          <p class="font-semibold text-lavender-700 mb-1">→ SOMATIC</p>
+          <p class="text-charcoal/70">Body sensations stuck, frozen/fight/flight responses incomplete</p>
+        </div>
+        <div class="border rounded-lg p-2">
+          <p class="font-semibold text-forest-700 mb-1">→ ATTACHMENT/PARTS</p>
+          <p class="text-charcoal/70">Younger self visible, protective parts active, developmental wounds</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="mt-4 pt-2 border-t border-wood-200">
+      <h3 class="text-xs font-semibold text-charcoal/60 uppercase tracking-wide mb-2">Clinical Notes</h3>
+      <div class="notes-line"></div>
+      <div class="notes-line"></div>
+      <div class="notes-line"></div>
+      <div class="notes-line"></div>
+    </div>
+  </div>
+
+  <!-- PAGE 3: Cognitive & Emotional Interweave Scripts -->
+  <div class="print-page">
+    <div class="flex items-center justify-between mb-4 pb-2 border-b-2 border-teal-500">
+      <div>
+        <h1 class="font-serif text-xl font-bold text-charcoal">Cognitive & Emotional Interweaves</h1>
+        <p class="text-xs text-charcoal/60">Scripts for Thought-Based & Feeling-Based Blocks</p>
+      </div>
+      <div class="text-right">
+        <p class="text-xs text-charcoal/60">Page 3 of 5</p>
+      </div>
+    </div>
+
+    <!-- Cognitive Interweaves -->
+    <div class="mb-5">
+      <h2 class="text-sm font-bold text-teal-700 uppercase tracking-wide mb-2">Cognitive Interweaves</h2>
+      <p class="text-xs text-charcoal/60 mb-3">Use when client is stuck in irrational beliefs, self-blame, or distorted thinking</p>
+
+      <div class="space-y-3">
+        <div class="border border-teal-200 rounded-lg p-3">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="interweave-type bg-teal-500 text-white">Responsibility</span>
+            <span class="text-xs text-charcoal/60">For self-blame, shame, taking on others' actions</span>
+          </div>
+          <div class="script-box text-sm">
+            <p class="italic mb-1">"Whose fault was it really?"</p>
+            <p class="italic mb-1">"If this happened to a child you know, would you blame them?"</p>
+            <p class="italic">"Who was the adult responsible for keeping you safe?"</p>
+          </div>
+        </div>
+
+        <div class="border border-teal-200 rounded-lg p-3">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="interweave-type bg-teal-500 text-white">Safety</span>
+            <span class="text-xs text-charcoal/60">For present-moment danger confusion</span>
+          </div>
+          <div class="script-box text-sm">
+            <p class="italic mb-1">"Is it over? Are you safe now?"</p>
+            <p class="italic mb-1">"Where are you right now? Look around this room."</p>
+            <p class="italic">"What year is it? How old are you now?"</p>
+          </div>
+        </div>
+
+        <div class="border border-teal-200 rounded-lg p-3">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="interweave-type bg-teal-500 text-white">Choices</span>
+            <span class="text-xs text-charcoal/60">For "I should have..." thinking</span>
+          </div>
+          <div class="script-box text-sm">
+            <p class="italic mb-1">"What choices did you have as a child?"</p>
+            <p class="italic mb-1">"What options were available to you at that age?"</p>
+            <p class="italic">"What would you tell a child in that same situation?"</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Emotional Interweaves -->
+    <div class="mb-4">
+      <h2 class="text-sm font-bold text-coral-700 uppercase tracking-wide mb-2">Emotional Interweaves</h2>
+      <p class="text-xs text-charcoal/60 mb-3">Use when emotions are blocked, minimized, or client is intellectualizing</p>
+
+      <div class="space-y-3">
+        <div class="border border-coral-200 rounded-lg p-3">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="interweave-type bg-coral-500 text-white">Accessing</span>
+            <span class="text-xs text-charcoal/60">For blocked or hidden emotions</span>
+          </div>
+          <div class="script-box script-box-coral text-sm">
+            <p class="italic mb-1">"What would you want to say to them if you could?"</p>
+            <p class="italic mb-1">"If your body could speak right now, what would it say?"</p>
+            <p class="italic">"What emotion is underneath that?"</p>
+          </div>
+        </div>
+
+        <div class="border border-coral-200 rounded-lg p-3">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="interweave-type bg-coral-500 text-white">Validation</span>
+            <span class="text-xs text-charcoal/60">For minimizing or dismissing feelings</span>
+          </div>
+          <div class="script-box script-box-coral text-sm">
+            <p class="italic mb-1">"It makes sense you would feel that way."</p>
+            <p class="italic mb-1">"Any child in that situation would feel [emotion]."</p>
+            <p class="italic">"That's a normal response to what happened."</p>
+          </div>
+        </div>
+
+        <div class="border border-coral-200 rounded-lg p-3">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="interweave-type bg-coral-500 text-white">Permission</span>
+            <span class="text-xs text-charcoal/60">For suppressed or forbidden feelings</span>
+          </div>
+          <div class="script-box script-box-coral text-sm">
+            <p class="italic mb-1">"It's okay to feel angry about what happened."</p>
+            <p class="italic mb-1">"What would it be like to let yourself feel that?"</p>
+            <p class="italic">"You're allowed to feel sad/angry/scared."</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="text-xs text-charcoal/60 italic mt-3">After each interweave: "Go with that" + BLS set, then check what emerged</p>
+  </div>
+
+  <!-- PAGE 4: Somatic Interweave Scripts -->
+  <div class="print-page">
+    <div class="flex items-center justify-between mb-4 pb-2 border-b-2 border-lavender-500">
+      <div>
+        <h1 class="font-serif text-xl font-bold text-charcoal">Somatic Interweaves</h1>
+        <p class="text-xs text-charcoal/60">Scripts for Body-Based Processing Blocks</p>
+      </div>
+      <div class="text-right">
+        <p class="text-xs text-charcoal/60">Page 4 of 5</p>
+      </div>
+    </div>
+
+    <p class="text-sm text-charcoal/70 mb-4">Use when body sensations persist, defensive responses are stuck, or trauma is held somatically.</p>
+
+    <!-- Movement -->
+    <div class="mb-4">
+      <div class="border border-lavender-200 rounded-lg p-3">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="interweave-type bg-lavender-500 text-white">Movement</span>
+          <span class="text-xs text-charcoal/60">For body impulses that want expression</span>
+        </div>
+        <div class="script-box script-box-lavender text-sm">
+          <p class="italic mb-1">"What does your body want to do right now?"</p>
+          <p class="italic mb-1">"If your hands could move freely, what would they do?"</p>
+          <p class="italic mb-1">"If your feet could move, where would they take you?"</p>
+          <p class="italic">"Let your body show me what it wants to do."</p>
+        </div>
+        <p class="text-xs text-charcoal/60 mt-2">Allow micro-movements or imagined movements during BLS</p>
+      </div>
+    </div>
+
+    <!-- Defensive Response Completion -->
+    <div class="mb-4">
+      <div class="border border-lavender-200 rounded-lg p-3">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="interweave-type bg-lavender-500 text-white">Completion</span>
+          <span class="text-xs text-charcoal/60">For incomplete fight/flight/freeze responses</span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-3 mt-3">
+          <div class="bg-red-50 border border-red-200 rounded p-2">
+            <h4 class="text-xs font-bold text-red-800 uppercase mb-1">Fight</h4>
+            <div class="text-xs space-y-1">
+              <p class="italic">"Push against my hands."</p>
+              <p class="italic">"What would you have said?"</p>
+              <p class="italic">"Let your arms do what they wanted to do."</p>
+            </div>
+          </div>
+          <div class="bg-amber-50 border border-amber-200 rounded p-2">
+            <h4 class="text-xs font-bold text-amber-800 uppercase mb-1">Flight</h4>
+            <div class="text-xs space-y-1">
+              <p class="italic">"Imagine your legs running you to safety."</p>
+              <p class="italic">"Feel yourself getting away."</p>
+              <p class="italic">"Where would you run to?"</p>
+            </div>
+          </div>
+          <div class="bg-blue-50 border border-blue-200 rounded p-2">
+            <h4 class="text-xs font-bold text-blue-800 uppercase mb-1">Freeze</h4>
+            <div class="text-xs space-y-1">
+              <p class="italic">"It's okay, you're safe to move now."</p>
+              <p class="italic">"Slowly start to feel your body again."</p>
+              <p class="italic">"Wiggle your fingers and toes."</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Grounding -->
+    <div class="mb-4">
+      <div class="border border-lavender-200 rounded-lg p-3">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="interweave-type bg-lavender-500 text-white">Grounding</span>
+          <span class="text-xs text-charcoal/60">For dissociation or overwhelm</span>
+        </div>
+        <div class="script-box script-box-lavender text-sm">
+          <p class="italic mb-1">"Feel your feet on the floor right now."</p>
+          <p class="italic mb-1">"Notice where your body touches the chair."</p>
+          <p class="italic mb-1">"Notice where your body feels calm or neutral."</p>
+          <p class="italic">"Can you feel your hands? Press them together."</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Release -->
+    <div class="mb-4">
+      <div class="border border-lavender-200 rounded-lg p-3">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="interweave-type bg-lavender-500 text-white">Release</span>
+          <span class="text-xs text-charcoal/60">For stuck body sensations</span>
+        </div>
+        <div class="script-box script-box-lavender text-sm">
+          <p class="italic mb-1">"Imagine that tension/pain releasing with each breath."</p>
+          <p class="italic mb-1">"What color is that sensation? Imagine it flowing out."</p>
+          <p class="italic mb-1">"If that tightness could speak, what would it say?"</p>
+          <p class="italic">"Breathe into that area and let it soften."</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div class="mt-4 pt-2 border-t border-wood-200">
+      <h3 class="text-xs font-semibold text-charcoal/60 uppercase tracking-wide mb-2">Body Sensations Tracked</h3>
+      <div class="notes-line"></div>
+      <div class="notes-line"></div>
+      <div class="notes-line"></div>
+    </div>
+  </div>
+
+  <!-- PAGE 5: Attachment, Parts & Unmet Needs Scripts -->
+  <div class="print-page">
+    <div class="flex items-center justify-between mb-4 pb-2 border-b-2 border-forest-500">
+      <div>
+        <h1 class="font-serif text-xl font-bold text-charcoal">Attachment, Parts & Unmet Needs</h1>
+        <p class="text-xs text-charcoal/60">Scripts for Developmental & Relational Wounds</p>
+      </div>
+      <div class="text-right">
+        <p class="text-xs text-charcoal/60">Page 5 of 5</p>
+      </div>
+    </div>
+
+    <p class="text-sm text-charcoal/70 mb-4">Use when attachment wounds, younger parts, or developmental unmet needs are blocking processing.</p>
+
+    <!-- Younger Self / Child Part -->
+    <div class="mb-4">
+      <div class="border border-forest-200 rounded-lg p-3">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="interweave-type bg-forest-500 text-white">Younger Self</span>
+          <span class="text-xs text-charcoal/60">For accessing and comforting child states</span>
+        </div>
+        <div class="script-box script-box-forest text-sm">
+          <p class="italic mb-1">"What does that younger part of you need to hear?"</p>
+          <p class="italic mb-1">"Can your adult self go comfort that child?"</p>
+          <p class="italic mb-1">"What would you want to tell your younger self?"</p>
+          <p class="italic mb-1">"Imagine holding that little one. What do they need?"</p>
+          <p class="italic">"Can you let them know they survived this?"</p>
+        </div>
+        <p class="text-xs text-charcoal/60 mt-2 italic">After: "Go with that image of comforting your younger self" + BLS</p>
+      </div>
+    </div>
+
+    <!-- Protective Parts -->
+    <div class="mb-4">
+      <div class="border border-forest-200 rounded-lg p-3">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="interweave-type bg-forest-500 text-white">Protective Parts</span>
+          <span class="text-xs text-charcoal/60">For defenses blocking processing</span>
+        </div>
+        <div class="script-box script-box-forest text-sm">
+          <p class="italic mb-1">"What is this part trying to protect you from?"</p>
+          <p class="italic mb-1">"Can you thank this part for trying to keep you safe?"</p>
+          <p class="italic mb-1">"What is this part afraid will happen if you process this?"</p>
+          <p class="italic mb-1">"Can this part step back a little while we work?"</p>
+          <p class="italic">"What would this protector need to feel safe enough to let go?"</p>
+        </div>
+        <p class="text-xs text-charcoal/60 mt-2 italic">Acknowledge the positive intent before asking part to step back</p>
+      </div>
+    </div>
+
+    <!-- Unmet Needs -->
+    <div class="mb-4">
+      <div class="border border-forest-200 rounded-lg p-3">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="interweave-type bg-forest-500 text-white">Unmet Needs</span>
+          <span class="text-xs text-charcoal/60">For developmental deficits and longing</span>
+        </div>
+        <div class="script-box script-box-forest text-sm">
+          <p class="italic mb-1">"What did you need then that you didn't get?"</p>
+          <p class="italic mb-1">"Imagine receiving what you needed from a safe figure."</p>
+          <p class="italic mb-1">"What would it have been like to be protected/loved/seen?"</p>
+          <p class="italic">"Who do you wish had been there for you?"</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reparative Imagery -->
+    <div class="mb-4">
+      <div class="border border-forest-200 rounded-lg p-3">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="interweave-type bg-forest-500 text-white">Repair</span>
+          <span class="text-xs text-charcoal/60">For providing corrective experience</span>
+        </div>
+        <div class="script-box script-box-forest text-sm">
+          <p class="italic mb-1">"Imagine a nurturing figure providing what was missing."</p>
+          <p class="italic mb-1">"What would it feel like to receive that care now?"</p>
+          <p class="italic mb-1">"Picture someone safe intervening and protecting you."</p>
+          <p class="italic mb-1">"Imagine bringing that child to a place where they are loved."</p>
+          <p class="italic">"Let yourself receive what you always deserved."</p>
+        </div>
+        <p class="text-xs text-charcoal/60 mt-2 italic">Nurturing figure can be: therapist, older self, spiritual figure, imagined ideal parent, safe relative</p>
+      </div>
+    </div>
+
+    <!-- Important Note -->
+    <div class="bg-amber-50 border-l-3 border-amber-500 p-3 rounded-r-lg text-xs">
+      <p class="font-semibold text-amber-800 mb-1">Important:</p>
+      <p class="text-amber-900/80">Always follow interweaves with BLS. The goal is to provide just enough to restart processing, then step back and let the client's own adaptive system integrate. Less is more—interweaves are jump starts, not the engine.</p>
+    </div>
+  </div>
+</BaseLayout>
