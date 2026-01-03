@@ -325,7 +325,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 
   <!-- PAGE 3: Cognitive & Emotional Interweave Scripts -->
   <div class="print-page">
-    <div class="flex items-center justify-between mb-4 pb-2 border-b-2 border-teal-500">
+    <div class="flex items-center justify-between mb-3 pb-2 border-b-2 border-teal-500">
       <div>
         <h1 class="font-serif text-xl font-bold text-charcoal">Cognitive & Emotional Interweaves</h1>
         <p class="text-xs text-charcoal/60">Scripts for Thought-Based & Feeling-Based Blocks</p>
@@ -336,94 +336,116 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     </div>
 
     <!-- Cognitive Interweaves -->
-    <div class="mb-5">
-      <h2 class="text-sm font-bold text-teal-700 uppercase tracking-wide mb-2">Cognitive Interweaves</h2>
-      <p class="text-xs text-charcoal/60 mb-3">Use when client is stuck in irrational beliefs, self-blame, or distorted thinking</p>
+    <div class="mb-3">
+      <h2 class="text-xs font-bold text-teal-700 uppercase tracking-wide mb-1">Cognitive Interweaves <span class="font-normal text-charcoal/60">— For irrational beliefs, self-blame, distorted thinking</span></h2>
 
-      <div class="space-y-3">
-        <div class="border border-teal-200 rounded-lg p-3">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="interweave-type bg-teal-500 text-white">Responsibility</span>
-            <span class="text-xs text-charcoal/60">For self-blame, shame, taking on others' actions</span>
+      <div class="grid grid-cols-3 gap-2">
+        <div class="border border-teal-200 rounded p-2">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="interweave-type bg-teal-500 text-white text-[9px] py-0">Responsibility</span>
           </div>
-          <div class="script-box text-sm">
-            <p class="italic mb-1">"Whose fault was it really?"</p>
-            <p class="italic mb-1">"If this happened to a child you know, would you blame them?"</p>
-            <p class="italic">"Who was the adult responsible for keeping you safe?"</p>
+          <p class="text-[10px] text-charcoal/60 mb-1">Self-blame, shame</p>
+          <div class="script-box text-[10px] !p-1.5 !m-0">
+            <p class="italic">"Whose fault was it really?"</p>
+            <p class="italic">"If this happened to a child you know, would you blame them?"</p>
+            <p class="italic">"Who was the adult responsible?"</p>
           </div>
         </div>
 
-        <div class="border border-teal-200 rounded-lg p-3">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="interweave-type bg-teal-500 text-white">Safety</span>
-            <span class="text-xs text-charcoal/60">For present-moment danger confusion</span>
+        <div class="border border-teal-200 rounded p-2">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="interweave-type bg-teal-500 text-white text-[9px] py-0">Safety</span>
           </div>
-          <div class="script-box text-sm">
-            <p class="italic mb-1">"Is it over? Are you safe now?"</p>
-            <p class="italic mb-1">"Where are you right now? Look around this room."</p>
-            <p class="italic">"What year is it? How old are you now?"</p>
+          <p class="text-[10px] text-charcoal/60 mb-1">Present-moment confusion</p>
+          <div class="script-box text-[10px] !p-1.5 !m-0">
+            <p class="italic">"Is it over? Are you safe now?"</p>
+            <p class="italic">"Where are you right now?"</p>
+            <p class="italic">"What year is it? How old are you?"</p>
           </div>
         </div>
 
-        <div class="border border-teal-200 rounded-lg p-3">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="interweave-type bg-teal-500 text-white">Choices</span>
-            <span class="text-xs text-charcoal/60">For "I should have..." thinking</span>
+        <div class="border border-teal-200 rounded p-2">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="interweave-type bg-teal-500 text-white text-[9px] py-0">Choices</span>
           </div>
-          <div class="script-box text-sm">
-            <p class="italic mb-1">"What choices did you have as a child?"</p>
-            <p class="italic mb-1">"What options were available to you at that age?"</p>
-            <p class="italic">"What would you tell a child in that same situation?"</p>
+          <p class="text-[10px] text-charcoal/60 mb-1">"I should have..." thinking</p>
+          <div class="script-box text-[10px] !p-1.5 !m-0">
+            <p class="italic">"What choices did you have as a child?"</p>
+            <p class="italic">"What options were available at that age?"</p>
+            <p class="italic">"What would you tell a child in that situation?"</p>
           </div>
         </div>
       </div>
     </div>
 
     <!-- Emotional Interweaves -->
-    <div class="mb-4">
-      <h2 class="text-sm font-bold text-coral-700 uppercase tracking-wide mb-2">Emotional Interweaves</h2>
-      <p class="text-xs text-charcoal/60 mb-3">Use when emotions are blocked, minimized, or client is intellectualizing</p>
+    <div class="mb-3">
+      <h2 class="text-xs font-bold text-coral-700 uppercase tracking-wide mb-1">Emotional Interweaves <span class="font-normal text-charcoal/60">— For blocked, minimized, or intellectualized emotions</span></h2>
 
-      <div class="space-y-3">
-        <div class="border border-coral-200 rounded-lg p-3">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="interweave-type bg-coral-500 text-white">Accessing</span>
-            <span class="text-xs text-charcoal/60">For blocked or hidden emotions</span>
+      <div class="grid grid-cols-3 gap-2">
+        <div class="border border-coral-200 rounded p-2 bg-coral-50/30">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="interweave-type bg-coral-500 text-white text-[9px] py-0">Accessing</span>
           </div>
-          <div class="script-box script-box-coral text-sm">
-            <p class="italic mb-1">"What would you want to say to them if you could?"</p>
-            <p class="italic mb-1">"If your body could speak right now, what would it say?"</p>
+          <p class="text-[10px] text-charcoal/60 mb-1">Blocked/hidden emotions</p>
+          <div class="script-box script-box-coral text-[10px] !p-1.5 !m-0">
+            <p class="italic">"What would you want to say to them?"</p>
+            <p class="italic">"If your body could speak, what would it say?"</p>
             <p class="italic">"What emotion is underneath that?"</p>
           </div>
         </div>
 
-        <div class="border border-coral-200 rounded-lg p-3">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="interweave-type bg-coral-500 text-white">Validation</span>
-            <span class="text-xs text-charcoal/60">For minimizing or dismissing feelings</span>
+        <div class="border border-coral-200 rounded p-2 bg-coral-50/30">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="interweave-type bg-coral-500 text-white text-[9px] py-0">Validation</span>
           </div>
-          <div class="script-box script-box-coral text-sm">
-            <p class="italic mb-1">"It makes sense you would feel that way."</p>
-            <p class="italic mb-1">"Any child in that situation would feel [emotion]."</p>
-            <p class="italic">"That's a normal response to what happened."</p>
+          <p class="text-[10px] text-charcoal/60 mb-1">Minimizing/dismissing</p>
+          <div class="script-box script-box-coral text-[10px] !p-1.5 !m-0">
+            <p class="italic">"It makes sense you would feel that way."</p>
+            <p class="italic">"Any child in that situation would feel [emotion]."</p>
+            <p class="italic">"That's a normal response."</p>
           </div>
         </div>
 
-        <div class="border border-coral-200 rounded-lg p-3">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="interweave-type bg-coral-500 text-white">Permission</span>
-            <span class="text-xs text-charcoal/60">For suppressed or forbidden feelings</span>
+        <div class="border border-coral-200 rounded p-2 bg-coral-50/30">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="interweave-type bg-coral-500 text-white text-[9px] py-0">Permission</span>
           </div>
-          <div class="script-box script-box-coral text-sm">
-            <p class="italic mb-1">"It's okay to feel angry about what happened."</p>
-            <p class="italic mb-1">"What would it be like to let yourself feel that?"</p>
+          <p class="text-[10px] text-charcoal/60 mb-1">Suppressed/forbidden feelings</p>
+          <div class="script-box script-box-coral text-[10px] !p-1.5 !m-0">
+            <p class="italic">"It's okay to feel angry about what happened."</p>
+            <p class="italic">"What would it be like to let yourself feel that?"</p>
             <p class="italic">"You're allowed to feel sad/angry/scared."</p>
           </div>
         </div>
       </div>
     </div>
 
-    <p class="text-xs text-charcoal/60 italic mt-3">After each interweave: "Go with that" + BLS set, then check what emerged</p>
+    <div class="bg-teal-50 border border-teal-200 rounded p-2 text-xs text-center">
+      <p class="text-teal-800">After each interweave: <strong>"Go with that"</strong> + BLS set, then check what emerged</p>
+    </div>
+
+    <!-- Add session tracking to fill the page -->
+    <div class="mt-4 pt-3 border-t border-wood-200">
+      <h3 class="text-xs font-bold text-charcoal uppercase tracking-wide mb-2">Interweave Tracking</h3>
+      <table class="w-full text-xs border-collapse">
+        <thead>
+          <tr class="bg-wood-100">
+            <th class="border border-wood-200 p-1 text-left w-16">Set #</th>
+            <th class="border border-wood-200 p-1 text-left">Stuck Pattern</th>
+            <th class="border border-wood-200 p-1 text-left w-24">Type Used</th>
+            <th class="border border-wood-200 p-1 text-left">Response/Shift</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="border border-wood-200 p-2"></td><td class="border border-wood-200 p-2"></td><td class="border border-wood-200 p-2"></td><td class="border border-wood-200 p-2"></td></tr>
+          <tr><td class="border border-wood-200 p-2"></td><td class="border border-wood-200 p-2"></td><td class="border border-wood-200 p-2"></td><td class="border border-wood-200 p-2"></td></tr>
+          <tr><td class="border border-wood-200 p-2"></td><td class="border border-wood-200 p-2"></td><td class="border border-wood-200 p-2"></td><td class="border border-wood-200 p-2"></td></tr>
+          <tr><td class="border border-wood-200 p-2"></td><td class="border border-wood-200 p-2"></td><td class="border border-wood-200 p-2"></td><td class="border border-wood-200 p-2"></td></tr>
+          <tr><td class="border border-wood-200 p-2"></td><td class="border border-wood-200 p-2"></td><td class="border border-wood-200 p-2"></td><td class="border border-wood-200 p-2"></td></tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
   <!-- PAGE 4: Somatic Interweave Scripts -->
