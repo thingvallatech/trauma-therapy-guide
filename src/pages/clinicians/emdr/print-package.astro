@@ -1,20 +1,20 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 
-// Define all printable pages in order
+// Define all printable pages in order with section grouping
 const printablePages = [
-  { url: '/clinicians/emdr/intake-form', title: 'Intake Form' },
-  { url: '/clinicians/emdr/phase-2-scripts', title: 'Phase 2: Preparation Scripts' },
-  { url: '/clinicians/emdr/phase-2-resource-safe-place', title: 'Phase 2: Safe Place Resource' },
-  { url: '/clinicians/emdr/phase-2-resource-container', title: 'Phase 2: Container Resource' },
-  { url: '/clinicians/emdr/phase-2-resource-lightstream', title: 'Phase 2: Lightstream Resource' },
-  { url: '/clinicians/emdr/phase-2-resource-breathing', title: 'Phase 2: Breathing Resource' },
-  { url: '/clinicians/emdr/phase-3-scripts', title: 'Phase 3: Assessment Scripts' },
-  { url: '/clinicians/emdr/phase-4-scripts', title: 'Phase 4: Desensitization Scripts' },
-  { url: '/clinicians/emdr/phase-5-scripts', title: 'Phase 5: Installation Scripts' },
-  { url: '/clinicians/emdr/phase-6-scripts', title: 'Phase 6: Body Scan Scripts' },
-  { url: '/clinicians/emdr/phase-7-scripts', title: 'Phase 7: Closure Scripts' },
-  { url: '/clinicians/emdr/phase-8-scripts', title: 'Phase 8: Reevaluation Scripts' },
+  { url: '/clinicians/emdr/intake-form', title: 'Intake Form', section: 'Phase 1: History & Treatment Planning', sectionNum: 1 },
+  { url: '/clinicians/emdr/phase-2-scripts', title: 'Preparation Scripts', section: 'Phase 2: Preparation', sectionNum: 2 },
+  { url: '/clinicians/emdr/phase-2-resource-safe-place', title: 'Safe Place Resource', section: null },
+  { url: '/clinicians/emdr/phase-2-resource-container', title: 'Container Resource', section: null },
+  { url: '/clinicians/emdr/phase-2-resource-lightstream', title: 'Lightstream Resource', section: null },
+  { url: '/clinicians/emdr/phase-2-resource-breathing', title: 'Breathing Resource', section: null },
+  { url: '/clinicians/emdr/phase-3-scripts', title: 'Assessment Scripts', section: 'Phase 3: Assessment', sectionNum: 3 },
+  { url: '/clinicians/emdr/phase-4-scripts', title: 'Desensitization Scripts', section: 'Phase 4: Desensitization', sectionNum: 4 },
+  { url: '/clinicians/emdr/phase-5-scripts', title: 'Installation Scripts', section: 'Phase 5: Installation', sectionNum: 5 },
+  { url: '/clinicians/emdr/phase-6-scripts', title: 'Body Scan Scripts', section: 'Phase 6: Body Scan', sectionNum: 6 },
+  { url: '/clinicians/emdr/phase-7-scripts', title: 'Closure Scripts', section: 'Phase 7: Closure', sectionNum: 7 },
+  { url: '/clinicians/emdr/phase-8-scripts', title: 'Reevaluation Scripts', section: 'Phase 8: Reevaluation', sectionNum: 8 },
 ];
 ---
 
@@ -58,6 +58,56 @@ const printablePages = [
     .assessment-step {
       padding: 0.5rem;
       margin-bottom: 0.5rem;
+    }
+
+    /* Section divider page styling */
+    .section-divider {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 9.5in;
+      text-align: center;
+      background: linear-gradient(135deg, #f0fdf4 0%, #f8faf8 100%);
+      border: 3px solid #2D5A3D;
+      border-radius: 0;
+    }
+    .section-divider .phase-number {
+      width: 120px;
+      height: 120px;
+      background: #2D5A3D;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+      font-family: 'Lora', Georgia, serif;
+    }
+    .section-divider .phase-title {
+      font-family: 'Lora', Georgia, serif;
+      font-size: 2rem;
+      font-weight: 600;
+      color: #2C2C2C;
+      margin-bottom: 0.5rem;
+    }
+    .section-divider .phase-subtitle {
+      font-size: 1rem;
+      color: #2C2C2C;
+      opacity: 0.7;
+    }
+    .section-divider .emdr-badge {
+      margin-top: 2rem;
+      padding: 0.5rem 1.5rem;
+      background: #2D5A3D;
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 9999px;
     }
 
     @media print {
@@ -124,6 +174,17 @@ const printablePages = [
         border-bottom: 1px solid #d1d5db;
         min-height: 1.2rem;
         margin-bottom: 0.3rem;
+      }
+
+      /* Section divider print styles */
+      .section-divider {
+        page-break-after: always;
+        break-after: page;
+        min-height: 9.5in;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: linear-gradient(135deg, #f0fdf4 0%, #f8faf8 100%) !important;
+        border: 3px solid #2D5A3D !important;
       }
     }
 
@@ -285,6 +346,19 @@ const printablePages = [
         updateProgress(i, 'loading');
 
         try {
+          // Insert section divider if this page starts a new section
+          if (page.section) {
+            const divider = document.createElement('div');
+            divider.className = 'section-divider print-page';
+            divider.innerHTML = `
+              <div class="phase-number">${page.sectionNum}</div>
+              <div class="phase-title">${page.section}</div>
+              <div class="phase-subtitle">EMDR Protocol Reference</div>
+              <div class="emdr-badge">Clinical Scripts & Resources</div>
+            `;
+            printContent.appendChild(divider);
+          }
+
           const response = await fetch(page.url);
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
