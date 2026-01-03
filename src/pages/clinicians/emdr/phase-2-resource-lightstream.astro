@@ -1,0 +1,240 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Lightstream Technique - EMDR Resource" description="Printable Lightstream Technique scripts for teenagers and children, an EMDR Phase 2 somatic resource for reducing body-held distress.">
+  <style>
+    @media print {
+      @page {
+        size: letter;
+        margin: 0.4in;
+      }
+      .no-print { display: none !important; }
+      body { background: white !important; font-size: 10pt !important; }
+      .print-page {
+        page-break-after: always;
+        padding: 0 !important;
+        margin: 0 !important;
+        min-height: 9.5in;
+      }
+      .print-page:last-child { page-break-after: avoid; }
+      .notes-line {
+        border-bottom: 1px solid #d1d5db;
+        min-height: 1.4rem;
+        margin-bottom: 0.4rem;
+      }
+    }
+    .script-box {
+      border-left: 3px solid #2D5A3D;
+      background: #f8faf8;
+      padding: 0.75rem 1rem;
+      margin: 0.5rem 0;
+      font-style: italic;
+    }
+    .script-box-teen {
+      border-left-color: #8b5cf6;
+      background: #f5f3ff;
+    }
+    .script-box-child {
+      border-left-color: #f59e0b;
+      background: #fffbeb;
+    }
+  </style>
+
+  <!-- Print header bar -->
+  <div class="no-print bg-lavender-600 text-white py-3 sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="/clinicians/emdr/phase-2" class="text-white/80 hover:text-white transition-colors flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Phase 2
+        </a>
+        <span class="text-white/40">|</span>
+        <span class="text-sm">Lightstream Technique Resource</span>
+      </div>
+      <button
+        onclick="window.print()"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-white text-lavender-700 rounded-lg hover:bg-lavender-50 transition-colors text-sm font-medium"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+        </svg>
+        Print Script
+      </button>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 py-8">
+
+    <!-- Page 1: Teenager Version -->
+    <div class="print-page">
+      <header class="mb-6 border-b-2 border-lavender-500 pb-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-serif text-2xl font-bold text-charcoal">Lightstream Technique</h1>
+            <p class="text-sm text-charcoal/60">Phase 2 Resource Development - Somatic Regulation</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs text-charcoal/60">Page 1 of 2</p>
+            <p class="text-xs text-charcoal/60">Client: ________________</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="mb-4">
+        <div class="bg-lavender-50 border border-lavender-200 rounded-lg p-3 mb-4">
+          <h3 class="text-sm font-bold text-lavender-800 mb-1">Purpose</h3>
+          <p class="text-sm text-lavender-900/80">The Lightstream Technique helps reduce uncomfortable body sensations and somatic distress. It works with the body's natural healing capacity by using imagery of healing light to process and release tension held in the body.</p>
+        </div>
+      </section>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-bold text-lavender-700 mb-3 flex items-center gap-2">
+          <span class="w-8 h-8 bg-lavender-500 text-white rounded-lg flex items-center justify-center text-sm font-bold">T</span>
+          Teenager Script (Ages 13+)
+        </h2>
+
+        <div class="script-box script-box-teen text-sm leading-relaxed">
+          <p class="mb-3">"This is a technique to help reduce uncomfortable feelings or sensations in your body. First, I'd like you to scan your body and notice if there's anywhere you feel tension, discomfort, or unpleasant sensations. Take a moment... Where do you notice it?"</p>
+
+          <p class="mb-3 text-lavender-700 not-italic">[Wait for response - note the location]</p>
+
+          <p class="mb-2">"Now, if that sensation had a shape, what shape would it be?"</p>
+          <p class="mb-2">"What size is it?"</p>
+          <p class="mb-2">"What color is it?"</p>
+          <p class="mb-2">"Does it have a temperature - warm or cold?"</p>
+          <p class="mb-3">"If it had a texture, what would it be like?"</p>
+
+          <p class="mb-3">"Now, I'd like you to imagine a healing light above your head. What color is this light - a color that feels healing, soothing, and positive to you?"</p>
+
+          <p class="mb-3 text-lavender-700 not-italic">[Wait for their answer]</p>
+
+          <p class="mb-3">"Good. Imagine this [color] light beginning to flow down into the top of your head, like a gentle stream. Feel it flowing down through your head... your neck... your shoulders... flowing through your whole body..."</p>
+
+          <p class="mb-3">"As this light reaches the area where you noticed that [shape/color], let it flow around it and through it. The light begins to resonate with the disturbance, vibrating it, loosening it. Allow the light to carry away any tension or discomfort, letting it drain out through your fingertips and toes..."</p>
+
+          <p class="mb-3 text-lavender-700 not-italic">[Add slow bilateral stimulation throughout]</p>
+
+          <p>"Let the light continue to flow until your whole body feels filled with this healing, soothing energy. Take your time... When you're ready, open your eyes."</p>
+        </div>
+      </section>
+
+      <section class="mb-4">
+        <h3 class="text-sm font-bold text-charcoal uppercase tracking-wide mb-2">Session Documentation</h3>
+        <div class="grid grid-cols-3 gap-3">
+          <div>
+            <p class="text-xs text-charcoal/60 mb-1">Body Location:</p>
+            <div class="notes-line"></div>
+          </div>
+          <div>
+            <p class="text-xs text-charcoal/60 mb-1">Shape/Size:</p>
+            <div class="notes-line"></div>
+          </div>
+          <div>
+            <p class="text-xs text-charcoal/60 mb-1">Color:</p>
+            <div class="notes-line"></div>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3 mt-2">
+          <div>
+            <p class="text-xs text-charcoal/60 mb-1">Healing Light Color:</p>
+            <div class="notes-line"></div>
+          </div>
+          <div>
+            <p class="text-xs text-charcoal/60 mb-1">Post-Exercise Sensations:</p>
+            <div class="notes-line"></div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Page 2: Child Version -->
+    <div class="print-page">
+      <header class="mb-6 border-b-2 border-amber-500 pb-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-serif text-2xl font-bold text-charcoal">Lightstream Technique</h1>
+            <p class="text-sm text-charcoal/60">Phase 2 Resource Development - Somatic Regulation</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs text-charcoal/60">Page 2 of 2</p>
+            <p class="text-xs text-charcoal/60">Date: ________________</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-bold text-amber-600 mb-3 flex items-center gap-2">
+          <span class="w-8 h-8 bg-amber-500 text-white rounded-lg flex items-center justify-center text-sm font-bold">C</span>
+          Child-Friendly Script (Ages 6-12)
+        </h2>
+
+        <div class="script-box script-box-child text-sm leading-relaxed">
+          <p class="mb-3">"Let's do something magical! First, I want you to think about your body. Is there anywhere that feels a little yucky, tight, or uncomfortable? Maybe your tummy, your chest, your head? Take a moment to check..."</p>
+
+          <p class="mb-3 text-amber-700 not-italic">[Wait for response]</p>
+
+          <p class="mb-3">"If that yucky feeling was a shape, like a cloud or a blob, what would it look like?"</p>
+          <p class="mb-3">"What color is it?"</p>
+          <p class="mb-3">"Is it big or little?"</p>
+
+          <p class="mb-3">"Now, imagine way up above your head, there's a beautiful, magical light - like sunshine or starlight. What color is your magical light? Pick a color that makes you feel happy and calm!"</p>
+
+          <p class="mb-3 text-amber-700 not-italic">[Wait for their answer]</p>
+
+          <p class="mb-3">"Perfect! Now imagine that [color] light starting to pour down onto the top of your head, like a gentle waterfall of light. Feel it going down through your head... making it feel warm and tingly in a good way..."</p>
+
+          <p class="mb-3">"The light keeps flowing down through your neck... your shoulders... your arms... all the way down through your whole body like magic..."</p>
+
+          <p class="mb-3">"When the light gets to that yucky feeling, watch what happens! The light shines on it and starts to make it smaller and lighter. Maybe it's changing color too... The light is washing it away, like water washing away dirt..."</p>
+
+          <p class="mb-3 text-amber-700 not-italic">[Add butterfly hugs throughout]</p>
+
+          <p>"Keep letting the light flow until your whole body feels warm and calm and full of beautiful [color] light. Take as long as you need... When you're ready, you can open your eyes."</p>
+        </div>
+      </section>
+
+      <section class="mb-4">
+        <h3 class="text-sm font-bold text-charcoal uppercase tracking-wide mb-2">Session Notes</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="text-xs text-charcoal/60 mb-1">Yucky Feeling Location/Shape:</p>
+            <div class="notes-line"></div>
+            <div class="notes-line"></div>
+          </div>
+          <div>
+            <p class="text-xs text-charcoal/60 mb-1">Magic Light Color/Response:</p>
+            <div class="notes-line"></div>
+            <div class="notes-line"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-lavender-50 border border-lavender-200 rounded-lg p-4 mb-4">
+        <h3 class="text-sm font-bold text-lavender-800 mb-2">When to Use Lightstream</h3>
+        <ul class="text-sm text-lavender-900/80 space-y-1">
+          <li>- Client reports body tension, pain, or discomfort related to distress</li>
+          <li>- During Phase 4-6 when client is stuck with somatic symptoms</li>
+          <li>- At session end if residual body sensations remain</li>
+          <li>- As standalone resource when processing is contraindicated</li>
+          <li>- For clients who respond better to body-focused interventions</li>
+        </ul>
+      </section>
+
+      <section class="bg-forest-50 border border-forest-200 rounded-lg p-4">
+        <h3 class="text-sm font-bold text-forest-800 mb-2">Clinical Tips</h3>
+        <ul class="text-sm text-forest-900/80 space-y-1">
+          <li>- Use slow bilateral stimulation throughout (4-6 slow passes per section)</li>
+          <li>- Pace the script to match client's breathing and processing speed</li>
+          <li>- If sensation intensifies initially, reassure this is normal and continue</li>
+          <li>- Client chooses the healing light color - their choice often has meaning</li>
+          <li>- Can repeat if needed - check sensation attributes again after first pass</li>
+          <li>- Combine with safe place if client becomes distressed</li>
+        </ul>
+      </section>
+    </div>
+
+  </div>
+</BaseLayout>

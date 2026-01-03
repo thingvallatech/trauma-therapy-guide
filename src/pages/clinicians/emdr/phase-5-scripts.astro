@@ -1,0 +1,288 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Phase 5 Installation Scripts - Printable" description="Printable EMDR Phase 5 Installation scripts and VOC strengthening guidance.">
+  <style>
+    @media print {
+      @page {
+        size: letter;
+        margin: 0.4in;
+      }
+      .no-print { display: none !important; }
+      body { background: white !important; font-size: 10pt !important; }
+      .print-page {
+        page-break-after: always;
+        padding: 0 !important;
+        margin: 0 !important;
+        min-height: 9.5in;
+      }
+      .print-page:last-child { page-break-after: avoid; }
+      .notes-line {
+        border-bottom: 1px solid #d1d5db;
+        min-height: 1.3rem;
+        margin-bottom: 0.3rem;
+      }
+    }
+    .script-box {
+      border-left: 3px solid #eab308;
+      background: #fefce8;
+      padding: 0.75rem 1rem;
+      margin: 0.5rem 0;
+      font-style: italic;
+    }
+  </style>
+
+  <!-- Print header bar -->
+  <div class="no-print bg-sunny-600 text-white py-3 sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="/clinicians/emdr/phase-5" class="text-white/80 hover:text-white transition-colors flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Phase 5
+        </a>
+        <span class="text-white/40">|</span>
+        <span class="text-sm">Phase 5 Installation Scripts</span>
+      </div>
+      <button
+        onclick="window.print()"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-white text-sunny-700 rounded-lg hover:bg-sunny-50 transition-colors text-sm font-medium"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+        </svg>
+        Print Scripts
+      </button>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 py-8">
+
+    <!-- Page 1: Installation Script -->
+    <div class="print-page">
+      <header class="mb-5 border-b-2 border-sunny-500 pb-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 5: Installation</h1>
+            <p class="text-sm text-charcoal/60">Strengthening the Positive Cognition</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs text-charcoal/60">Page 1 of 2</p>
+            <p class="text-xs text-charcoal/60">Client: ________________</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Opening Script -->
+      <section class="mb-5">
+        <h2 class="text-lg font-bold text-sunny-700 mb-2">Opening Script</h2>
+        <div class="script-box text-sm leading-relaxed">
+          <p>"We are now moving into the installation phase. This is where we strengthen a positive belief so that it fully integrates with the memory we've been processing. The goal is to help your brain connect the memory with a more adaptive, empowering belief."</p>
+        </div>
+      </section>
+
+      <!-- Step 1: Verify PC -->
+      <section class="mb-4">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="w-7 h-7 bg-sunny-500 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
+          <h3 class="font-semibold text-charcoal">Verify the Positive Cognition</h3>
+        </div>
+        <div class="script-box text-sm">
+          <p>"We originally identified '<span class="not-italic font-medium">[state PC]</span>' as the belief you'd like to hold about yourself. Does that still feel right, or would you like to adjust it?"</p>
+        </div>
+        <div class="mt-2 grid grid-cols-2 gap-4">
+          <div>
+            <p class="text-xs text-charcoal/60 mb-1">Original PC:</p>
+            <div class="notes-line"></div>
+          </div>
+          <div>
+            <p class="text-xs text-charcoal/60 mb-1">Adjusted PC (if any):</p>
+            <div class="notes-line"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Step 2: Check VOC -->
+      <section class="mb-4">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="w-7 h-7 bg-teal-500 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
+          <h3 class="font-semibold text-charcoal">Check Validity of Cognition (VOC)</h3>
+        </div>
+        <div class="script-box text-sm" style="border-left-color: #0d9488; background: #f0fdfa;">
+          <p>"On a scale of 1 to 7, where 1 means 'completely false' and 7 means 'completely true,' how true does this positive belief feel to you now when you think about the original memory?"</p>
+        </div>
+        <div class="flex items-center gap-6 mt-2">
+          <span class="text-sm font-medium">Initial VOC: ______ / 7</span>
+          <span class="text-xs text-charcoal/60">(If below 7, continue processing)</span>
+        </div>
+      </section>
+
+      <!-- Step 3: Install with BLS -->
+      <section class="mb-4">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="w-7 h-7 bg-forest-500 text-white rounded-full flex items-center justify-center text-sm font-bold">3</span>
+          <h3 class="font-semibold text-charcoal">Install with Bilateral Stimulation</h3>
+        </div>
+        <div class="script-box text-sm" style="border-left-color: #2D5A3D; background: #f0fdf4;">
+          <p>"Hold the positive belief '<span class="not-italic font-medium">[PC]</span>' together with the original memory. Let yourself notice whatever happens as we go."</p>
+        </div>
+        <div class="bg-teal-100 rounded-lg p-2 mt-2 text-center">
+          <p class="text-sm font-medium text-teal-800">Begin BLS: 24-36 passes (~30 seconds)</p>
+        </div>
+      </section>
+
+      <!-- Step 4: Check-In -->
+      <section class="mb-4">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="w-7 h-7 bg-lavender-500 text-white rounded-full flex items-center justify-center text-sm font-bold">4</span>
+          <h3 class="font-semibold text-charcoal">Check-In After Each Set</h3>
+        </div>
+        <div class="script-box text-sm" style="border-left-color: #8b5cf6; background: #f5f3ff;">
+          <p>"Take a breath... let it go. What came up for you?"</p>
+        </div>
+        <p class="text-xs text-charcoal/60 mt-2">Continue BLS until getting 2 same responses or no new information emerges.</p>
+      </section>
+
+      <!-- Step 5: Reassess VOC -->
+      <section class="mb-4">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="w-7 h-7 bg-coral-500 text-white rounded-full flex items-center justify-center text-sm font-bold">5</span>
+          <h3 class="font-semibold text-charcoal">Reassess VOC</h3>
+        </div>
+        <div class="script-box text-sm" style="border-left-color: #f97316; background: #fff7ed;">
+          <p>"Now, on that same scale from 1 to 7, how true does the belief '<span class="not-italic font-medium">[PC]</span>' feel to you?"</p>
+        </div>
+        <div class="mt-2 grid grid-cols-2 gap-3 text-sm">
+          <div class="bg-forest-100 rounded p-2 text-forest-800">
+            <strong>VOC = 7:</strong> Proceed to Phase 6 (Body Scan)
+          </div>
+          <div class="bg-coral-100 rounded p-2 text-coral-800">
+            <strong>VOC &lt; 7:</strong> Continue installation or explore barriers
+          </div>
+        </div>
+      </section>
+
+      <!-- VOC Tracking -->
+      <section class="bg-wood-50 border border-wood-200 rounded-lg p-4">
+        <h3 class="text-sm font-bold text-charcoal mb-2">VOC Tracking</h3>
+        <div class="grid grid-cols-5 gap-2 text-center text-xs">
+          <div><p class="text-charcoal/60">Set 1</p><div class="notes-line"></div></div>
+          <div><p class="text-charcoal/60">Set 2</p><div class="notes-line"></div></div>
+          <div><p class="text-charcoal/60">Set 3</p><div class="notes-line"></div></div>
+          <div><p class="text-charcoal/60">Set 4</p><div class="notes-line"></div></div>
+          <div><p class="text-charcoal/60">Final</p><div class="notes-line"></div></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Page 2: When VOC Won't Reach 7 & Notes -->
+    <div class="print-page">
+      <header class="mb-5 border-b-2 border-lavender-500 pb-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 5: Installation</h1>
+            <p class="text-sm text-charcoal/60">When VOC Won't Reach 7 & Clinical Guidance</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs text-charcoal/60">Page 2 of 2</p>
+            <p class="text-xs text-charcoal/60">Date: ________________</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- When VOC Won't Reach 7 -->
+      <section class="mb-5">
+        <h2 class="text-lg font-bold text-lavender-700 mb-3">When VOC Won't Reach 7</h2>
+        <p class="text-sm text-charcoal/70 mb-3">Sometimes VOC won't reach 7 due to legitimate reasons:</p>
+
+        <div class="grid grid-cols-3 gap-3 mb-4">
+          <div class="bg-lavender-50 border border-lavender-200 rounded-lg p-3 text-center">
+            <p class="text-sm font-semibold text-lavender-800">Realistic Limitations</p>
+            <p class="text-xs text-lavender-600 mt-1">"I can't be 100% safe in all situations"</p>
+          </div>
+          <div class="bg-lavender-50 border border-lavender-200 rounded-lg p-3 text-center">
+            <p class="text-sm font-semibold text-lavender-800">Secondary Gains</p>
+            <p class="text-xs text-lavender-600 mt-1">Benefits from current beliefs need addressing</p>
+          </div>
+          <div class="bg-lavender-50 border border-lavender-200 rounded-lg p-3 text-center">
+            <p class="text-sm font-semibold text-lavender-800">Blocking Beliefs</p>
+            <p class="text-xs text-lavender-600 mt-1">Other negative beliefs interfering</p>
+          </div>
+        </div>
+
+        <div class="bg-wood-50 border border-wood-200 rounded-lg p-4 mb-4">
+          <h3 class="text-sm font-semibold text-charcoal mb-2">Exploring Barriers Script</h3>
+          <div class="script-box text-sm" style="background: white;">
+            <p>"What prevents it from being a 7?"</p>
+          </div>
+          <p class="text-xs text-charcoal/60 mt-2">If the answer reveals another target (blocking belief, feeder memory), note it for future processing.</p>
+        </div>
+
+        <div class="bg-forest-50 border border-forest-200 rounded-lg p-4">
+          <h3 class="text-sm font-semibold text-forest-800 mb-2">Ecological VOC</h3>
+          <p class="text-sm text-forest-900/80">A VOC of 6 may be <strong>ecological</strong> (realistic). Accept this if:</p>
+          <ul class="text-sm text-forest-900/80 mt-2 space-y-1">
+            <li>- The belief involves realistic limitations</li>
+            <li>- Client feels genuine peace with the belief</li>
+            <li>- Further processing yields no new material</li>
+            <li>- The belief feels true in the gut, not just intellectually</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- Child-Friendly Adaptations -->
+      <section class="mb-5">
+        <h2 class="text-lg font-bold text-amber-600 mb-3">Child-Friendly Adaptations</h2>
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+          <div class="script-box text-sm" style="border-left-color: #f59e0b; background: white;">
+            <p>"Remember that good thought we came up with - '<span class="not-italic font-medium">[PC]</span>'? Let's make it even stronger! Think about the memory and that good thought at the same time while we do our [tapping/eye movements]."</p>
+          </div>
+          <div class="mt-3 text-sm text-amber-900/80 space-y-1">
+            <p>- Use concrete language: "How much do you believe this in your heart?" instead of VOC scale</p>
+            <p>- Visual aids: Show a thermometer or slider for rating belief strength</p>
+            <p>- Celebrate progress: "Wow, it's getting stronger!"</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Session Notes -->
+      <section class="mb-4">
+        <h2 class="text-sm font-bold text-charcoal uppercase tracking-wide mb-3">Session Notes</h2>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="text-xs text-charcoal/60 mb-1">Final PC:</p>
+            <div class="notes-line"></div>
+            <div class="notes-line"></div>
+          </div>
+          <div>
+            <p class="text-xs text-charcoal/60 mb-1">Final VOC:</p>
+            <div class="notes-line"></div>
+            <p class="text-xs text-charcoal/60 mb-1 mt-2">Ecological? Y / N</p>
+          </div>
+        </div>
+        <div class="mt-3">
+          <p class="text-xs text-charcoal/60 mb-1">Blocking Beliefs Identified (for future processing):</p>
+          <div class="notes-line"></div>
+          <div class="notes-line"></div>
+        </div>
+        <div class="mt-3">
+          <p class="text-xs text-charcoal/60 mb-1">Additional Notes:</p>
+          <div class="notes-line"></div>
+          <div class="notes-line"></div>
+          <div class="notes-line"></div>
+        </div>
+      </section>
+
+      <!-- Transition to Phase 6 -->
+      <section class="bg-teal-50 border border-teal-200 rounded-lg p-4">
+        <h3 class="text-sm font-bold text-teal-800 mb-2">Transition to Phase 6 (Body Scan)</h3>
+        <div class="script-box text-sm" style="border-left-color: #0d9488; background: white;">
+          <p>"Excellent. The positive belief is now installed. Next, we're going to do a body scan to check for any remaining tension or discomfort. Ready?"</p>
+        </div>
+      </section>
+    </div>
+
+  </div>
+</BaseLayout>

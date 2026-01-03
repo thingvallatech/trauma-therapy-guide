@@ -7,7 +7,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     @media print {
       @page {
         size: letter;
-        margin: 0.5in;
+        margin: 0.4in;
       }
       body {
         font-size: 10pt !important;
@@ -20,6 +20,9 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
       .print-page {
         page-break-after: always;
         break-after: page;
+        min-height: 9.5in;
+        padding: 0 !important;
+        margin: 0 !important;
       }
       .print-page:last-child {
         page-break-after: avoid;
@@ -35,6 +38,13 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
         border-left: 3px solid #14b8a6 !important;
         padding: 0.5rem !important;
       }
+      /* Prevent orphaned content and blank spaces */
+      .mb-4 { margin-bottom: 0.75rem !important; }
+      .mb-5 { margin-bottom: 1rem !important; }
+      .space-y-3 > * + * { margin-top: 0.5rem !important; }
+      .space-y-4 > * + * { margin-top: 0.6rem !important; }
+      .p-3 { padding: 0.5rem !important; }
+      .rounded-lg { border-radius: 0.375rem !important; }
     }
 
     @media screen {

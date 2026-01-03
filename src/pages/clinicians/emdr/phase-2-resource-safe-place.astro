@@ -1,0 +1,224 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Safe/Calm Place Exercise - EMDR Resource" description="Printable Safe/Calm Place scripts for teenagers and children, a core EMDR Phase 2 resource development exercise.">
+  <style>
+    @media print {
+      @page {
+        size: letter;
+        margin: 0.4in;
+      }
+      .no-print { display: none !important; }
+      body { background: white !important; font-size: 10pt !important; }
+      .print-page {
+        page-break-after: always;
+        padding: 0 !important;
+        margin: 0 !important;
+        min-height: 9.5in;
+      }
+      .print-page:last-child { page-break-after: avoid; }
+      .notes-line {
+        border-bottom: 1px solid #d1d5db;
+        min-height: 1.4rem;
+        margin-bottom: 0.4rem;
+      }
+    }
+    .script-box {
+      border-left: 3px solid #2D5A3D;
+      background: #f8faf8;
+      padding: 0.75rem 1rem;
+      margin: 0.5rem 0;
+      font-style: italic;
+    }
+    .script-box-teen {
+      border-left-color: #0d9488;
+      background: #f0fdfa;
+    }
+    .script-box-child {
+      border-left-color: #f59e0b;
+      background: #fffbeb;
+    }
+  </style>
+
+  <!-- Print header bar -->
+  <div class="no-print bg-teal-600 text-white py-3 sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="/clinicians/emdr/phase-2" class="text-white/80 hover:text-white transition-colors flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Phase 2
+        </a>
+        <span class="text-white/40">|</span>
+        <span class="text-sm">Safe/Calm Place Resource</span>
+      </div>
+      <button
+        onclick="window.print()"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-white text-teal-700 rounded-lg hover:bg-teal-50 transition-colors text-sm font-medium"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+        </svg>
+        Print Script
+      </button>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 py-8">
+
+    <!-- Page 1: Teenager Version -->
+    <div class="print-page">
+      <header class="mb-6 border-b-2 border-teal-500 pb-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-serif text-2xl font-bold text-charcoal">Safe/Calm Place Exercise</h1>
+            <p class="text-sm text-charcoal/60">Phase 2 Resource Development</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs text-charcoal/60">Page 1 of 2</p>
+            <p class="text-xs text-charcoal/60">Client: ________________</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-bold text-teal-700 mb-3 flex items-center gap-2">
+          <span class="w-8 h-8 bg-teal-500 text-white rounded-lg flex items-center justify-center text-sm font-bold">T</span>
+          Teenager Script (Ages 13+)
+        </h2>
+
+        <div class="script-box script-box-teen text-sm leading-relaxed">
+          <p class="mb-4">"I'd like you to think of a place where you feel calm, peaceful, and safe. This can be a real place you've been to, or somewhere you imagine. It could be a beach, your room, a forest, anywhere that feels good to you. Take a moment to think of your place..."</p>
+
+          <p class="mb-4 text-teal-700 not-italic">[Wait for them to identify a place]</p>
+
+          <p class="mb-4">"Good. Now close your eyes if that's comfortable, or just look down. Imagine yourself in that place right now. Notice what you see around you... the colors, the shapes, whether it's bright or dim..."</p>
+
+          <p class="mb-4">"Now notice any sounds in your safe place... maybe it's quiet, or maybe there are soothing sounds like water, birds, or music..."</p>
+
+          <p class="mb-4">"Notice any smells... the air might smell fresh, or like the ocean, or like your favorite scent..."</p>
+
+          <p class="mb-4">"Notice how your body feels in this place... maybe your muscles are relaxed, you feel warm, comfortable..."</p>
+
+          <p class="mb-4">"Now focus on the pleasant feelings you have being in this safe place. Where do you feel those calm, peaceful feelings in your body?"</p>
+
+          <p class="mb-4 text-teal-700 not-italic">[Add bilateral stimulation - slow taps or eye movements, 6-8 sets]</p>
+
+          <p class="mb-4">"Now think of one word or phrase that represents this place for you - something you can use to bring back this feeling anytime you need it."</p>
+
+          <p class="text-teal-700 not-italic">[Have them say the word while adding BLS. Practice recalling the place using just the word.]</p>
+        </div>
+      </section>
+
+      <section class="mb-4">
+        <h3 class="text-sm font-bold text-charcoal uppercase tracking-wide mb-2">Client Notes</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="text-xs text-charcoal/60 mb-1">Safe Place Description:</p>
+            <div class="notes-line"></div>
+            <div class="notes-line"></div>
+            <div class="notes-line"></div>
+          </div>
+          <div>
+            <p class="text-xs text-charcoal/60 mb-1">Cue Word/Phrase:</p>
+            <div class="notes-line"></div>
+            <p class="text-xs text-charcoal/60 mb-1 mt-3">Body Location of Calm:</p>
+            <div class="notes-line"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-teal-50 border border-teal-200 rounded-lg p-4">
+        <h3 class="text-sm font-bold text-teal-800 mb-2">Strengthening Tips</h3>
+        <ul class="text-sm text-teal-900/80 space-y-1">
+          <li>- Use slow, bilateral stimulation (4-6 passes) while they hold the image</li>
+          <li>- Have client practice accessing the safe place using only the cue word</li>
+          <li>- Encourage practice at home before sleep or when feeling stressed</li>
+          <li>- Can be enhanced with drawings or photos of the safe place</li>
+          <li>- If safe place becomes contaminated, develop a new one before processing</li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- Page 2: Child Version -->
+    <div class="print-page">
+      <header class="mb-6 border-b-2 border-amber-500 pb-4">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-serif text-2xl font-bold text-charcoal">Safe/Calm Place Exercise</h1>
+            <p class="text-sm text-charcoal/60">Phase 2 Resource Development</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs text-charcoal/60">Page 2 of 2</p>
+            <p class="text-xs text-charcoal/60">Date: ________________</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="mb-6">
+        <h2 class="text-lg font-bold text-amber-600 mb-3 flex items-center gap-2">
+          <span class="w-8 h-8 bg-amber-500 text-white rounded-lg flex items-center justify-center text-sm font-bold">C</span>
+          Child-Friendly Script (Ages 6-12)
+        </h2>
+
+        <div class="script-box script-box-child text-sm leading-relaxed">
+          <p class="mb-4">"Let's create a special safe place just for you! Think of somewhere that makes you feel really happy, calm, and safe. It can be a real place or a pretend place - maybe your bedroom, grandma's house, a treehouse, a beach, or even a magical place from your imagination..."</p>
+
+          <p class="mb-4 text-amber-700 not-italic">[Wait for them to share their place]</p>
+
+          <p class="mb-4">"That sounds like a great safe place! Let's go there together in our imagination. Close your eyes or look at the floor... Now pretend you're really there..."</p>
+
+          <p class="mb-4">"Look around your safe place. What do you see? Tell me about it..."</p>
+          <p class="mb-4 text-amber-700 not-italic">[Let them describe] "That's wonderful!"</p>
+
+          <p class="mb-4">"What sounds do you hear in your safe place? Is it quiet, or are there nice sounds?"</p>
+          <p class="mb-4 text-amber-700 not-italic">[Let them share]</p>
+
+          <p class="mb-4">"How does it smell there? Any yummy or nice smells?"</p>
+          <p class="mb-4 text-amber-700 not-italic">[Let them share]</p>
+
+          <p class="mb-4">"How does your body feel in your safe place? Maybe your tummy feels calm, or your shoulders feel relaxed like jelly..."</p>
+
+          <p class="mb-4 text-amber-700 not-italic">[Add slow butterfly hugs or tapping]</p>
+
+          <p class="mb-4">"Now let's give your safe place a special name - a magic word that helps you feel calm whenever you say it or think it. What should we call it?"</p>
+
+          <p class="text-amber-700 not-italic">[Practice saying the word with butterfly hugs. Explain they can go to their safe place anytime they need to feel calm.]</p>
+        </div>
+      </section>
+
+      <section class="mb-4">
+        <h3 class="text-sm font-bold text-charcoal uppercase tracking-wide mb-2">Session Notes</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <p class="text-xs text-charcoal/60 mb-1">Child's Safe Place:</p>
+            <div class="notes-line"></div>
+            <div class="notes-line"></div>
+            <div class="notes-line"></div>
+          </div>
+          <div>
+            <p class="text-xs text-charcoal/60 mb-1">Magic Word:</p>
+            <div class="notes-line"></div>
+            <p class="text-xs text-charcoal/60 mb-1 mt-3">Response to Exercise:</p>
+            <div class="notes-line"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+        <h3 class="text-sm font-bold text-amber-800 mb-2">Child-Specific Adaptations</h3>
+        <ul class="text-sm text-amber-900/80 space-y-1">
+          <li>- Use butterfly hugs (arms crossed, alternating taps) for bilateral stimulation</li>
+          <li>- Have child draw their safe place to strengthen the resource</li>
+          <li>- Practice with stuffed animals or toys going to their safe places too</li>
+          <li>- Create a "safe place card" they can keep in their pocket</li>
+          <li>- Teach caregiver to prompt safe place use at home when child is distressed</li>
+          <li>- If child has difficulty, offer suggestions: favorite vacation spot, cozy blanket fort, imaginary treehouse</li>
+        </ul>
+      </section>
+    </div>
+
+  </div>
+</BaseLayout>

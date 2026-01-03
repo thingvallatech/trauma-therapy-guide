@@ -1,0 +1,340 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Phase 8 Reevaluation Scripts & TICES Log - Printable" description="Printable EMDR Phase 8 Reevaluation scripts and TICES session tracking log.">
+  <style>
+    @media print {
+      @page {
+        size: letter;
+        margin: 0.4in;
+      }
+      .no-print { display: none !important; }
+      body { background: white !important; font-size: 10pt !important; }
+      .print-page {
+        page-break-after: always;
+        padding: 0 !important;
+        margin: 0 !important;
+        min-height: 9.5in;
+      }
+      .print-page:last-child { page-break-after: avoid; }
+      .notes-line {
+        border-bottom: 1px solid #d1d5db;
+        min-height: 1.3rem;
+        margin-bottom: 0.3rem;
+      }
+      .tices-table td {
+        border: 1px solid #d1d5db;
+        padding: 0.5rem 0.25rem;
+        min-height: 2.5rem;
+      }
+      .tices-table th {
+        border: 1px solid #d1d5db;
+        padding: 0.35rem 0.25rem;
+        background: #f0fdf4;
+      }
+    }
+    .script-box {
+      border-left: 3px solid #2D5A3D;
+      background: #f0fdf4;
+      padding: 0.75rem 1rem;
+      margin: 0.5rem 0;
+      font-style: italic;
+    }
+  </style>
+
+  <!-- Print header bar -->
+  <div class="no-print bg-forest-600 text-white py-3 sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="/clinicians/emdr/phase-8" class="text-white/80 hover:text-white transition-colors flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Phase 8
+        </a>
+        <span class="text-white/40">|</span>
+        <span class="text-sm">Phase 8 Scripts & TICES Log</span>
+      </div>
+      <button
+        onclick="window.print()"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-white text-forest-700 rounded-lg hover:bg-forest-50 transition-colors text-sm font-medium"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+        </svg>
+        Print All
+      </button>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 py-8">
+
+    <!-- Page 1: Reevaluation Script -->
+    <div class="print-page">
+      <header class="mb-5 border-b-2 border-forest-500 pb-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 8: Reevaluation</h1>
+            <p class="text-sm text-charcoal/60">Session Opening & Progress Assessment</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs text-charcoal/60">Page 1 of 2</p>
+            <p class="text-xs text-charcoal/60">Client: ________________</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Opening Script -->
+      <section class="mb-5">
+        <h2 class="text-lg font-bold text-forest-700 mb-2">Opening Script</h2>
+        <div class="script-box text-sm leading-relaxed">
+          <p>"Welcome back. Before we continue, I want to check in on what we worked on last session and see how you've been doing since then. This helps us make sure the processing is holding and identify if anything else needs attention."</p>
+        </div>
+      </section>
+
+      <!-- Reevaluation Steps -->
+      <section class="mb-5">
+        <h2 class="text-lg font-bold text-teal-700 mb-3">Reevaluation Steps</h2>
+
+        <!-- Step 1 -->
+        <div class="mb-4 border-l-4 border-forest-400 pl-4">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-6 h-6 bg-forest-500 text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
+            <h3 class="font-semibold text-charcoal">General Check-In</h3>
+          </div>
+          <div class="script-box text-sm">
+            <p>"How have you been since our last session? Have you noticed anything different - thoughts, feelings, dreams, body sensations, or any new insights about what we worked on?"</p>
+          </div>
+          <div class="mt-2">
+            <p class="text-xs text-charcoal/60 mb-1">Client Report:</p>
+            <div class="notes-line"></div>
+            <div class="notes-line"></div>
+          </div>
+        </div>
+
+        <!-- Step 2 -->
+        <div class="mb-4 border-l-4 border-teal-400 pl-4">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-6 h-6 bg-teal-500 text-white rounded-full flex items-center justify-center text-xs font-bold">2</span>
+            <h3 class="font-semibold text-charcoal">Access the Target</h3>
+          </div>
+          <div class="script-box text-sm" style="border-left-color: #0d9488; background: #f0fdfa;">
+            <p>"Let's check on the memory we processed last time. When you bring up that memory now, what comes to mind? Just notice what image, thought, or feeling arises."</p>
+          </div>
+        </div>
+
+        <!-- Step 3 -->
+        <div class="mb-4 border-l-4 border-sunny-400 pl-4">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-6 h-6 bg-sunny-500 text-white rounded-full flex items-center justify-center text-xs font-bold">3</span>
+            <h3 class="font-semibold text-charcoal">Check SUD</h3>
+          </div>
+          <div class="script-box text-sm" style="border-left-color: #eab308; background: #fefce8;">
+            <p>"On a scale of 0 to 10, how disturbing does this memory feel to you now?"</p>
+          </div>
+          <div class="flex items-center gap-4 mt-2">
+            <span class="text-sm font-medium">Current SUD: ______ / 10</span>
+            <span class="text-xs text-charcoal/60">(Compare to previous session's final SUD)</span>
+          </div>
+        </div>
+
+        <!-- Step 4 -->
+        <div class="mb-4 border-l-4 border-lavender-400 pl-4">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="w-6 h-6 bg-lavender-500 text-white rounded-full flex items-center justify-center text-xs font-bold">4</span>
+            <h3 class="font-semibold text-charcoal">Check VOC</h3>
+          </div>
+          <div class="script-box text-sm" style="border-left-color: #8b5cf6; background: #f5f3ff;">
+            <p>"And how true does the positive belief '<span class="not-italic font-medium">[PC]</span>' feel now, on a scale of 1 to 7?"</p>
+          </div>
+          <div class="flex items-center gap-4 mt-2">
+            <span class="text-sm font-medium">Current VOC: ______ / 7</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Decision Tree -->
+      <section class="mb-4">
+        <h2 class="text-sm font-bold text-charcoal uppercase tracking-wide mb-3">Based on Reevaluation</h2>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-forest-50 border border-forest-200 rounded-lg p-3">
+            <h4 class="font-semibold text-forest-800 text-sm mb-2">SUD = 0, VOC = 7</h4>
+            <p class="text-xs text-forest-700">Target is complete. Move to next target in treatment plan (Past, Present, or Future).</p>
+          </div>
+          <div class="bg-coral-50 border border-coral-200 rounded-lg p-3">
+            <h4 class="font-semibold text-coral-800 text-sm mb-2">SUD &gt; 0 or VOC &lt; 7</h4>
+            <p class="text-xs text-coral-700">Resume processing from Phase 4 or 5. There may be new channels or blocking beliefs.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Three-Pronged Protocol -->
+      <section class="bg-wood-50 border border-wood-200 rounded-lg p-4">
+        <h3 class="text-sm font-bold text-charcoal mb-2">Three-Pronged Protocol Reminder</h3>
+        <div class="grid grid-cols-3 gap-2 text-sm">
+          <div class="bg-white rounded p-2 text-center">
+            <p class="font-bold text-forest-700">PAST</p>
+            <p class="text-xs text-charcoal/70">Touchstone memories</p>
+          </div>
+          <div class="bg-white rounded p-2 text-center">
+            <p class="font-bold text-teal-700">PRESENT</p>
+            <p class="text-xs text-charcoal/70">Current triggers</p>
+          </div>
+          <div class="bg-white rounded p-2 text-center">
+            <p class="font-bold text-lavender-700">FUTURE</p>
+            <p class="text-xs text-charcoal/70">Future templates</p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Page 2: TICES Log -->
+    <div class="print-page">
+      <header class="mb-4 border-b-2 border-forest-500 pb-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-serif text-2xl font-bold text-charcoal">TICES Log</h1>
+            <p class="text-sm text-charcoal/60">Between-Session Tracking</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs text-charcoal/60">Page 2 of 2</p>
+            <p class="text-xs text-charcoal/60">Client: ________________</p>
+          </div>
+        </div>
+      </header>
+
+      <section class="mb-3">
+        <p class="text-sm text-charcoal/70">Track significant experiences between sessions. TICES = Trigger, Image, Cognition, Emotion, Sensation</p>
+      </section>
+
+      <!-- TICES Table -->
+      <table class="w-full text-xs tices-table border-collapse">
+        <thead>
+          <tr>
+            <th class="text-left w-16">Date/<br/>Session</th>
+            <th class="text-left">Trigger<br/><span class="font-normal text-charcoal/60">(What prompted it?)</span></th>
+            <th class="text-left">Image<br/><span class="font-normal text-charcoal/60">(What did you see?)</span></th>
+            <th class="text-left">Cognition<br/><span class="font-normal text-charcoal/60">(What thought?)</span></th>
+            <th class="text-left">Emotion<br/><span class="font-normal text-charcoal/60">(What feeling?)</span></th>
+            <th class="text-left">Sensation<br/><span class="font-normal text-charcoal/60">(Body location)</span></th>
+            <th class="text-center w-12">SUD<br/><span class="font-normal">(0-10)</span></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="h-12"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="h-12"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="h-12"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="h-12"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="h-12"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="h-12"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="h-12"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="h-12"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="h-12"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td class="h-12"></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Instructions -->
+      <section class="mt-4 bg-forest-50 border border-forest-200 rounded-lg p-4">
+        <h3 class="text-sm font-bold text-forest-800 mb-2">Instructions for Client</h3>
+        <ul class="text-xs text-forest-900/80 space-y-1">
+          <li>- Fill this out when you notice disturbance between sessions</li>
+          <li>- <strong>Trigger:</strong> What happened right before? (situation, person, place, sensation)</li>
+          <li>- <strong>Image:</strong> What picture or scene came to mind?</li>
+          <li>- <strong>Cognition:</strong> What negative thought about yourself arose?</li>
+          <li>- <strong>Emotion:</strong> What feelings came up? (fear, anger, sadness, shame, etc.)</li>
+          <li>- <strong>Sensation:</strong> Where did you feel it in your body?</li>
+          <li>- <strong>SUD:</strong> Rate the disturbance from 0 (none) to 10 (worst)</li>
+          <li>- Bring this to your next session so we can discuss together</li>
+        </ul>
+      </section>
+
+      <!-- Coping Reminder -->
+      <section class="mt-4 bg-teal-50 border border-teal-200 rounded-lg p-3">
+        <p class="text-xs text-teal-800"><strong>Reminder:</strong> After noting disturbance, use your resources (Safe Place, Container, Breathing) to return to calm. You don't have to process this alone - we'll work on it together in session.</p>
+      </section>
+    </div>
+
+  </div>
+</BaseLayout>

@@ -5,27 +5,46 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 <BaseLayout title="EMDR Intake Assessment Form - Printable" description="Printable intake assessment form for EMDR Phase 1 history and treatment planning.">
   <style>
     @media print {
+      @page {
+        size: letter;
+        margin: 0.35in;
+      }
       .no-print { display: none !important; }
-      body { background: white !important; font-size: 9pt !important; }
+      body { background: white !important; font-size: 10pt !important; }
       .print-page {
         page-break-after: always;
         padding: 0 !important;
         margin: 0 !important;
+        min-height: 10in;
       }
       .print-page:last-child { page-break-after: avoid; }
       .print-container {
         max-width: 100% !important;
-        padding: 0.4in !important;
+        padding: 0 !important;
       }
       .form-line {
-        min-height: 0.9rem;
+        min-height: 1.1rem;
+      }
+      .form-line-sm {
+        min-height: 1rem;
       }
       section {
-        margin-bottom: 0.4rem !important;
+        margin-bottom: 0.5rem !important;
       }
       h2 {
-        margin-bottom: 0.2rem !important;
+        margin-bottom: 0.25rem !important;
       }
+      /* Equal column widths for treatment plan table */
+      .treatment-table th:first-child,
+      .treatment-table td:first-child { width: 25%; }
+      .treatment-table th:nth-child(2),
+      .treatment-table td:nth-child(2) { width: 6%; }
+      .treatment-table th:nth-child(3),
+      .treatment-table td:nth-child(3) { width: 23%; }
+      .treatment-table th:nth-child(4),
+      .treatment-table td:nth-child(4) { width: 23%; }
+      .treatment-table th:nth-child(5),
+      .treatment-table td:nth-child(5) { width: 23%; }
     }
     .form-line {
       border-bottom: 1px solid #d4c4ad;
@@ -243,22 +262,23 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
           <span class="w-4 h-4 bg-forest-500 text-white rounded flex items-center justify-center text-[9px]">9</span>
           Treatment Plan (Three-Pronged)
         </h2>
-        <table class="w-full border-collapse text-[10px]">
+        <table class="w-full border-collapse text-[10px] treatment-table">
           <thead>
             <tr class="bg-forest-100">
               <th class="border border-forest-300 px-1 py-0.5 text-left font-medium text-forest-800">Past Trauma Memories</th>
-              <th class="border border-forest-300 px-1 py-0.5 text-left font-medium text-forest-800 w-8">Age</th>
+              <th class="border border-forest-300 px-1 py-0.5 text-left font-medium text-forest-800">Age</th>
               <th class="border border-forest-300 px-1 py-0.5 text-left font-medium text-forest-800">Present Symptoms</th>
               <th class="border border-forest-300 px-1 py-0.5 text-left font-medium text-forest-800">Triggers</th>
               <th class="border border-forest-300 px-1 py-0.5 text-left font-medium text-forest-800">Future</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td></tr>
-            <tr><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td></tr>
-            <tr><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td></tr>
-            <tr><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td></tr>
-            <tr><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td><td class="border border-wood-200 px-1 py-1.5"></td></tr>
+            <tr><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td></tr>
+            <tr><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td></tr>
+            <tr><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td></tr>
+            <tr><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td></tr>
+            <tr><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td></tr>
+            <tr><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td><td class="border border-wood-200 px-1 py-3"></td></tr>
           </tbody>
         </table>
         <p class="text-[9px] text-charcoal/60 mt-1 italic">Process earliest memory (touchstone) first, then worst event, then remaining targets chronologically.</p>

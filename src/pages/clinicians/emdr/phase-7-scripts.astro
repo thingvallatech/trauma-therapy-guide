@@ -1,0 +1,264 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Phase 7 Closure Scripts - Printable" description="Printable EMDR Phase 7 Closure scripts, containment exercises, and between-session guidance.">
+  <style>
+    @media print {
+      @page {
+        size: letter;
+        margin: 0.4in;
+      }
+      .no-print { display: none !important; }
+      body { background: white !important; font-size: 10pt !important; }
+      .print-page {
+        page-break-after: always;
+        padding: 0 !important;
+        margin: 0 !important;
+        min-height: 9.5in;
+      }
+      .print-page:last-child { page-break-after: avoid; }
+      .notes-line {
+        border-bottom: 1px solid #d1d5db;
+        min-height: 1.3rem;
+        margin-bottom: 0.3rem;
+      }
+    }
+    .script-box {
+      border-left: 3px solid #8b5cf6;
+      background: #f5f3ff;
+      padding: 0.75rem 1rem;
+      margin: 0.5rem 0;
+      font-style: italic;
+    }
+  </style>
+
+  <!-- Print header bar -->
+  <div class="no-print bg-lavender-600 text-white py-3 sticky top-0 z-50">
+    <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="/clinicians/emdr/phase-7" class="text-white/80 hover:text-white transition-colors flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Phase 7
+        </a>
+        <span class="text-white/40">|</span>
+        <span class="text-sm">Phase 7 Closure Scripts</span>
+      </div>
+      <button
+        onclick="window.print()"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-white text-lavender-700 rounded-lg hover:bg-lavender-50 transition-colors text-sm font-medium"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+        </svg>
+        Print Scripts
+      </button>
+    </div>
+  </div>
+
+  <div class="max-w-4xl mx-auto px-4 py-8">
+
+    <!-- Page 1: Closure Scripts -->
+    <div class="print-page">
+      <header class="mb-5 border-b-2 border-lavender-500 pb-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 7: Closure</h1>
+            <p class="text-sm text-charcoal/60">Ending Sessions Safely</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs text-charcoal/60">Page 1 of 2</p>
+            <p class="text-xs text-charcoal/60">Client: ________________</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Complete Session Script -->
+      <section class="mb-5">
+        <h2 class="text-lg font-bold text-forest-700 mb-2 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          </svg>
+          Complete Session Closure
+        </h2>
+        <p class="text-sm text-charcoal/70 mb-2">Use when SUD=0, VOC=7, and Body Scan is clear:</p>
+        <div class="script-box text-sm" style="border-left-color: #2D5A3D; background: #f0fdf4;">
+          <p class="mb-3">"You did great work today. The memory we processed is now fully integrated with a positive belief, and your body feels clear. This is excellent progress.</p>
+          <p class="mb-3">Between now and our next session, you may notice thoughts, feelings, dreams, or memories related to what we worked on. This is normal and actually a sign that processing is continuing.</p>
+          <p>If anything comes up, try to just notice it without judgment. You can use your safe place or container if needed. I'd encourage you to jot down any significant observations so we can discuss them next time."</p>
+        </div>
+      </section>
+
+      <!-- Incomplete Session Script -->
+      <section class="mb-5">
+        <h2 class="text-lg font-bold text-coral-700 mb-2 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Incomplete Session Closure
+        </h2>
+        <p class="text-sm text-charcoal/70 mb-2">Use when processing is not complete (SUD &gt; 0, stuck, or ran out of time):</p>
+        <div class="script-box text-sm" style="border-left-color: #f97316; background: #fff7ed;">
+          <p class="mb-3">"We've done important work today, even though we haven't finished processing this particular memory. That's okay - processing takes as long as it needs to take.</p>
+          <p class="mb-3">The work we did today is still valuable, and your brain will continue processing between sessions. However, since we didn't fully complete, you might notice more disturbance than usual between sessions.</p>
+          <p>Let's use your containment skills now to put away what we were working on until next time."</p>
+        </div>
+      </section>
+
+      <!-- Container Exercise -->
+      <section class="mb-5">
+        <h2 class="text-lg font-bold text-teal-700 mb-3">Containment Script</h2>
+        <div class="script-box text-sm" style="border-left-color: #0d9488; background: #f0fdfa;">
+          <p class="mb-3">"Bring up your container - that strong, secure place where you can store difficult material until we meet again.</p>
+          <p class="mb-3">Now, imagine taking everything we worked on today - the memory, any leftover feelings, any body sensations - and placing them into your container. Watch them go in...</p>
+          <p class="mb-3">Now close your container securely. Lock it tight. Nothing can get out unless you choose to let it out, and we'll open it together next session when you're ready.</p>
+          <p>Take a breath. How do you feel?"</p>
+        </div>
+      </section>
+
+      <!-- Grounding Check -->
+      <section class="mb-4">
+        <h2 class="text-lg font-bold text-lavender-700 mb-3">Grounding Check</h2>
+        <div class="script-box text-sm">
+          <p>"Before you leave, let's make sure you're fully present. Look around the room and tell me 5 things you can see... 4 things you can touch... 3 things you can hear..."</p>
+        </div>
+        <div class="mt-3 p-3 bg-lavender-50 border border-lavender-200 rounded-lg">
+          <p class="text-sm text-lavender-800"><strong>Check:</strong> Is client oriented? Making eye contact? Speaking at normal pace?</p>
+        </div>
+      </section>
+
+      <!-- Session Status -->
+      <section class="bg-wood-50 border border-wood-200 rounded-lg p-4">
+        <h3 class="text-sm font-bold text-charcoal mb-2">Session Status</h3>
+        <div class="grid grid-cols-2 gap-4">
+          <div class="flex items-center gap-2">
+            <span class="w-4 h-4 border-2 border-forest-500 rounded"></span>
+            <span class="text-sm">Complete (SUD=0, VOC=7, Body Clear)</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="w-4 h-4 border-2 border-coral-500 rounded"></span>
+            <span class="text-sm">Incomplete (needs continuation)</span>
+          </div>
+        </div>
+        <div class="mt-3">
+          <p class="text-xs text-charcoal/60 mb-1">Containment used? Resources accessed?</p>
+          <div class="notes-line"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Page 2: Between-Session Guidance -->
+    <div class="print-page">
+      <header class="mb-5 border-b-2 border-teal-500 pb-3">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 7: Closure</h1>
+            <p class="text-sm text-charcoal/60">Between-Session Guidance & Education</p>
+          </div>
+          <div class="text-right">
+            <p class="text-xs text-charcoal/60">Page 2 of 2</p>
+            <p class="text-xs text-charcoal/60">Date: ________________</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Between-Session Processing Education -->
+      <section class="mb-5">
+        <h2 class="text-lg font-bold text-teal-700 mb-3">Between-Session Processing</h2>
+        <div class="script-box text-sm" style="border-left-color: #0d9488; background: #f0fdfa;">
+          <p class="mb-3">"Your brain doesn't stop processing when you leave this room. Between sessions, you might experience:</p>
+          <ul class="list-disc list-inside mb-3 not-italic">
+            <li>Vivid dreams or nightmares</li>
+            <li>Memories popping up unexpectedly</li>
+            <li>Strong emotions</li>
+            <li>Physical sensations</li>
+            <li>New insights or connections</li>
+          </ul>
+          <p>All of this is normal and actually indicates that your brain is working to heal. Try to observe these experiences without judgment. Use your safe place and container as needed."</p>
+        </div>
+      </section>
+
+      <!-- Coping Strategies -->
+      <section class="mb-5">
+        <h2 class="text-lg font-bold text-forest-700 mb-3">Coping Strategies Reminder</h2>
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-forest-50 border border-forest-200 rounded-lg p-3">
+            <h4 class="font-semibold text-forest-800 text-sm mb-1">Safe Place</h4>
+            <p class="text-xs text-forest-700">Use your cue word to access calm</p>
+          </div>
+          <div class="bg-teal-50 border border-teal-200 rounded-lg p-3">
+            <h4 class="font-semibold text-teal-800 text-sm mb-1">Container</h4>
+            <p class="text-xs text-teal-700">Store distressing material until session</p>
+          </div>
+          <div class="bg-lavender-50 border border-lavender-200 rounded-lg p-3">
+            <h4 class="font-semibold text-lavender-800 text-sm mb-1">Breathing</h4>
+            <p class="text-xs text-lavender-700">4-7-8 or box breathing</p>
+          </div>
+          <div class="bg-sunny-50 border border-sunny-200 rounded-lg p-3">
+            <h4 class="font-semibold text-sunny-800 text-sm mb-1">Grounding</h4>
+            <p class="text-xs text-sunny-700">5-4-3-2-1 sensory exercise</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Child-Friendly Closure -->
+      <section class="mb-5">
+        <h2 class="text-lg font-bold text-amber-600 mb-3">Child-Friendly Closure</h2>
+        <div class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+          <div class="script-box text-sm" style="border-left-color: #f59e0b; background: white;">
+            <p class="mb-3">"You did such awesome work today! Your brain worked really hard. Now we're going to pack up and make sure you feel good before you go.</p>
+            <p class="mb-3">Let's put anything leftover in your magic container... close it up tight... and now let's go to your safe place for a minute to feel calm and happy.</p>
+            <p>Before you leave, tell me 3 things you're looking forward to this week!"</p>
+          </div>
+          <div class="mt-3 text-sm text-amber-900/80 space-y-1">
+            <p>- End on a positive note - discuss fun plans, achievements</p>
+            <p>- Remind caregiver about possible between-session effects</p>
+            <p>- Provide simple coping cards for home use</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Session Notes -->
+      <section class="mb-4">
+        <h2 class="text-sm font-bold text-charcoal uppercase tracking-wide mb-3">Session Documentation</h2>
+        <div class="grid grid-cols-2 gap-4 mb-3">
+          <div>
+            <p class="text-xs text-charcoal/60 mb-1">Client state at end of session:</p>
+            <div class="notes-line"></div>
+          </div>
+          <div>
+            <p class="text-xs text-charcoal/60 mb-1">Resources used for closure:</p>
+            <div class="notes-line"></div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <p class="text-xs text-charcoal/60 mb-1">Plan for next session:</p>
+          <div class="notes-line"></div>
+          <div class="notes-line"></div>
+        </div>
+        <div>
+          <p class="text-xs text-charcoal/60 mb-1">Additional Notes:</p>
+          <div class="notes-line"></div>
+          <div class="notes-line"></div>
+          <div class="notes-line"></div>
+        </div>
+      </section>
+
+      <!-- Emergency Contact Reminder -->
+      <section class="bg-coral-50 border border-coral-200 rounded-lg p-4">
+        <h3 class="text-sm font-bold text-coral-800 mb-2">Before Client Leaves</h3>
+        <div class="flex items-start gap-2">
+          <span class="w-4 h-4 border-2 border-coral-500 rounded flex-shrink-0 mt-0.5"></span>
+          <span class="text-sm text-coral-900/80">Confirm client has emergency contact information and knows when to reach out</span>
+        </div>
+        <div class="flex items-start gap-2 mt-2">
+          <span class="w-4 h-4 border-2 border-coral-500 rounded flex-shrink-0 mt-0.5"></span>
+          <span class="text-sm text-coral-900/80">For children: Brief caregiver on what to expect and when to contact you</span>
+        </div>
+      </section>
+    </div>
+
+  </div>
+</BaseLayout>
