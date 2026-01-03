@@ -5,8 +5,12 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 <BaseLayout title="Phase 3 Assessment Scripts - Printable" description="Printable EMDR assessment scripts, cognition reference tables, and target identification techniques.">
   <style>
     @media print {
+      @page {
+        size: letter;
+        margin: 0.4in;
+      }
       .no-print { display: none !important; }
-      body { background: white !important; font-size: 10pt !important; }
+      body { background: white !important; font-size: 9pt !important; }
       .print-page {
         page-break-after: always;
         padding: 0 !important;
@@ -15,7 +19,18 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
       .print-page:last-child { page-break-after: avoid; }
       .print-container {
         max-width: 100% !important;
-        padding: 0.5in !important;
+        padding: 0 !important;
+      }
+      .script-box {
+        padding: 0.4rem 0.6rem !important;
+        margin: 0.25rem 0 !important;
+      }
+      .assessment-step {
+        padding: 0.4rem !important;
+        margin-bottom: 0.4rem !important;
+      }
+      .notes-line {
+        min-height: 0.9rem !important;
       }
     }
     .script-box {
@@ -59,131 +74,147 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 
   <div class="print-container max-w-4xl mx-auto px-4 py-8">
 
-    <!-- Page 1: Opening Script & Assessment Components -->
+    <!-- Page 1: Opening Script & Assessment Components (Single Page) -->
     <div class="print-page">
-      <header class="mb-6 border-b-2 border-lavender-500 pb-4">
-        <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 3: Assessment Scripts</h1>
-        <p class="text-sm text-charcoal/60">Opening Script & Assessment Components</p>
+      <header class="mb-3 border-b-2 border-lavender-500 pb-2">
+        <div class="flex justify-between items-start">
+          <div>
+            <h1 class="font-serif text-xl font-bold text-charcoal">Phase 3: Assessment Components</h1>
+            <p class="text-xs text-charcoal/60">Target Assessment Script with Client Response Fields</p>
+          </div>
+          <div class="text-right text-xs text-charcoal/60">
+            <div>Client: ________________</div>
+            <div>Date: ________________</div>
+          </div>
+        </div>
       </header>
 
-      <!-- Opening Script -->
-      <section class="mb-6">
-        <h2 class="text-lg font-bold text-lavender-700 mb-3">Opening Script</h2>
-        <div class="script-box text-sm leading-relaxed">
-          <p>"Now that we've identified a memory to work on, we're going to go through a process to fully assess it. I'll guide you step by step. Just let me know whatever comes to mind—there are no right or wrong answers. We're simply gathering information that will help us process this memory effectively."</p>
-        </div>
-      </section>
+      <!-- Opening Script - condensed -->
+      <div class="script-box text-xs leading-relaxed mb-3">
+        <p>"We're going to assess the memory you identified. I'll guide you step by step—just tell me whatever comes to mind."</p>
+      </div>
 
-      <!-- Assessment Components with Notes -->
-      <section>
-        <h2 class="text-lg font-bold text-lavender-700 mb-4">Assessment Components</h2>
-
-        <!-- Step 1 -->
-        <div class="mb-4 p-3 border border-lavender-200 rounded-lg">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="w-6 h-6 bg-lavender-500 text-white rounded-full flex items-center justify-center text-xs font-bold">1</span>
-            <h3 class="font-semibold text-charcoal">Target Image</h3>
+      <!-- Assessment Components - 2 column layout for first 4 -->
+      <div class="grid grid-cols-2 gap-2 mb-2">
+        <!-- Step 1: Target Image -->
+        <div class="assessment-step p-2 border border-lavender-200 rounded-lg">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="w-5 h-5 bg-lavender-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold">1</span>
+            <h3 class="font-semibold text-charcoal text-sm">Target Image</h3>
           </div>
-          <div class="script-box text-sm mb-2">
-            <p>"Bring up the memory and notice the image that represents the worst part of it now. What image or part of this memory stands out for you?"</p>
-          </div>
-          <label class="text-xs text-charcoal/60 block mb-1">Client Response:</label>
-          <div class="notes-line"></div>
+          <p class="text-[10px] italic text-charcoal/70 mb-1">"What image represents the worst part of this memory?"</p>
           <div class="notes-line"></div>
         </div>
 
-        <!-- Step 2 -->
-        <div class="mb-4 p-3 border border-coral-200 rounded-lg bg-coral-50/30">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="w-6 h-6 bg-coral-500 text-white rounded-full flex items-center justify-center text-xs font-bold">2</span>
-            <h3 class="font-semibold text-charcoal">Negative Cognition (NC)</h3>
+        <!-- Step 2: NC -->
+        <div class="assessment-step p-2 border border-coral-200 rounded-lg bg-coral-50/30">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="w-5 h-5 bg-coral-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold">2</span>
+            <h3 class="font-semibold text-charcoal text-sm">Negative Cognition (NC)</h3>
           </div>
-          <div class="script-box text-sm mb-2" style="border-left-color: #f97316; background: #fff7ed;">
-            <p>"As you focus on that part of the memory, what negative belief do you have about yourself now that goes along with it?"</p>
-          </div>
-          <p class="text-xs text-charcoal/60 mb-1">Must be: Present tense, self-referencing, irrational/negative, generalizable</p>
-          <label class="text-xs text-charcoal/60 block mb-1">NC:</label>
-          <div class="notes-line"></div>
+          <p class="text-[10px] italic text-charcoal/70 mb-1">"What negative belief about yourself goes with this memory?"</p>
+          <p class="text-[9px] text-charcoal/50">Present tense, self-referencing, irrational</p>
           <div class="notes-line"></div>
         </div>
 
-        <!-- Step 3 -->
-        <div class="mb-4 p-3 border border-forest-200 rounded-lg bg-forest-50/30">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="w-6 h-6 bg-forest-500 text-white rounded-full flex items-center justify-center text-xs font-bold">3</span>
-            <h3 class="font-semibold text-charcoal">Positive Cognition (PC)</h3>
+        <!-- Step 3: PC -->
+        <div class="assessment-step p-2 border border-forest-200 rounded-lg bg-forest-50/30">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="w-5 h-5 bg-forest-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold">3</span>
+            <h3 class="font-semibold text-charcoal text-sm">Positive Cognition (PC)</h3>
           </div>
-          <div class="script-box text-sm mb-2" style="border-left-color: #2D5A3D; background: #f0fdf4;">
-            <p>"Now, what would you like to believe about yourself instead? What positive belief would you rather hold?"</p>
-          </div>
-          <p class="text-xs text-charcoal/60 mb-1">Must be: Present tense, self-referencing, achievable, empowering</p>
-          <label class="text-xs text-charcoal/60 block mb-1">PC:</label>
-          <div class="notes-line"></div>
+          <p class="text-[10px] italic text-charcoal/70 mb-1">"What would you like to believe about yourself instead?"</p>
+          <p class="text-[9px] text-charcoal/50">Present tense, achievable, empowering</p>
           <div class="notes-line"></div>
         </div>
 
-        <!-- Step 4 -->
-        <div class="mb-4 p-3 border border-teal-200 rounded-lg">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="w-6 h-6 bg-teal-500 text-white rounded-full flex items-center justify-center text-xs font-bold">4</span>
-            <h3 class="font-semibold text-charcoal">Validity of Cognition (VOC)</h3>
+        <!-- Step 4: VOC -->
+        <div class="assessment-step p-2 border border-teal-200 rounded-lg">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="w-5 h-5 bg-teal-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold">4</span>
+            <h3 class="font-semibold text-charcoal text-sm">VOC (1-7)</h3>
           </div>
-          <div class="script-box text-sm mb-2" style="border-left-color: #0d9488; background: #f0fdfa;">
-            <p>"On a scale from 1 to 7, with 1 being completely false and 7 being completely true, how true does this positive belief '[PC]' feel to you right now when you think about the memory?"</p>
+          <p class="text-[10px] italic text-charcoal/70 mb-1">"How true does [PC] feel now? 1=false, 7=true"</p>
+          <div class="flex items-center gap-2">
+            <span class="text-sm font-medium">VOC: ______ / 7</span>
+            <span class="text-[9px] text-charcoal/50">(Expect 1-4)</span>
           </div>
-          <div class="flex items-center gap-4 mb-2">
-            <span class="text-sm">VOC: ______ / 7</span>
-            <span class="text-xs text-charcoal/60">(Expected: 1-4 at baseline)</span>
+        </div>
+      </div>
+
+      <!-- Steps 5-7: Full width -->
+      <div class="space-y-2">
+        <!-- Step 5: Emotions -->
+        <div class="assessment-step p-2 border border-sunny-200 rounded-lg">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="w-5 h-5 bg-sunny-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold">5</span>
+            <h3 class="font-semibold text-charcoal text-sm">Emotions</h3>
+            <span class="text-[10px] italic text-charcoal/70 ml-2">"With that memory and [NC], what emotions come up?"</span>
           </div>
-          <label class="text-xs text-charcoal/60 block mb-1">Notes:</label>
           <div class="notes-line"></div>
         </div>
 
-        <!-- Step 5 -->
-        <div class="mb-4 p-3 border border-sunny-200 rounded-lg">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="w-6 h-6 bg-sunny-500 text-white rounded-full flex items-center justify-center text-xs font-bold">5</span>
-            <h3 class="font-semibold text-charcoal">Emotions</h3>
+        <!-- Step 6: SUD -->
+        <div class="assessment-step p-2 border border-coral-200 rounded-lg">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="w-5 h-5 bg-coral-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold">6</span>
+            <h3 class="font-semibold text-charcoal text-sm">SUD (0-10)</h3>
+            <span class="text-[10px] italic text-charcoal/70 ml-2">"How disturbing does this feel? 0=none, 10=worst"</span>
+            <span class="text-sm font-medium ml-auto">SUD: ______ / 10</span>
           </div>
-          <div class="script-box text-sm mb-2" style="border-left-color: #eab308; background: #fefce8;">
-            <p>"As you think about that memory and the negative belief '[NC]', what emotions come up for you?"</p>
-          </div>
-          <label class="text-xs text-charcoal/60 block mb-1">Emotions:</label>
-          <div class="notes-line"></div>
-          <div class="notes-line"></div>
         </div>
 
-        <!-- Step 6 -->
-        <div class="mb-4 p-3 border border-coral-200 rounded-lg">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="w-6 h-6 bg-coral-500 text-white rounded-full flex items-center justify-center text-xs font-bold">6</span>
-            <h3 class="font-semibold text-charcoal">Subjective Units of Disturbance (SUD)</h3>
+        <!-- Step 7: Body Location -->
+        <div class="assessment-step p-2 border border-lavender-200 rounded-lg">
+          <div class="flex items-center gap-1 mb-1">
+            <span class="w-5 h-5 bg-lavender-500 text-white rounded-full flex items-center justify-center text-[10px] font-bold">7</span>
+            <h3 class="font-semibold text-charcoal text-sm">Body Location</h3>
+            <span class="text-[10px] italic text-charcoal/70 ml-2">"Where do you feel it in your body?"</span>
           </div>
-          <div class="script-box text-sm mb-2" style="border-left-color: #f97316; background: #fff7ed;">
-            <p>"On a scale from 0 to 10, with 0 meaning no disturbance at all and 10 being the most disturbance you can imagine, how disturbing does this memory feel right now?"</p>
-          </div>
-          <div class="flex items-center gap-4 mb-2">
-            <span class="text-sm">SUD: ______ / 10</span>
-            <span class="text-xs text-charcoal/60">(High SUD is normal and expected)</span>
-          </div>
-          <label class="text-xs text-charcoal/60 block mb-1">Notes:</label>
           <div class="notes-line"></div>
         </div>
+      </div>
 
-        <!-- Step 7 -->
-        <div class="p-3 border border-lavender-200 rounded-lg">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="w-6 h-6 bg-lavender-500 text-white rounded-full flex items-center justify-center text-xs font-bold">7</span>
-            <h3 class="font-semibold text-charcoal">Body Location</h3>
+      <!-- Summary Box -->
+      <div class="mt-3 p-3 bg-lavender-50 border border-lavender-200 rounded-lg">
+        <h3 class="text-sm font-bold text-lavender-800 mb-2">Assessment Summary</h3>
+        <div class="grid grid-cols-2 gap-x-4 gap-y-1 text-xs">
+          <div class="flex justify-between border-b border-lavender-200 py-1">
+            <span class="text-charcoal/60">Target Image:</span>
+            <span class="w-32 border-b border-dotted border-charcoal/30"></span>
           </div>
-          <div class="script-box text-sm mb-2">
-            <p>"Scan your body. Where do you feel it the most? It might be tightness, heaviness, a lump in your throat, or a sensation somewhere else."</p>
+          <div class="flex justify-between border-b border-lavender-200 py-1">
+            <span class="text-charcoal/60">NC:</span>
+            <span class="w-32 border-b border-dotted border-charcoal/30"></span>
           </div>
-          <label class="text-xs text-charcoal/60 block mb-1">Body Location:</label>
-          <div class="notes-line"></div>
-          <div class="notes-line"></div>
+          <div class="flex justify-between border-b border-lavender-200 py-1">
+            <span class="text-charcoal/60">PC:</span>
+            <span class="w-32 border-b border-dotted border-charcoal/30"></span>
+          </div>
+          <div class="flex justify-between border-b border-lavender-200 py-1">
+            <span class="text-charcoal/60">VOC:</span>
+            <span class="w-32 border-b border-dotted border-charcoal/30"></span>
+          </div>
+          <div class="flex justify-between border-b border-lavender-200 py-1">
+            <span class="text-charcoal/60">Emotions:</span>
+            <span class="w-32 border-b border-dotted border-charcoal/30"></span>
+          </div>
+          <div class="flex justify-between border-b border-lavender-200 py-1">
+            <span class="text-charcoal/60">SUD:</span>
+            <span class="w-32 border-b border-dotted border-charcoal/30"></span>
+          </div>
+          <div class="flex justify-between py-1 col-span-2">
+            <span class="text-charcoal/60">Body Location:</span>
+            <span class="flex-1 ml-2 border-b border-dotted border-charcoal/30"></span>
+          </div>
         </div>
-      </section>
+      </div>
+
+      <!-- Ready for Phase 4 -->
+      <div class="mt-3 text-xs text-charcoal/60 flex items-center gap-2">
+        <span class="w-4 h-4 border border-forest-400 rounded"></span>
+        <span>Ready for Phase 4: Desensitization</span>
+      </div>
     </div>
 
     <!-- Page 2: Cognitions Reference -->
