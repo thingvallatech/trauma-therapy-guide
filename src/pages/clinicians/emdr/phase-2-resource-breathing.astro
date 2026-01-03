@@ -10,14 +10,23 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
         margin: 0.4in;
       }
       .no-print { display: none !important; }
-      body { background: white !important; font-size: 9.5pt !important; }
+      body {
+        background: white !important;
+        font-size: 10pt !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
       .print-page {
         page-break-after: always;
+        break-after: page;
+        min-height: 9.5in;
         padding: 0 !important;
         margin: 0 !important;
-        min-height: 9.5in;
       }
-      .print-page:last-child { page-break-after: avoid; }
+      .print-page:last-child {
+        page-break-after: avoid;
+        break-after: avoid;
+      }
       .notes-line {
         border-bottom: 1px solid #d1d5db;
         min-height: 1.2rem;

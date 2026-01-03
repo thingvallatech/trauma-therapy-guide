@@ -5,22 +5,41 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 <BaseLayout title="Phase 2 Preparation Scripts - Printable" description="Printable EMDR preparation scripts for teenagers and children, including resource development exercises.">
   <style>
     @media print {
+      @page {
+        size: letter;
+        margin: 0.4in;
+      }
       .no-print { display: none !important; }
-      body { background: white !important; font-size: 10pt !important; }
+      body {
+        background: white !important;
+        font-size: 10pt !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
       .print-page {
         page-break-after: always;
+        break-after: page;
+        min-height: 9.5in;
         padding: 0 !important;
         margin: 0 !important;
       }
-      .print-page:last-child { page-break-after: avoid; }
+      .print-page:last-child {
+        page-break-after: avoid;
+        break-after: avoid;
+      }
       .print-container {
         max-width: 100% !important;
-        padding: 0.5in !important;
+        padding: 0 !important;
+      }
+      .notes-line {
+        border-bottom: 1px solid #d1d5db;
+        min-height: 1.2rem;
+        margin-bottom: 0.3rem;
       }
     }
     .script-box {
-      border-left: 3px solid #2D5A3D;
-      background: #f8faf8;
+      border-left: 3px solid #0d9488;
+      background: #f0fdfa;
       padding: 0.75rem 1rem;
       margin: 0.5rem 0;
       font-style: italic;
@@ -32,6 +51,11 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     .script-box-child {
       border-left-color: #f59e0b;
       background: #fffbeb;
+    }
+    .notes-line {
+      border-bottom: 1px solid #d1d5db;
+      min-height: 1.2rem;
+      margin-bottom: 0.3rem;
     }
   </style>
 
@@ -64,9 +88,17 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 
     <!-- Page 1: Explaining EMDR Scripts -->
     <div class="print-page">
-      <header class="mb-6 border-b-2 border-teal-500 pb-4">
-        <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 2: Preparation Scripts</h1>
-        <p class="text-sm text-charcoal/60">Explaining EMDR to Clients</p>
+      <header class="mb-4 border-b-2 border-teal-500 pb-2">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-serif text-xl font-bold text-charcoal">Phase 2: Preparation Scripts</h1>
+            <p class="text-xs text-charcoal/60">Explaining EMDR to Clients</p>
+          </div>
+          <div class="text-right text-xs text-charcoal/60">
+            <p>Page 1 of 6</p>
+            <p>Client: ________________</p>
+          </div>
+        </div>
       </header>
 
       <!-- Teenager Version -->
@@ -114,9 +146,17 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 
     <!-- Page 2: Signs of Readiness Checklist -->
     <div class="print-page">
-      <header class="mb-6 border-b-2 border-teal-500 pb-4">
-        <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 2: Preparation Scripts</h1>
-        <p class="text-sm text-charcoal/60">Readiness Assessment</p>
+      <header class="mb-4 border-b-2 border-teal-500 pb-2">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-serif text-xl font-bold text-charcoal">Phase 2: Preparation Scripts</h1>
+            <p class="text-xs text-charcoal/60">Readiness Assessment</p>
+          </div>
+          <div class="text-right text-xs text-charcoal/60">
+            <p>Page 2 of 6</p>
+            <p>Date: ________________</p>
+          </div>
+        </div>
       </header>
 
       <section class="mb-8">
@@ -212,9 +252,17 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 
     <!-- Page 3: Safe Place Script -->
     <div class="print-page">
-      <header class="mb-6 border-b-2 border-teal-500 pb-4">
-        <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 2: Resource Scripts</h1>
-        <p class="text-sm text-charcoal/60">Safe/Calm Place Exercise</p>
+      <header class="mb-4 border-b-2 border-teal-500 pb-2">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-serif text-xl font-bold text-charcoal">Phase 2: Resource Scripts</h1>
+            <p class="text-xs text-charcoal/60">Safe/Calm Place Exercise</p>
+          </div>
+          <div class="text-right text-xs text-charcoal/60">
+            <p>Page 3 of 6</p>
+            <p>Client: ________________</p>
+          </div>
+        </div>
       </header>
 
       <!-- Teenager Version -->
@@ -278,9 +326,17 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 
     <!-- Page 4: Container Exercise -->
     <div class="print-page">
-      <header class="mb-6 border-b-2 border-teal-500 pb-4">
-        <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 2: Resource Scripts</h1>
-        <p class="text-sm text-charcoal/60">Container Exercise</p>
+      <header class="mb-4 border-b-2 border-teal-500 pb-2">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-serif text-xl font-bold text-charcoal">Phase 2: Resource Scripts</h1>
+            <p class="text-xs text-charcoal/60">Container Exercise</p>
+          </div>
+          <div class="text-right text-xs text-charcoal/60">
+            <p>Page 4 of 6</p>
+            <p>Client: ________________</p>
+          </div>
+        </div>
       </header>
 
       <!-- Teenager Version -->
@@ -336,9 +392,17 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 
     <!-- Page 5: Lightstream Technique -->
     <div class="print-page">
-      <header class="mb-6 border-b-2 border-teal-500 pb-4">
-        <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 2: Resource Scripts</h1>
-        <p class="text-sm text-charcoal/60">Lightstream Technique</p>
+      <header class="mb-4 border-b-2 border-teal-500 pb-2">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-serif text-xl font-bold text-charcoal">Phase 2: Resource Scripts</h1>
+            <p class="text-xs text-charcoal/60">Lightstream Technique</p>
+          </div>
+          <div class="text-right text-xs text-charcoal/60">
+            <p>Page 5 of 6</p>
+            <p>Client: ________________</p>
+          </div>
+        </div>
       </header>
 
       <!-- Teenager Version -->
@@ -406,9 +470,17 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 
     <!-- Page 6: Breathing Techniques -->
     <div class="print-page">
-      <header class="mb-6 border-b-2 border-teal-500 pb-4">
-        <h1 class="font-serif text-2xl font-bold text-charcoal">Phase 2: Resource Scripts</h1>
-        <p class="text-sm text-charcoal/60">Breathing Techniques</p>
+      <header class="mb-4 border-b-2 border-teal-500 pb-2">
+        <div class="flex items-center justify-between">
+          <div>
+            <h1 class="font-serif text-xl font-bold text-charcoal">Phase 2: Resource Scripts</h1>
+            <p class="text-xs text-charcoal/60">Breathing Techniques</p>
+          </div>
+          <div class="text-right text-xs text-charcoal/60">
+            <p>Page 6 of 6</p>
+            <p>Client: ________________</p>
+          </div>
+        </div>
       </header>
 
       <!-- Teenager Version -->
