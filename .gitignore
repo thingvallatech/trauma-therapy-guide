@@ -23,6 +23,11 @@ pnpm-debug.log*
 # worktrees
 .worktrees/
 
+# DO Functions deploy artifacts
+functions/.deployed/
+functions/packages/**/__deployer__.zip
+functions/packages/**/package-lock.json
+
 # jetbrains setting folder
 .idea/
 *.docx

@@ -171,7 +171,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
   <script>
     // Config — update this with your actual DO Function URL
-    const API_URL = '/api/resource'; // Placeholder — will be DO Function URL
+    const ANALYZE_URL = 'https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-77c5b7ed-64f9-4354-a162-8c8b7fd25e24/resource/analyze';
+    const PUBLISH_URL = 'https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-77c5b7ed-64f9-4354-a162-8c8b7fd25e24/resource/publish';
 
     // DOM references
     const stepInput = document.getElementById('step-input')!;
@@ -234,7 +235,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         if (url) formData.append('url', url);
         if (selectedFile) formData.append('file', selectedFile);
 
-        const res = await fetch(`${API_URL}/analyze`, {
+        const res = await fetch(ANALYZE_URL, {
           method: 'POST',
           body: formData,
         });
@@ -313,7 +314,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           fileUrl: (document.getElementById('review-file-url') as HTMLInputElement).value,
         };
 
-        const res = await fetch(`${API_URL}/publish`, {
+        const res = await fetch(PUBLISH_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload),
