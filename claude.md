@@ -37,24 +37,32 @@
 │   ├── pages/
 │   │   ├── index.astro
 │   │   ├── about.astro
+│   │   ├── admin/
+│   │   │   └── upload.astro      # Resource upload form
 │   │   ├── clinicians/
 │   │   │   ├── index.astro
-│   │   │   └── emdr/
-│   │   │       ├── index.astro   # EMDR overview + phase links
-│   │   │       └── [phase].astro # Dynamic route for phases
+│   │   │   ├── emdr/
+│   │   │   │   ├── index.astro   # EMDR overview + phase links
+│   │   │   │   └── [phase].astro # Dynamic route for phases
+│   │   │   └── resources/
+│   │   │       └── index.astro   # Clinician resource library
 │   │   └── families/
 │   │       ├── index.astro
-│   │       └── emdr.astro
+│   │       ├── emdr.astro
+│   │       └── resources/
+│   │           └── index.astro   # Family resource library
 │   ├── content/
 │   │   ├── config.ts             # Content collection definitions
-│   │   └── emdr-phases/
-│   │       ├── phase-1.md
-│   │       ├── phase-2.md
-│   │       └── ... (8 total)
+│   │   ├── emdr-phases/
+│   │   │   ├── phase-1.md
+│   │   │   ├── phase-2.md
+│   │   │   └── ... (8 total)
+│   │   └── resources/            # Resource library entries
 │   └── styles/
 │       └── global.css
 ├── public/
 │   └── (static assets)
+├── functions/                    # Serverless functions (deployed via doctl)
 ├── astro.config.mjs
 ├── tailwind.config.mjs
 ├── package.json
@@ -202,3 +210,6 @@ Output directory: `dist`
 - No database
 - No analytics for POC (add Plausible or Fathom later if needed)
 - Accessibility: semantic HTML, proper heading hierarchy, alt text, focus states
+- Resource library admin page at /admin/upload (not linked publicly)
+- Resources stored as markdown in src/content/resources/
+- Serverless functions in functions/ deploy separately via doctl
