@@ -35,6 +35,7 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
       <div class="mb-8 space-y-4">
         <!-- Search -->
         <div class="max-w-md">
+          <label for="resource-search" class="sr-only">Search resources</label>
           <input
             type="text"
             id="resource-search"
@@ -44,10 +45,11 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
         </div>
 
         <!-- Type filters -->
-        <div class="flex flex-wrap gap-2" id="type-filters">
+        <div class="flex flex-wrap gap-2" id="type-filters" role="group" aria-label="Filter by type">
           {allTypes.map((type) => (
             <button
               data-filter-type={type}
+              aria-pressed="false"
               class="px-3 py-1 rounded-full text-sm font-medium border border-wood-200 text-charcoal/70 hover:border-forest-300 hover:text-forest-700 transition-colors cursor-pointer"
             >
               {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -56,10 +58,11 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
         </div>
 
         <!-- Tag filters -->
-        <div class="flex flex-wrap gap-2" id="tag-filters">
+        <div class="flex flex-wrap gap-2" id="tag-filters" role="group" aria-label="Filter by tag">
           {allTags.map((tag) => (
             <button
               data-filter-tag={tag}
+              aria-pressed="false"
               class="px-3 py-1 rounded-full text-xs border border-forest-100 text-forest-700 bg-forest-50 hover:bg-forest-500 hover:text-white transition-colors cursor-pointer"
             >
               {tag}
@@ -154,10 +157,12 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
           activeTypes.delete(type);
           btn.classList.remove('bg-forest-500', 'text-white', 'border-forest-500');
           btn.classList.add('border-wood-200', 'text-charcoal/70');
+          btn.setAttribute('aria-pressed', 'false');
         } else {
           activeTypes.add(type);
           btn.classList.add('bg-forest-500', 'text-white', 'border-forest-500');
           btn.classList.remove('border-wood-200', 'text-charcoal/70');
+          btn.setAttribute('aria-pressed', 'true');
         }
         filterCards();
       });
@@ -171,10 +176,12 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
           activeTags.delete(tag);
           btn.classList.remove('bg-forest-500', 'text-white');
           btn.classList.add('bg-forest-50', 'text-forest-700');
+          btn.setAttribute('aria-pressed', 'false');
         } else {
           activeTags.add(tag);
           btn.classList.add('bg-forest-500', 'text-white');
           btn.classList.remove('bg-forest-50', 'text-forest-700');
+          btn.setAttribute('aria-pressed', 'true');
         }
         filterCards();
       });
@@ -188,10 +195,12 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
       document.querySelectorAll('[data-filter-type]').forEach((btn) => {
         btn.classList.remove('bg-forest-500', 'text-white', 'border-forest-500');
         btn.classList.add('border-wood-200', 'text-charcoal/70');
+        btn.setAttribute('aria-pressed', 'false');
       });
       document.querySelectorAll('[data-filter-tag]').forEach((btn) => {
         btn.classList.remove('bg-forest-500', 'text-white');
         btn.classList.add('bg-forest-50', 'text-forest-700');
+        btn.setAttribute('aria-pressed', 'false');
       });
       filterCards();
     });

@@ -62,18 +62,22 @@ h1, h2, h3, h4, h5, h6 {
 .prose h1 {
   font-size: 2.25rem;
   margin-bottom: 1rem;
+  color: var(--color-forest-100);
 }
 
 .prose h2 {
-  font-size: 1.75rem;
-  margin-top: 2rem;
+  font-size: 1.5rem;
+  margin-top: 2.5rem;
   margin-bottom: 0.75rem;
+  color: var(--color-bronze-300);
+  letter-spacing: -0.01em;
 }
 
 .prose h3 {
-  font-size: 1.375rem;
-  margin-top: 1.5rem;
+  font-size: 1.25rem;
+  margin-top: 1.75rem;
   margin-bottom: 0.5rem;
+  color: var(--color-forest-200);
 }
 
 .prose p {
@@ -113,8 +117,11 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Focus states for accessibility */
 a:focus-visible,
-button:focus-visible {
-  outline: 2px solid var(--color-forest-400);
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+details summary:focus-visible {
+  outline: 2px solid var(--color-bronze-400, #C4A77D);
   outline-offset: 2px;
 }
 
@@ -215,4 +222,42 @@ button:focus-visible {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* Forced-colors fallback for gradient text */
+@media (forced-colors: active) {
+  .text-bronze-gradient {
+    background: none;
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+    background-clip: unset;
+    color: LinkText;
+  }
+}
+
+/* Minimum interactive element sizing for mobile accessibility */
+@media (pointer: coarse) {
+  button,
+  [role="button"],
+  input,
+  select,
+  summary {
+    min-height: 44px;
+    font-size: max(1rem, 16px);
+  }
+}
+
+/* Responsive tables - horizontal scroll on mobile */
+@media (max-width: 640px) {
+  .prose table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+  .prose table th,
+  .prose table td {
+    white-space: normal;
+    min-width: 120px;
+  }
 }

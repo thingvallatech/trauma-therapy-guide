@@ -11,8 +11,8 @@ const { href, title, description, variant = 'default' } = Astro.props;
 const Tag = href ? 'a' : 'div';
 const baseClasses = 'block bg-forest-800 border rounded-lg p-6 transition-all duration-200';
 const variantClasses = {
-  default: 'border-forest-600 hover:bg-forest-700 hover:border-forest-500',
-  featured: 'border-forest-500 hover:bg-forest-700 hover:border-bronze-500',
+  default: 'border-forest-600 hover:bg-forest-700 hover:border-forest-500 hover:shadow-md',
+  featured: 'border-bronze-600/50 shadow-sm hover:bg-forest-700 hover:border-bronze-500 hover:shadow-md',
 };
 ---
 

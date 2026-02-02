@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ClinicalBanner from '../../../components/ClinicalBanner.astro';
 ---
 
 <BaseLayout title="Phase 5 Installation Scripts - Printable" description="Printable EMDR Phase 5 Installation scripts and VOC strengthening guidance.">
@@ -55,6 +56,8 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
       font-style: italic;
     }
   </style>
+
+    <ClinicalBanner />
 
   <!-- Print header bar -->
   <div class="no-print bg-sunny-600 text-white py-3 sticky top-0 z-50">
@@ -308,4 +311,8 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     </div>
 
   </div>
+    <!-- Print Disclaimer -->
+    <div class="mt-8 pt-4 border-t border-gray-300 text-xs text-gray-500">
+      <p><strong>Disclaimer:</strong> This material is compiled from published clinical protocols and peer-reviewed sources. It is intended as a reference for trained clinicians only and does not replace formal EMDR training, supervision, or clinical judgment. Not for distribution to clients. Sources: Shapiro (2018), EMDRIA Guidelines, WHO (2013), APA (2017).</p>
+    </div>
 </BaseLayout>

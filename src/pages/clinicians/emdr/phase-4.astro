@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ClinicalBanner from '../../../components/ClinicalBanner.astro';
+import References from '../../../components/References.astro';
 import PhaseNav from '../../../components/PhaseNav.astro';
 ---
 
@@ -15,6 +17,8 @@ import PhaseNav from '../../../components/PhaseNav.astro';
         <li class="text-forest-100">Phase 4</li>
       </ol>
     </nav>
+
+    <ClinicalBanner />
 
     <!-- Header with visual emphasis -->
     <header class="mb-10">
@@ -590,6 +594,7 @@ import PhaseNav from '../../../components/PhaseNav.astro';
       </div>
     </div>
 
+    <References />
     <!-- Navigation -->
     <div class="phase-nav mt-10">
       <PhaseNav currentPhase={4} />

@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ClinicalBanner from '../../../components/ClinicalBanner.astro';
+import References from '../../../components/References.astro';
 import PhaseNav from '../../../components/PhaseNav.astro';
 ---
 
@@ -15,6 +17,8 @@ import PhaseNav from '../../../components/PhaseNav.astro';
         <li class="text-forest-100">Phase 1</li>
       </ol>
     </nav>
+
+    <ClinicalBanner />
 
     <!-- Header with visual emphasis -->
     <header class="mb-10">
@@ -524,6 +528,79 @@ import PhaseNav from '../../../components/PhaseNav.astro';
       </div>
     </div>
 
+    <!-- Informed Consent Guidance -->
+    <div class="mt-10 bg-forest-800 border border-forest-600 rounded-xl overflow-hidden">
+      <div class="px-5 py-3 border-b border-forest-600 bg-forest-700">
+        <h2 class="font-semibold text-forest-100 flex items-center gap-2">
+          <svg class="w-5 h-5 text-bronze-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+          Informed Consent for EMDR
+        </h2>
+      </div>
+      <div class="p-5 space-y-4">
+        <p class="text-sm text-forest-200">
+          Before beginning EMDR therapy, ensure the client (and guardian, for minors) understands and consents to the following elements:
+        </p>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <h3 class="text-sm font-semibold text-bronze-400 mb-2">Required Elements</h3>
+            <ul class="space-y-1.5 text-sm text-forest-200">
+              <li class="flex items-start gap-2">
+                <span class="text-bronze-400 mt-0.5">&#x2022;</span>
+                Description of EMDR and how it works
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-bronze-400 mt-0.5">&#x2022;</span>
+                Expected number/duration of sessions
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-bronze-400 mt-0.5">&#x2022;</span>
+                Possible emotional disturbance during/between sessions
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-bronze-400 mt-0.5">&#x2022;</span>
+                The client can stop processing at any time
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-bronze-400 mt-0.5">&#x2022;</span>
+                Alternatives to EMDR therapy
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold text-bronze-400 mb-2">Discussion Points</h3>
+            <ul class="space-y-1.5 text-sm text-forest-200">
+              <li class="flex items-start gap-2">
+                <span class="text-bronze-400 mt-0.5">&#x2022;</span>
+                New memories or insights may emerge
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-bronze-400 mt-0.5">&#x2022;</span>
+                Vivid dreams are common during treatment
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-bronze-400 mt-0.5">&#x2022;</span>
+                Physical sensations may occur during processing
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-bronze-400 mt-0.5">&#x2022;</span>
+                Processing may continue between sessions
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-bronze-400 mt-0.5">&#x2022;</span>
+                Contact protocol for distress between sessions
+              </li>
+            </ul>
+          </div>
+        </div>
+        <p class="text-xs text-forest-400 mt-2">
+          Document informed consent in the client record. For minors, obtain guardian consent and child assent appropriate to developmental level.
+        </p>
+      </div>
+    </div>
+
+    <References />
     <!-- Navigation -->
     <div class="phase-nav mt-10">
       <PhaseNav currentPhase={1} />

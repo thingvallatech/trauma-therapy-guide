@@ -9,6 +9,27 @@ interface Props {
 }
 
 const { title, description = 'A free resource for trauma therapists and families navigating evidence-based treatment.' } = Astro.props;
+
+const fullTitle = `${title} | Trauma Therapy Guide`;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://traumatherapyguide.com');
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "MedicalWebPage",
+  "name": fullTitle,
+  "description": description,
+  "url": canonicalURL.href,
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "publisher": {
+    "@type": "Organization",
+    "name": "Trauma Therapy Guide"
+  },
+  "about": {
+    "@type": "MedicalCondition",
+    "name": "Post-Traumatic Stress Disorder"
+  }
+};
 ---
 
 <!DOCTYPE html>
@@ -18,7 +39,23 @@ const { title, description = 'A free resource for trauma therapists and families
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title} | Trauma Therapy Guide</title>
+    <link rel="canonical" href={canonicalURL.href} />
+    <title>{fullTitle}</title>
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL.href} />
+    <meta property="og:site_name" content="Trauma Therapy Guide" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body class="min-h-screen flex flex-col">
     <Header />
@@ -26,6 +63,36 @@ const { title, description = 'A free resource for trauma therapists and families
       <slot />
     </main>
     <Footer />
+
+    <!-- Back to Top Button -->
+    <button
+      id="back-to-top"
+      class="fixed bottom-6 right-6 z-40 hidden w-10 h-10 bg-forest-700 border border-forest-500 text-forest-200 rounded-full shadow-lg hover:bg-forest-600 transition-all"
+      aria-label="Back to top"
+    >
+      <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+      </svg>
+    </button>
+
+    <script>
+      const backToTop = document.getElementById('back-to-top');
+      if (backToTop) {
+        window.addEventListener('scroll', () => {
+          backToTop.classList.toggle('hidden', window.scrollY < 400);
+        }, { passive: true });
+        backToTop.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+    </script>
+
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
+      }
+    </script>
 
     <!-- GoatCounter Analytics -->
     <script data-goatcounter="https://therapy.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

@@ -31,6 +31,34 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </div>
     </header>
 
+    <!-- Share button -->
+    <div class="mb-6">
+      <button
+        id="copy-link-btn"
+        class="inline-flex items-center gap-2 px-3 py-1.5 bg-forest-700 border border-forest-500 text-forest-200 rounded-lg text-sm hover:bg-forest-600 transition-colors"
+      >
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+        </svg>
+        <span id="copy-link-text">Share this page</span>
+      </button>
+    </div>
+
+    <script>
+      const btn = document.getElementById('copy-link-btn');
+      const text = document.getElementById('copy-link-text');
+      btn?.addEventListener('click', async () => {
+        try {
+          await navigator.clipboard.writeText(window.location.href);
+          if (text) text.textContent = 'Link copied!';
+          setTimeout(() => { if (text) text.textContent = 'Share this page'; }, 2000);
+        } catch {
+          if (text) text.textContent = 'Could not copy';
+          setTimeout(() => { if (text) text.textContent = 'Share this page'; }, 2000);
+        }
+      });
+    </script>
+
     <!-- Key points as horizontal pills -->
     <div class="flex flex-wrap gap-2 mb-10">
       <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-700 text-bronze-400 rounded-full text-sm">
@@ -57,6 +85,21 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         </svg>
         No detailed retelling required
       </span>
+    </div>
+
+    <!-- Safety Callout -->
+    <div class="bg-forest-800 border border-forest-500 rounded-xl p-5 mb-10">
+      <div class="flex items-start gap-3">
+        <svg class="w-6 h-6 text-forest-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+        <div>
+          <h2 class="text-forest-100 font-semibold mb-1">Is EMDR Safe?</h2>
+          <p class="text-forest-200 text-sm leading-relaxed">
+            EMDR is recognized as a safe and effective treatment by the World Health Organization, the American Psychological Association, and the Department of Veterans Affairs. When conducted by a trained therapist, it is considered safe for both children and adults. If you have concerns about whether EMDR is right for your situation, talk with your therapist — they can explain how the treatment is tailored to individual needs.
+          </p>
+        </div>
+      </div>
     </div>
 
     <!-- Two column layout for main content -->
@@ -388,6 +431,165 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- What to Expect: Week by Week -->
+    <div class="mt-10 bg-forest-800 rounded-xl border border-forest-600 overflow-hidden">
+      <div class="bg-gradient-to-r from-forest-600 to-forest-700 px-5 py-3">
+        <h2 class="text-white font-semibold flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+          What to Expect: A Rough Timeline
+        </h2>
+      </div>
+      <div class="p-5 space-y-4">
+        <p class="text-sm text-forest-300">Every child is different, but here is a general idea of how EMDR therapy unfolds. Your therapist will adjust the pace to your child's needs.</p>
+        <div class="space-y-3">
+          <div class="flex gap-4 items-start">
+            <div class="flex-shrink-0 w-20 text-xs font-semibold text-bronze-400 pt-0.5">Weeks 1-3</div>
+            <div>
+              <p class="text-sm font-medium text-forest-100">Getting Started</p>
+              <p class="text-sm text-forest-300">Building trust, learning about your child's history, and teaching coping skills. No memory processing yet.</p>
+            </div>
+          </div>
+          <div class="flex gap-4 items-start">
+            <div class="flex-shrink-0 w-20 text-xs font-semibold text-bronze-400 pt-0.5">Weeks 3-5</div>
+            <div>
+              <p class="text-sm font-medium text-forest-100">Preparation</p>
+              <p class="text-sm text-forest-300">Practicing calming techniques, creating a "safe place," and making sure your child feels ready.</p>
+            </div>
+          </div>
+          <div class="flex gap-4 items-start">
+            <div class="flex-shrink-0 w-20 text-xs font-semibold text-bronze-400 pt-0.5">Weeks 5+</div>
+            <div>
+              <p class="text-sm font-medium text-forest-100">Processing</p>
+              <p class="text-sm text-forest-300">Working through targeted memories with bilateral stimulation. Some children see relief in a few sessions; others with more complex histories may need longer.</p>
+            </div>
+          </div>
+          <div class="flex gap-4 items-start">
+            <div class="flex-shrink-0 w-20 text-xs font-semibold text-bronze-400 pt-0.5">Ongoing</div>
+            <div>
+              <p class="text-sm font-medium text-forest-100">Check-ins & Closure</p>
+              <p class="text-sm text-forest-300">The therapist checks progress, addresses any remaining targets, and ensures your child feels stable before ending treatment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- What to Say (and Not Say) -->
+    <div class="mt-6 bg-forest-800 rounded-xl border border-forest-600 overflow-hidden">
+      <div class="bg-gradient-to-r from-bronze-600 to-bronze-700 px-5 py-3">
+        <h2 class="text-white font-semibold flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+          What to Say (and Not Say)
+        </h2>
+      </div>
+      <div class="p-5">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <h3 class="text-sm font-semibold text-forest-100 mb-3 flex items-center gap-2">
+              <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+              </svg>
+              Helpful Things to Say
+            </h3>
+            <ul class="space-y-2 text-sm text-forest-200">
+              <li class="flex items-start gap-2">
+                <span class="text-green-400 mt-0.5">&#x2022;</span>
+                "I'm proud of you for going to therapy."
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-green-400 mt-0.5">&#x2022;</span>
+                "You don't have to tell me what you talked about."
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-green-400 mt-0.5">&#x2022;</span>
+                "It's okay to feel tired or have big feelings after."
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-green-400 mt-0.5">&#x2022;</span>
+                "I'm here if you need anything."
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-green-400 mt-0.5">&#x2022;</span>
+                "Want to use your calm-down exercises together?"
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold text-forest-100 mb-3 flex items-center gap-2">
+              <svg class="w-4 h-4 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              Things to Avoid
+            </h3>
+            <ul class="space-y-2 text-sm text-forest-200">
+              <li class="flex items-start gap-2">
+                <span class="text-red-400 mt-0.5">&#x2022;</span>
+                "What did you talk about in therapy?"
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-red-400 mt-0.5">&#x2022;</span>
+                "You should be over this by now."
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-red-400 mt-0.5">&#x2022;</span>
+                "Just try not to think about it."
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-red-400 mt-0.5">&#x2022;</span>
+                "Other kids have been through worse."
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-red-400 mt-0.5">&#x2022;</span>
+                "Are you fixed yet?"
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- When to Talk to Your Therapist -->
+    <div class="mt-6 bg-amber-900/20 border border-amber-700/40 rounded-xl overflow-hidden">
+      <div class="px-5 py-3 border-b border-amber-700/40 bg-amber-900/30">
+        <h2 class="font-semibold text-amber-300 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          When to Talk to Your Therapist
+        </h2>
+      </div>
+      <div class="p-5">
+        <p class="text-sm text-forest-200 mb-3">Contact your child's therapist if you notice any of the following between sessions:</p>
+        <ul class="space-y-2 text-sm text-forest-200">
+          <li class="flex items-start gap-2">
+            <span class="text-amber-400 mt-0.5">&#x2022;</span>
+            Significant increase in nightmares, anxiety, or behavioral changes
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-amber-400 mt-0.5">&#x2022;</span>
+            Talking about wanting to hurt themselves or others
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-amber-400 mt-0.5">&#x2022;</span>
+            Refusing to go to therapy or sudden fear of sessions
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-amber-400 mt-0.5">&#x2022;</span>
+            Emotional reactions that seem much stronger or longer than usual
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-amber-400 mt-0.5">&#x2022;</span>
+            You're unsure if what you're seeing is a normal part of treatment
+          </li>
+        </ul>
+        <p class="text-xs text-forest-400 mt-4">If your child is in immediate danger, call 911 or go to your nearest emergency room. You can also call the 988 Suicide and Crisis Lifeline.</p>
       </div>
     </div>
 

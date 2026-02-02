@@ -21,7 +21,26 @@ const prevPhase = currentPhase > 1 ? phases[currentPhase - 2] : null;
 const nextPhase = currentPhase < totalPhases ? phases[currentPhase] : null;
 ---
 
-<nav class="flex justify-between items-center py-6 border-t border-forest-600 mt-8">
+<!-- Phase Progress Indicator -->
+<div class="flex justify-center items-center gap-1.5 mt-10 mb-4" aria-label={`Phase ${currentPhase} of ${totalPhases}`}>
+  {phases.map((phase) => (
+    <a
+      href={`/clinicians/emdr/phase-${phase.num}`}
+      class:list={[
+        'w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all',
+        phase.num === currentPhase
+          ? 'bg-bronze-500 text-forest-900'
+          : 'bg-forest-700 text-forest-400 hover:bg-forest-600 hover:text-forest-200'
+      ]}
+      title={`Phase ${phase.num}: ${phase.shortTitle}`}
+      aria-current={phase.num === currentPhase ? 'step' : undefined}
+    >
+      {phase.num}
+    </a>
+  ))}
+</div>
+
+<nav class="flex justify-between items-center py-6 border-t border-forest-600">
   {prevPhase ? (
     <a
       href={`/clinicians/emdr/phase-${prevPhase.num}`}

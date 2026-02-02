@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ClinicalBanner from '../../../components/ClinicalBanner.astro';
 ---
 
 <BaseLayout title="Phase 4 Scripts: Desensitization & Interweaves - EMDR" description="Printable Phase 4 scripts including processing scripts and cognitive, emotional, somatic, and attachment interweaves.">
@@ -125,6 +126,8 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
           <li class="text-charcoal">Print Scripts</li>
         </ol>
       </nav>
+
+    <ClinicalBanner />
       <div class="flex items-center justify-between">
         <h1 class="font-serif text-2xl font-semibold text-charcoal">Phase 4 Scripts: Desensitization & Interweaves</h1>
         <button
@@ -659,4 +662,8 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
       <p class="text-amber-900/80">Always follow interweaves with BLS. The goal is to provide just enough to restart processing, then step back and let the client's own adaptive system integrate. Less is more—interweaves are jump starts, not the engine.</p>
     </div>
   </div>
+    <!-- Print Disclaimer -->
+    <div class="mt-8 pt-4 border-t border-gray-300 text-xs text-gray-500">
+      <p><strong>Disclaimer:</strong> This material is compiled from published clinical protocols and peer-reviewed sources. It is intended as a reference for trained clinicians only and does not replace formal EMDR training, supervision, or clinical judgment. Not for distribution to clients. Sources: Shapiro (2018), EMDRIA Guidelines, WHO (2013), APA (2017).</p>
+    </div>
 </BaseLayout>

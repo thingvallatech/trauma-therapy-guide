@@ -1,5 +1,7 @@
 ---
 import BaseLayout from './BaseLayout.astro';
+import ClinicalBanner from '../components/ClinicalBanner.astro';
+import References from '../components/References.astro';
 import PhaseNav from '../components/PhaseNav.astro';
 import Callout from '../components/Callout.astro';
 
@@ -27,6 +29,8 @@ const { phase, title, shortTitle, description, goals } = Astro.props;
       </ol>
     </nav>
 
+    <ClinicalBanner />
+
     <!-- Header -->
     <header class="mb-8">
       <p class="text-bronze-500 font-medium mb-2">Phase {phase} of 8</p>
@@ -51,6 +55,8 @@ const { phase, title, shortTitle, description, goals } = Astro.props;
     <article class="prose mt-8">
       <slot />
     </article>
+
+    <References />
 
     <!-- Navigation -->
     <PhaseNav currentPhase={phase} />

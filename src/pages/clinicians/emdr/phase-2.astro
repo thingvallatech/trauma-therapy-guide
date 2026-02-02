@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ClinicalBanner from '../../../components/ClinicalBanner.astro';
+import References from '../../../components/References.astro';
 import PhaseNav from '../../../components/PhaseNav.astro';
 ---
 
@@ -15,6 +17,8 @@ import PhaseNav from '../../../components/PhaseNav.astro';
         <li class="text-forest-100">Phase 2</li>
       </ol>
     </nav>
+
+    <ClinicalBanner />
 
     <!-- Header with visual emphasis -->
     <header class="mb-10">
@@ -407,6 +411,79 @@ import PhaseNav from '../../../components/PhaseNav.astro';
       </div>
     </div>
 
+    <!-- Contraindications & Modified Protocols -->
+    <div class="mt-10 bg-amber-900/20 border border-amber-700/40 rounded-xl overflow-hidden">
+      <div class="px-5 py-3 border-b border-amber-700/40 bg-amber-900/30">
+        <h2 class="font-semibold text-amber-300 flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+          </svg>
+          Contraindications & Modified Protocols
+        </h2>
+      </div>
+      <div class="p-5 space-y-4">
+        <p class="text-sm text-forest-200">
+          EMDR processing (Phases 3-8) should be deferred or modified when any of the following are present. Ensure adequate preparation and consultation before proceeding.
+        </p>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <h3 class="text-sm font-semibold text-amber-300 mb-2">Defer Processing</h3>
+            <ul class="space-y-1.5 text-sm text-forest-200">
+              <li class="flex items-start gap-2">
+                <span class="text-amber-400 mt-0.5">&#x2022;</span>
+                Active suicidality or self-harm
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-amber-400 mt-0.5">&#x2022;</span>
+                Unstable psychosis or mania
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-amber-400 mt-0.5">&#x2022;</span>
+                Insufficient affect regulation capacity
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-amber-400 mt-0.5">&#x2022;</span>
+                Ongoing danger in the home or environment
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-amber-400 mt-0.5">&#x2022;</span>
+                Substance dependence with active withdrawal
+              </li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="text-sm font-semibold text-amber-300 mb-2">Modify Protocol</h3>
+            <ul class="space-y-1.5 text-sm text-forest-200">
+              <li class="flex items-start gap-2">
+                <span class="text-amber-400 mt-0.5">&#x2022;</span>
+                Dissociative disorders (use stabilization-focused approach)
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-amber-400 mt-0.5">&#x2022;</span>
+                Complex/developmental trauma (extended preparation)
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-amber-400 mt-0.5">&#x2022;</span>
+                Very young children (use adapted child protocol)
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-amber-400 mt-0.5">&#x2022;</span>
+                Medical conditions affecting eye movement
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-amber-400 mt-0.5">&#x2022;</span>
+                Pregnancy (consult specialized protocols)
+              </li>
+            </ul>
+          </div>
+        </div>
+        <p class="text-xs text-forest-400 mt-2">
+          Always consult your supervisor and refer to Shapiro (2018) Chapter 4 and EMDRIA guidelines for detailed contraindication assessment.
+        </p>
+      </div>
+    </div>
+
+    <References />
     <!-- Navigation -->
     <div class="phase-nav mt-10">
       <PhaseNav currentPhase={2} />

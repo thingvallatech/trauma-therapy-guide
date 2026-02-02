@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ClinicalBanner from '../../../components/ClinicalBanner.astro';
+import References from '../../../components/References.astro';
 import Card from '../../../components/Card.astro';
 import Callout from '../../../components/Callout.astro';
 
@@ -27,6 +29,8 @@ const phases = [
         </ol>
       </nav>
 
+    <ClinicalBanner />
+
       <!-- Header -->
       <div class="max-w-3xl mb-12">
         <h1 class="font-serif text-4xl font-semibold text-bronze-gradient mb-4">
@@ -35,6 +39,20 @@ const phases = [
         <p class="text-lg text-forest-200 leading-relaxed">
           Eye Movement Desensitization and Reprocessing (EMDR) is an evidence-based psychotherapy for trauma and PTSD. This guide covers the standard 8-phase protocol.
         </p>
+      </div>
+
+      <!-- Jump to Phase - Quick Access -->
+      <div class="mb-8 flex flex-wrap items-center gap-2">
+        <span class="text-sm text-forest-400 mr-1">Jump to Phase:</span>
+        {phases.map((phase) => (
+          <a
+            href={`/clinicians/emdr/phase-${phase.num}`}
+            class="w-9 h-9 flex items-center justify-center rounded-full bg-forest-700 text-forest-200 text-sm font-medium hover:bg-bronze-500 hover:text-forest-900 transition-colors"
+            title={`Phase ${phase.num}: ${phase.shortTitle}`}
+          >
+            {phase.num}
+          </a>
+        ))}
       </div>
 
       <!-- Print Package Button -->
@@ -156,5 +174,6 @@ const phases = [
         </ul>
       </div>
     </div>
+    <References />
   </section>
 </BaseLayout>
