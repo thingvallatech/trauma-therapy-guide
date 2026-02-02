@@ -17,15 +17,15 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Header -->
       <div class="max-w-3xl mb-8">
-        <nav class="text-sm text-charcoal/60 mb-4">
-          <a href="/families" class="hover:text-forest-600 transition-colors">Families</a>
+        <nav class="text-sm text-forest-400 mb-4">
+          <a href="/families" class="hover:text-forest-200 transition-colors">Families</a>
           <span class="mx-2">/</span>
-          <span class="text-charcoal">Recommended Reading</span>
+          <span class="text-forest-100">Recommended Reading</span>
         </nav>
-        <h1 class="font-serif text-4xl font-semibold text-charcoal mb-4">
+        <h1 class="font-serif text-4xl font-semibold text-forest-100 mb-4">
           Recommended Reading
         </h1>
-        <p class="text-lg text-charcoal/80 leading-relaxed">
+        <p class="text-lg text-forest-200 leading-relaxed">
           Books, articles, and resources that can help you understand your child's experience and support their healing journey.
         </p>
       </div>
@@ -38,7 +38,7 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
             type="text"
             id="resource-search"
             placeholder="Search resources..."
-            class="w-full px-4 py-2 border border-wood-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500 bg-white"
+            class="w-full px-4 py-2 border border-forest-600 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500 bg-forest-700 text-forest-100 placeholder:text-forest-400"
           />
         </div>
 
@@ -47,7 +47,7 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
             <button
               data-filter-type={type}
               aria-pressed="false"
-              class="px-3 py-1 rounded-full text-sm font-medium border border-wood-200 text-charcoal/70 hover:border-forest-300 hover:text-forest-700 transition-colors cursor-pointer"
+              class="px-3 py-1 rounded-full text-sm font-medium border border-forest-600 text-forest-300 hover:border-forest-400 hover:text-forest-100 transition-colors cursor-pointer"
             >
               {type.charAt(0).toUpperCase() + type.slice(1)}
             </button>
@@ -59,7 +59,7 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
             <button
               data-filter-tag={tag}
               aria-pressed="false"
-              class="px-3 py-1 rounded-full text-xs border border-forest-100 text-forest-700 bg-forest-50 hover:bg-forest-500 hover:text-white transition-colors cursor-pointer"
+              class="px-3 py-1 rounded-full text-xs border border-forest-600 text-forest-300 bg-forest-700 hover:bg-forest-500 hover:text-white transition-colors cursor-pointer"
             >
               {tag}
             </button>
@@ -67,7 +67,7 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
         </div>
       </div>
 
-      <p class="text-sm text-charcoal/60 mb-6" id="resource-count">
+      <p class="text-sm text-forest-400 mb-6" id="resource-count">
         {resources.length} resource{resources.length !== 1 ? 's' : ''}
       </p>
 
@@ -90,10 +90,10 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
       </div>
 
       <div class="hidden text-center py-12" id="no-results">
-        <p class="text-charcoal/60">No resources match your search.</p>
+        <p class="text-forest-400">No resources match your search.</p>
         <button
           id="clear-filters"
-          class="mt-2 text-sm text-forest-600 hover:text-forest-500 underline cursor-pointer"
+          class="mt-2 text-sm text-bronze-400 hover:text-bronze-300 underline cursor-pointer"
         >
           Clear all filters
         </button>
@@ -147,12 +147,12 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
         if (activeTypes.has(type)) {
           activeTypes.delete(type);
           btn.classList.remove('bg-forest-500', 'text-white', 'border-forest-500');
-          btn.classList.add('border-wood-200', 'text-charcoal/70');
+          btn.classList.add('border-forest-600', 'text-forest-300');
           btn.setAttribute('aria-pressed', 'false');
         } else {
           activeTypes.add(type);
           btn.classList.add('bg-forest-500', 'text-white', 'border-forest-500');
-          btn.classList.remove('border-wood-200', 'text-charcoal/70');
+          btn.classList.remove('border-forest-600', 'text-forest-300');
           btn.setAttribute('aria-pressed', 'true');
         }
         filterCards();
@@ -165,12 +165,12 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
         if (activeTags.has(tag)) {
           activeTags.delete(tag);
           btn.classList.remove('bg-forest-500', 'text-white');
-          btn.classList.add('bg-forest-50', 'text-forest-700');
+          btn.classList.add('bg-forest-700', 'text-forest-300');
           btn.setAttribute('aria-pressed', 'false');
         } else {
           activeTags.add(tag);
           btn.classList.add('bg-forest-500', 'text-white');
-          btn.classList.remove('bg-forest-50', 'text-forest-700');
+          btn.classList.remove('bg-forest-700', 'text-forest-300');
           btn.setAttribute('aria-pressed', 'true');
         }
         filterCards();
