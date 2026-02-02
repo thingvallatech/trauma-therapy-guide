@@ -6,16 +6,16 @@
 /* Custom Design System - Tailwind v4 CSS-first configuration */
 @theme {
   /* Colors */
-  --color-forest-50: #F0F5F1;
-  --color-forest-100: #D9E6DC;
-  --color-forest-200: #B3CDB9;
-  --color-forest-300: #8DB496;
-  --color-forest-400: #679B73;
-  --color-forest-500: #2D5A3D;
-  --color-forest-600: #254A32;
-  --color-forest-700: #1D3A27;
-  --color-forest-800: #152A1C;
-  --color-forest-900: #0D1A11;
+  --color-forest-50: #F2F5EC;
+  --color-forest-100: #DDE6D0;
+  --color-forest-200: #B8CDA4;
+  --color-forest-300: #8FB47A;
+  --color-forest-400: #6A9B55;
+  --color-forest-500: #3D6B35;
+  --color-forest-600: #2F5428;
+  --color-forest-700: #233F1E;
+  --color-forest-800: #1A2E16;
+  --color-forest-900: #111F0E;
 
   /* Bronze metallic palette */
   --color-bronze-300: #D4AA63;
@@ -35,7 +35,7 @@
   --color-amber-700: #B45309;
   --color-amber-800: #92400E;
 
-  --color-cream: #0D1A11;
+  --color-cream: #111F0E;
   --color-charcoal: #2C2C2C;
 
   /* Typography */
