@@ -1,5 +1,3 @@
-const { Octokit } = require('octokit');
-
 function slugify(text) {
   return text
     .toLowerCase()
@@ -13,11 +11,11 @@ async function main(args) {
     const { title, author, description, type, audience, tags, url, fileUrl } = args;
 
     if (!title) {
-      return { statusCode: 400, body: { error: 'Title is required.' } };
+      return { statusCode: 400, body: JSON.stringify({ error: 'Title is required.' }) };
     }
 
-    const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
     const [owner, repo] = (process.env.GITHUB_REPO || '').split('/');
+    const token = process.env.GITHUB_TOKEN;
 
     const slug = slugify(title);
     const dateAdded = new Date().toISOString().split('T')[0];
@@ -41,23 +39,36 @@ async function main(args) {
     const path = `src/content/resources/${slug}.md`;
     const content = Buffer.from(frontmatter).toString('base64');
 
-    await octokit.rest.repos.createOrUpdateFileContents({
-      owner,
-      repo,
-      path,
-      message: `feat: add resource "${title}"`,
-      content,
-      branch: 'main',
+    // Use GitHub REST API directly instead of octokit (ESM-only)
+    const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+    const res = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json',
+        'User-Agent': 'trauma-therapy-resource-bot',
+      },
+      body: JSON.stringify({
+        message: `feat: add resource "${title}"`,
+        content,
+        branch: 'main',
+      }),
     });
 
+    if (!res.ok) {
+      const errorBody = await res.text();
+      throw new Error(`GitHub API ${res.status}: ${errorBody}`);
+    }
+
     return {
-      statusCode: 200,
       body: { success: true, path, slug },
     };
   } catch (error) {
+    console.error('Publish error:', error.message, error.stack);
     return {
       statusCode: 500,
-      body: { error: error.message },
+      body: JSON.stringify({ error: error.message }),
     };
   }
 }

@@ -14,6 +14,12 @@ packages:
       - name: analyze
         runtime: nodejs:18
         web: true
+        limits:
+          timeout: 60000
+          memory: 256
       - name: publish
         runtime: nodejs:18
         web: true
+        limits:
+          timeout: 30000
+          memory: 256

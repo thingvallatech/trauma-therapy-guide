@@ -14,9 +14,47 @@ const s3 = new S3Client({
   },
 });
 
+function parseMultipart(args) {
+  // DO Functions web actions receive multipart form data as base64-encoded __ow_body
+  if (!args.__ow_body) return args;
+
+  const contentType = (args.__ow_headers || {})['content-type'] || '';
+  if (!contentType.includes('multipart/form-data')) return args;
+
+  const boundary = contentType.split('boundary=')[1];
+  if (!boundary) return args;
+
+  const body = Buffer.from(args.__ow_body, 'base64').toString('binary');
+  const parts = body.split('--' + boundary).slice(1, -1);
+  const parsed = {};
+
+  for (const part of parts) {
+    const [headerSection, ...valueParts] = part.split('\r\n\r\n');
+    const value = valueParts.join('\r\n\r\n').replace(/\r\n$/, '');
+    const nameMatch = headerSection.match(/name="([^"]+)"/);
+    if (!nameMatch) continue;
+
+    const name = nameMatch[1];
+    const filenameMatch = headerSection.match(/filename="([^"]+)"/);
+    const ctMatch = headerSection.match(/Content-Type:\s*(.+)/i);
+
+    if (filenameMatch) {
+      // File field — store as base64
+      parsed.file = Buffer.from(value, 'binary').toString('base64');
+      parsed.fileName = filenameMatch[1];
+      parsed.fileContentType = ctMatch ? ctMatch[1].trim() : 'application/octet-stream';
+    } else {
+      parsed[name] = value;
+    }
+  }
+
+  return parsed;
+}
+
 async function main(args) {
   try {
-    const { url, file, fileName, fileContentType } = args;
+    const params = parseMultipart(args);
+    const { url, file, fileName, fileContentType } = params;
 
     let contentForAI = '';
     let fileUrl = '';
@@ -40,14 +78,26 @@ async function main(args) {
       contentForAI = `Uploaded file: ${fileName} (${fileContentType}). File URL: ${fileUrl}`;
     } else if (url) {
       // Fetch the URL and extract content
-      const res = await fetch(url);
+      const res = await fetch(url, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; ResourceBot/1.0)' },
+        signal: AbortSignal.timeout(10000),
+      });
       const html = await res.text();
-      contentForAI = html.substring(0, 10000);
+      // Strip HTML tags for cleaner AI input
+      const text = html.replace(/<script[\s\S]*?<\/script>/gi, '')
+        .replace(/<style[\s\S]*?<\/style>/gi, '')
+        .replace(/<[^>]+>/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+      contentForAI = text.substring(0, 8000);
     } else {
-      return { statusCode: 400, body: { error: 'Provide a URL or file.' } };
+      return {
+        statusCode: 400,
+        body: JSON.stringify({ error: 'Provide a URL or file.' }),
+      };
     }
 
-    const existingTags = args.existingTags || [];
+    const existingTags = params.existingTags || [];
 
     const message = await anthropic.messages.create({
       model: 'claude-sonnet-4-20250514',
@@ -78,21 +128,21 @@ Respond with ONLY a JSON object (no markdown, no code fences):
       ],
     });
 
-    const text = message.content[0].text.trim();
-    const metadata = JSON.parse(text);
+    const responseText = message.content[0].text.trim();
+    const metadata = JSON.parse(responseText);
 
     return {
-      statusCode: 200,
       body: {
         ...metadata,
         url: url || '',
-        fileUrl: fileUrl,
+        fileUrl: fileUrl || '',
       },
     };
   } catch (error) {
+    console.error('Analyze error:', error.message, error.stack);
     return {
       statusCode: 500,
-      body: { error: error.message },
+      body: JSON.stringify({ error: error.message }),
     };
   }
 }
