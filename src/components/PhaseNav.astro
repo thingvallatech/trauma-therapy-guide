@@ -1,38 +1,39 @@
 ---
+import { getLangFromUrl, useTranslations, useTranslatedPath, type Lang } from '../i18n';
+import type { TranslationKey } from '../i18n/ui';
+
 interface Props {
   currentPhase: number;
   totalPhases?: number;
+  lang?: Lang;
 }
 
-const { currentPhase, totalPhases = 8 } = Astro.props;
+const detectedLang = getLangFromUrl(Astro.url);
+const { currentPhase, totalPhases = 8, lang = detectedLang } = Astro.props;
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 
-const phases = [
-  { num: 1, shortTitle: 'History' },
-  { num: 2, shortTitle: 'Preparation' },
-  { num: 3, shortTitle: 'Assessment' },
-  { num: 4, shortTitle: 'Desensitization' },
-  { num: 5, shortTitle: 'Installation' },
-  { num: 6, shortTitle: 'Body Scan' },
-  { num: 7, shortTitle: 'Closure' },
-  { num: 8, shortTitle: 'Reevaluation' },
-];
+const phases = Array.from({ length: 8 }, (_, i) => ({
+  num: i + 1,
+  shortTitle: t(`phase.${i + 1}.short` as TranslationKey),
+}));
 
 const prevPhase = currentPhase > 1 ? phases[currentPhase - 2] : null;
 const nextPhase = currentPhase < totalPhases ? phases[currentPhase] : null;
 ---
 
 <!-- Phase Progress Indicator -->
-<div class="flex justify-center items-center gap-1.5 mt-10 mb-4" aria-label={`Phase ${currentPhase} of ${totalPhases}`}>
+<div class="flex justify-center items-center gap-1.5 mt-10 mb-4" aria-label={`${t('phase.phase')} ${currentPhase} ${t('phase.of')} ${totalPhases}`}>
   {phases.map((phase) => (
     <a
-      href={`/clinicians/emdr/phase-${phase.num}`}
+      href={translatePath(`/clinicians/emdr/phase-${phase.num}`)}
       class:list={[
         'w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all',
         phase.num === currentPhase
           ? 'bg-bronze-600 text-white'
           : 'bg-forest-50 text-forest-600 hover:bg-forest-100 hover:text-forest-900'
       ]}
-      title={`Phase ${phase.num}: ${phase.shortTitle}`}
+      title={`${t('phase.phase')} ${phase.num}: ${phase.shortTitle}`}
       aria-current={phase.num === currentPhase ? 'step' : undefined}
     >
       {phase.num}
@@ -43,15 +44,15 @@ const nextPhase = currentPhase < totalPhases ? phases[currentPhase] : null;
 <nav class="flex justify-between items-center py-6 border-t border-linen">
   {prevPhase ? (
     <a
-      href={`/clinicians/emdr/phase-${prevPhase.num}`}
+      href={translatePath(`/clinicians/emdr/phase-${prevPhase.num}`)}
       class="flex items-center gap-2 text-forest-600 hover:text-bronze-700 transition-colors group"
     >
       <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
       </svg>
       <span class="text-sm">
-        <span class="block text-forest-500 text-xs">Previous</span>
-        <span class="font-medium">Phase {prevPhase.num}: {prevPhase.shortTitle}</span>
+        <span class="block text-forest-500 text-xs">{t('phase.previous')}</span>
+        <span class="font-medium">{t('phase.phase')} {prevPhase.num}: {prevPhase.shortTitle}</span>
       </span>
     </a>
   ) : (
@@ -59,20 +60,20 @@ const nextPhase = currentPhase < totalPhases ? phases[currentPhase] : null;
   )}
 
   <a
-    href="/clinicians/emdr"
+    href={translatePath('/clinicians/emdr')}
     class="text-sm text-forest-500 hover:text-bronze-700 transition-colors"
   >
-    All Phases
+    {t('phase.allPhases')}
   </a>
 
   {nextPhase ? (
     <a
-      href={`/clinicians/emdr/phase-${nextPhase.num}`}
+      href={translatePath(`/clinicians/emdr/phase-${nextPhase.num}`)}
       class="flex items-center gap-2 text-forest-600 hover:text-bronze-700 transition-colors group text-right"
     >
       <span class="text-sm">
-        <span class="block text-forest-500 text-xs">Next</span>
-        <span class="font-medium">Phase {nextPhase.num}: {nextPhase.shortTitle}</span>
+        <span class="block text-forest-500 text-xs">{t('phase.next')}</span>
+        <span class="font-medium">{t('phase.phase')} {nextPhase.num}: {nextPhase.shortTitle}</span>
       </span>
       <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />

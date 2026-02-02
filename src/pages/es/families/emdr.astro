@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import ContentFallbackBanner from '../../../components/ContentFallbackBanner.astro';
+import { useTranslations, useTranslatedPath, type Lang } from '../../../i18n';
+
+const lang: Lang = 'es';
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+---
+
+<BaseLayout title={t('families.emdrTitle')} description={t('families.emdrDesc')} lang={lang}>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
+    <!-- Breadcrumb -->
+    <nav class="text-sm mb-6">
+      <ol class="flex items-center gap-2 text-forest-500">
+        <li><a href={translatePath('/families')} class="hover:text-bronze-600 transition-colors">{t('breadcrumb.families')}</a></li>
+        <li>/</li>
+        <li class="text-forest-900">EMDR</li>
+      </ol>
+    </nav>
+
+    <!-- Header with visual emphasis -->
+    <header class="mb-10">
+      <div class="flex items-start gap-4">
+        <div class="w-16 h-16 bg-bronze-500 rounded-2xl flex items-center justify-center text-white flex-shrink-0">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+        </div>
+        <div>
+          <p class="text-bronze-500 font-medium text-sm uppercase tracking-wide">Understanding Your Child's Treatment</p>
+          <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-bronze-gradient">
+            {t('families.emdrTitle')}
+          </h1>
+        </div>
+      </div>
+    </header>
+
+    <ContentFallbackBanner lang={lang} />
+
+    <!-- Key points as horizontal pills -->
+    <div class="flex flex-wrap gap-2 mb-10">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-600 rounded-full text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        {t('families.evidenceBased')}
+      </span>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-600 rounded-full text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        Safe for children
+      </span>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-600 rounded-full text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        {t('families.childPaced')}
+      </span>
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-600 rounded-full text-sm">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        No detailed retelling required
+      </span>
+    </div>
+
+    <!-- Safety Callout -->
+    <div class="bg-sand border border-forest-200 rounded-xl p-5 mb-10">
+      <div class="flex items-start gap-3">
+        <svg class="w-6 h-6 text-forest-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+        <div>
+          <h2 class="text-forest-900 font-semibold mb-1">Is EMDR Safe?</h2>
+          <p class="text-charcoal text-sm leading-relaxed">
+            EMDR is recognized as a safe and effective treatment by the World Health Organization, the American Psychological Association, and the Department of Veterans Affairs. When conducted by a trained therapist, it is considered safe for both children and adults. EMDR can be adapted for children as young as 2-3 years old and is effective across the lifespan. If you have concerns about whether EMDR is right for your situation, talk with your therapist — they can explain how the treatment is tailored to individual needs.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Understanding EMDR Card -->
+    <div class="bg-sand rounded-xl border border-linen overflow-hidden mb-6">
+      <div class="bg-gradient-to-r from-forest-600 to-forest-700 px-5 py-3">
+        <h2 class="text-white font-semibold flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Understanding EMDR
+        </h2>
+      </div>
+      <div class="p-5 space-y-4">
+        <p class="text-charcoal leading-relaxed">
+          EMDR stands for <strong>Eye Movement Desensitization and Reprocessing</strong>. It's a therapy that helps the brain process traumatic memories so they no longer cause distress.
+        </p>
+        <p class="text-charcoal leading-relaxed">
+          When something scary or overwhelming happens, our brains sometimes have trouble "filing away" that memory properly. It can feel like the memory is stuck, causing nightmares, anxiety, or strong reactions to reminders of what happened.
+        </p>
+        <p class="text-charcoal leading-relaxed">
+          EMDR helps the brain unstick these memories and process them like normal memories — ones that we can remember without being overwhelmed by them.
+        </p>
+      </div>
+    </div>
+
+    <!-- Back Link -->
+    <div class="mt-12 pt-8 border-t border-linen">
+      <a href={translatePath('/families')} class="text-bronze-700 hover:text-bronze-600 transition-colors flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+        </svg>
+        {t('families.backToFamilies')}
+      </a>
+    </div>
+  </div>
+</BaseLayout>

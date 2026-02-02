@@ -8,6 +8,7 @@ const emdrPhasesCollection = defineCollection({
     shortTitle: z.string(),
     description: z.string(),
     goals: z.array(z.string()),
+    locale: z.enum(['en', 'es']).default('en'),
   }),
 });
 
@@ -22,6 +23,7 @@ const resourcesCollection = defineCollection({
     fileUrl: z.string().default(''),
     author: z.string().default(''),
     dateAdded: z.coerce.date(),
+    locale: z.enum(['en', 'es']).default('en'),
   }),
 });
 

@@ -1,0 +1,241 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Card from '../../components/Card.astro';
+import { getLangFromUrl, useTranslations, useTranslatedPath, type Lang } from '../../i18n';
+
+const lang: Lang = 'es';
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+---
+
+<BaseLayout lang={lang} title="Home" description="A free resource helping trauma therapists reference evidence-based protocols and helping families understand their child's treatment.">
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden bg-gradient-to-br from-forest-900 via-forest-800 to-forest-900 py-16 sm:py-24">
+    <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <div class="inline-flex items-center gap-2 px-4 py-2 bg-forest-700 backdrop-blur-sm rounded-full border border-forest-600 mb-6">
+        <span class="w-2 h-2 bg-forest-400 rounded-full animate-pulse"></span>
+        <span class="text-sm font-medium text-bronze-500">{t('home.badge')}</span>
+      </div>
+      <h1 class="font-serif text-4xl sm:text-5xl font-semibold text-bronze-gradient mb-6">
+        {t('home.title')}
+      </h1>
+      <p class="text-xl text-forest-100 leading-relaxed max-w-2xl mx-auto mb-10">
+        {t('home.subtitle')}
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href={translatePath('/clinicians')}
+          class="inline-flex items-center justify-center px-6 py-3 bg-bronze-500 text-forest-900 font-medium rounded-lg hover:bg-bronze-400 hover:-translate-y-0.5 transition-all"
+        >
+          {t('home.ctaClinicians')}
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+        <a
+          href={translatePath('/families')}
+          class="inline-flex items-center justify-center px-6 py-3 bg-forest-700 text-forest-100 border border-forest-500 font-medium rounded-lg hover:bg-forest-600 hover:-translate-y-0.5 transition-all"
+        >
+          {t('home.ctaFamilies')}
+          <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- What We Offer Section -->
+  <section class="py-16 sm:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="font-serif text-3xl font-semibold text-forest-900 mb-4">
+          {t('home.whatTitle')}
+        </h2>
+        <p class="text-forest-600 max-w-2xl mx-auto">
+          {t('home.whatSubtitle')}
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- Clinicians Card -->
+        <div class="group relative bg-sand rounded-2xl border border-linen overflow-hidden hover:border-forest-300 transition-all duration-300">
+          <div class="absolute top-0 left-0 right-0 h-[1px] bg-bronze-500"></div>
+          <div class="p-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 bg-forest-50 rounded-xl flex items-center justify-center">
+                <svg class="w-6 h-6 text-bronze-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                </svg>
+              </div>
+              <h3 class="font-serif text-xl font-semibold text-forest-900">{t('home.cliniciansCardTitle')}</h3>
+            </div>
+            <p class="text-charcoal text-sm leading-relaxed mb-4">
+              {t('home.cliniciansCardDesc')}
+            </p>
+            <ul class="text-sm text-forest-600 space-y-2 mb-5">
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-forest-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                {t('home.cliniciansItem1')}
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-forest-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                {t('home.cliniciansItem2')}
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-forest-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                {t('home.cliniciansItem3')}
+              </li>
+            </ul>
+            <a href={translatePath('/clinicians')} class="inline-flex items-center gap-1 text-bronze-700 font-medium text-sm hover:text-bronze-600 group-hover:gap-2 transition-all">
+              {t('home.cliniciansCta')}
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Families Card -->
+        <div class="group relative bg-sand rounded-2xl border border-linen overflow-hidden hover:border-forest-300 transition-all duration-300">
+          <div class="absolute top-0 left-0 right-0 h-[1px] bg-bronze-500"></div>
+          <div class="p-6">
+            <div class="flex items-center gap-3 mb-4">
+              <div class="w-12 h-12 bg-forest-50 rounded-xl flex items-center justify-center">
+                <svg class="w-6 h-6 text-bronze-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </div>
+              <h3 class="font-serif text-xl font-semibold text-forest-900">{t('home.familiesCardTitle')}</h3>
+            </div>
+            <p class="text-charcoal text-sm leading-relaxed mb-4">
+              {t('home.familiesCardDesc')}
+            </p>
+            <ul class="text-sm text-forest-600 space-y-2 mb-5">
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-forest-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                {t('home.familiesItem1')}
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-forest-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                {t('home.familiesItem2')}
+              </li>
+              <li class="flex items-start gap-2">
+                <svg class="w-5 h-5 text-forest-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+                {t('home.familiesItem3')}
+              </li>
+            </ul>
+            <a href={translatePath('/families')} class="inline-flex items-center gap-1 text-bronze-700 font-medium text-sm hover:text-bronze-600 group-hover:gap-2 transition-all">
+              {t('home.familiesCta')}
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Current Protocols Section -->
+  <section class="py-16 sm:py-20">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 class="font-serif text-3xl font-semibold text-forest-900 mb-4">
+          {t('home.protocolsTitle')}
+        </h2>
+        <p class="text-forest-600 max-w-2xl mx-auto">
+          {t('home.protocolsSubtitle')}
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+        <!-- EMDR - Featured/Available -->
+        <a href={translatePath('/clinicians/emdr')} class="group relative bg-forest-700 border border-bronze-600 rounded-2xl p-6 text-white overflow-hidden hover:-translate-y-1 transition-all duration-300">
+          <div class="relative">
+            <div class="flex items-center gap-2 mb-3">
+              <span class="w-2 h-2 bg-bronze-400 rounded-full animate-pulse"></span>
+              <span class="text-xs font-medium text-forest-200">{t('home.availableNow')}</span>
+            </div>
+            <h3 class="font-serif text-xl font-semibold mb-2 group-hover:underline decoration-2 underline-offset-4">EMDR</h3>
+            <p class="text-forest-200 text-sm mb-4">
+              {t('home.emdrDesc')}
+            </p>
+            <span class="inline-flex items-center gap-1 text-sm font-medium text-bronze-400 group-hover:gap-2 transition-all">
+              {t('home.startLearning')}
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </span>
+          </div>
+        </a>
+
+        <!-- TF-CBT - Coming Soon -->
+        <div class="relative bg-sand rounded-2xl p-6 border border-linen opacity-60">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-forest-50 text-forest-600 rounded-full text-xs font-medium">
+              {t('home.comingSoon')}
+            </span>
+          </div>
+          <h3 class="font-serif text-xl font-semibold text-forest-600 mb-2">TF-CBT</h3>
+          <p class="text-forest-500 text-sm">
+            {t('home.tfcbtDesc')}
+          </p>
+        </div>
+
+        <!-- PCIT - Coming Soon -->
+        <div class="relative bg-sand rounded-2xl p-6 border border-linen opacity-60">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="inline-flex items-center gap-1.5 px-2 py-0.5 bg-forest-50 text-forest-600 rounded-full text-xs font-medium">
+              {t('home.comingSoon')}
+            </span>
+          </div>
+          <h3 class="font-serif text-xl font-semibold text-forest-600 mb-2">PCIT</h3>
+          <p class="text-forest-500 text-sm">
+            {t('home.pcitDesc')}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Section -->
+  <section class="py-16 sm:py-20">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-sand rounded-3xl border border-linen p-8 sm:p-12 text-center">
+        <div class="inline-flex items-center justify-center w-16 h-16 bg-forest-50 rounded-2xl mb-6">
+          <svg class="w-8 h-8 text-bronze-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+          </svg>
+        </div>
+        <h2 class="font-serif text-3xl font-semibold text-forest-900 mb-6">
+          {t('home.trustTitle')}
+        </h2>
+        <p class="text-charcoal leading-relaxed mb-8">
+          {t('home.trustDesc')}
+        </p>
+        <a
+          href={translatePath('/about')}
+          class="inline-flex items-center gap-2 px-5 py-2.5 bg-forest-50 text-forest-900 font-medium rounded-lg hover:bg-forest-100 transition-all"
+        >
+          {t('home.trustCta')}
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

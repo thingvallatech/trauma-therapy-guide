@@ -1,0 +1,247 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import ResourceCard from '../../../../components/ResourceCard.astro';
+import ContentFallbackBanner from '../../../../components/ContentFallbackBanner.astro';
+import { getCollection } from 'astro:content';
+import { useTranslations, useTranslatedPath, type Lang } from '../../../../i18n';
+
+const lang: Lang = 'es';
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+const allResources = await getCollection('resources');
+const resources = allResources
+  .filter((r) => r.data.audience === 'clinician' || r.data.audience === 'both')
+  .sort((a, b) => b.data.dateAdded.getTime() - a.data.dateAdded.getTime());
+
+const allTags = [...new Set(resources.flatMap((r) => r.data.tags))].sort();
+const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
+---
+
+<BaseLayout title={t('resources.clinicianTitle')} description={t('resources.clinicianDesc')} lang={lang}>
+  <section class="dark-zone py-10 sm:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Header -->
+      <div class="max-w-3xl mb-8">
+        <nav class="text-sm text-forest-400 mb-4">
+          <a href={translatePath('/clinicians')} class="hover:text-forest-200 transition-colors">{t('breadcrumb.clinicians')}</a>
+          <span class="mx-2">/</span>
+          <span class="text-forest-100">{t('breadcrumb.resourceLibrary')}</span>
+        </nav>
+        <h1 class="font-serif text-4xl font-semibold text-forest-100 mb-4">
+          {t('resources.clinicianTitle')}
+        </h1>
+        <p class="text-lg text-forest-200 leading-relaxed">
+          {t('resources.clinicianDesc')}
+        </p>
+      </div>
+
+      <ContentFallbackBanner lang={lang} />
+
+      <!-- Search + Filters -->
+      <div class="mb-8 space-y-4">
+        <div class="max-w-md">
+          <label for="resource-search" class="sr-only">{t('resource.searchPlaceholder')}</label>
+          <input
+            type="text"
+            id="resource-search"
+            placeholder={t('resource.searchPlaceholder')}
+            class="w-full px-4 py-2 border border-forest-600 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500 bg-forest-700 text-forest-100 placeholder:text-forest-400"
+          />
+        </div>
+
+        <button
+          id="filter-toggle"
+          class="md:hidden flex items-center gap-2 px-4 py-2 bg-forest-700 border border-forest-600 text-forest-200 rounded-lg text-sm font-medium hover:bg-forest-600 transition-colors cursor-pointer"
+          aria-expanded="false"
+          aria-controls="filter-drawer"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+          </svg>
+          <span>{t('resource.filters')}</span>
+          <span id="active-filter-count" class="hidden px-1.5 py-0.5 bg-bronze-500 text-white rounded-full text-xs"></span>
+        </button>
+
+        <div id="filter-drawer" class="hidden md:block space-y-3">
+          <div class="flex flex-wrap gap-2" id="type-filters" role="group" aria-label="Filter by type">
+            {allTypes.map((type) => (
+              <button
+                data-filter-type={type}
+                aria-pressed="false"
+                class="px-3 py-1 rounded-full text-sm font-medium border border-forest-600 text-forest-300 hover:border-forest-400 hover:text-forest-100 transition-colors cursor-pointer"
+              >
+                {type.charAt(0).toUpperCase() + type.slice(1)}
+              </button>
+            ))}
+          </div>
+
+          <div class="flex flex-wrap gap-2" id="tag-filters" role="group" aria-label="Filter by tag">
+            {allTags.map((tag) => (
+              <button
+                data-filter-tag={tag}
+                aria-pressed="false"
+                class="px-3 py-1 rounded-full text-xs border border-forest-600 text-forest-300 bg-forest-700 hover:bg-forest-500 hover:text-white transition-colors cursor-pointer"
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <p class="text-sm text-forest-400 mb-6" id="resource-count">
+        {resources.length} {resources.length !== 1 ? 'recursos' : 'recurso'}
+      </p>
+
+      <div class="grid md:grid-cols-2 gap-6" id="resource-grid">
+        {resources.map((resource) => {
+          const description = resource.body || '';
+          return (
+            <ResourceCard
+              title={resource.data.title}
+              type={resource.data.type}
+              audience={resource.data.audience}
+              tags={resource.data.tags}
+              url={resource.data.url}
+              fileUrl={resource.data.fileUrl}
+              author={resource.data.author}
+              description={description.trim()}
+              lang={lang}
+            />
+          );
+        })}
+      </div>
+
+      <div class="hidden text-center py-12" id="no-results">
+        <p class="text-forest-400">{t('resource.noResults')}</p>
+        <button
+          id="clear-filters"
+          class="mt-2 text-sm text-bronze-400 hover:text-bronze-300 underline cursor-pointer"
+        >
+          {t('resource.clearFilters')}
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const searchInput = document.getElementById('resource-search') as HTMLInputElement;
+    const grid = document.getElementById('resource-grid')!;
+    const cards = Array.from(grid.children) as HTMLElement[];
+    const countEl = document.getElementById('resource-count')!;
+    const noResults = document.getElementById('no-results')!;
+    const clearBtn = document.getElementById('clear-filters')!;
+    const filterToggle = document.getElementById('filter-toggle');
+    const filterDrawer = document.getElementById('filter-drawer');
+    const activeCountBadge = document.getElementById('active-filter-count');
+
+    let activeTypes = new Set<string>();
+    let activeTags = new Set<string>();
+
+    filterToggle?.addEventListener('click', () => {
+      if (filterDrawer && window.innerWidth < 768) {
+        const isHidden = filterDrawer.classList.contains('hidden');
+        filterDrawer.classList.toggle('hidden');
+        filterToggle.setAttribute('aria-expanded', isHidden ? 'true' : 'false');
+      }
+    });
+
+    function updateFilterCount() {
+      const count = activeTypes.size + activeTags.size;
+      if (activeCountBadge) {
+        if (count > 0) {
+          activeCountBadge.textContent = count.toString();
+          activeCountBadge.classList.remove('hidden');
+        } else {
+          activeCountBadge.classList.add('hidden');
+        }
+      }
+    }
+
+    function filterCards() {
+      const query = searchInput.value.toLowerCase().trim();
+      let visible = 0;
+
+      cards.forEach((card) => {
+        const title = card.getAttribute('data-title') || '';
+        const description = card.getAttribute('data-description') || '';
+        const type = card.getAttribute('data-type') || '';
+        const tags: string[] = JSON.parse(card.getAttribute('data-tags') || '[]');
+
+        const matchesSearch = !query || title.includes(query) || description.includes(query) || tags.some((t) => t.includes(query));
+        const matchesType = activeTypes.size === 0 || activeTypes.has(type);
+        const matchesTags = activeTags.size === 0 || tags.some((t) => activeTags.has(t));
+
+        if (matchesSearch && matchesType && matchesTags) {
+          card.style.display = '';
+          visible++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      countEl.textContent = `${visible} ${visible !== 1 ? 'recursos' : 'recurso'}`;
+      noResults.classList.toggle('hidden', visible > 0);
+      grid.classList.toggle('hidden', visible === 0);
+    }
+
+    searchInput.addEventListener('input', filterCards);
+
+    document.querySelectorAll('[data-filter-type]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const type = btn.getAttribute('data-filter-type')!;
+        if (activeTypes.has(type)) {
+          activeTypes.delete(type);
+          btn.classList.remove('bg-forest-500', 'text-white', 'border-forest-500');
+          btn.classList.add('border-forest-600', 'text-forest-300');
+          btn.setAttribute('aria-pressed', 'false');
+        } else {
+          activeTypes.add(type);
+          btn.classList.add('bg-forest-500', 'text-white', 'border-forest-500');
+          btn.classList.remove('border-forest-600', 'text-forest-300');
+          btn.setAttribute('aria-pressed', 'true');
+        }
+        filterCards();
+        updateFilterCount();
+      });
+    });
+
+    document.querySelectorAll('[data-filter-tag]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const tag = btn.getAttribute('data-filter-tag')!;
+        if (activeTags.has(tag)) {
+          activeTags.delete(tag);
+          btn.classList.remove('bg-forest-500', 'text-white');
+          btn.classList.add('bg-forest-700', 'text-forest-300');
+          btn.setAttribute('aria-pressed', 'false');
+        } else {
+          activeTags.add(tag);
+          btn.classList.add('bg-forest-500', 'text-white');
+          btn.classList.remove('bg-forest-700', 'text-forest-300');
+          btn.setAttribute('aria-pressed', 'true');
+        }
+        filterCards();
+        updateFilterCount();
+      });
+    });
+
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      activeTypes.clear();
+      activeTags.clear();
+      document.querySelectorAll('[data-filter-type]').forEach((btn) => {
+        btn.classList.remove('bg-forest-500', 'text-white', 'border-forest-500');
+        btn.classList.add('border-forest-600', 'text-forest-300');
+        btn.setAttribute('aria-pressed', 'false');
+      });
+      document.querySelectorAll('[data-filter-tag]').forEach((btn) => {
+        btn.classList.remove('bg-forest-500', 'text-white');
+        btn.classList.add('bg-forest-700', 'text-forest-300');
+        btn.setAttribute('aria-pressed', 'false');
+      });
+      filterCards();
+      updateFilterCount();
+    });
+  </script>
+</BaseLayout>

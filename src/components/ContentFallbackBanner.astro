@@ -1,0 +1,24 @@
+---
+import { getLangFromUrl, useTranslations, type Lang } from '../i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const detectedLang = getLangFromUrl(Astro.url);
+const { lang = detectedLang } = Astro.props;
+const t = useTranslations(lang);
+
+const show = lang === 'es';
+---
+
+{show && (
+  <div class="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 mb-6">
+    <div class="flex items-center gap-2">
+      <svg class="w-5 h-5 text-amber-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+      </svg>
+      <p class="text-sm text-amber-800">{t('fallback.banner')}</p>
+    </div>
+  </div>
+)}

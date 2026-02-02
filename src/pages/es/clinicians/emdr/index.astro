@@ -1,0 +1,188 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import ClinicalBanner from '../../../../components/ClinicalBanner.astro';
+import ContentFallbackBanner from '../../../../components/ContentFallbackBanner.astro';
+import References from '../../../../components/References.astro';
+import Card from '../../../../components/Card.astro';
+import Callout from '../../../../components/Callout.astro';
+import { useTranslations, useTranslatedPath, type Lang } from '../../../../i18n';
+import type { TranslationKey } from '../../../../i18n/ui';
+
+const lang: Lang = 'es';
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+const phases = [
+  { num: 1, title: 'History and Treatment Planning', shortTitle: t('phase.1.short' as TranslationKey), description: 'Comprehensive history-taking and treatment planning' },
+  { num: 2, title: 'Preparation', shortTitle: t('phase.2.short' as TranslationKey), description: 'Teaching stabilization and resource development' },
+  { num: 3, title: 'Assessment', shortTitle: t('phase.3.short' as TranslationKey), description: 'Activating target memory and establishing baselines' },
+  { num: 4, title: 'Desensitization', shortTitle: t('phase.4.short' as TranslationKey), description: 'Processing with bilateral stimulation' },
+  { num: 5, title: 'Installation', shortTitle: t('phase.5.short' as TranslationKey), description: 'Strengthening the positive cognition' },
+  { num: 6, title: 'Body Scan', shortTitle: t('phase.6.short' as TranslationKey), description: 'Checking for residual physical disturbance' },
+  { num: 7, title: 'Closure', shortTitle: t('phase.7.short' as TranslationKey), description: 'Ensuring stability at session end' },
+  { num: 8, title: 'Reevaluation', shortTitle: t('phase.8.short' as TranslationKey), description: 'Evaluating treatment progress' },
+];
+---
+
+<BaseLayout lang={lang} title={t('emdr.title')} description={t('emdr.description')}>
+  <section class="py-10 sm:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Breadcrumb -->
+      <nav class="text-sm mb-6">
+        <ol class="flex items-center gap-2 text-forest-500">
+          <li><a href={translatePath('/clinicians')} class="hover:text-bronze-600 transition-colors">{t('breadcrumb.clinicians')}</a></li>
+          <li>/</li>
+          <li class="text-forest-900">{t('breadcrumb.emdr')}</li>
+        </ol>
+      </nav>
+
+    <ClinicalBanner lang={lang} />
+
+    <ContentFallbackBanner lang={lang} />
+
+      <!-- Header -->
+      <div class="max-w-3xl mb-12">
+        <h1 class="font-serif text-4xl font-semibold text-bronze-gradient mb-4">
+          {t('emdr.title')}
+        </h1>
+        <p class="text-lg text-charcoal leading-relaxed">
+          {t('emdr.description')}
+        </p>
+      </div>
+
+      <!-- Jump to Phase - Quick Access -->
+      <div class="mb-8 flex flex-wrap items-center gap-2">
+        <span class="text-sm text-forest-500 mr-1">{t('phase.jumpTo')}</span>
+        {phases.map((phase) => (
+          <a
+            href={translatePath(`/clinicians/emdr/phase-${phase.num}`)}
+            class="w-9 h-9 flex items-center justify-center rounded-full bg-forest-50 text-charcoal text-sm font-medium hover:bg-bronze-500 hover:text-forest-900 transition-colors"
+            title={`${t('phase.phase')} ${phase.num}: ${phase.shortTitle}`}
+          >
+            {phase.num}
+          </a>
+        ))}
+      </div>
+
+      <!-- Print Package Button -->
+      <div class="mb-8">
+        <a
+          href={translatePath('/clinicians/emdr/print-package')}
+          class="inline-flex items-center gap-3 px-5 py-3 bg-bronze-500 text-forest-900 rounded-lg hover:bg-bronze-400 transition-colors font-medium"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+          </svg>
+          {t('emdr.printPackage')}
+          <span class="text-forest-900/70 text-sm font-normal">{t('emdr.printPackageNote')}</span>
+        </a>
+      </div>
+
+      <!-- Quick Reference -->
+      <Callout lang={lang} type="tip" title={t('emdr.quickRefTitle')}>
+        <p class="mb-2">{t('emdr.quickRefDesc')}</p>
+        <ol class="list-decimal list-inside space-y-1">
+          <li>{t('emdr.quickRef1')}</li>
+          <li>{t('emdr.quickRef2')}</li>
+          <li>{t('emdr.quickRef3')}</li>
+        </ol>
+      </Callout>
+
+      <!-- Phases Grid -->
+      <div class="mt-12">
+        <h2 class="font-serif text-2xl font-semibold text-forest-900 mb-6">
+          {t('emdr.the8Phases')}
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-4">
+          {phases.map((phase) => (
+            <a
+              href={translatePath(`/clinicians/emdr/phase-${phase.num}`)}
+              class="flex items-start gap-4 p-4 bg-sand border border-linen rounded-lg hover:border-forest-300 hover:bg-forest-50 transition-all group"
+            >
+              <div class="flex-shrink-0 w-10 h-10 bg-forest-50 text-bronze-700 rounded-full flex items-center justify-center font-semibold group-hover:bg-bronze-500 group-hover:text-forest-900 transition-colors">
+                {phase.num}
+              </div>
+              <div class="flex-1 min-w-0">
+                <h3 class="font-semibold text-forest-900 group-hover:text-bronze-600 transition-colors">
+                  {phase.title}
+                </h3>
+                <p class="text-sm text-forest-600 mt-1">
+                  {phase.description}
+                </p>
+              </div>
+              <svg class="w-5 h-5 text-forest-200 group-hover:text-bronze-600 group-hover:translate-x-1 transition-all flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+              </svg>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      <!-- Key Concepts -->
+      <div class="mt-16 grid md:grid-cols-2 gap-8">
+        <div class="bg-sand rounded-lg p-6">
+          <h3 class="font-serif text-lg font-semibold text-forest-900 mb-4">
+            {t('emdr.coreComponents')}
+          </h3>
+          <ul class="space-y-3 text-sm text-charcoal">
+            <li class="flex items-start gap-2">
+              <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">NC:</span>
+              Negative Cognition — irrational self-belief
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">PC:</span>
+              Positive Cognition — desired self-belief
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">VOC:</span>
+              Validity of Cognition — how true PC feels (1-7)
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">SUD:</span>
+              Subjective Units of Disturbance (0-10)
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">BLS:</span>
+              Bilateral Stimulation — eye movements, taps, or tones
+            </li>
+          </ul>
+        </div>
+
+        <div class="bg-sand rounded-lg p-6">
+          <h3 class="font-serif text-lg font-semibold text-forest-900 mb-4">
+            {t('emdr.sessionFlow')}
+          </h3>
+          <ol class="space-y-2 text-sm text-charcoal list-decimal list-inside">
+            <li>Open with reevaluation (Phase 8)</li>
+            <li>Continue previous target or select new one</li>
+            <li>Assessment if new target (Phase 3)</li>
+            <li>Desensitization until SUD = 0 (Phase 4)</li>
+            <li>Installation until VOC = 7 (Phase 5)</li>
+            <li>Body scan until clear (Phase 6)</li>
+            <li>Closure (Phase 7)</li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Resources -->
+      <div class="mt-12 p-6 border border-linen rounded-lg">
+        <h3 class="font-serif text-lg font-semibold text-forest-900 mb-3">
+          {t('emdr.trainingResources')}
+        </h3>
+        <p class="text-sm text-charcoal mb-4">
+          {t('emdr.trainingNote')}
+        </p>
+        <ul class="text-sm text-forest-600 space-y-1">
+          <li>
+            <span class="text-bronze-500">EMDRIA:</span> EMDR International Association — emdria.org
+          </li>
+          <li>
+            <span class="text-bronze-500">EMDR Institute:</span> Founded by Francine Shapiro — emdr.com
+          </li>
+        </ul>
+      </div>
+    </div>
+    <References lang={lang} />
+  </section>
+</BaseLayout>

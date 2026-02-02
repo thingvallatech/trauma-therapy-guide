@@ -3,24 +3,33 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import SearchModal from '../components/SearchModal.astro';
+import { getLangFromUrl, useTranslations, getAlternateLocaleUrl, type Lang } from '../i18n';
 
 interface Props {
   title: string;
   description?: string;
+  lang?: Lang;
 }
 
-const { title, description = 'A free resource for trauma therapists and families navigating evidence-based treatment.' } = Astro.props;
+const detectedLang = getLangFromUrl(Astro.url);
+const { title, description, lang = detectedLang } = Astro.props;
+const t = useTranslations(lang);
 
-const fullTitle = `${title} | Trauma Therapy Guide`;
+const defaultDescription = t('site.defaultDescription');
+const desc = description || defaultDescription;
+const siteName = t('site.name');
+const fullTitle = `${title} | ${siteName}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://traumatherapyguide.com');
+const alternateUrl = new URL(getAlternateLocaleUrl(Astro.url, lang), Astro.site || 'https://traumatherapyguide.com');
+const alternateLang = lang === 'en' ? 'es' : 'en';
 
 const structuredData = {
   "@context": "https://schema.org",
   "@type": "MedicalWebPage",
   "name": fullTitle,
-  "description": description,
+  "description": desc,
   "url": canonicalURL.href,
-  "inLanguage": "en",
+  "inLanguage": lang,
   "isAccessibleForFree": true,
   "publisher": {
     "@type": "Organization",
@@ -34,42 +43,46 @@ const structuredData = {
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang={lang}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content={description} />
+    <meta name="description" content={desc} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="canonical" href={canonicalURL.href} />
+    <link rel="alternate" hreflang={lang} href={canonicalURL.href} />
+    <link rel="alternate" hreflang={alternateLang} href={alternateUrl.href} />
+    <link rel="alternate" hreflang="x-default" href={new URL(lang === 'en' ? Astro.url.pathname : getAlternateLocaleUrl(Astro.url, lang), Astro.site || 'https://traumatherapyguide.com').href} />
     <title>{fullTitle}</title>
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
-    <meta property="og:description" content={description} />
+    <meta property="og:description" content={desc} />
     <meta property="og:url" content={canonicalURL.href} />
     <meta property="og:site_name" content="Trauma Therapy Guide" />
+    <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content={fullTitle} />
-    <meta name="twitter:description" content={description} />
+    <meta name="twitter:description" content={desc} />
 
     <!-- Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body class="min-h-screen flex flex-col">
-    <Header />
+    <Header lang={lang} />
     <main class="flex-1">
       <slot />
     </main>
-    <Footer />
+    <Footer lang={lang} />
 
     <!-- Back to Top Button -->
     <button
       id="back-to-top"
       class="fixed bottom-6 right-6 z-40 hidden w-10 h-10 bg-forest-600 border border-forest-500 text-white rounded-full shadow-lg hover:bg-forest-700 transition-all"
-      aria-label="Back to top"
+      aria-label={t('backToTop')}
     >
       <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
@@ -96,7 +109,7 @@ const structuredData = {
     </script>
 
     <!-- Site Search Modal -->
-    <SearchModal />
+    <SearchModal lang={lang} />
 
     <!-- GoatCounter Analytics -->
     <script data-goatcounter="https://therapy.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>

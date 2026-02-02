@@ -1,4 +1,14 @@
 ---
+import { getLangFromUrl, useTranslations, useTranslatedPath, type Lang } from '../i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const detectedLang = getLangFromUrl(Astro.url);
+const { lang = detectedLang } = Astro.props;
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 const currentYear = new Date().getFullYear();
 ---
 
@@ -8,71 +18,71 @@ const currentYear = new Date().getFullYear();
       <div>
         <h3 class="font-serif text-lg font-semibold text-bronze-gradient mb-4">Trauma Therapy Guide</h3>
         <p class="text-forest-200 text-sm leading-relaxed">
-          A free resource for trauma therapists and families navigating evidence-based treatment.
+          {t('footer.tagline')}
         </p>
       </div>
 
       <div>
-        <h4 class="font-semibold text-bronze-gradient mb-4">Quick Links</h4>
+        <h4 class="font-semibold text-bronze-gradient mb-4">{t('footer.quickLinks')}</h4>
         <ul class="space-y-2 text-sm">
           <li>
-            <a href="/clinicians" class="text-forest-200 hover:text-bronze-400 transition-colors">
-              For Clinicians
+            <a href={translatePath('/clinicians')} class="text-forest-200 hover:text-bronze-400 transition-colors">
+              {t('nav.clinicians')}
             </a>
           </li>
           <li>
-            <a href="/families" class="text-forest-200 hover:text-bronze-400 transition-colors">
-              For Patients & Families
+            <a href={translatePath('/families')} class="text-forest-200 hover:text-bronze-400 transition-colors">
+              {t('nav.families')}
             </a>
           </li>
           <li>
-            <a href="/about" class="text-forest-200 hover:text-bronze-400 transition-colors">
-              About
+            <a href={translatePath('/about')} class="text-forest-200 hover:text-bronze-400 transition-colors">
+              {t('nav.about')}
             </a>
           </li>
         </ul>
       </div>
 
       <div>
-        <h4 class="font-semibold text-bronze-gradient mb-4">Resources</h4>
+        <h4 class="font-semibold text-bronze-gradient mb-4">{t('footer.resources')}</h4>
         <ul class="space-y-2 text-sm">
           <li>
-            <a href="/clinicians/emdr" class="text-forest-200 hover:text-bronze-400 transition-colors">
-              EMDR Protocol
+            <a href={translatePath('/clinicians/emdr')} class="text-forest-200 hover:text-bronze-400 transition-colors">
+              {t('footer.emdrProtocol')}
             </a>
           </li>
           <li>
-            <a href="/clinicians/resources" class="text-forest-200 hover:text-bronze-400 transition-colors">
-              Resource Library
+            <a href={translatePath('/clinicians/resources')} class="text-forest-200 hover:text-bronze-400 transition-colors">
+              {t('footer.resourceLibrary')}
             </a>
           </li>
         </ul>
       </div>
 
       <div id="crisis-resources">
-        <h4 class="font-semibold text-bronze-400 mb-4">Need Help Now?</h4>
+        <h4 class="font-semibold text-bronze-400 mb-4">{t('footer.crisisTitle')}</h4>
         <ul class="space-y-2 text-sm">
           <li>
             <a href="tel:988" class="text-forest-200 hover:text-bronze-400 transition-colors font-medium">
-              988 Suicide & Crisis Lifeline
+              {t('footer.crisis988')}
             </a>
-            <p class="text-forest-400 text-xs">Call or text 988</p>
+            <p class="text-forest-400 text-xs">{t('footer.crisis988desc')}</p>
           </li>
           <li>
-            <a href="sms:741741&body=HELLO" class="text-forest-200 hover:text-bronze-400 transition-colors font-medium">
-              Crisis Text Line
+            <a href={lang === 'es' ? 'sms:741741&body=HOLA' : 'sms:741741&body=HELLO'} class="text-forest-200 hover:text-bronze-400 transition-colors font-medium">
+              {t('footer.crisisText')}
             </a>
-            <p class="text-forest-400 text-xs">Text HELLO to 741741</p>
+            <p class="text-forest-400 text-xs">{t('footer.crisisTextDesc')}</p>
           </li>
           <li>
             <a href="tel:18006564673" class="text-forest-200 hover:text-bronze-400 transition-colors font-medium">
-              RAINN Hotline
+              {t('footer.rainn')}
             </a>
-            <p class="text-forest-400 text-xs">1-800-656-4673</p>
+            <p class="text-forest-400 text-xs">{t('footer.rainnDesc')}</p>
           </li>
           <li>
             <a href="tel:911" class="text-forest-200 hover:text-bronze-400 transition-colors font-medium">
-              Emergency: 911
+              {t('footer.emergency')}
             </a>
           </li>
         </ul>
@@ -80,8 +90,8 @@ const currentYear = new Date().getFullYear();
     </div>
 
     <div class="border-t border-forest-600 mt-8 pt-8 text-center text-sm text-forest-300">
-      <p>&copy; {currentYear} Trauma Therapy Guide. For educational purposes only.</p>
-      <p class="mt-2">This site does not provide medical advice. Always consult qualified professionals.</p>
+      <p>&copy; {currentYear} {t('footer.copyright')}</p>
+      <p class="mt-2">{t('footer.disclaimer')}</p>
     </div>
   </div>
 </footer>

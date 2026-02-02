@@ -1,16 +1,27 @@
 ---
+import { getLangFromUrl, useTranslations, useTranslatedPath, getAlternateLocaleUrl, type Lang } from '../i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const detectedLang = getLangFromUrl(Astro.url);
+const { lang = detectedLang } = Astro.props;
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
 const currentPath = Astro.url.pathname;
+const alternateUrl = getAlternateLocaleUrl(Astro.url, lang);
 
 const navLinks = [
-  { href: '/', label: 'Home' },
-  { href: '/clinicians', label: 'For Clinicians' },
-  { href: '/families', label: 'For Patients & Families' },
-  { href: '/about', label: 'About' },
+  { href: translatePath('/'), label: t('nav.home') },
+  { href: translatePath('/clinicians'), label: t('nav.clinicians') },
+  { href: translatePath('/families'), label: t('nav.families') },
+  { href: translatePath('/about'), label: t('nav.about') },
 ];
 
 function isActive(href: string): boolean {
-  if (href === '/') {
-    return currentPath === '/';
+  if (href === '/' || href === '/es/') {
+    return currentPath === '/' || currentPath === '/es/' || currentPath === '/es';
   }
   return currentPath.startsWith(href);
 }
@@ -21,7 +32,7 @@ function isActive(href: string): boolean {
   <div class="h-[1px] bg-bronze-500"></div>
   <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-16">
-      <a href="/" class="group flex items-center gap-2 font-serif text-xl font-semibold transition-colors">
+      <a href={translatePath('/')} class="group flex items-center gap-2 font-serif text-xl font-semibold transition-colors">
         <span class="w-8 h-8 bg-forest-700 rounded-lg flex items-center justify-center text-bronze-400 text-sm font-bold">T</span>
         <span class="bg-gradient-to-r from-[#C49A47] to-[#D4AA63] bg-clip-text text-transparent">Trauma Therapy Guide</span>
       </a>
@@ -30,7 +41,7 @@ function isActive(href: string): boolean {
       <button
         type="button"
         class="md:hidden p-2 rounded-md text-bronze-400 hover:bg-forest-700 transition-colors"
-        aria-label="Toggle menu"
+        aria-label={t('nav.toggleMenu')}
         id="mobile-menu-button"
       >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,7 +71,7 @@ function isActive(href: string): boolean {
             type="button"
             id="search-trigger"
             class="flex items-center gap-1.5 text-sm text-forest-300 hover:text-forest-100 transition-colors"
-            aria-label="Search site"
+            aria-label={t('nav.searchSite')}
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -70,10 +81,19 @@ function isActive(href: string): boolean {
         </li>
         <li>
           <a
+            href={alternateUrl}
+            class="text-sm font-medium px-2 py-1 text-forest-300 hover:text-forest-100 border border-forest-600 rounded transition-colors"
+            aria-label={t('lang.switchLabel')}
+          >
+            {t('lang.switch')}
+          </a>
+        </li>
+        <li>
+          <a
             href="#crisis-resources"
             class="text-sm font-medium px-3 py-1.5 bg-bronze-400/20 text-bronze-400 rounded-full hover:bg-bronze-400/30 transition-colors"
           >
-            Need Help Now?
+            {t('nav.crisisLink')}
           </a>
         </li>
       </ul>
@@ -104,15 +124,23 @@ function isActive(href: string): boolean {
           <svg class="w-4 h-4 text-forest-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
-          Search
+          {t('nav.search')}
         </button>
+      </li>
+      <li>
+        <a
+          href={alternateUrl}
+          class="block px-3 py-2 rounded-md text-sm font-medium text-forest-300 hover:bg-forest-700 transition-colors"
+        >
+          {t('lang.switchLabel')}
+        </a>
       </li>
       <li>
         <a
           href="#crisis-resources"
           class="block px-3 py-2 rounded-md text-sm font-medium text-bronze-400 hover:bg-bronze-400/20 transition-colors"
         >
-          Need Help Now?
+          {t('nav.crisisLink')}
         </a>
       </li>
     </ul>
