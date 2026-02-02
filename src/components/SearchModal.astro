@@ -10,10 +10,10 @@
 
   <!-- Modal -->
   <div class="relative flex justify-center px-4 pt-[15vh]">
-    <div class="w-full max-w-lg bg-forest-800 border border-forest-600 rounded-xl shadow-2xl overflow-hidden">
+    <div class="w-full max-w-lg bg-cream border border-linen rounded-xl shadow-2xl overflow-hidden">
       <!-- Search input -->
-      <div class="flex items-center gap-3 px-4 border-b border-forest-600">
-        <svg class="w-5 h-5 text-forest-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="flex items-center gap-3 px-4 border-b border-linen">
+        <svg class="w-5 h-5 text-forest-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
         <input
@@ -21,9 +21,9 @@
           type="text"
           placeholder="Search pages..."
           autocomplete="off"
-          class="flex-1 bg-transparent py-3.5 text-forest-100 placeholder:text-forest-400 text-sm outline-none"
+          class="flex-1 bg-sand py-3.5 text-charcoal placeholder:text-forest-400 text-sm outline-none rounded px-2"
         />
-        <kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-forest-400 bg-forest-700 border border-forest-600 rounded">ESC</kbd>
+        <kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-forest-500 bg-sand border border-linen rounded">ESC</kbd>
       </div>
 
       <!-- Results -->
@@ -32,12 +32,12 @@
       </ul>
 
       <!-- Empty state -->
-      <div id="search-empty" class="hidden px-4 py-8 text-center text-forest-400 text-sm">
+      <div id="search-empty" class="hidden px-4 py-8 text-center text-forest-500 text-sm">
         No results found.
       </div>
 
       <!-- Initial hint -->
-      <div id="search-hint" class="px-4 py-8 text-center text-forest-400 text-sm">
+      <div id="search-hint" class="px-4 py-8 text-center text-forest-500 text-sm">
         Start typing to search...
       </div>
     </div>
@@ -98,9 +98,9 @@
 
   function sectionColor(section: string): string {
     switch (section) {
-      case 'Clinicians': return 'bg-forest-700 text-bronze-400';
-      case 'Families': return 'bg-forest-700 text-amber-400';
-      default: return 'bg-forest-700 text-forest-300';
+      case 'Clinicians': return 'bg-forest-50 text-bronze-600';
+      case 'Families': return 'bg-amber-50 text-amber-700';
+      default: return 'bg-sand text-forest-600';
     }
   }
 
@@ -128,12 +128,12 @@
       <li>
         <a
           href="${page.url}"
-          class="search-result flex items-start gap-3 px-4 py-2.5 transition-colors hover:bg-forest-700 cursor-pointer"
+          class="search-result flex items-start gap-3 px-4 py-2.5 transition-colors hover:bg-sand cursor-pointer"
           data-index="${i}"
         >
           <div class="flex-1 min-w-0">
-            <div class="text-sm font-medium text-forest-100 truncate">${highlight(page.title, input.value)}</div>
-            <div class="text-xs text-forest-400 truncate mt-0.5">${highlight(page.description, input.value)}</div>
+            <div class="text-sm font-medium text-forest-900 truncate">${highlight(page.title, input.value)}</div>
+            <div class="text-xs text-forest-500 truncate mt-0.5">${highlight(page.description, input.value)}</div>
           </div>
           <span class="shrink-0 text-[10px] font-medium px-2 py-0.5 rounded-full ${sectionColor(page.section)}">${page.section}</span>
         </a>
@@ -145,17 +145,17 @@
     if (!query.trim()) return text;
     const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const re = new RegExp(`(${escaped})`, 'gi');
-    return text.replace(re, '<mark class="bg-bronze-400/20 text-bronze-300 rounded px-0.5">$1</mark>');
+    return text.replace(re, '<mark class="bg-bronze-200/40 text-bronze-700 rounded px-0.5">$1</mark>');
   }
 
   function setActive(index: number) {
     const items = resultsList.querySelectorAll('.search-result');
     items.forEach((el, i) => {
       if (i === index) {
-        el.classList.add('bg-forest-700', 'border-l-2', 'border-bronze-400');
+        el.classList.add('bg-sand', 'border-l-2', 'border-bronze-600');
         el.scrollIntoView({ block: 'nearest' });
       } else {
-        el.classList.remove('bg-forest-700', 'border-l-2', 'border-bronze-400');
+        el.classList.remove('bg-sand', 'border-l-2', 'border-bronze-600');
       }
     });
     activeIndex = index;

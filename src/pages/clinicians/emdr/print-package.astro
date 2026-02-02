@@ -204,8 +204,8 @@ const printablePages = [
     .loading-spinner {
       width: 48px;
       height: 48px;
-      border: 4px solid #1D3A27;
-      border-top-color: #B08D57;
+      border: 4px solid #B3CDB9;
+      border-top-color: #2D5A3D;
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
@@ -224,7 +224,7 @@ const printablePages = [
     }
 
     .progress-item.loaded {
-      color: #B08D57;
+      color: #2D5A3D;
     }
 
     .progress-item.loading {
@@ -255,7 +255,7 @@ const printablePages = [
         text-align: right;
         font-size: 9pt;
         font-style: italic;
-        color: #679B73;
+        color: #2D5A3D;
         margin-bottom: 4pt;
       }
       .practice-header:empty {
@@ -267,23 +267,23 @@ const printablePages = [
     <ClinicalBanner />
 
   <!-- Print header bar -->
-  <div class="no-print bg-forest-800 text-white py-3 sticky top-0 z-50">
+  <div class="no-print bg-sand text-charcoal py-3 sticky top-0 z-50">
     <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <a href="/clinicians/emdr" class="text-white/80 hover:text-white transition-colors flex items-center gap-2">
+        <a href="/clinicians/emdr" class="text-forest-600 hover:text-forest-800 transition-colors flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
           Back to EMDR
         </a>
-        <span class="text-white/40">|</span>
-        <span class="text-sm">Complete EMDR Print Package</span>
+        <span class="text-forest-300">|</span>
+        <span class="text-sm text-charcoal">Complete EMDR Print Package</span>
       </div>
       <button
         id="print-btn"
         disabled
         onclick="window.print()"
-        class="inline-flex items-center gap-2 px-4 py-2 bg-bronze-500 text-forest-900 rounded-lg hover:bg-bronze-400 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+        class="inline-flex items-center gap-2 px-4 py-2 bg-forest-500 text-white rounded-lg hover:bg-forest-600 transition-colors text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
       >
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -295,13 +295,13 @@ const printablePages = [
 
   <!-- Practice Name Customization -->
   <div class="no-print max-w-4xl mx-auto px-4 pt-4">
-    <div class="flex items-center gap-3 p-3 bg-forest-800 border border-forest-600 rounded-lg">
-      <label for="practice-name" class="text-sm text-forest-300 flex-shrink-0">Practice Name:</label>
+    <div class="flex items-center gap-3 p-3 bg-sand border border-linen rounded-lg">
+      <label for="practice-name" class="text-sm text-forest-600 flex-shrink-0">Practice Name:</label>
       <input
         type="text"
         id="practice-name"
         placeholder="Enter your practice name (appears on printed pages)"
-        class="flex-1 px-3 py-1.5 bg-forest-700 border border-forest-600 rounded text-sm text-forest-100 placeholder:text-forest-500 focus:outline-none focus:ring-2 focus:ring-bronze-500"
+        class="flex-1 px-3 py-1.5 bg-forest-50 border border-linen rounded text-sm text-forest-900 placeholder:text-forest-400 focus:outline-none focus:ring-2 focus:ring-forest-500"
       />
     </div>
   </div>
@@ -310,8 +310,8 @@ const printablePages = [
     <!-- Loading state -->
     <div id="loading-state" class="no-print">
       <div class="loading-spinner mb-4"></div>
-      <h2 class="font-serif text-xl font-semibold text-forest-100 mb-2">Preparing Print Package</h2>
-      <p class="text-forest-400 mb-6">Loading all EMDR protocol pages...</p>
+      <h2 class="font-serif text-xl font-semibold text-forest-900 mb-2">Preparing Print Package</h2>
+      <p class="text-forest-500 mb-6">Loading all EMDR protocol pages...</p>
 
       <div id="progress-list" class="w-full max-w-md">
         {printablePages.map((page, index) => (

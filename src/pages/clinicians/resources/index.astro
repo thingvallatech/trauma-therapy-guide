@@ -14,7 +14,7 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
 ---
 
 <BaseLayout title="Resource Library" description="Curated resources for trauma therapists — books, articles, worksheets, and more.">
-  <section class="py-10 sm:py-16">
+  <section class="dark-zone py-10 sm:py-16">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Header -->
       <div class="max-w-3xl mb-8">
@@ -238,12 +238,12 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
       activeTags.clear();
       document.querySelectorAll('[data-filter-type]').forEach((btn) => {
         btn.classList.remove('bg-forest-500', 'text-white', 'border-forest-500');
-        btn.classList.add('border-wood-200', 'text-charcoal/70');
+        btn.classList.add('border-forest-600', 'text-forest-300');
         btn.setAttribute('aria-pressed', 'false');
       });
       document.querySelectorAll('[data-filter-tag]').forEach((btn) => {
         btn.classList.remove('bg-forest-500', 'text-white');
-        btn.classList.add('bg-forest-50', 'text-forest-700');
+        btn.classList.add('bg-forest-700', 'text-forest-300');
         btn.setAttribute('aria-pressed', 'false');
       });
       filterCards();

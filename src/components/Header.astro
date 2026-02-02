@@ -16,7 +16,7 @@ function isActive(href: string): boolean {
 }
 ---
 
-<header class="bg-forest-800/95 backdrop-blur-sm border-b border-forest-600 sticky top-0 z-50">
+<header class="bg-forest-900 backdrop-blur-sm border-b border-forest-600 sticky top-0 z-50">
   <!-- Bronze accent line -->
   <div class="h-[1px] bg-bronze-500"></div>
   <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -71,7 +71,7 @@ function isActive(href: string): boolean {
         <li>
           <a
             href="#crisis-resources"
-            class="text-sm font-medium px-3 py-1.5 bg-amber-600/20 text-amber-400 rounded-full hover:bg-amber-600/30 transition-colors"
+            class="text-sm font-medium px-3 py-1.5 bg-bronze-400/20 text-bronze-400 rounded-full hover:bg-bronze-400/30 transition-colors"
           >
             Need Help Now?
           </a>
@@ -80,7 +80,7 @@ function isActive(href: string): boolean {
     </div>
 
     <!-- Mobile navigation -->
-    <ul class="hidden md:hidden pb-4 space-y-2" id="mobile-menu">
+    <ul class="hidden md:hidden pb-4 space-y-2 bg-forest-800 rounded-b-lg -mx-4 px-4" id="mobile-menu">
       {navLinks.map((link) => (
         <li>
           <a
@@ -110,7 +110,7 @@ function isActive(href: string): boolean {
       <li>
         <a
           href="#crisis-resources"
-          class="block px-3 py-2 rounded-md text-sm font-medium text-amber-400 hover:bg-amber-600/20 transition-colors"
+          class="block px-3 py-2 rounded-md text-sm font-medium text-bronze-400 hover:bg-bronze-400/20 transition-colors"
         >
           Need Help Now?
         </a>

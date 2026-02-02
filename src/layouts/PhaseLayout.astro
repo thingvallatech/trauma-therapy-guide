@@ -20,12 +20,12 @@ const { phase, title, shortTitle, description, goals } = Astro.props;
   <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
     <!-- Breadcrumb -->
     <nav class="text-sm mb-6">
-      <ol class="flex items-center gap-2 text-forest-400">
-        <li><a href="/clinicians" class="hover:text-bronze-400 transition-colors">Clinicians</a></li>
+      <ol class="flex items-center gap-2 text-forest-500">
+        <li><a href="/clinicians" class="hover:text-forest-700 transition-colors">Clinicians</a></li>
         <li>/</li>
-        <li><a href="/clinicians/emdr" class="hover:text-bronze-400 transition-colors">EMDR</a></li>
+        <li><a href="/clinicians/emdr" class="hover:text-forest-700 transition-colors">EMDR</a></li>
         <li>/</li>
-        <li class="text-forest-100">Phase {phase}</li>
+        <li class="text-forest-900 font-medium">Phase {phase}</li>
       </ol>
     </nav>
 
@@ -33,11 +33,11 @@ const { phase, title, shortTitle, description, goals } = Astro.props;
 
     <!-- Header -->
     <header class="mb-8">
-      <p class="text-bronze-500 font-medium mb-2">Phase {phase} of 8</p>
-      <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-bronze-gradient mb-4">
+      <p class="text-forest-600 font-medium mb-2">Phase {phase} of 8</p>
+      <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-forest-900 mb-4">
         {title}
       </h1>
-      <p class="text-lg text-forest-200 leading-relaxed">
+      <p class="text-lg text-charcoal leading-relaxed">
         {description}
       </p>
     </header>

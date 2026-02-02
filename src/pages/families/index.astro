@@ -3,18 +3,23 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="For Patients & Families" description="Understanding trauma therapy - a guide for patients, parents, and caregivers navigating evidence-based treatment.">
-  <section class="py-10 sm:py-16">
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-br from-forest-900 via-forest-800 to-forest-900 py-10 sm:py-16">
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <!-- Header -->
-      <div class="max-w-3xl mb-12">
+      <div class="max-w-3xl">
         <h1 class="font-serif text-4xl font-semibold text-bronze-gradient mb-4">
           For Patients & Families
         </h1>
-        <p class="text-lg text-forest-200 leading-relaxed">
+        <p class="text-lg text-forest-100 leading-relaxed">
           Whether you're going through trauma therapy yourself or supporting someone who is, these guides explain what happens in treatment without overwhelming jargon.
         </p>
       </div>
+    </div>
+  </section>
 
+  <!-- Content Section -->
+  <section class="py-10 sm:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Available Now - Featured Section -->
       <div class="mb-16">
         <div class="flex items-center gap-3 mb-6">
@@ -176,26 +181,26 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <!-- Coming Soon Section -->
       <div class="mb-16">
         <div class="flex items-center gap-3 mb-6">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-forest-700 text-forest-300 text-sm font-medium rounded-full">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-forest-50 text-forest-600 text-sm font-medium rounded-full">
             Coming Soon
           </span>
         </div>
 
         <div class="grid md:grid-cols-1 gap-6 max-w-md">
           <!-- PCIT Card -->
-          <div class="bg-forest-800 border border-forest-600 rounded-xl p-6 opacity-75">
+          <div class="bg-sand border border-linen rounded-xl p-6 opacity-75">
             <div class="flex items-start gap-4">
-              <div class="w-12 h-12 bg-forest-700 rounded-xl flex items-center justify-center flex-shrink-0">
-                <svg class="w-6 h-6 text-forest-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-12 h-12 bg-forest-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                <svg class="w-6 h-6 text-forest-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                 </svg>
               </div>
               <div>
-                <h3 class="font-serif text-lg font-semibold text-forest-100 mb-2">What is PCIT?</h3>
-                <p class="text-forest-300 text-sm leading-relaxed mb-3">
+                <h3 class="font-serif text-lg font-semibold text-forest-900 mb-2">What is PCIT?</h3>
+                <p class="text-forest-600 text-sm leading-relaxed mb-3">
                   Parent-Child Interaction Therapy strengthens the parent-child bond and teaches effective parenting skills.
                 </p>
-                <span class="inline-block text-xs font-medium px-2 py-1 bg-forest-700 text-forest-300 rounded">
+                <span class="inline-block text-xs font-medium px-2 py-1 bg-forest-50 text-forest-600 rounded">
                   In Development
                 </span>
               </div>
@@ -205,11 +210,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </div>
 
       <!-- How You Can Help Section -->
-      <div class="bg-forest-800 rounded-xl p-8 max-w-3xl">
-        <h2 class="font-serif text-xl font-semibold text-forest-100 mb-4">
+      <div class="bg-sand rounded-xl border border-linen p-8 max-w-3xl">
+        <h2 class="font-serif text-xl font-semibold text-forest-900 mb-4">
           How You Can Help
         </h2>
-        <div class="space-y-4 text-forest-200">
+        <div class="space-y-4 text-charcoal">
           <p>
             It's natural to have questions and concerns about your child's therapy. Learning about the treatment process can help you feel more confident and better equipped to support your child's healing journey.
           </p>

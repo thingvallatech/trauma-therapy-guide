@@ -29,8 +29,8 @@ const nextPhase = currentPhase < totalPhases ? phases[currentPhase] : null;
       class:list={[
         'w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all',
         phase.num === currentPhase
-          ? 'bg-bronze-500 text-forest-900'
-          : 'bg-forest-700 text-forest-400 hover:bg-forest-600 hover:text-forest-200'
+          ? 'bg-bronze-600 text-white'
+          : 'bg-forest-50 text-forest-600 hover:bg-forest-100 hover:text-forest-900'
       ]}
       title={`Phase ${phase.num}: ${phase.shortTitle}`}
       aria-current={phase.num === currentPhase ? 'step' : undefined}
@@ -40,17 +40,17 @@ const nextPhase = currentPhase < totalPhases ? phases[currentPhase] : null;
   ))}
 </div>
 
-<nav class="flex justify-between items-center py-6 border-t border-forest-600">
+<nav class="flex justify-between items-center py-6 border-t border-linen">
   {prevPhase ? (
     <a
       href={`/clinicians/emdr/phase-${prevPhase.num}`}
-      class="flex items-center gap-2 text-forest-300 hover:text-bronze-400 transition-colors group"
+      class="flex items-center gap-2 text-forest-600 hover:text-bronze-700 transition-colors group"
     >
       <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
       </svg>
       <span class="text-sm">
-        <span class="block text-forest-400 text-xs">Previous</span>
+        <span class="block text-forest-500 text-xs">Previous</span>
         <span class="font-medium">Phase {prevPhase.num}: {prevPhase.shortTitle}</span>
       </span>
     </a>
@@ -60,7 +60,7 @@ const nextPhase = currentPhase < totalPhases ? phases[currentPhase] : null;
 
   <a
     href="/clinicians/emdr"
-    class="text-sm text-forest-400 hover:text-bronze-400 transition-colors"
+    class="text-sm text-forest-500 hover:text-bronze-700 transition-colors"
   >
     All Phases
   </a>
@@ -68,10 +68,10 @@ const nextPhase = currentPhase < totalPhases ? phases[currentPhase] : null;
   {nextPhase ? (
     <a
       href={`/clinicians/emdr/phase-${nextPhase.num}`}
-      class="flex items-center gap-2 text-forest-300 hover:text-bronze-400 transition-colors group text-right"
+      class="flex items-center gap-2 text-forest-600 hover:text-bronze-700 transition-colors group text-right"
     >
       <span class="text-sm">
-        <span class="block text-forest-400 text-xs">Next</span>
+        <span class="block text-forest-500 text-xs">Next</span>
         <span class="font-medium">Phase {nextPhase.num}: {nextPhase.shortTitle}</span>
       </span>
       <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
