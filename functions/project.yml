@@ -1,0 +1,19 @@
+packages:
+  - name: resource
+    environment:
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      SPACES_ENDPOINT: ${SPACES_ENDPOINT}
+      SPACES_REGION: ${SPACES_REGION}
+      SPACES_BUCKET: ${SPACES_BUCKET}
+      SPACES_ACCESS_KEY: ${SPACES_ACCESS_KEY}
+      SPACES_SECRET_KEY: ${SPACES_SECRET_KEY}
+      SPACES_CDN_URL: ${SPACES_CDN_URL}
+      GITHUB_TOKEN: ${GITHUB_TOKEN}
+      GITHUB_REPO: ${GITHUB_REPO}
+    actions:
+      - name: analyze
+        runtime: nodejs:18
+        web: true
+      - name: publish
+        runtime: nodejs:18
+        web: true
