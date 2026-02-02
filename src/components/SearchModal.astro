@@ -1,0 +1,221 @@
+---
+// SearchModal.astro — Site-wide search overlay
+// Opens via Cmd/Ctrl+K or the search button in Header
+// Client-side filtering against a hard-coded page index
+---
+
+<div id="search-modal" class="fixed inset-0 z-[100] hidden" role="dialog" aria-modal="true" aria-label="Site search">
+  <!-- Backdrop -->
+  <div id="search-backdrop" class="absolute inset-0 bg-forest-900/80 backdrop-blur-sm"></div>
+
+  <!-- Modal -->
+  <div class="relative flex justify-center px-4 pt-[15vh]">
+    <div class="w-full max-w-lg bg-forest-800 border border-forest-600 rounded-xl shadow-2xl overflow-hidden">
+      <!-- Search input -->
+      <div class="flex items-center gap-3 px-4 border-b border-forest-600">
+        <svg class="w-5 h-5 text-forest-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input
+          id="search-input"
+          type="text"
+          placeholder="Search pages..."
+          autocomplete="off"
+          class="flex-1 bg-transparent py-3.5 text-forest-100 placeholder:text-forest-400 text-sm outline-none"
+        />
+        <kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-forest-400 bg-forest-700 border border-forest-600 rounded">ESC</kbd>
+      </div>
+
+      <!-- Results -->
+      <ul id="search-results" class="max-h-[360px] overflow-y-auto py-2">
+        <!-- Populated by JS -->
+      </ul>
+
+      <!-- Empty state -->
+      <div id="search-empty" class="hidden px-4 py-8 text-center text-forest-400 text-sm">
+        No results found.
+      </div>
+
+      <!-- Initial hint -->
+      <div id="search-hint" class="px-4 py-8 text-center text-forest-400 text-sm">
+        Start typing to search...
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const PAGES = [
+    { title: "Home", url: "/", description: "Free resource for trauma therapists and families", section: "General" },
+    { title: "About", url: "/about", description: "About this reference guide and its sources", section: "General" },
+    { title: "For Clinicians", url: "/clinicians", description: "Evidence-based protocols and clinical references", section: "Clinicians" },
+    { title: "EMDR Overview", url: "/clinicians/emdr", description: "Eye Movement Desensitization and Reprocessing protocol overview", section: "Clinicians" },
+    { title: "Phase 1: History & Treatment Planning", url: "/clinicians/emdr/phase-1", description: "Client history, treatment planning, and informed consent", section: "Clinicians" },
+    { title: "Phase 2: Preparation", url: "/clinicians/emdr/phase-2", description: "Safe place, containment, and resource development", section: "Clinicians" },
+    { title: "Phase 3: Assessment", url: "/clinicians/emdr/phase-3", description: "Target identification, SUD and VOC measurement", section: "Clinicians" },
+    { title: "Phase 4: Desensitization", url: "/clinicians/emdr/phase-4", description: "Processing traumatic material with bilateral stimulation", section: "Clinicians" },
+    { title: "Phase 5: Installation", url: "/clinicians/emdr/phase-5", description: "Strengthening positive cognition", section: "Clinicians" },
+    { title: "Phase 6: Body Scan", url: "/clinicians/emdr/phase-6", description: "Identifying residual somatic disturbance", section: "Clinicians" },
+    { title: "Phase 7: Closure", url: "/clinicians/emdr/phase-7", description: "Session closure and stabilization techniques", section: "Clinicians" },
+    { title: "Phase 8: Reevaluation", url: "/clinicians/emdr/phase-8", description: "Treatment progress review and next steps", section: "Clinicians" },
+    { title: "Clinician Resources", url: "/clinicians/resources", description: "Books, articles, worksheets for trauma-informed practice", section: "Clinicians" },
+    { title: "Print Package", url: "/clinicians/emdr/print-package", description: "Print all EMDR phases and scripts in one package", section: "Clinicians" },
+    { title: "For Patients & Families", url: "/families", description: "Understanding trauma therapy and supporting your loved one", section: "Families" },
+    { title: "Understanding EMDR", url: "/families/emdr", description: "What to expect from EMDR therapy for your child", section: "Families" },
+    { title: "Understanding TF-CBT", url: "/families/tfcbt", description: "What to expect from Trauma-Focused CBT", section: "Families" },
+    { title: "Family Resources", url: "/families/resources", description: "Recommended books and resources for families", section: "Families" },
+  ];
+
+  const MAX_RESULTS = 8;
+
+  const modal = document.getElementById('search-modal')!;
+  const backdrop = document.getElementById('search-backdrop')!;
+  const input = document.getElementById('search-input') as HTMLInputElement;
+  const resultsList = document.getElementById('search-results')!;
+  const emptyState = document.getElementById('search-empty')!;
+  const hintState = document.getElementById('search-hint')!;
+
+  let activeIndex = -1;
+  let currentResults: typeof PAGES = [];
+
+  function openSearch() {
+    modal.classList.remove('hidden');
+    input.value = '';
+    activeIndex = -1;
+    currentResults = [];
+    resultsList.innerHTML = '';
+    emptyState.classList.add('hidden');
+    hintState.classList.remove('hidden');
+    // Focus after a tick so the modal is visible
+    requestAnimationFrame(() => input.focus());
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeSearch() {
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+
+  function sectionColor(section: string): string {
+    switch (section) {
+      case 'Clinicians': return 'bg-forest-700 text-bronze-400';
+      case 'Families': return 'bg-forest-700 text-amber-400';
+      default: return 'bg-forest-700 text-forest-300';
+    }
+  }
+
+  function renderResults(results: typeof PAGES) {
+    currentResults = results;
+    activeIndex = -1;
+
+    if (input.value.trim() === '') {
+      resultsList.innerHTML = '';
+      emptyState.classList.add('hidden');
+      hintState.classList.remove('hidden');
+      return;
+    }
+
+    hintState.classList.add('hidden');
+
+    if (results.length === 0) {
+      resultsList.innerHTML = '';
+      emptyState.classList.remove('hidden');
+      return;
+    }
+
+    emptyState.classList.add('hidden');
+    resultsList.innerHTML = results.map((page, i) => `
+      <li>
+        <a
+          href="${page.url}"
+          class="search-result flex items-start gap-3 px-4 py-2.5 transition-colors hover:bg-forest-700 cursor-pointer"
+          data-index="${i}"
+        >
+          <div class="flex-1 min-w-0">
+            <div class="text-sm font-medium text-forest-100 truncate">${highlight(page.title, input.value)}</div>
+            <div class="text-xs text-forest-400 truncate mt-0.5">${highlight(page.description, input.value)}</div>
+          </div>
+          <span class="shrink-0 text-[10px] font-medium px-2 py-0.5 rounded-full ${sectionColor(page.section)}">${page.section}</span>
+        </a>
+      </li>
+    `).join('');
+  }
+
+  function highlight(text: string, query: string): string {
+    if (!query.trim()) return text;
+    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp(`(${escaped})`, 'gi');
+    return text.replace(re, '<mark class="bg-bronze-400/20 text-bronze-300 rounded px-0.5">$1</mark>');
+  }
+
+  function setActive(index: number) {
+    const items = resultsList.querySelectorAll('.search-result');
+    items.forEach((el, i) => {
+      if (i === index) {
+        el.classList.add('bg-forest-700', 'border-l-2', 'border-bronze-400');
+        el.scrollIntoView({ block: 'nearest' });
+      } else {
+        el.classList.remove('bg-forest-700', 'border-l-2', 'border-bronze-400');
+      }
+    });
+    activeIndex = index;
+  }
+
+  function search(query: string) {
+    const q = query.toLowerCase().trim();
+    if (!q) {
+      renderResults([]);
+      return;
+    }
+    const results = PAGES.filter(page =>
+      page.title.toLowerCase().includes(q) ||
+      page.description.toLowerCase().includes(q) ||
+      page.section.toLowerCase().includes(q)
+    ).slice(0, MAX_RESULTS);
+    renderResults(results);
+  }
+
+  // Input handler
+  input.addEventListener('input', () => search(input.value));
+
+  // Keyboard navigation
+  input.addEventListener('keydown', (e: KeyboardEvent) => {
+    const count = currentResults.length;
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (count > 0) setActive((activeIndex + 1) % count);
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (count > 0) setActive(activeIndex <= 0 ? count - 1 : activeIndex - 1);
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (activeIndex >= 0 && currentResults[activeIndex]) {
+        window.location.href = currentResults[activeIndex].url;
+      }
+    } else if (e.key === 'Escape') {
+      closeSearch();
+    }
+  });
+
+  // Close on backdrop click
+  backdrop.addEventListener('click', closeSearch);
+
+  // Global keyboard shortcut: Cmd/Ctrl+K
+  document.addEventListener('keydown', (e: KeyboardEvent) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+      e.preventDefault();
+      if (modal.classList.contains('hidden')) {
+        openSearch();
+      } else {
+        closeSearch();
+      }
+    }
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+      closeSearch();
+    }
+  });
+
+  // Expose openSearch for the header button
+  (window as any).__openSearch = openSearch;
+</script>

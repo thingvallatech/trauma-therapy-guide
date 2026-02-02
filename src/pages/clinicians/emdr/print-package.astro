@@ -243,6 +243,25 @@ const printablePages = [
     .loading-icon {
       animation: spin 1s linear infinite;
     }
+
+    /* Practice header - hidden on screen, visible in print */
+    .practice-header {
+      display: none;
+    }
+
+    @media print {
+      .practice-header {
+        display: block;
+        text-align: right;
+        font-size: 9pt;
+        font-style: italic;
+        color: #679B73;
+        margin-bottom: 4pt;
+      }
+      .practice-header:empty {
+        display: none;
+      }
+    }
   </style>
 
     <ClinicalBanner />
@@ -429,12 +448,28 @@ const printablePages = [
       loadingState.style.display = 'none';
       printBtn.disabled = false;
 
+      // Inject practice-header element at the top of each .print-page
+      const allPrintPages = printContent.querySelectorAll('.print-page');
+      allPrintPages.forEach(page => {
+        const header = document.createElement('div');
+        header.className = 'practice-header';
+        page.insertBefore(header, page.firstChild);
+      });
+
       if (errorCount > 0) {
         printBtnText.textContent = `Print Package (${loadedCount}/${printablePages.length} pages)`;
       } else {
         printBtnText.textContent = 'Print Full Package';
       }
     }
+
+    // Update all practice headers when the input changes
+    document.getElementById('practice-name').addEventListener('input', function() {
+      const value = this.value.trim();
+      document.querySelectorAll('.practice-header').forEach(header => {
+        header.textContent = value;
+      });
+    });
 
     // Start loading when page is ready
     document.addEventListener('DOMContentLoaded', loadPrintPackage);

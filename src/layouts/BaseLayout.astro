@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SearchModal from '../components/SearchModal.astro';
 
 interface Props {
   title: string;
@@ -93,6 +94,9 @@ const structuredData = {
         navigator.serviceWorker.register('/sw.js').catch(() => {});
       }
     </script>
+
+    <!-- Site Search Modal -->
+    <SearchModal />
 
     <!-- GoatCounter Analytics -->
     <script data-goatcounter="https://therapy.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
