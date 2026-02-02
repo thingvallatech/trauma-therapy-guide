@@ -20,19 +20,19 @@ const phases = [
     <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Breadcrumb -->
       <nav class="text-sm mb-6">
-        <ol class="flex items-center gap-2 text-charcoal/60">
-          <li><a href="/clinicians" class="hover:text-forest-600 transition-colors">Clinicians</a></li>
+        <ol class="flex items-center gap-2 text-forest-400">
+          <li><a href="/clinicians" class="hover:text-bronze-400 transition-colors">Clinicians</a></li>
           <li>/</li>
-          <li class="text-charcoal">EMDR</li>
+          <li class="text-forest-100">EMDR</li>
         </ol>
       </nav>
 
       <!-- Header -->
       <div class="max-w-3xl mb-12">
-        <h1 class="font-serif text-4xl font-semibold text-charcoal mb-4">
+        <h1 class="font-serif text-4xl font-semibold text-bronze-gradient mb-4">
           EMDR Protocol Reference
         </h1>
-        <p class="text-lg text-charcoal/80 leading-relaxed">
+        <p class="text-lg text-forest-200 leading-relaxed">
           Eye Movement Desensitization and Reprocessing (EMDR) is an evidence-based psychotherapy for trauma and PTSD. This guide covers the standard 8-phase protocol.
         </p>
       </div>
@@ -41,13 +41,13 @@ const phases = [
       <div class="mb-8">
         <a
           href="/clinicians/emdr/print-package"
-          class="inline-flex items-center gap-3 px-5 py-3 bg-forest-500 text-white rounded-lg hover:bg-forest-600 transition-colors font-medium shadow-sm hover:shadow-md"
+          class="inline-flex items-center gap-3 px-5 py-3 bg-bronze-500 text-forest-900 rounded-lg hover:bg-bronze-400 transition-colors font-medium"
         >
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
           </svg>
           Print Full Protocol Package
-          <span class="text-white/70 text-sm font-normal">(All phases &amp; resources)</span>
+          <span class="text-forest-900/70 text-sm font-normal">(All phases &amp; resources)</span>
         </a>
       </div>
 
@@ -63,7 +63,7 @@ const phases = [
 
       <!-- Phases Grid -->
       <div class="mt-12">
-        <h2 class="font-serif text-2xl font-semibold text-charcoal mb-6">
+        <h2 class="font-serif text-2xl font-semibold text-forest-100 mb-6">
           The 8 Phases
         </h2>
 
@@ -71,20 +71,20 @@ const phases = [
           {phases.map((phase) => (
             <a
               href={`/clinicians/emdr/phase-${phase.num}`}
-              class="flex items-start gap-4 p-4 bg-white border border-wood-200 rounded-lg hover:border-forest-300 hover:shadow-md transition-all group"
+              class="flex items-start gap-4 p-4 bg-forest-800 border border-forest-600 rounded-lg hover:border-forest-500 hover:bg-forest-700 transition-all group"
             >
-              <div class="flex-shrink-0 w-10 h-10 bg-forest-100 text-forest-700 rounded-full flex items-center justify-center font-semibold group-hover:bg-forest-500 group-hover:text-white transition-colors">
+              <div class="flex-shrink-0 w-10 h-10 bg-forest-700 text-bronze-400 rounded-full flex items-center justify-center font-semibold group-hover:bg-bronze-500 group-hover:text-forest-900 transition-colors">
                 {phase.num}
               </div>
               <div class="flex-1 min-w-0">
-                <h3 class="font-semibold text-charcoal group-hover:text-forest-600 transition-colors">
+                <h3 class="font-semibold text-forest-100 group-hover:text-bronze-400 transition-colors">
                   {phase.title}
                 </h3>
-                <p class="text-sm text-charcoal/70 mt-1">
+                <p class="text-sm text-forest-300 mt-1">
                   {phase.description}
                 </p>
               </div>
-              <svg class="w-5 h-5 text-charcoal/40 group-hover:text-forest-500 group-hover:translate-x-1 transition-all flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg class="w-5 h-5 text-forest-500 group-hover:text-bronze-400 group-hover:translate-x-1 transition-all flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
               </svg>
             </a>
@@ -94,39 +94,39 @@ const phases = [
 
       <!-- Key Concepts -->
       <div class="mt-16 grid md:grid-cols-2 gap-8">
-        <div class="bg-wood-50 rounded-lg p-6">
-          <h3 class="font-serif text-lg font-semibold text-charcoal mb-4">
+        <div class="bg-forest-800 rounded-lg p-6">
+          <h3 class="font-serif text-lg font-semibold text-forest-100 mb-4">
             Core Components
           </h3>
-          <ul class="space-y-3 text-sm text-charcoal/80">
+          <ul class="space-y-3 text-sm text-forest-200">
             <li class="flex items-start gap-2">
-              <span class="font-semibold text-forest-600 w-20 flex-shrink-0">NC:</span>
+              <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">NC:</span>
               Negative Cognition — irrational self-belief
             </li>
             <li class="flex items-start gap-2">
-              <span class="font-semibold text-forest-600 w-20 flex-shrink-0">PC:</span>
+              <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">PC:</span>
               Positive Cognition — desired self-belief
             </li>
             <li class="flex items-start gap-2">
-              <span class="font-semibold text-forest-600 w-20 flex-shrink-0">VOC:</span>
+              <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">VOC:</span>
               Validity of Cognition — how true PC feels (1-7)
             </li>
             <li class="flex items-start gap-2">
-              <span class="font-semibold text-forest-600 w-20 flex-shrink-0">SUD:</span>
+              <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">SUD:</span>
               Subjective Units of Disturbance (0-10)
             </li>
             <li class="flex items-start gap-2">
-              <span class="font-semibold text-forest-600 w-20 flex-shrink-0">BLS:</span>
+              <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">BLS:</span>
               Bilateral Stimulation — eye movements, taps, or tones
             </li>
           </ul>
         </div>
 
-        <div class="bg-forest-50 rounded-lg p-6">
-          <h3 class="font-serif text-lg font-semibold text-charcoal mb-4">
+        <div class="bg-forest-800 rounded-lg p-6">
+          <h3 class="font-serif text-lg font-semibold text-forest-100 mb-4">
             Session Flow
           </h3>
-          <ol class="space-y-2 text-sm text-charcoal/80 list-decimal list-inside">
+          <ol class="space-y-2 text-sm text-forest-200 list-decimal list-inside">
             <li>Open with reevaluation (Phase 8)</li>
             <li>Continue previous target or select new one</li>
             <li>Assessment if new target (Phase 3)</li>
@@ -139,19 +139,19 @@ const phases = [
       </div>
 
       <!-- Resources -->
-      <div class="mt-12 p-6 border border-wood-200 rounded-lg">
-        <h3 class="font-serif text-lg font-semibold text-charcoal mb-3">
+      <div class="mt-12 p-6 border border-forest-600 rounded-lg">
+        <h3 class="font-serif text-lg font-semibold text-forest-100 mb-3">
           Training Resources
         </h3>
-        <p class="text-sm text-charcoal/80 mb-4">
+        <p class="text-sm text-forest-200 mb-4">
           This reference guide is not a substitute for formal EMDR training. For certification and training:
         </p>
-        <ul class="text-sm text-charcoal/70 space-y-1">
+        <ul class="text-sm text-forest-300 space-y-1">
           <li>
-            <span class="text-forest-600">EMDRIA:</span> EMDR International Association — emdria.org
+            <span class="text-bronze-500">EMDRIA:</span> EMDR International Association — emdria.org
           </li>
           <li>
-            <span class="text-forest-600">EMDR Institute:</span> Founded by Francine Shapiro — emdr.com
+            <span class="text-bronze-500">EMDR Institute:</span> Founded by Francine Shapiro — emdr.com
           </li>
         </ul>
       </div>

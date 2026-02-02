@@ -8,19 +8,19 @@ const { type = 'note', title } = Astro.props;
 
 const styles = {
   tip: {
-    container: 'bg-forest-50 border-l-4 border-forest-500',
-    icon: 'text-forest-600',
-    title: 'text-forest-700',
+    container: 'bg-forest-800 border-l-4 border-forest-500',
+    icon: 'text-forest-400',
+    title: 'text-forest-400',
   },
   warning: {
-    container: 'bg-amber-50 border-l-4 border-amber-500',
-    icon: 'text-amber-600',
-    title: 'text-amber-700',
+    container: 'bg-forest-800 border-l-4 border-amber-500',
+    icon: 'text-amber-500',
+    title: 'text-amber-500',
   },
   note: {
-    container: 'bg-wood-50 border-l-4 border-wood-400',
-    icon: 'text-wood-600',
-    title: 'text-wood-700',
+    container: 'bg-forest-800 border-l-4 border-bronze-500',
+    icon: 'text-bronze-500',
+    title: 'text-bronze-500',
   },
 };
 
@@ -53,7 +53,7 @@ const defaultTitles = {
           {title || defaultTitles[type]}
         </p>
       )}
-      <div class="text-charcoal/90 text-sm">
+      <div class="text-forest-100 text-sm">
         <slot />
       </div>
     </div>

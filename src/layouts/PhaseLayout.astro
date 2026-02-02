@@ -18,22 +18,22 @@ const { phase, title, shortTitle, description, goals } = Astro.props;
   <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
     <!-- Breadcrumb -->
     <nav class="text-sm mb-6">
-      <ol class="flex items-center gap-2 text-charcoal/60">
-        <li><a href="/clinicians" class="hover:text-forest-600 transition-colors">Clinicians</a></li>
+      <ol class="flex items-center gap-2 text-forest-400">
+        <li><a href="/clinicians" class="hover:text-bronze-400 transition-colors">Clinicians</a></li>
         <li>/</li>
-        <li><a href="/clinicians/emdr" class="hover:text-forest-600 transition-colors">EMDR</a></li>
+        <li><a href="/clinicians/emdr" class="hover:text-bronze-400 transition-colors">EMDR</a></li>
         <li>/</li>
-        <li class="text-charcoal">Phase {phase}</li>
+        <li class="text-forest-100">Phase {phase}</li>
       </ol>
     </nav>
 
     <!-- Header -->
     <header class="mb-8">
-      <p class="text-forest-600 font-medium mb-2">Phase {phase} of 8</p>
-      <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-charcoal mb-4">
+      <p class="text-bronze-500 font-medium mb-2">Phase {phase} of 8</p>
+      <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-bronze-gradient mb-4">
         {title}
       </h1>
-      <p class="text-lg text-charcoal/80 leading-relaxed">
+      <p class="text-lg text-forest-200 leading-relaxed">
         {description}
       </p>
     </header>

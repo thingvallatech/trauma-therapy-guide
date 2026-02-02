@@ -7,12 +7,12 @@ import PhaseNav from '../../../components/PhaseNav.astro';
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
     <!-- Breadcrumb -->
     <nav class="text-sm mb-6 no-print">
-      <ol class="flex items-center gap-2 text-charcoal/60">
+      <ol class="flex items-center gap-2 text-forest-400">
         <li><a href="/clinicians" class="hover:text-forest-600 transition-colors">Clinicians</a></li>
         <li>/</li>
         <li><a href="/clinicians/emdr" class="hover:text-forest-600 transition-colors">EMDR</a></li>
         <li>/</li>
-        <li class="text-charcoal">Phase 1</li>
+        <li class="text-forest-100">Phase 1</li>
       </ol>
     </nav>
 
@@ -20,19 +20,19 @@ import PhaseNav from '../../../components/PhaseNav.astro';
     <header class="mb-10">
       <div class="flex items-start justify-between flex-wrap gap-4">
         <div class="flex items-center gap-4">
-          <div class="w-16 h-16 bg-forest-500 rounded-2xl flex items-center justify-center text-white font-serif text-2xl font-bold shadow-lg">
+          <div class="w-16 h-16 bg-forest-700 rounded-2xl flex items-center justify-center text-bronze-400 font-serif text-2xl font-bold">
             1
           </div>
           <div>
-            <p class="text-forest-600 font-medium text-sm uppercase tracking-wide">Phase 1 of 8</p>
-            <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-charcoal">
+            <p class="text-bronze-500 font-medium text-sm uppercase tracking-wide">Phase 1 of 8</p>
+            <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-bronze-gradient">
               History & Treatment Planning
             </h1>
           </div>
         </div>
         <button
           onclick="window.print()"
-          class="no-print inline-flex items-center gap-2 px-4 py-2 bg-white border border-wood-300 text-charcoal rounded-lg hover:bg-wood-50 transition-colors text-sm shadow-sm"
+          class="no-print inline-flex items-center gap-2 px-4 py-2 bg-forest-700 border border-forest-500 text-forest-100 rounded-lg hover:bg-forest-700 transition-colors text-sm"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
@@ -44,25 +44,25 @@ import PhaseNav from '../../../components/PhaseNav.astro';
 
     <!-- Goals as horizontal pills -->
     <div class="flex flex-wrap gap-2 mb-10">
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-100 text-forest-700 rounded-full text-sm">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-700 text-bronze-400 rounded-full text-sm">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         Establish alliance
       </span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-100 text-forest-700 rounded-full text-sm">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-700 text-bronze-400 rounded-full text-sm">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         Gather history
       </span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-100 text-forest-700 rounded-full text-sm">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-700 text-bronze-400 rounded-full text-sm">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
         Assess readiness
       </span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-100 text-forest-700 rounded-full text-sm">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-700 text-bronze-400 rounded-full text-sm">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
@@ -77,8 +77,8 @@ import PhaseNav from '../../../components/PhaseNav.astro';
       <div class="lg:col-span-2 space-y-6">
 
         <!-- Enhanced Intake Assessment Card -->
-        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
-          <div class="bg-gradient-to-r from-forest-500 to-forest-600 px-5 py-3 flex items-center justify-between">
+        <div class="bg-forest-800 rounded-xl border border-forest-600 overflow-hidden">
+          <div class="bg-gradient-to-r from-forest-600 to-forest-700 px-5 py-3 flex items-center justify-between">
             <h2 class="text-white font-semibold flex items-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
@@ -99,17 +99,17 @@ import PhaseNav from '../../../components/PhaseNav.astro';
             <!-- Interactive Assessment Categories -->
             <div class="space-y-4">
               <!-- Client Information -->
-              <details class="group border border-wood-200 rounded-lg overflow-hidden">
-                <summary class="flex items-center justify-between p-3 bg-wood-50 cursor-pointer hover:bg-wood-100 transition-colors">
+              <details class="group border border-forest-600 rounded-lg overflow-hidden">
+                <summary class="flex items-center justify-between p-3 bg-forest-700 cursor-pointer hover:bg-forest-700 transition-colors">
                   <div class="flex items-center gap-3">
                     <span class="w-6 h-6 bg-forest-500 text-white rounded flex items-center justify-center text-xs font-bold">1</span>
-                    <span class="font-medium text-charcoal">Client Information</span>
+                    <span class="font-medium text-forest-100">Client Information</span>
                   </div>
-                  <svg class="w-5 h-5 text-charcoal/50 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 text-forest-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </summary>
-                <div class="p-4 bg-white border-t border-wood-100">
+                <div class="p-4 bg-forest-800 border-t border-forest-600">
                   <div class="grid sm:grid-cols-2 gap-3 text-sm">
                     <div class="flex items-start gap-2">
                       <span class="text-forest-500 mt-0.5">•</span>
@@ -128,46 +128,46 @@ import PhaseNav from '../../../components/PhaseNav.astro';
                       <span>Date of Intake</span>
                     </div>
                   </div>
-                  <div class="mt-3 p-2 bg-forest-50 rounded text-xs text-forest-700">
+                  <div class="mt-3 p-2 bg-forest-700/50 rounded text-xs text-forest-300">
                     <strong>Tip:</strong> Verify caregiver's legal relationship and authority to consent for treatment.
                   </div>
                 </div>
               </details>
 
               <!-- Risk Assessment -->
-              <details class="group border border-amber-200 rounded-lg overflow-hidden">
-                <summary class="flex items-center justify-between p-3 bg-amber-50 cursor-pointer hover:bg-amber-100 transition-colors">
+              <details class="group border border-amber-500 rounded-lg overflow-hidden">
+                <summary class="flex items-center justify-between p-3 bg-forest-700/50 cursor-pointer hover:bg-amber-100 transition-colors">
                   <div class="flex items-center gap-3">
                     <span class="w-6 h-6 bg-amber-500 text-white rounded flex items-center justify-center text-xs font-bold">2</span>
-                    <span class="font-medium text-charcoal">Risk Assessment</span>
+                    <span class="font-medium text-forest-100">Risk Assessment</span>
                     <span class="text-xs bg-amber-200 text-amber-800 px-2 py-0.5 rounded-full font-medium">Critical</span>
                   </div>
-                  <svg class="w-5 h-5 text-charcoal/50 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 text-forest-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </summary>
-                <div class="p-4 bg-white border-t border-amber-100">
-                  <p class="text-sm text-charcoal/70 mb-3">Assess before treatment planning to ensure client stability:</p>
+                <div class="p-4 bg-forest-800 border-t border-amber-100">
+                  <p class="text-sm text-forest-300 mb-3">Assess before treatment planning to ensure client stability:</p>
                   <div class="grid sm:grid-cols-2 gap-2 text-sm">
-                    <div class="flex items-start gap-2 p-2 bg-amber-50 rounded">
+                    <div class="flex items-start gap-2 p-2 bg-forest-700/50 rounded">
                       <svg class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                       </svg>
                       <span>Suicidal/homicidal ideation</span>
                     </div>
-                    <div class="flex items-start gap-2 p-2 bg-amber-50 rounded">
+                    <div class="flex items-start gap-2 p-2 bg-forest-700/50 rounded">
                       <svg class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                       </svg>
                       <span>Self-harm behaviors</span>
                     </div>
-                    <div class="flex items-start gap-2 p-2 bg-amber-50 rounded">
+                    <div class="flex items-start gap-2 p-2 bg-forest-700/50 rounded">
                       <svg class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                       </svg>
                       <span>Substance use / addiction</span>
                     </div>
-                    <div class="flex items-start gap-2 p-2 bg-amber-50 rounded">
+                    <div class="flex items-start gap-2 p-2 bg-forest-700/50 rounded">
                       <svg class="w-4 h-4 text-amber-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                       </svg>
@@ -181,46 +181,46 @@ import PhaseNav from '../../../components/PhaseNav.astro';
               </details>
 
               <!-- Goals & Strengths -->
-              <details class="group border border-wood-200 rounded-lg overflow-hidden">
-                <summary class="flex items-center justify-between p-3 bg-wood-50 cursor-pointer hover:bg-wood-100 transition-colors">
+              <details class="group border border-forest-600 rounded-lg overflow-hidden">
+                <summary class="flex items-center justify-between p-3 bg-forest-700 cursor-pointer hover:bg-forest-700 transition-colors">
                   <div class="flex items-center gap-3">
                     <span class="w-6 h-6 bg-forest-500 text-white rounded flex items-center justify-center text-xs font-bold">3</span>
-                    <span class="font-medium text-charcoal">Goals & Strengths</span>
+                    <span class="font-medium text-forest-100">Goals & Strengths</span>
                   </div>
-                  <svg class="w-5 h-5 text-charcoal/50 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 text-forest-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </summary>
-                <div class="p-4 bg-white border-t border-wood-100">
+                <div class="p-4 bg-forest-800 border-t border-forest-600">
                   <div class="grid sm:grid-cols-2 gap-4">
                     <div>
-                      <h4 class="text-sm font-medium text-charcoal mb-2">Client's Goals</h4>
-                      <p class="text-xs text-charcoal/60 italic">"What do you hope to get out of therapy?"</p>
+                      <h4 class="text-sm font-medium text-forest-100 mb-2">Client's Goals</h4>
+                      <p class="text-xs text-forest-400 italic">"What do you hope to get out of therapy?"</p>
                     </div>
                     <div>
-                      <h4 class="text-sm font-medium text-charcoal mb-2">Client's Strengths</h4>
-                      <p class="text-xs text-charcoal/60 italic">Coping skills, support system, resilience factors</p>
+                      <h4 class="text-sm font-medium text-forest-100 mb-2">Client's Strengths</h4>
+                      <p class="text-xs text-forest-400 italic">Coping skills, support system, resilience factors</p>
                     </div>
                   </div>
-                  <div class="mt-3 p-2 bg-forest-50 rounded text-xs text-forest-700">
+                  <div class="mt-3 p-2 bg-forest-700/50 rounded text-xs text-forest-300">
                     <strong>Tip:</strong> Strengths identified here become resources in Phase 2. Document coping strategies that have worked. Motivational interviewing techniques are useful in collaborating with treatment plan goals.
                   </div>
                 </div>
               </details>
 
               <!-- Trauma History -->
-              <details class="group border border-wood-200 rounded-lg overflow-hidden">
-                <summary class="flex items-center justify-between p-3 bg-wood-50 cursor-pointer hover:bg-wood-100 transition-colors">
+              <details class="group border border-forest-600 rounded-lg overflow-hidden">
+                <summary class="flex items-center justify-between p-3 bg-forest-700 cursor-pointer hover:bg-forest-700 transition-colors">
                   <div class="flex items-center gap-3">
                     <span class="w-6 h-6 bg-forest-500 text-white rounded flex items-center justify-center text-xs font-bold">4</span>
-                    <span class="font-medium text-charcoal">Trauma History</span>
+                    <span class="font-medium text-forest-100">Trauma History</span>
                   </div>
-                  <svg class="w-5 h-5 text-charcoal/50 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 text-forest-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </summary>
-                <div class="p-4 bg-white border-t border-wood-100">
-                  <p class="text-sm text-charcoal/70 mb-3">Document all relevant trauma experiences:</p>
+                <div class="p-4 bg-forest-800 border-t border-forest-600">
+                  <p class="text-sm text-forest-300 mb-3">Document all relevant trauma experiences:</p>
                   <div class="grid sm:grid-cols-2 gap-2 text-sm">
                     <div class="flex items-start gap-2">
                       <span class="text-forest-500 mt-0.5">•</span>
@@ -239,68 +239,68 @@ import PhaseNav from '../../../components/PhaseNav.astro';
                       <span>Perpetrator relationship (if applicable)</span>
                     </div>
                   </div>
-                  <div class="mt-3 p-2 bg-forest-50 rounded text-xs text-forest-700">
+                  <div class="mt-3 p-2 bg-forest-700/50 rounded text-xs text-forest-300">
                     <strong>Tip:</strong> Don't require detailed narrative at intake. General information sufficient for treatment planning. The UCLA PTSD Reaction Index is a useful tool for identifying trauma history and symptoms.
                   </div>
                 </div>
               </details>
 
               <!-- Triggers -->
-              <details class="group border border-wood-200 rounded-lg overflow-hidden">
-                <summary class="flex items-center justify-between p-3 bg-wood-50 cursor-pointer hover:bg-wood-100 transition-colors">
+              <details class="group border border-forest-600 rounded-lg overflow-hidden">
+                <summary class="flex items-center justify-between p-3 bg-forest-700 cursor-pointer hover:bg-forest-700 transition-colors">
                   <div class="flex items-center gap-3">
                     <span class="w-6 h-6 bg-forest-500 text-white rounded flex items-center justify-center text-xs font-bold">5</span>
-                    <span class="font-medium text-charcoal">Triggers</span>
+                    <span class="font-medium text-forest-100">Triggers</span>
                   </div>
-                  <svg class="w-5 h-5 text-charcoal/50 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 text-forest-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </summary>
-                <div class="p-4 bg-white border-t border-wood-100">
-                  <p class="text-sm text-charcoal/70 mb-2">Identified by client and caregivers at intake:</p>
+                <div class="p-4 bg-forest-800 border-t border-forest-600">
+                  <p class="text-sm text-forest-300 mb-2">Identified by client and caregivers at intake:</p>
                   <div class="grid sm:grid-cols-3 gap-2 text-sm mb-3">
-                    <div class="p-2 bg-wood-50 rounded text-center">
-                      <p class="text-xs text-charcoal/60">Environmental</p>
+                    <div class="p-2 bg-forest-700 rounded text-center">
+                      <p class="text-xs text-forest-400">Environmental</p>
                       <p class="text-sm">Places, sounds, smells</p>
                     </div>
-                    <div class="p-2 bg-wood-50 rounded text-center">
-                      <p class="text-xs text-charcoal/60">Relational</p>
+                    <div class="p-2 bg-forest-700 rounded text-center">
+                      <p class="text-xs text-forest-400">Relational</p>
                       <p class="text-sm">People, interactions</p>
                     </div>
-                    <div class="p-2 bg-wood-50 rounded text-center">
-                      <p class="text-xs text-charcoal/60">Internal</p>
+                    <div class="p-2 bg-forest-700 rounded text-center">
+                      <p class="text-xs text-forest-400">Internal</p>
                       <p class="text-sm">Thoughts, feelings</p>
                     </div>
                   </div>
-                  <div class="p-2 bg-forest-50 rounded text-xs text-forest-700">
+                  <div class="p-2 bg-forest-700/50 rounded text-xs text-forest-300">
                     <strong>Tip:</strong> Continue identifying triggers throughout treatment. These inform present-prong targets.
                   </div>
-                  <div class="mt-2 p-2 bg-amber-50 rounded text-xs text-amber-800">
+                  <div class="mt-2 p-2 bg-forest-700/50 rounded text-xs text-amber-800">
                     <strong>Caution:</strong> Only identify triggers if client shows readiness to discuss and is able to tolerate distress. Otherwise, focus on building resources first.
                   </div>
                 </div>
               </details>
 
               <!-- Attachment -->
-              <details class="group border border-wood-200 rounded-lg overflow-hidden">
-                <summary class="flex items-center justify-between p-3 bg-wood-50 cursor-pointer hover:bg-wood-100 transition-colors">
+              <details class="group border border-forest-600 rounded-lg overflow-hidden">
+                <summary class="flex items-center justify-between p-3 bg-forest-700 cursor-pointer hover:bg-forest-700 transition-colors">
                   <div class="flex items-center gap-3">
                     <span class="w-6 h-6 bg-forest-500 text-white rounded flex items-center justify-center text-xs font-bold">6</span>
-                    <span class="font-medium text-charcoal">Attachment Style</span>
+                    <span class="font-medium text-forest-100">Attachment Style</span>
                   </div>
-                  <svg class="w-5 h-5 text-charcoal/50 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg class="w-5 h-5 text-forest-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </summary>
-                <div class="p-4 bg-white border-t border-wood-100">
-                  <p class="text-sm text-charcoal/70 mb-3">Understanding attachment informs therapeutic approach:</p>
-                  <div class="bg-wood-50 rounded-lg p-3 mb-3">
+                <div class="p-4 bg-forest-800 border-t border-forest-600">
+                  <p class="text-sm text-forest-300 mb-3">Understanding attachment informs therapeutic approach:</p>
+                  <div class="bg-forest-700 rounded-lg p-3 mb-3">
                     <div class="flex items-center justify-between">
                       <div>
-                        <p class="text-sm font-medium text-charcoal">Attachment Style Questionnaire – Short Form (ASQ-SF)</p>
-                        <p class="text-xs text-charcoal/60">Recommended for ages 15+</p>
+                        <p class="text-sm font-medium text-forest-100">Attachment Style Questionnaire – Short Form (ASQ-SF)</p>
+                        <p class="text-xs text-forest-400">Recommended for ages 15+</p>
                       </div>
-                      <a href="https://fetzer.org/sites/default/files/images/stories/pdf/selfmeasures/Attachment-AttachmentStyleQuestionnaire.pdf" target="_blank" rel="noopener" class="text-xs text-teal-600 hover:text-teal-700 underline flex items-center gap-1">
+                      <a href="https://fetzer.org/sites/default/files/images/stories/pdf/selfmeasures/Attachment-AttachmentStyleQuestionnaire.pdf" target="_blank" rel="noopener" class="text-xs text-forest-400 hover:text-forest-400 underline flex items-center gap-1">
                         Access ASQ-SF
                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
@@ -308,7 +308,7 @@ import PhaseNav from '../../../components/PhaseNav.astro';
                       </a>
                     </div>
                   </div>
-                  <div class="p-2 bg-forest-50 rounded text-xs text-forest-700">
+                  <div class="p-2 bg-forest-700/50 rounded text-xs text-forest-300">
                     <strong>Tip:</strong> Disorganized attachment may indicate complex trauma requiring extended Phase 2 preparation.
                   </div>
                 </div>
@@ -318,8 +318,8 @@ import PhaseNav from '../../../components/PhaseNav.astro';
         </div>
 
         <!-- Clinical Assessments Card -->
-        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
-          <div class="bg-gradient-to-r from-wood-400 to-wood-500 px-5 py-3">
+        <div class="bg-forest-800 rounded-xl border border-forest-600 overflow-hidden">
+          <div class="bg-gradient-to-r from-bronze-600 to-bronze-700 px-5 py-3">
             <h2 class="text-white font-semibold flex items-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -329,38 +329,38 @@ import PhaseNav from '../../../components/PhaseNav.astro';
           </div>
           <div class="p-5">
             <div class="space-y-3">
-              <div class="flex items-center justify-between p-3 bg-forest-50 rounded-lg">
+              <div class="flex items-center justify-between p-3 bg-forest-700/50 rounded-lg">
                 <div>
-                  <p class="font-medium text-charcoal">UCLA PTSD Reaction Index</p>
-                  <p class="text-xs text-charcoal/60">Trauma symptom measure</p>
+                  <p class="font-medium text-forest-100">UCLA PTSD Reaction Index</p>
+                  <p class="text-xs text-forest-400">Trauma symptom measure</p>
                 </div>
                 <span class="w-6 h-6 rounded border-2 border-forest-300 flex-shrink-0"></span>
               </div>
-              <div class="flex items-center justify-between p-3 bg-amber-50 rounded-lg border-l-4 border-amber-400">
+              <div class="flex items-center justify-between p-3 bg-forest-700/50 rounded-lg border-l-4 border-amber-400">
                 <div>
-                  <p class="font-medium text-charcoal">Dissociation Screening</p>
+                  <p class="font-medium text-forest-100">Dissociation Screening</p>
                   <p class="text-xs text-amber-700 font-medium">Essential before processing</p>
                 </div>
                 <span class="w-6 h-6 rounded border-2 border-amber-400 flex-shrink-0"></span>
               </div>
-              <div class="flex items-center justify-between p-3 bg-forest-50 rounded-lg">
+              <div class="flex items-center justify-between p-3 bg-forest-700/50 rounded-lg">
                 <div>
-                  <p class="font-medium text-charcoal">Affect Tolerance</p>
-                  <p class="text-xs text-charcoal/60">Can client manage distress?</p>
+                  <p class="font-medium text-forest-100">Affect Tolerance</p>
+                  <p class="text-xs text-forest-400">Can client manage distress?</p>
                 </div>
                 <span class="w-6 h-6 rounded border-2 border-forest-300 flex-shrink-0"></span>
               </div>
-              <div class="flex items-center justify-between p-3 bg-forest-50 rounded-lg">
+              <div class="flex items-center justify-between p-3 bg-forest-700/50 rounded-lg">
                 <div>
-                  <p class="font-medium text-charcoal">Avoidance Types</p>
-                  <p class="text-xs text-charcoal/60">Identify patterns</p>
+                  <p class="font-medium text-forest-100">Avoidance Types</p>
+                  <p class="text-xs text-forest-400">Identify patterns</p>
                 </div>
                 <span class="w-6 h-6 rounded border-2 border-forest-300 flex-shrink-0"></span>
               </div>
-              <div class="flex items-center justify-between p-3 bg-forest-50 rounded-lg">
+              <div class="flex items-center justify-between p-3 bg-forest-700/50 rounded-lg">
                 <div>
-                  <p class="font-medium text-charcoal">Trauma Phobias</p>
-                  <p class="text-xs text-charcoal/60">Specific fears related to trauma</p>
+                  <p class="font-medium text-forest-100">Trauma Phobias</p>
+                  <p class="text-xs text-forest-400">Specific fears related to trauma</p>
                 </div>
                 <span class="w-6 h-6 rounded border-2 border-forest-300 flex-shrink-0"></span>
               </div>
@@ -369,7 +369,7 @@ import PhaseNav from '../../../components/PhaseNav.astro';
         </div>
 
         <!-- Target Identification Card -->
-        <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+        <div class="bg-forest-800 rounded-xl border border-forest-600 overflow-hidden">
           <div class="bg-gradient-to-r from-forest-600 to-forest-700 px-5 py-3">
             <h2 class="text-white font-semibold flex items-center gap-2">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -380,22 +380,22 @@ import PhaseNav from '../../../components/PhaseNav.astro';
           </div>
           <div class="p-5">
             <!-- Link to Phase 3 for techniques -->
-            <div class="bg-lavender-50 border border-lavender-200 rounded-xl p-4 mb-6">
+            <div class="bg-forest-700 border border-forest-500 rounded-xl p-4 mb-6">
               <div class="flex items-start gap-3">
-                <div class="w-10 h-10 bg-lavender-500 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div class="w-10 h-10 bg-bronze-500 text-forest-900 rounded-lg flex items-center justify-center flex-shrink-0">
                   <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                   </svg>
                 </div>
                 <div>
-                  <h3 class="font-semibold text-charcoal mb-1">Trace Back & Affect Scan Techniques</h3>
-                  <p class="text-sm text-charcoal/70 mb-3">
+                  <h3 class="font-semibold text-forest-100 mb-1">Trace Back & Affect Scan Techniques</h3>
+                  <p class="text-sm text-forest-300 mb-3">
                     Use these techniques to identify touchstone memories and connect current symptoms to their origins.
                     Detailed scripts and guidance are available in Phase 3.
                   </p>
                   <a
                     href="/clinicians/emdr/phase-3"
-                    class="inline-flex items-center gap-2 px-3 py-1.5 bg-lavender-500 text-white text-sm font-medium rounded-lg hover:bg-lavender-600 transition-colors"
+                    class="inline-flex items-center gap-2 px-3 py-1.5 bg-bronze-500 text-forest-900 text-sm font-medium rounded-lg hover:bg-bronze-400 transition-colors"
                   >
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -407,25 +407,25 @@ import PhaseNav from '../../../components/PhaseNav.astro';
             </div>
 
             <!-- Three-pronged approach -->
-            <h3 class="text-sm font-semibold text-charcoal/60 uppercase tracking-wide mb-3">Three-Pronged Approach</h3>
+            <h3 class="text-sm font-semibold text-forest-400 uppercase tracking-wide mb-3">Three-Pronged Approach</h3>
             <div class="space-y-2">
-              <div class="flex items-center gap-4 p-3 rounded-lg bg-gradient-to-r from-forest-50 to-transparent">
+              <div class="flex items-center gap-4 p-3 rounded-lg bg-gradient-to-r from-forest-700/50 to-transparent">
                 <div class="w-20 flex-shrink-0">
                   <span class="inline-block px-2 py-1 bg-forest-500 text-white text-xs font-bold rounded">PAST</span>
                 </div>
-                <p class="text-sm text-charcoal">Trauma memories that set the template</p>
+                <p class="text-sm text-forest-100">Trauma memories that set the template</p>
               </div>
-              <div class="flex items-center gap-4 p-3 rounded-lg bg-gradient-to-r from-wood-50 to-transparent">
+              <div class="flex items-center gap-4 p-3 rounded-lg bg-gradient-to-r from-forest-700 to-transparent">
                 <div class="w-20 flex-shrink-0">
-                  <span class="inline-block px-2 py-1 bg-wood-500 text-white text-xs font-bold rounded">PRESENT</span>
+                  <span class="inline-block px-2 py-1 bg-bronze-500 text-white text-xs font-bold rounded">PRESENT</span>
                 </div>
-                <p class="text-sm text-charcoal">Current symptoms and triggers</p>
+                <p class="text-sm text-forest-100">Current symptoms and triggers</p>
               </div>
-              <div class="flex items-center gap-4 p-3 rounded-lg bg-gradient-to-r from-forest-50 to-transparent">
+              <div class="flex items-center gap-4 p-3 rounded-lg bg-gradient-to-r from-forest-700/50 to-transparent">
                 <div class="w-20 flex-shrink-0">
                   <span class="inline-block px-2 py-1 bg-forest-600 text-white text-xs font-bold rounded">FUTURE</span>
                 </div>
-                <p class="text-sm text-charcoal">Desired future scenarios</p>
+                <p class="text-sm text-forest-100">Desired future scenarios</p>
               </div>
             </div>
           </div>
@@ -436,7 +436,7 @@ import PhaseNav from '../../../components/PhaseNav.astro';
       <div class="lg:col-span-1">
         <div class="lg:sticky lg:top-24 space-y-6">
           <!-- Quick Checklist -->
-          <div class="bg-white rounded-xl shadow-sm border border-wood-200 overflow-hidden">
+          <div class="bg-forest-800 rounded-xl border border-forest-600 overflow-hidden">
             <div class="bg-forest-900 px-4 py-3">
               <h2 class="text-white font-semibold text-sm flex items-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -448,35 +448,35 @@ import PhaseNav from '../../../components/PhaseNav.astro';
             <div class="p-4">
               <ol class="space-y-2 text-sm">
                 <li class="flex items-start gap-2">
-                  <span class="w-5 h-5 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</span>
+                  <span class="w-5 h-5 rounded-full bg-forest-700 text-bronze-400 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">1</span>
                   <span>Complete intake assessment</span>
                 </li>
                 <li class="flex items-start gap-2">
-                  <span class="w-5 h-5 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</span>
+                  <span class="w-5 h-5 rounded-full bg-forest-700 text-bronze-400 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">2</span>
                   <span>Assess risk & stability</span>
                 </li>
                 <li class="flex items-start gap-2">
-                  <span class="w-5 h-5 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</span>
+                  <span class="w-5 h-5 rounded-full bg-forest-700 text-bronze-400 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">3</span>
                   <span>Administer clinical measures</span>
                 </li>
                 <li class="flex items-start gap-2">
-                  <span class="w-5 h-5 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">4</span>
+                  <span class="w-5 h-5 rounded-full bg-forest-700 text-bronze-400 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">4</span>
                   <span>Identify goals & strengths</span>
                 </li>
                 <li class="flex items-start gap-2">
-                  <span class="w-5 h-5 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">5</span>
+                  <span class="w-5 h-5 rounded-full bg-forest-700 text-bronze-400 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">5</span>
                   <span>Document trauma history</span>
                 </li>
                 <li class="flex items-start gap-2">
-                  <span class="w-5 h-5 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">6</span>
+                  <span class="w-5 h-5 rounded-full bg-forest-700 text-bronze-400 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">6</span>
                   <span>Identify triggers</span>
                 </li>
                 <li class="flex items-start gap-2">
-                  <span class="w-5 h-5 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">7</span>
+                  <span class="w-5 h-5 rounded-full bg-forest-700 text-bronze-400 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">7</span>
                   <span>Create target sequence</span>
                 </li>
                 <li class="flex items-start gap-2">
-                  <span class="w-5 h-5 rounded-full bg-forest-100 text-forest-700 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">8</span>
+                  <span class="w-5 h-5 rounded-full bg-forest-700 text-bronze-400 flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">8</span>
                   <span>Develop treatment plan</span>
                 </li>
               </ol>
@@ -484,8 +484,8 @@ import PhaseNav from '../../../components/PhaseNav.astro';
           </div>
 
           <!-- Clinical Considerations -->
-          <div class="bg-gradient-to-br from-amber-50 to-amber-100/50 rounded-xl border border-amber-200 overflow-hidden">
-            <div class="px-4 py-3 border-b border-amber-200">
+          <div class="bg-forest-800 rounded-xl border border-amber-500 overflow-hidden">
+            <div class="px-4 py-3 border-b border-amber-500">
               <h2 class="font-semibold text-amber-800 text-sm flex items-center gap-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />

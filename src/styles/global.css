@@ -17,66 +17,25 @@
   --color-forest-800: #152A1C;
   --color-forest-900: #0D1A11;
 
-  --color-wood-50: #FAF7F2;
-  --color-wood-100: #F5F1EB;
-  --color-wood-200: #E8DFD3;
-  --color-wood-300: #D4C4AD;
-  --color-wood-400: #C4A77D;
-  --color-wood-500: #A68B5B;
-  --color-wood-600: #8A7049;
-  --color-wood-700: #6E5538;
-  --color-wood-800: #523A27;
-  --color-wood-900: #362016;
+  /* Bronze metallic palette */
+  --color-bronze-300: #D4AA63;
+  --color-bronze-400: #C49A47;
+  --color-bronze-500: #B08D57;
+  --color-bronze-600: #997A4A;
+  --color-bronze-700: #82673D;
 
-  /* Warm accent - Terracotta/Coral */
-  --color-coral-50: #FEF5F3;
-  --color-coral-100: #FCE8E4;
-  --color-coral-200: #FAD4CC;
-  --color-coral-300: #F5B5A8;
-  --color-coral-400: #ED8B78;
-  --color-coral-500: #E07055;
-  --color-coral-600: #CB5540;
-  --color-coral-700: #AA4534;
-  --color-coral-800: #8C3C2F;
-  --color-coral-900: #74352C;
+  /* Amber (functional — warnings only) */
+  --color-amber-50: #FFFBEB;
+  --color-amber-100: #FEF3C7;
+  --color-amber-200: #FDE68A;
+  --color-amber-300: #FCD34D;
+  --color-amber-400: #FBBF24;
+  --color-amber-500: #F59E0B;
+  --color-amber-600: #D97706;
+  --color-amber-700: #B45309;
+  --color-amber-800: #92400E;
 
-  /* Calm accent - Soft Teal */
-  --color-teal-50: #F0FDFA;
-  --color-teal-100: #CCFBF1;
-  --color-teal-200: #99F6E4;
-  --color-teal-300: #5EEAD4;
-  --color-teal-400: #2DD4BF;
-  --color-teal-500: #14B8A6;
-  --color-teal-600: #0D9488;
-  --color-teal-700: #0F766E;
-  --color-teal-800: #115E59;
-  --color-teal-900: #134E4A;
-
-  /* Warm purple - Lavender */
-  --color-lavender-50: #FAF5FF;
-  --color-lavender-100: #F3E8FF;
-  --color-lavender-200: #E9D5FF;
-  --color-lavender-300: #D8B4FE;
-  --color-lavender-400: #C084FC;
-  --color-lavender-500: #A855F7;
-  --color-lavender-600: #9333EA;
-  --color-lavender-700: #7E22CE;
-  --color-lavender-800: #6B21A8;
-  --color-lavender-900: #581C87;
-
-  /* Sunny accent - Golden */
-  --color-sunny-50: #FFFBEB;
-  --color-sunny-100: #FEF3C7;
-  --color-sunny-200: #FDE68A;
-  --color-sunny-300: #FCD34D;
-  --color-sunny-400: #FBBF24;
-  --color-sunny-500: #F59E0B;
-  --color-sunny-600: #D97706;
-  --color-sunny-700: #B45309;
-  --color-sunny-800: #92400E;
-  --color-sunny-900: #78350F;
-
-  --color-cream: #FDFBF7;
+  --color-cream: #0D1A11;
   --color-charcoal: #2C2C2C;
 
   /* Typography */
@@ -87,13 +46,8 @@
 /* Base styles */
 html {
   font-family: var(--font-sans);
-  background:
-    radial-gradient(ellipse 100% 60% at 50% -20%, var(--color-forest-100) 0%, transparent 60%),
-    radial-gradient(ellipse 80% 50% at 100% 100%, var(--color-wood-200) 0%, transparent 50%),
-    radial-gradient(ellipse 70% 40% at 0% 70%, var(--color-forest-100) 0%, transparent 45%),
-    var(--color-wood-50);
-  background-attachment: fixed;
-  color: var(--color-charcoal);
+  background: var(--color-forest-900);
+  color: var(--color-forest-100);
   line-height: 1.6;
 }
 
@@ -148,19 +102,19 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .prose a {
-  color: var(--color-forest-600);
+  color: var(--color-bronze-500);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
 .prose a:hover {
-  color: var(--color-forest-500);
+  color: var(--color-bronze-300);
 }
 
 /* Focus states for accessibility */
 a:focus-visible,
 button:focus-visible {
-  outline: 2px solid var(--color-forest-500);
+  outline: 2px solid var(--color-forest-400);
   outline-offset: 2px;
 }
 
@@ -241,8 +195,8 @@ button:focus-visible {
 
 /* Worksheet card styling (screen) */
 .worksheet-card {
-  background: white;
-  border: 1px solid var(--color-wood-200);
+  background: var(--color-forest-800);
+  border: 1px solid var(--color-forest-600);
   border-radius: 0.5rem;
   padding: 1.25rem;
   margin-bottom: 1rem;
@@ -252,5 +206,13 @@ button:focus-visible {
   font-size: 1rem;
   margin-bottom: 0.75rem;
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid var(--color-forest-100);
+  border-bottom: 2px solid var(--color-forest-600);
+}
+
+/* Bronze metallic text gradient */
+.text-bronze-gradient {
+  background: linear-gradient(135deg, #C49A47, #D4AA63);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }

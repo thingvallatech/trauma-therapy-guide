@@ -21,17 +21,17 @@ const prevPhase = currentPhase > 1 ? phases[currentPhase - 2] : null;
 const nextPhase = currentPhase < totalPhases ? phases[currentPhase] : null;
 ---
 
-<nav class="flex justify-between items-center py-6 border-t border-wood-200 mt-8">
+<nav class="flex justify-between items-center py-6 border-t border-forest-600 mt-8">
   {prevPhase ? (
     <a
       href={`/clinicians/emdr/phase-${prevPhase.num}`}
-      class="flex items-center gap-2 text-forest-600 hover:text-forest-500 transition-colors group"
+      class="flex items-center gap-2 text-forest-300 hover:text-bronze-400 transition-colors group"
     >
       <svg class="w-5 h-5 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
       </svg>
       <span class="text-sm">
-        <span class="block text-charcoal/60 text-xs">Previous</span>
+        <span class="block text-forest-400 text-xs">Previous</span>
         <span class="font-medium">Phase {prevPhase.num}: {prevPhase.shortTitle}</span>
       </span>
     </a>
@@ -41,7 +41,7 @@ const nextPhase = currentPhase < totalPhases ? phases[currentPhase] : null;
 
   <a
     href="/clinicians/emdr"
-    class="text-sm text-charcoal/60 hover:text-forest-600 transition-colors"
+    class="text-sm text-forest-400 hover:text-bronze-400 transition-colors"
   >
     All Phases
   </a>
@@ -49,10 +49,10 @@ const nextPhase = currentPhase < totalPhases ? phases[currentPhase] : null;
   {nextPhase ? (
     <a
       href={`/clinicians/emdr/phase-${nextPhase.num}`}
-      class="flex items-center gap-2 text-forest-600 hover:text-forest-500 transition-colors group text-right"
+      class="flex items-center gap-2 text-forest-300 hover:text-bronze-400 transition-colors group text-right"
     >
       <span class="text-sm">
-        <span class="block text-charcoal/60 text-xs">Next</span>
+        <span class="block text-forest-400 text-xs">Next</span>
         <span class="font-medium">Phase {nextPhase.num}: {nextPhase.shortTitle}</span>
       </span>
       <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
