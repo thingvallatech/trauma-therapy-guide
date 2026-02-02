@@ -1,0 +1,365 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Upload Resource" description="Admin: upload a resource to the library.">
+  <section class="py-10 sm:py-16">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="font-serif text-3xl font-semibold text-charcoal mb-2">
+        Add Resource
+      </h1>
+      <p class="text-charcoal/60 text-sm mb-8">
+        Paste a URL or upload a file. AI will generate metadata for you to review.
+      </p>
+
+      <!-- Step 1: Input -->
+      <div id="step-input">
+        <form id="upload-form" class="space-y-6">
+          <!-- URL input -->
+          <div>
+            <label for="resource-url" class="block text-sm font-medium text-charcoal mb-1">URL</label>
+            <input
+              type="url"
+              id="resource-url"
+              name="url"
+              placeholder="https://example.com/article-or-book"
+              class="w-full px-4 py-2 border border-wood-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500 bg-white"
+            />
+          </div>
+
+          <!-- OR divider -->
+          <div class="flex items-center gap-4">
+            <div class="flex-1 h-px bg-wood-200"></div>
+            <span class="text-sm text-charcoal/40">or</span>
+            <div class="flex-1 h-px bg-wood-200"></div>
+          </div>
+
+          <!-- File upload -->
+          <div>
+            <label class="block text-sm font-medium text-charcoal mb-1">Upload File</label>
+            <div
+              id="drop-zone"
+              class="border-2 border-dashed border-wood-300 rounded-lg p-8 text-center hover:border-forest-400 transition-colors cursor-pointer"
+            >
+              <svg class="w-10 h-10 mx-auto text-wood-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              <p class="text-sm text-charcoal/60">Drop a file here or <span class="text-forest-600 underline">browse</span></p>
+              <p class="text-xs text-charcoal/40 mt-1">PDF, DOC, DOCX</p>
+              <input type="file" id="file-input" name="file" accept=".pdf,.doc,.docx" class="hidden" />
+            </div>
+            <p id="file-name" class="text-sm text-forest-600 mt-2 hidden"></p>
+          </div>
+
+          <button
+            type="submit"
+            id="submit-btn"
+            class="w-full bg-forest-500 text-white py-2 px-4 rounded-md font-medium hover:bg-forest-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+          >
+            Analyze with AI
+          </button>
+        </form>
+      </div>
+
+      <!-- Step 2: Review (hidden initially) -->
+      <div id="step-review" class="hidden">
+        <div class="bg-forest-50 border border-forest-200 rounded-lg p-4 mb-6">
+          <p class="text-sm text-forest-700 font-medium">AI suggestions — edit anything before publishing.</p>
+        </div>
+
+        <form id="review-form" class="space-y-4">
+          <div>
+            <label for="review-title" class="block text-sm font-medium text-charcoal mb-1">Title</label>
+            <input type="text" id="review-title" class="w-full px-4 py-2 border border-wood-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-forest-500 bg-white" />
+          </div>
+
+          <div>
+            <label for="review-author" class="block text-sm font-medium text-charcoal mb-1">Author</label>
+            <input type="text" id="review-author" class="w-full px-4 py-2 border border-wood-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-forest-500 bg-white" />
+          </div>
+
+          <div>
+            <label for="review-description" class="block text-sm font-medium text-charcoal mb-1">Description</label>
+            <textarea id="review-description" rows="3" class="w-full px-4 py-2 border border-wood-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-forest-500 bg-white"></textarea>
+          </div>
+
+          <div>
+            <label for="review-type" class="block text-sm font-medium text-charcoal mb-1">Type</label>
+            <select id="review-type" class="w-full px-4 py-2 border border-wood-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-forest-500 bg-white">
+              <option value="book">Book</option>
+              <option value="pdf">PDF</option>
+              <option value="article">Article</option>
+              <option value="video">Video</option>
+              <option value="worksheet">Worksheet</option>
+              <option value="link">Link</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="review-audience" class="block text-sm font-medium text-charcoal mb-1">Audience</label>
+            <select id="review-audience" class="w-full px-4 py-2 border border-wood-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-forest-500 bg-white">
+              <option value="clinician">Clinician</option>
+              <option value="family">Family</option>
+              <option value="both">Both</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-charcoal mb-1">Tags</label>
+            <div id="review-tags" class="flex flex-wrap gap-2 mb-2"></div>
+            <div class="flex gap-2">
+              <input type="text" id="new-tag-input" placeholder="Add tag..." class="flex-1 px-3 py-1 border border-wood-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-forest-500 bg-white" />
+              <button type="button" id="add-tag-btn" class="px-3 py-1 bg-forest-500 text-white rounded-md text-sm hover:bg-forest-600 cursor-pointer">Add</button>
+            </div>
+          </div>
+
+          <div>
+            <label for="review-url" class="block text-sm font-medium text-charcoal mb-1">URL</label>
+            <input type="url" id="review-url" class="w-full px-4 py-2 border border-wood-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-forest-500 bg-white" />
+          </div>
+
+          <input type="hidden" id="review-file-url" />
+
+          <div class="flex gap-3 pt-4">
+            <button
+              type="button"
+              id="back-btn"
+              class="px-4 py-2 bg-wood-100 text-charcoal rounded-md font-medium hover:bg-wood-200 transition-colors cursor-pointer"
+            >
+              Back
+            </button>
+            <button
+              type="submit"
+              id="publish-btn"
+              class="flex-1 bg-forest-500 text-white py-2 px-4 rounded-md font-medium hover:bg-forest-600 transition-colors cursor-pointer"
+            >
+              Publish Resource
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Step 3: Success -->
+      <div id="step-success" class="hidden text-center py-12">
+        <svg class="w-16 h-16 mx-auto text-forest-500 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h2 class="font-serif text-2xl font-semibold text-charcoal mb-2">Resource Published</h2>
+        <p class="text-charcoal/60 mb-6">It will appear on the site after the next build completes.</p>
+        <button
+          id="add-another-btn"
+          class="px-4 py-2 bg-forest-500 text-white rounded-md font-medium hover:bg-forest-600 transition-colors cursor-pointer"
+        >
+          Add Another
+        </button>
+      </div>
+
+      <!-- Loading overlay -->
+      <div id="loading" class="hidden fixed inset-0 bg-black/30 flex items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 text-center shadow-xl">
+          <div class="w-8 h-8 border-4 border-forest-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p class="text-charcoal font-medium" id="loading-text">Analyzing...</p>
+        </div>
+      </div>
+
+      <!-- Error toast -->
+      <div id="error-toast" class="hidden fixed bottom-4 right-4 bg-red-50 border border-red-200 text-red-700 rounded-lg p-4 shadow-lg max-w-sm z-50">
+        <p id="error-message" class="text-sm"></p>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // Config — update this with your actual DO Function URL
+    const API_URL = '/api/resource'; // Placeholder — will be DO Function URL
+
+    // DOM references
+    const stepInput = document.getElementById('step-input')!;
+    const stepReview = document.getElementById('step-review')!;
+    const stepSuccess = document.getElementById('step-success')!;
+    const uploadForm = document.getElementById('upload-form') as HTMLFormElement;
+    const reviewForm = document.getElementById('review-form') as HTMLFormElement;
+    const dropZone = document.getElementById('drop-zone')!;
+    const fileInput = document.getElementById('file-input') as HTMLInputElement;
+    const fileNameEl = document.getElementById('file-name')!;
+    const loading = document.getElementById('loading')!;
+    const loadingText = document.getElementById('loading-text')!;
+    const errorToast = document.getElementById('error-toast')!;
+    const errorMessage = document.getElementById('error-message')!;
+
+    let currentTags: string[] = [];
+    let selectedFile: File | null = null;
+
+    // File drop zone
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      dropZone.classList.add('border-forest-400', 'bg-forest-50');
+    });
+    dropZone.addEventListener('dragleave', () => {
+      dropZone.classList.remove('border-forest-400', 'bg-forest-50');
+    });
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      dropZone.classList.remove('border-forest-400', 'bg-forest-50');
+      const files = (e as DragEvent).dataTransfer?.files;
+      if (files?.length) {
+        selectedFile = files[0];
+        fileNameEl.textContent = selectedFile.name;
+        fileNameEl.classList.remove('hidden');
+      }
+    });
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files?.length) {
+        selectedFile = fileInput.files[0];
+        fileNameEl.textContent = selectedFile.name;
+        fileNameEl.classList.remove('hidden');
+      }
+    });
+
+    // Step 1: Submit for AI analysis
+    uploadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const url = (document.getElementById('resource-url') as HTMLInputElement).value.trim();
+
+      if (!url && !selectedFile) {
+        showError('Please provide a URL or upload a file.');
+        return;
+      }
+
+      showLoading('Analyzing with AI...');
+
+      try {
+        const formData = new FormData();
+        if (url) formData.append('url', url);
+        if (selectedFile) formData.append('file', selectedFile);
+
+        const res = await fetch(`${API_URL}/analyze`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (!res.ok) throw new Error(await res.text());
+
+        const data = await res.json();
+
+        // Populate review form
+        (document.getElementById('review-title') as HTMLInputElement).value = data.title || '';
+        (document.getElementById('review-author') as HTMLInputElement).value = data.author || '';
+        (document.getElementById('review-description') as HTMLTextAreaElement).value = data.description || '';
+        (document.getElementById('review-type') as HTMLSelectElement).value = data.type || 'link';
+        (document.getElementById('review-audience') as HTMLSelectElement).value = data.audience || 'both';
+        (document.getElementById('review-url') as HTMLInputElement).value = data.url || url;
+        (document.getElementById('review-file-url') as HTMLInputElement).value = data.fileUrl || '';
+
+        currentTags = data.tags || [];
+        renderTags();
+
+        stepInput.classList.add('hidden');
+        stepReview.classList.remove('hidden');
+      } catch (err) {
+        showError(`Analysis failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      } finally {
+        hideLoading();
+      }
+    });
+
+    // Tag management
+    function renderTags() {
+      const container = document.getElementById('review-tags')!;
+      container.innerHTML = currentTags
+        .map(
+          (tag) =>
+            `<span class="inline-flex items-center gap-1 px-2 py-0.5 bg-forest-50 text-forest-700 rounded-full text-xs">
+              ${tag}
+              <button type="button" data-remove-tag="${tag}" class="text-forest-400 hover:text-red-500 cursor-pointer">&times;</button>
+            </span>`
+        )
+        .join('');
+
+      container.querySelectorAll('[data-remove-tag]').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const tag = btn.getAttribute('data-remove-tag')!;
+          currentTags = currentTags.filter((t) => t !== tag);
+          renderTags();
+        });
+      });
+    }
+
+    document.getElementById('add-tag-btn')!.addEventListener('click', () => {
+      const input = document.getElementById('new-tag-input') as HTMLInputElement;
+      const tag = input.value.trim().toLowerCase();
+      if (tag && !currentTags.includes(tag)) {
+        currentTags.push(tag);
+        renderTags();
+      }
+      input.value = '';
+    });
+
+    // Step 2: Publish
+    reviewForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      showLoading('Publishing...');
+
+      try {
+        const payload = {
+          title: (document.getElementById('review-title') as HTMLInputElement).value,
+          author: (document.getElementById('review-author') as HTMLInputElement).value,
+          description: (document.getElementById('review-description') as HTMLTextAreaElement).value,
+          type: (document.getElementById('review-type') as HTMLSelectElement).value,
+          audience: (document.getElementById('review-audience') as HTMLSelectElement).value,
+          tags: currentTags,
+          url: (document.getElementById('review-url') as HTMLInputElement).value,
+          fileUrl: (document.getElementById('review-file-url') as HTMLInputElement).value,
+        };
+
+        const res = await fetch(`${API_URL}/publish`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+
+        if (!res.ok) throw new Error(await res.text());
+
+        stepReview.classList.add('hidden');
+        stepSuccess.classList.remove('hidden');
+      } catch (err) {
+        showError(`Publish failed: ${err instanceof Error ? err.message : 'Unknown error'}`);
+      } finally {
+        hideLoading();
+      }
+    });
+
+    // Back button
+    document.getElementById('back-btn')!.addEventListener('click', () => {
+      stepReview.classList.add('hidden');
+      stepInput.classList.remove('hidden');
+    });
+
+    // Add another
+    document.getElementById('add-another-btn')!.addEventListener('click', () => {
+      stepSuccess.classList.add('hidden');
+      stepInput.classList.remove('hidden');
+      uploadForm.reset();
+      selectedFile = null;
+      fileNameEl.classList.add('hidden');
+      currentTags = [];
+    });
+
+    // Helpers
+    function showLoading(text: string) {
+      loadingText.textContent = text;
+      loading.classList.remove('hidden');
+    }
+
+    function hideLoading() {
+      loading.classList.add('hidden');
+    }
+
+    function showError(msg: string) {
+      errorMessage.textContent = msg;
+      errorToast.classList.remove('hidden');
+      setTimeout(() => errorToast.classList.add('hidden'), 5000);
+    }
+  </script>
+</BaseLayout>

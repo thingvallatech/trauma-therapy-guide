@@ -11,6 +11,21 @@ const emdrPhasesCollection = defineCollection({
   }),
 });
 
+const resourcesCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    type: z.enum(['book', 'pdf', 'article', 'video', 'worksheet', 'link']),
+    audience: z.enum(['clinician', 'family', 'both']),
+    tags: z.array(z.string()),
+    url: z.string().default(''),
+    fileUrl: z.string().default(''),
+    author: z.string().default(''),
+    dateAdded: z.coerce.date(),
+  }),
+});
+
 export const collections = {
   'emdr-phases': emdrPhasesCollection,
+  'resources': resourcesCollection,
 };
