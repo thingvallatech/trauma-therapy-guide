@@ -31,6 +31,7 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import time
 from pathlib import Path
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
@@ -73,7 +74,11 @@ def load_sources() -> list[dict]:
 # ----- Download with caching -----
 
 def download_to_cache(url: str, fig_id: str) -> Path:
-    """Download URL to scripts/.cache/sandtray-raw/<id>.<ext>. Skip if cached."""
+    """Download URL to scripts/.cache/sandtray-raw/<id>.<ext>. Skip if cached.
+
+    Rate-limits to 1 request per 2s and retries on HTTP 429 with exponential
+    backoff, since Wikimedia's CDN is strict about bulk fetching.
+    """
     RAW_DIR.mkdir(parents=True, exist_ok=True)
     # Guess extension from URL.
     ext = url.rsplit(".", 1)[-1].split("?")[0].lower()
@@ -82,10 +87,23 @@ def download_to_cache(url: str, fig_id: str) -> Path:
     cached = RAW_DIR / f"{fig_id}.{ext}"
     if cached.exists() and cached.stat().st_size > 0:
         return cached
-    req = Request(url, headers={"User-Agent": USER_AGENT, "Accept": "image/*"})
-    with urlopen(req, timeout=60) as resp:
-        cached.write_bytes(resp.read())
-    return cached
+    # Polite pacing between uncached downloads.
+    time.sleep(2.0)
+    delay = 5.0
+    for attempt in range(5):
+        req = Request(url, headers={"User-Agent": USER_AGENT, "Accept": "image/*"})
+        try:
+            with urlopen(req, timeout=60) as resp:
+                cached.write_bytes(resp.read())
+            return cached
+        except HTTPError as e:
+            if e.code == 429 and attempt < 4:
+                print(f"  429 rate-limited, backing off {delay:.0f}s...", file=sys.stderr)
+                time.sleep(delay)
+                delay *= 2
+                continue
+            raise
+    raise RuntimeError(f"exceeded retry budget for {url}")
 
 
 # ----- Image ops (Pillow only) -----

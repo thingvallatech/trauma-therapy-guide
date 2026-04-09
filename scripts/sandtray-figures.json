@@ -1,4 +1,4 @@
 {
-  "comment": "Source list for sandtray figure curation. Each entry is a candidate; we discard any that don't process cleanly. Categories: people, animals, plants, earth, shelter. Only public-domain sources allowed.",
+  "comment": "Historical rembg-pipeline source list for 2D figures. Superseded by scripts/sandtray-models.json (3D models). Kept so scripts/sandtray-figures.py can still be run for future 2D use cases if needed.",
   "figures": []
 }
