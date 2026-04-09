@@ -1,0 +1,47 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  tool: CollectionEntry<'tools'>;
+}
+
+const { tool } = Astro.props;
+const { name, category, evidence, shortDescription } = tool.data;
+
+const categoryIcon: Record<string, string> = {
+  bls: 'M12 2v20M4.93 4.93l14.14 14.14M4.93 19.07L19.07 4.93',
+  preparation: 'M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z',
+  assessment: 'M3 12h18M3 6h18M3 18h18',
+  regulation: 'M12 2a10 10 0 100 20 10 10 0 000-20zm0 6v8',
+};
+
+const evidenceLabel: Record<string, string> = {
+  'research-backed': 'Research-backed',
+  'clinical-consensus': 'Clinical consensus',
+  'widely-used': 'Widely used',
+};
+
+const href = `/tools/${tool.slug}`;
+---
+
+<a
+  href={href}
+  class="block bg-forest-800 border border-forest-600 rounded-lg p-6 hover:border-forest-500 hover:bg-forest-700 transition-all duration-200 group"
+>
+  <div class="flex items-start gap-4">
+    <div class="w-10 h-10 bg-forest-700 rounded-lg flex items-center justify-center flex-shrink-0">
+      <svg class="w-5 h-5 text-bronze-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d={categoryIcon[category]} />
+      </svg>
+    </div>
+    <div class="flex-1 min-w-0">
+      <h3 class="font-serif text-lg font-semibold text-forest-100 mb-1 group-hover:text-bronze-400 transition-colors">
+        {name}
+      </h3>
+      <p class="text-forest-200 text-sm leading-relaxed mb-3">{shortDescription}</p>
+      <span class="inline-flex items-center px-2 py-0.5 bg-forest-700 text-bronze-400 rounded text-xs font-medium">
+        {evidenceLabel[evidence]}
+      </span>
+    </div>
+  </div>
+</a>
