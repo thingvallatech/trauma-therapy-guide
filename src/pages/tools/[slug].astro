@@ -6,6 +6,7 @@ import SUDScale from '../../components/tools/SUDScale.astro';
 import VOCScale from '../../components/tools/VOCScale.astro';
 import BreathPacer from '../../components/tools/BreathPacer.astro';
 import Grounding from '../../components/tools/Grounding.astro';
+import BLSVisual from '../../components/tools/BLSVisual.astro';
 
 export async function getStaticPaths() {
   const tools = await getCollection('tools', (t) => t.data.locale === 'en');
@@ -29,6 +30,7 @@ const widgets: Record<string, any> = {
   'VOCScale': VOCScale,
   'BreathPacer': BreathPacer,
   'Grounding': Grounding,
+  'BLSVisual': BLSVisual,
 };
 
 const Widget = widgets[tool.data.componentName] ?? null;
