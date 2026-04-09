@@ -1,0 +1,89 @@
+---
+interface Props {
+  fullscreen?: boolean;
+}
+
+const { fullscreen = false } = Astro.props;
+const containerClass = fullscreen
+  ? "w-full max-w-2xl mx-auto p-8"
+  : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
+---
+
+<div class:list={[containerClass]} data-grounding-widget>
+  <h2 data-grounding-prompt class="font-serif text-2xl text-forest-100 mb-2">Name 5 things you can see</h2>
+  <p class="text-forest-300 text-sm mb-6">Look around. Tap the button as you name each one out loud or in your head.</p>
+
+  <div class="flex items-center gap-4 mb-6">
+    <div data-grounding-count class="font-serif text-6xl font-semibold text-bronze-400 tabular-nums">5</div>
+    <div class="text-forest-300 text-sm">remaining</div>
+  </div>
+
+  <button
+    data-grounding-tap
+    class="w-full py-4 rounded-lg bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors"
+  >
+    I named one
+  </button>
+
+  <button
+    data-grounding-reset
+    class="w-full mt-3 py-2 text-sm text-forest-400 hover:text-forest-200 transition-colors"
+  >
+    Start over
+  </button>
+</div>
+
+<script>
+  const steps = [
+    { sense: 'see', count: 5 },
+    { sense: 'touch', count: 4 },
+    { sense: 'hear', count: 3 },
+    { sense: 'smell', count: 2 },
+    { sense: 'taste', count: 1 },
+  ];
+
+  const widgets = document.querySelectorAll('[data-grounding-widget]');
+  widgets.forEach((root) => {
+    const promptEl = root.querySelector<HTMLElement>('[data-grounding-prompt]')!;
+    const countEl = root.querySelector<HTMLElement>('[data-grounding-count]')!;
+    const tapBtn = root.querySelector<HTMLButtonElement>('[data-grounding-tap]')!;
+    const resetBtn = root.querySelector<HTMLButtonElement>('[data-grounding-reset]')!;
+
+    let stepIdx = 0;
+    let remaining = steps[0].count;
+
+    function render() {
+      if (stepIdx >= steps.length) {
+        promptEl.textContent = 'You are here.';
+        countEl.textContent = '✓';
+        tapBtn.textContent = 'Done';
+        tapBtn.disabled = true;
+        return;
+      }
+      const s = steps[stepIdx];
+      promptEl.textContent = `Name ${s.count} thing${s.count > 1 ? 's' : ''} you can ${s.sense}`;
+      countEl.textContent = String(remaining);
+      tapBtn.textContent = 'I named one';
+      tapBtn.disabled = false;
+    }
+
+    function tap() {
+      remaining -= 1;
+      if (remaining <= 0) {
+        stepIdx += 1;
+        if (stepIdx < steps.length) remaining = steps[stepIdx].count;
+      }
+      render();
+    }
+
+    function reset() {
+      stepIdx = 0;
+      remaining = steps[0].count;
+      render();
+    }
+
+    tapBtn.addEventListener('click', tap);
+    resetBtn.addEventListener('click', reset);
+    render();
+  });
+</script>
