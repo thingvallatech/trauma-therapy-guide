@@ -1,0 +1,88 @@
+{
+  "comment": "Curated starter list of CC0 low-poly 3D models for the sandtray. Sources: KayKit Character Pack Adventures (5 characters as People) and KayKit Dungeon Remastered (4 props as Shelter). Animals / Plants / Earth are empty in v1 because KayKit does not have self-contained GLB files for those archetypes; adding them is deferred to a follow-up milestone (candidate sources: Quaternius website scraping, Poly.pizza). License: CC0-1.0, no attribution required, but we record it here anyway.",
+  "license": "CC0-1.0",
+  "source_attribution": "KayKit by Kay Lousberg (https://kaylousberg.com/), CC0",
+  "models": [
+    {
+      "id": "knight",
+      "file": "Knight.glb",
+      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0/main/addons/kaykit_character_pack_adventures/Characters/gltf/Knight.glb",
+      "category": "people",
+      "alt_en": "Knight",
+      "alt_es": "Caballero",
+      "defaultScale": 1.0
+    },
+    {
+      "id": "mage",
+      "file": "Mage.glb",
+      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0/main/addons/kaykit_character_pack_adventures/Characters/gltf/Mage.glb",
+      "category": "people",
+      "alt_en": "Mage",
+      "alt_es": "Mago",
+      "defaultScale": 1.0
+    },
+    {
+      "id": "rogue",
+      "file": "Rogue.glb",
+      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0/main/addons/kaykit_character_pack_adventures/Characters/gltf/Rogue.glb",
+      "category": "people",
+      "alt_en": "Rogue",
+      "alt_es": "Pícaro",
+      "defaultScale": 1.0
+    },
+    {
+      "id": "barbarian",
+      "file": "Barbarian.glb",
+      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0/main/addons/kaykit_character_pack_adventures/Characters/gltf/Barbarian.glb",
+      "category": "people",
+      "alt_en": "Warrior",
+      "alt_es": "Guerrero",
+      "defaultScale": 1.0
+    },
+    {
+      "id": "rogue-hooded",
+      "file": "Rogue_Hooded.glb",
+      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0/main/addons/kaykit_character_pack_adventures/Characters/gltf/Rogue_Hooded.glb",
+      "category": "people",
+      "alt_en": "Traveler",
+      "alt_es": "Viajero",
+      "defaultScale": 1.0
+    },
+    {
+      "id": "shelter-chest",
+      "file": "chest.glb",
+      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/chest.glb",
+      "category": "shelter",
+      "alt_en": "Treasure chest",
+      "alt_es": "Cofre",
+      "defaultScale": 1.0
+    },
+    {
+      "id": "shelter-doorway",
+      "file": "wall_doorway.glb",
+      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/wall_doorway.glb",
+      "category": "shelter",
+      "alt_en": "Doorway",
+      "alt_es": "Puerta",
+      "defaultScale": 1.0
+    },
+    {
+      "id": "shelter-torch",
+      "file": "torch.gltf.glb",
+      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/torch.gltf.glb",
+      "category": "shelter",
+      "alt_en": "Torch",
+      "alt_es": "Antorcha",
+      "defaultScale": 1.0
+    },
+    {
+      "id": "shelter-barrel",
+      "file": "barrel_large.gltf.glb",
+      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/barrel_large.gltf.glb",
+      "category": "shelter",
+      "alt_en": "Barrel",
+      "alt_es": "Barril",
+      "defaultScale": 1.0
+    }
+  ]
+}

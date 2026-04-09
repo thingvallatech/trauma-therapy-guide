@@ -1,0 +1,8 @@
+Sandtray 3D models
+==================
+
+License: CC0-1.0
+Attribution: KayKit by Kay Lousberg (https://kaylousberg.com/), CC0
+
+No UI-level attribution is required by CC0, but we record it here
+so future contributors know where the models came from.
