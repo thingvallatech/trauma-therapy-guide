@@ -1,53 +1,75 @@
 ---
+import type { Lang } from '../../i18n';
+
 interface Props {
   fullscreen?: boolean;
+  lang?: Lang;
 }
 
-const { fullscreen = false } = Astro.props;
+const { fullscreen = false, lang = 'en' } = Astro.props;
 const containerClass = fullscreen
   ? "w-full max-w-5xl mx-auto p-4 flex flex-col"
   : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600 flex flex-col";
 const canvasHeight = fullscreen ? "h-[28rem] sm:h-[32rem]" : "h-80 sm:h-96";
 
+const t = {
+  en: {
+    instructions: 'Tap a figure to add it. Drag to move. Double-tap to remove.',
+    clearTray: 'Clear tray',
+    canvasAriaLabel: 'Sandtray canvas',
+    categoriesAriaLabel: 'Figure categories',
+    addLabel: 'Add',
+  },
+  es: {
+    instructions: 'Toca una figura para agregarla. Arrastra para mover. Doble-toca para quitar.',
+    clearTray: 'Limpiar bandeja',
+    canvasAriaLabel: 'Lienzo de bandeja de arena',
+    categoriesAriaLabel: 'Categorías de figuras',
+    addLabel: 'Agregar',
+  },
+};
+
+const s = t[lang];
+
 const categories = [
   {
     key: 'people',
-    label: 'People',
+    labels: { en: 'People', es: 'Personas' },
     items: ['🧒', '👦', '👧', '🧑', '👨', '👩', '🧓', '👴', '👵', '👶', '🤰', '👨‍🦽', '👩‍🦼', '🧑‍🦯', '👪', '👨‍👩‍👧', '👨‍👩‍👦', '🧑‍🤝‍🧑', '👭', '👬'],
   },
   {
     key: 'animals',
-    label: 'Animals',
+    labels: { en: 'Animals', es: 'Animales' },
     items: ['🐶', '🐱', '🐭', '🐰', '🦊', '🐻', '🐼', '🐨', '🐯', '🦁', '🐮', '🐷', '🐸', '🐵', '🙈', '🐔', '🐧', '🐦', '🦉', '🦅', '🦄', '🐴', '🦋', '🐠', '🐢', '🐙'],
   },
   {
     key: 'nature',
-    label: 'Nature',
+    labels: { en: 'Nature', es: 'Naturaleza' },
     items: ['🌲', '🌳', '🌴', '🌵', '🌱', '🌿', '🍀', '🍃', '🌷', '🌸', '🌹', '🌻', '🌼', '🌾', '🪨', '⛰️', '🏔️', '🌋', '🏞️', '🏝️', '🏖️', '🌊', '💧', '🔥', '☀️', '🌙', '⭐', '⛈️', '🌈', '❄️'],
   },
   {
     key: 'places',
-    label: 'Home & Places',
+    labels: { en: 'Home & Places', es: 'Casa y lugares' },
     items: ['🏠', '🏡', '🏘️', '🏚️', '🏫', '🏥', '⛪', '🕌', '🏛️', '🏰', '🏯', '🗼', '⛺', '🛖', '🚪', '🪟', '🛏️', '🛋️', '🚽', '🛁'],
   },
   {
     key: 'vehicles',
-    label: 'Vehicles',
+    labels: { en: 'Vehicles', es: 'Vehículos' },
     items: ['🚗', '🚙', '🚌', '🚎', '🚓', '🚑', '🚒', '🚚', '🚛', '🚜', '🏍️', '🚲', '🛴', '🛻', '✈️', '🚁', '🚀', '🛸', '⛵', '🚤', '🚢'],
   },
   {
     key: 'objects',
-    label: 'Food & Objects',
+    labels: { en: 'Food & Objects', es: 'Comida y objetos' },
     items: ['🍎', '🍞', '🍰', '🍪', '🍫', '🍭', '🎂', '☕', '🥛', '🍼', '🎁', '🎈', '🎨', '🖌️', '📚', '📖', '✏️', '🧸', '🪁', '⚽', '🎵', '🔔', '🪞', '💡', '🔑', '🗝️'],
   },
   {
     key: 'symbols',
-    label: 'Feelings & Symbols',
+    labels: { en: 'Feelings & Symbols', es: 'Sentimientos y símbolos' },
     items: ['❤️', '🧡', '💛', '💚', '💙', '💜', '🖤', '🤍', '💔', '💕', '✨', '⭐', '🌟', '💫', '☮️', '♾️', '🕊️', '🙏', '🤝', '🫂', '💭', '💤', '🌀', '⚡', '🌞', '🌝'],
   },
   {
     key: 'conflict',
-    label: 'Conflict',
+    labels: { en: 'Conflict', es: 'Conflicto' },
     items: ['⚔️', '🛡️', '🗡️', '🔨', '⚒️', '🧱', '⛓️', '🚧', '⚠️', '❌', '🆘', '💢', '👊', '😠', '😢', '😭', '😨', '😱', '🫥'],
   },
 ] as const;
@@ -56,13 +78,13 @@ const categories = [
 <div class:list={[containerClass]} data-sandtray-widget>
   <div class="mb-3 flex items-center justify-between flex-wrap gap-2">
     <p class="text-forest-200 text-sm">
-      Tap a figure to add it. Drag to move. Double-tap to remove.
+      {s.instructions}
     </p>
     <button
       data-sandtray-clear
       class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
     >
-      Clear tray
+      {s.clearTray}
     </button>
   </div>
 
@@ -73,11 +95,11 @@ const categories = [
       canvasHeight,
     ]}
     style="background: radial-gradient(ellipse at center, #e8d9a8 0%, #d4c08a 55%, #b89a5e 100%);"
-    aria-label="Sandtray canvas"
+    aria-label={s.canvasAriaLabel}
   ></div>
 
   <div class="mt-4">
-    <div class="flex flex-wrap gap-1 mb-3" role="tablist" aria-label="Figure categories">
+    <div class="flex flex-wrap gap-1 mb-3" role="tablist" aria-label={s.categoriesAriaLabel}>
       {categories.map((cat, idx) => (
         <button
           data-sandtray-tab={cat.key}
@@ -90,7 +112,7 @@ const categories = [
               : "bg-forest-700 text-forest-200 border-forest-600 hover:bg-forest-600",
           ]}
         >
-          {cat.label}
+          {cat.labels[lang]}
         </button>
       ))}
     </div>
@@ -108,7 +130,7 @@ const categories = [
             <button
               data-sandtray-add={emoji}
               class="w-10 h-10 sm:w-11 sm:h-11 text-2xl sm:text-3xl flex items-center justify-center rounded-md hover:bg-forest-700 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500"
-              aria-label={`Add ${emoji}`}
+              aria-label={`${s.addLabel} ${emoji}`}
             >
               {emoji}
             </button>

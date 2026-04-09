@@ -1,67 +1,147 @@
 ---
+import type { Lang } from '../../i18n';
+
 interface Props {
   fullscreen?: boolean;
+  lang?: Lang;
 }
 
-const { fullscreen = false } = Astro.props;
+const { fullscreen = false, lang = 'en' } = Astro.props;
 const containerClass = fullscreen
   ? "w-full max-w-2xl mx-auto p-8"
   : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
+
+const t = {
+  en: {
+    step1Heading: 'Step 1: Where is your calm place?',
+    step2Heading: "Step 2: What's with you there?",
+    step2Sub: 'Pick anything that feels comforting. You can pick more than one.',
+    nextButton: 'Next',
+    step3Heading: 'Step 3: Use your senses',
+    step3Sub: 'Picture it as clearly as you can. Take your time with each one.',
+    senses: [
+      'What do you <strong>see</strong>?',
+      'What do you <strong>hear</strong>?',
+      'What do you <strong>smell</strong>?',
+      'What do you <strong>feel</strong> — on your skin, under your feet?',
+      'How does your body feel when you\'re there?',
+    ],
+    stayButton: 'Stay here for a moment',
+    doneHeading: 'This place is yours.',
+    doneSub: "Rest here as long as you need. When you're ready, you can open your eyes.",
+    restart: 'Start over',
+    withYouTemplate: ' With you: {comforts}.',
+    envOptions: [
+      { en: 'A forest', es: 'A forest' },
+      { en: 'A beach', es: 'A beach' },
+      { en: 'A meadow', es: 'A meadow' },
+      { en: 'A mountain top', es: 'A mountain top' },
+      { en: 'A room I know', es: 'A room I know' },
+      { en: 'Somewhere imagined', es: 'Somewhere imagined' },
+    ],
+    comfortOptions: [
+      { en: 'An animal', es: 'An animal' },
+      { en: 'A soft blanket', es: 'A soft blanket' },
+      { en: 'Music', es: 'Music' },
+      { en: 'A person who feels safe', es: 'A person who feels safe' },
+      { en: 'Warm sun', es: 'Warm sun' },
+      { en: 'Cool breeze', es: 'Cool breeze' },
+    ],
+  },
+  es: {
+    step1Heading: 'Paso 1: ¿Dónde está tu lugar tranquilo?',
+    step2Heading: 'Paso 2: ¿Qué está contigo allí?',
+    step2Sub: 'Elige todo lo que se sienta reconfortante. Puedes elegir más de uno.',
+    nextButton: 'Siguiente',
+    step3Heading: 'Paso 3: Usa tus sentidos',
+    step3Sub: 'Imagínalo tan claramente como puedas. Tómate tu tiempo con cada uno.',
+    senses: [
+      '¿Qué puedes <strong>ver</strong>?',
+      '¿Qué puedes <strong>escuchar</strong>?',
+      '¿Qué puedes <strong>oler</strong>?',
+      '¿Qué puedes <strong>sentir</strong> — en tu piel, bajo tus pies?',
+      '¿Cómo se siente tu cuerpo cuando estás allí?',
+    ],
+    stayButton: 'Quédate aquí un momento',
+    doneHeading: 'Este lugar es tuyo.',
+    doneSub: 'Descansa aquí el tiempo que necesites. Cuando estés listo, puedes abrir los ojos.',
+    restart: 'Empezar de nuevo',
+    withYouTemplate: ' Contigo: {comforts}.',
+    envOptions: [
+      { en: 'A forest', es: 'Un bosque' },
+      { en: 'A beach', es: 'Una playa' },
+      { en: 'A meadow', es: 'Un prado' },
+      { en: 'A mountain top', es: 'La cima de una montaña' },
+      { en: 'A room I know', es: 'Un cuarto que conozco' },
+      { en: 'Somewhere imagined', es: 'Un lugar imaginado' },
+    ],
+    comfortOptions: [
+      { en: 'An animal', es: 'Un animal' },
+      { en: 'A soft blanket', es: 'Una cobija suave' },
+      { en: 'Music', es: 'Música' },
+      { en: 'A person who feels safe', es: 'Una persona que se siente segura' },
+      { en: 'Warm sun', es: 'Sol cálido' },
+      { en: 'Cool breeze', es: 'Brisa fresca' },
+    ],
+  },
+};
+
+const s = t[lang];
 ---
 
-<div class:list={[containerClass]} data-safeplace-widget>
+<div class:list={[containerClass]} data-safeplace-widget data-safeplace-i18n={JSON.stringify({ withYouTemplate: s.withYouTemplate })}>
   <div data-step="env" data-step-active>
-    <h2 class="font-serif text-xl text-forest-100 mb-3">Step 1: Where is your calm place?</h2>
+    <h2 class="font-serif text-xl text-forest-100 mb-3">{s.step1Heading}</h2>
     <div class="grid grid-cols-2 gap-3">
-      {['A forest', 'A beach', 'A meadow', 'A mountain top', 'A room I know', 'Somewhere imagined'].map((e) => (
-        <button data-pick-env={e} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
-          {e}
+      {s.envOptions.map((e) => (
+        <button data-pick-env={e.en} data-label={e[lang]} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
+          {e[lang]}
         </button>
       ))}
     </div>
   </div>
 
   <div data-step="comfort" class="hidden">
-    <h2 class="font-serif text-xl text-forest-100 mb-3">Step 2: What's with you there?</h2>
-    <p class="text-forest-300 text-sm mb-4">Pick anything that feels comforting. You can pick more than one.</p>
+    <h2 class="font-serif text-xl text-forest-100 mb-3">{s.step2Heading}</h2>
+    <p class="text-forest-300 text-sm mb-4">{s.step2Sub}</p>
     <div class="grid grid-cols-2 gap-3 mb-4" data-comfort-options>
-      {['An animal', 'A soft blanket', 'Music', 'A person who feels safe', 'Warm sun', 'Cool breeze'].map((c) => (
-        <button data-pick-comfort={c} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
-          {c}
+      {s.comfortOptions.map((c) => (
+        <button data-pick-comfort={c.en} data-label={c[lang]} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
+          {c[lang]}
         </button>
       ))}
     </div>
     <button data-to-senses class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
-      Next
+      {s.nextButton}
     </button>
   </div>
 
   <div data-step="senses" class="hidden">
-    <h2 class="font-serif text-xl text-forest-100 mb-3">Step 3: Use your senses</h2>
-    <p class="text-forest-300 text-sm mb-4">Picture it as clearly as you can. Take your time with each one.</p>
+    <h2 class="font-serif text-xl text-forest-100 mb-3">{s.step3Heading}</h2>
+    <p class="text-forest-300 text-sm mb-4">{s.step3Sub}</p>
     <ol class="space-y-3 text-forest-200 text-sm mb-6 list-decimal list-inside">
-      <li>What do you <strong>see</strong>?</li>
-      <li>What do you <strong>hear</strong>?</li>
-      <li>What do you <strong>smell</strong>?</li>
-      <li>What do you <strong>feel</strong> — on your skin, under your feet?</li>
-      <li>How does your body feel when you're there?</li>
+      {s.senses.map((sense) => (
+        <li set:html={sense} />
+      ))}
     </ol>
     <button data-to-done class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
-      Stay here for a moment
+      {s.stayButton}
     </button>
   </div>
 
   <div data-step="done" class="hidden text-center">
-    <h2 class="font-serif text-2xl text-forest-100 mb-3">This place is yours.</h2>
+    <h2 class="font-serif text-2xl text-forest-100 mb-3">{s.doneHeading}</h2>
     <p data-safe-summary class="text-forest-300 mb-4"></p>
-    <p class="text-forest-300 text-sm mb-6">Rest here as long as you need. When you're ready, you can open your eyes.</p>
-    <button data-restart class="px-4 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">Start over</button>
+    <p class="text-forest-300 text-sm mb-6">{s.doneSub}</p>
+    <button data-restart class="px-4 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.restart}</button>
   </div>
 </div>
 
 <script>
   const widgets = document.querySelectorAll('[data-safeplace-widget]');
   widgets.forEach((root) => {
+    const i18n = JSON.parse(root.getAttribute('data-safeplace-i18n') || '{}');
+
     const steps: Record<string, HTMLElement> = {};
     root.querySelectorAll<HTMLElement>('[data-step]').forEach((el) => {
       steps[el.getAttribute('data-step')!] = el;
@@ -76,14 +156,14 @@ const containerClass = fullscreen
 
     root.querySelectorAll<HTMLButtonElement>('[data-pick-env]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        state.env = btn.getAttribute('data-pick-env')!;
+        state.env = btn.getAttribute('data-label')!;
         showStep('comfort');
       });
     });
 
     root.querySelectorAll<HTMLButtonElement>('[data-pick-comfort]').forEach((btn) => {
       btn.addEventListener('click', () => {
-        const val = btn.getAttribute('data-pick-comfort')!;
+        const val = btn.getAttribute('data-label')!;
         if (state.comforts.includes(val)) {
           state.comforts = state.comforts.filter((c) => c !== val);
           btn.classList.remove('bg-bronze-500', 'text-forest-900');
@@ -99,8 +179,9 @@ const containerClass = fullscreen
     root.querySelector<HTMLButtonElement>('[data-to-senses]')!.addEventListener('click', () => showStep('senses'));
     root.querySelector<HTMLButtonElement>('[data-to-done]')!.addEventListener('click', () => {
       const summary = root.querySelector<HTMLElement>('[data-safe-summary]')!;
+      const withYouTemplate = i18n.withYouTemplate || '';
       const comforts = state.comforts.length > 0
-        ? ` With you: ${state.comforts.map((c) => c.toLowerCase()).join(', ')}.`
+        ? withYouTemplate.replace('{comforts}', state.comforts.map((c) => c.toLowerCase()).join(', '))
         : '';
       summary.textContent = `${state.env}.${comforts}`;
       showStep('done');
