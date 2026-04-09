@@ -1,28 +1,76 @@
 ---
+import type { Lang } from '../../i18n';
+
 interface Props {
   fullscreen?: boolean;
+  lang?: Lang;
 }
 
-const { fullscreen = false } = Astro.props;
+const { fullscreen = false, lang = 'en' } = Astro.props;
 const containerClass = fullscreen
   ? "w-full max-w-2xl mx-auto p-8"
   : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
+
+const t = {
+  en: {
+    heading: 'How true does the positive belief feel?',
+    pcLabel: 'Positive cognition (optional, not stored):',
+    pcPlaceholder: 'e.g. I am safe now',
+    initialDisplay: 'Somewhat true',
+    lowLabel: '1 — completely false',
+    highLabel: '7 — completely true',
+    ariaLabel: 'VOC level from 1 to 7',
+    quote: '"Think about that incident. When you think of the incident, how true do those words feel to you now, on a scale of 1 to 7?"',
+    labels: [
+      '',
+      'Completely false',
+      'Mostly false',
+      'A little false',
+      'Somewhat true',
+      'Moderately true',
+      'Mostly true',
+      'Completely true',
+    ],
+  },
+  es: {
+    heading: '¿Qué tan verdadera se siente la creencia positiva?',
+    pcLabel: 'Cognición positiva (opcional, no se guarda):',
+    pcPlaceholder: 'p. ej. Estoy a salvo ahora',
+    initialDisplay: 'Algo verdadera',
+    lowLabel: '1 — completamente falsa',
+    highLabel: '7 — completamente verdadera',
+    ariaLabel: 'Nivel VOC del 1 al 7',
+    quote: '"Piensa en ese incidente. Cuando piensas en el incidente, ¿qué tan verdaderas se sienten esas palabras ahora, en una escala del 1 al 7?"',
+    labels: [
+      '',
+      'Completamente falsa',
+      'Mayormente falsa',
+      'Un poco falsa',
+      'Algo verdadera',
+      'Moderadamente verdadera',
+      'Mayormente verdadera',
+      'Completamente verdadera',
+    ],
+  },
+};
+
+const s = t[lang];
 ---
 
-<div class:list={[containerClass]} data-voc-widget>
-  <h2 class="text-forest-100 font-semibold mb-4">How true does the positive belief feel?</h2>
+<div class:list={[containerClass]} data-voc-widget data-voc-i18n={JSON.stringify({ labels: s.labels })}>
+  <h2 class="text-forest-100 font-semibold mb-4">{s.heading}</h2>
 
-  <label class="block text-sm text-forest-300 mb-2">Positive cognition (optional, not stored):</label>
+  <label class="block text-sm text-forest-300 mb-2">{s.pcLabel}</label>
   <input
     type="text"
     data-voc-pc
-    placeholder="e.g. I am safe now"
+    placeholder={s.pcPlaceholder}
     class="w-full mb-6 px-3 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 placeholder:text-forest-400 focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
   />
 
   <div class="text-center mb-6">
     <div data-voc-display aria-live="polite" aria-atomic="true" class="font-serif text-7xl font-semibold text-bronze-400 mb-2 tabular-nums">4</div>
-    <div data-voc-label aria-live="polite" class="text-forest-300 text-sm">Somewhat true</div>
+    <div data-voc-label aria-live="polite" class="text-forest-300 text-sm">{s.initialDisplay}</div>
   </div>
 
   <input
@@ -32,17 +80,17 @@ const containerClass = fullscreen
     step="1"
     value="4"
     data-voc-slider
-    aria-label="VOC level from 1 to 7"
+    aria-label={s.ariaLabel}
     class="w-full h-2 rounded-full bg-forest-700 appearance-none cursor-pointer accent-bronze-500"
   />
 
   <div class="flex justify-between text-xs text-forest-400 mt-2">
-    <span>1 — completely false</span>
-    <span>7 — completely true</span>
+    <span>{s.lowLabel}</span>
+    <span>{s.highLabel}</span>
   </div>
 
   <p class="mt-6 text-sm text-forest-300">
-    <em>"Think about that incident. When you think of the incident, how true do those words feel to you now, on a scale of 1 to 7?"</em>
+    <em>{s.quote}</em>
   </p>
 </div>
 
@@ -52,20 +100,14 @@ const containerClass = fullscreen
     const slider = root.querySelector<HTMLInputElement>('[data-voc-slider]')!;
     const display = root.querySelector<HTMLElement>('[data-voc-display]')!;
     const label = root.querySelector<HTMLElement>('[data-voc-label]')!;
-    const labels = [
-      '',
-      'Completely false',
-      'Mostly false',
-      'A little false',
-      'Somewhat true',
-      'Moderately true',
-      'Mostly true',
-      'Completely true',
-    ];
+
+    const i18n = JSON.parse(root.getAttribute('data-voc-i18n') || '{}');
+    const labels: string[] = i18n.labels || [];
+
     function update() {
       const v = parseInt(slider.value, 10);
       display.textContent = String(v);
-      label.textContent = labels[v];
+      label.textContent = labels[v] || '';
     }
     slider.addEventListener('input', update);
     update();

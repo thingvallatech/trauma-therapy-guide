@@ -1,22 +1,107 @@
 ---
+import type { Lang } from '../../i18n';
+
 interface Props {
   fullscreen?: boolean;
+  lang?: Lang;
 }
 
-const { fullscreen = false } = Astro.props;
+const { fullscreen = false, lang = 'en' } = Astro.props;
 const containerClass = fullscreen
   ? "w-full max-w-2xl mx-auto p-8"
   : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
+
+const t = {
+  en: {
+    heading: 'How disturbing is it right now?',
+    kidMode: 'Kid mode',
+    lowLabel: '0 — none',
+    midLabel: '5',
+    highLabel: '10 — worst imaginable',
+    ariaLabel: 'SUD level from 0 to 10',
+    adultLabels: [
+      'No disturbance',
+      'Barely noticeable',
+      'Mild',
+      'Mild-moderate',
+      'Moderate',
+      'Moderate',
+      'Moderate-high',
+      'High',
+      'Very high',
+      'Nearly unbearable',
+      'Worst imaginable',
+    ],
+    kidLabels: [
+      'Not yucky at all',
+      'A tiny bit',
+      'A little',
+      'Some',
+      'Medium',
+      'Kind of big',
+      'Big',
+      'Really big',
+      'Super big',
+      'Huge',
+      'The biggest',
+    ],
+    adultWording: '"On a scale of 0 to 10, where 0 is no disturbance or neutral and 10 is the worst disturbance you can imagine, how disturbing does the incident feel to you now?"',
+    kidWording: '"How yucky does it feel in your body right now? Zero is not yucky at all, ten is the worst yucky you can imagine."',
+  },
+  es: {
+    heading: '¿Qué tan perturbador se siente ahora?',
+    kidMode: 'Modo niño',
+    lowLabel: '0 — nada',
+    midLabel: '5',
+    highLabel: '10 — lo peor imaginable',
+    ariaLabel: 'Nivel SUD del 0 al 10',
+    adultLabels: [
+      'Ninguna perturbación',
+      'Apenas perceptible',
+      'Leve',
+      'Leve-moderado',
+      'Moderado',
+      'Moderado',
+      'Moderado-alto',
+      'Alto',
+      'Muy alto',
+      'Casi insoportable',
+      'Lo peor imaginable',
+    ],
+    kidLabels: [
+      'Nada yucky',
+      'Un poquito',
+      'Un poco',
+      'Algo',
+      'Medio',
+      'Bastante grande',
+      'Grande',
+      'Muy grande',
+      'Super grande',
+      'Enorme',
+      'Lo más grande',
+    ],
+    adultWording: '"En una escala de 0 a 10, donde 0 es ninguna perturbación o neutral y 10 es la peor perturbación que puedas imaginar, ¿qué tan perturbador se siente el incidente ahora?"',
+    kidWording: '"¿Qué tan yucky se siente en tu cuerpo ahora? Cero no es nada yucky, diez es el peor yucky que puedas imaginar."',
+  },
+};
+
+const s = t[lang];
 ---
 
-<div class:list={[containerClass]} data-sud-widget>
+<div class:list={[containerClass]} data-sud-widget data-sud-i18n={JSON.stringify({
+  adultLabels: s.adultLabels,
+  kidLabels: s.kidLabels,
+  adultWording: s.adultWording,
+  kidWording: s.kidWording,
+})}>
   <div class="flex items-center justify-between mb-4">
     <h2 class="text-forest-100 font-semibold">
-      How disturbing is it right now?
+      {s.heading}
     </h2>
     <label class="flex items-center gap-2 text-sm text-forest-300 cursor-pointer">
       <input type="checkbox" data-sud-kid-toggle class="w-4 h-4 accent-bronze-500 focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" />
-      <span>Kid mode</span>
+      <span>{s.kidMode}</span>
     </label>
   </div>
 
@@ -40,18 +125,18 @@ const containerClass = fullscreen
     step="1"
     value="5"
     data-sud-slider
-    aria-label="SUD level from 0 to 10"
+    aria-label={s.ariaLabel}
     class="w-full h-2 rounded-full bg-forest-700 appearance-none cursor-pointer accent-bronze-500"
   />
 
   <div class="flex justify-between text-xs text-forest-400 mt-2">
-    <span>0 — none</span>
-    <span>5</span>
-    <span>10 — worst imaginable</span>
+    <span>{s.lowLabel}</span>
+    <span>{s.midLabel}</span>
+    <span>{s.highLabel}</span>
   </div>
 
   <div class="mt-6 text-sm text-forest-300" data-sud-wording>
-    <em>"On a scale of 0 to 10, where 0 is no disturbance or neutral and 10 is the worst disturbance you can imagine, how disturbing does the incident feel to you now?"</em>
+    <em>{s.adultWording}</em>
   </div>
 </div>
 
@@ -65,37 +150,13 @@ const containerClass = fullscreen
     const wording = root.querySelector<HTMLElement>('[data-sud-wording]')!;
     const kidToggle = root.querySelector<HTMLInputElement>('[data-sud-kid-toggle]')!;
 
-    const adultLabels = [
-      'No disturbance',
-      'Barely noticeable',
-      'Mild',
-      'Mild-moderate',
-      'Moderate',
-      'Moderate',
-      'Moderate-high',
-      'High',
-      'Very high',
-      'Nearly unbearable',
-      'Worst imaginable',
-    ];
+    const i18n = JSON.parse(root.getAttribute('data-sud-i18n') || '{}');
+    const adultLabels: string[] = i18n.adultLabels || [];
+    const kidLabels: string[] = i18n.kidLabels || [];
+    const adultWording: string = i18n.adultWording || '';
+    const kidWording: string = i18n.kidWording || '';
 
     const kidFaces = ['😊', '🙂', '😐', '😕', '😟', '😖', '😣', '😫', '😩', '😭', '😱'];
-    const kidLabels = [
-      'Not yucky at all',
-      'A tiny bit',
-      'A little',
-      'Some',
-      'Medium',
-      'Kind of big',
-      'Big',
-      'Really big',
-      'Super big',
-      'Huge',
-      'The biggest',
-    ];
-
-    const adultWording = '"On a scale of 0 to 10, where 0 is no disturbance or neutral and 10 is the worst disturbance you can imagine, how disturbing does the incident feel to you now?"';
-    const kidWording = '"How yucky does it feel in your body right now? Zero is not yucky at all, ten is the worst yucky you can imagine."';
 
     function update() {
       const val = parseInt(slider.value, 10);

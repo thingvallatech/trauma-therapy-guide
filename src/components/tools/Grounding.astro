@@ -1,47 +1,87 @@
 ---
+import type { Lang } from '../../i18n';
+
 interface Props {
   fullscreen?: boolean;
+  lang?: Lang;
 }
 
-const { fullscreen = false } = Astro.props;
+const { fullscreen = false, lang = 'en' } = Astro.props;
 const containerClass = fullscreen
   ? "w-full max-w-2xl mx-auto p-8"
   : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
+
+const t = {
+  en: {
+    subParagraph: 'Look around. Tap the button as you name each one out loud or in your head.',
+    remaining: 'remaining',
+    tapBtn: 'I named one',
+    resetBtn: 'Start over',
+    done: 'You are here.',
+    doneBtn: 'Done',
+    stepPrompts: [
+      'Name 5 things you can see',
+      'Name 4 things you can touch',
+      'Name 3 things you can hear',
+      'Name 2 things you can smell',
+      'Name 1 thing you can taste',
+    ],
+    stepCounts: [5, 4, 3, 2, 1],
+  },
+  es: {
+    subParagraph: 'Mira alrededor. Toca el botón mientras nombras cada una en voz alta o en tu mente.',
+    remaining: 'restantes',
+    tapBtn: 'Nombré una',
+    resetBtn: 'Empezar de nuevo',
+    done: 'Estás aquí.',
+    doneBtn: 'Listo',
+    stepPrompts: [
+      'Nombra 5 cosas que puedes ver',
+      'Nombra 4 cosas que puedes tocar',
+      'Nombra 3 cosas que puedes escuchar',
+      'Nombra 2 cosas que puedes oler',
+      'Nombra 1 cosa que puedes saborear',
+    ],
+    stepCounts: [5, 4, 3, 2, 1],
+  },
+};
+
+const s = t[lang];
 ---
 
-<div class:list={[containerClass]} data-grounding-widget>
-  <h2 data-grounding-prompt aria-live="polite" class="font-serif text-2xl text-forest-100 mb-2">Name 5 things you can see</h2>
-  <p class="text-forest-300 text-sm mb-6">Look around. Tap the button as you name each one out loud or in your head.</p>
+<div class:list={[containerClass]} data-grounding-widget data-grounding-i18n={JSON.stringify({
+  stepPrompts: s.stepPrompts,
+  stepCounts: s.stepCounts,
+  remaining: s.remaining,
+  tapBtn: s.tapBtn,
+  resetBtn: s.resetBtn,
+  done: s.done,
+  doneBtn: s.doneBtn,
+})}>
+  <h2 data-grounding-prompt aria-live="polite" class="font-serif text-2xl text-forest-100 mb-2">{s.stepPrompts[0]}</h2>
+  <p class="text-forest-300 text-sm mb-6">{s.subParagraph}</p>
 
   <div class="flex items-center gap-4 mb-6">
     <div data-grounding-count aria-live="polite" aria-atomic="true" class="font-serif text-6xl font-semibold text-bronze-400 tabular-nums">5</div>
-    <div class="text-forest-300 text-sm">remaining</div>
+    <div class="text-forest-300 text-sm">{s.remaining}</div>
   </div>
 
   <button
     data-grounding-tap
     class="w-full py-4 rounded-lg bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
   >
-    I named one
+    {s.tapBtn}
   </button>
 
   <button
     data-grounding-reset
     class="w-full mt-3 py-2 text-sm text-forest-400 hover:text-forest-200 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
   >
-    Start over
+    {s.resetBtn}
   </button>
 </div>
 
 <script>
-  const steps = [
-    { sense: 'see', count: 5 },
-    { sense: 'touch', count: 4 },
-    { sense: 'hear', count: 3 },
-    { sense: 'smell', count: 2 },
-    { sense: 'taste', count: 1 },
-  ];
-
   const widgets = document.querySelectorAll('[data-grounding-widget]');
   widgets.forEach((root) => {
     const promptEl = root.querySelector<HTMLElement>('[data-grounding-prompt]')!;
@@ -49,21 +89,27 @@ const containerClass = fullscreen
     const tapBtn = root.querySelector<HTMLButtonElement>('[data-grounding-tap]')!;
     const resetBtn = root.querySelector<HTMLButtonElement>('[data-grounding-reset]')!;
 
+    const i18n = JSON.parse(root.getAttribute('data-grounding-i18n') || '{}');
+    const stepPrompts: string[] = i18n.stepPrompts || [];
+    const stepCounts: number[] = i18n.stepCounts || [];
+    const tapLabel: string = i18n.tapBtn || 'I named one';
+    const doneLabel: string = i18n.doneBtn || 'Done';
+    const doneText: string = i18n.done || 'You are here.';
+
     let stepIdx = 0;
-    let remaining = steps[0].count;
+    let remaining = stepCounts[0] ?? 5;
 
     function render() {
-      if (stepIdx >= steps.length) {
-        promptEl.textContent = 'You are here.';
+      if (stepIdx >= stepPrompts.length) {
+        promptEl.textContent = doneText;
         countEl.textContent = '✓';
-        tapBtn.textContent = 'Done';
+        tapBtn.textContent = doneLabel;
         tapBtn.disabled = true;
         return;
       }
-      const s = steps[stepIdx];
-      promptEl.textContent = `Name ${s.count} thing${s.count > 1 ? 's' : ''} you can ${s.sense}`;
+      promptEl.textContent = stepPrompts[stepIdx];
       countEl.textContent = String(remaining);
-      tapBtn.textContent = 'I named one';
+      tapBtn.textContent = tapLabel;
       tapBtn.disabled = false;
     }
 
@@ -71,14 +117,14 @@ const containerClass = fullscreen
       remaining -= 1;
       if (remaining <= 0) {
         stepIdx += 1;
-        if (stepIdx < steps.length) remaining = steps[stepIdx].count;
+        if (stepIdx < stepCounts.length) remaining = stepCounts[stepIdx];
       }
       render();
     }
 
     function reset() {
       stepIdx = 0;
-      remaining = steps[0].count;
+      remaining = stepCounts[0] ?? 5;
       render();
     }
 

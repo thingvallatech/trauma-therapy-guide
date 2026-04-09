@@ -45,7 +45,7 @@ const exitHref = `/es/tools/${tool.slug}`;
 ---
 
 <FullscreenLayout title={`${tool.data.name} — Pantalla completa`} exitHref={exitHref} lang={lang}>
-  {Widget ? <Widget fullscreen={true} /> : (
+  {Widget ? <Widget lang={lang} fullscreen={true} /> : (
     <div class="text-forest-300 text-sm">Widget no disponible.</div>
   )}
 </FullscreenLayout>

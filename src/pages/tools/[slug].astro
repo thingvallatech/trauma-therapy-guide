@@ -2,6 +2,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ToolShell from '../../components/tools/ToolShell.astro';
+import { getLangFromUrl } from '../../i18n';
 import SUDScale from '../../components/tools/SUDScale.astro';
 import VOCScale from '../../components/tools/VOCScale.astro';
 import BreathPacer from '../../components/tools/BreathPacer.astro';
@@ -31,6 +32,7 @@ interface Props {
 
 const { tool } = Astro.props;
 const { Content } = await tool.render();
+const lang = getLangFromUrl(Astro.url);
 
 // Widget component map — populated as each widget is built.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -55,8 +57,8 @@ const Widget = widgets[tool.data.componentName] ?? null;
 ---
 
 <BaseLayout title={tool.data.name} description={tool.data.shortDescription} noAnalytics={true}>
-  <ToolShell tool={tool}>
-    {Widget ? <Widget /> : (
+  <ToolShell tool={tool} lang={lang}>
+    {Widget ? <Widget lang={lang} /> : (
       <div class="p-6 border border-dashed border-forest-600 rounded-lg text-forest-300 text-sm">
         Widget not yet implemented for <code>{tool.data.componentName}</code>.
       </div>

@@ -49,7 +49,7 @@ const Widget = widgets[tool.data.componentName] ?? null;
 
 <BaseLayout title={tool.data.name} description={tool.data.shortDescription} noAnalytics={true} lang={lang}>
   <ToolShell tool={tool} lang={lang}>
-    {Widget ? <Widget /> : (
+    {Widget ? <Widget lang={lang} /> : (
       <div class="p-6 border border-dashed border-forest-600 rounded-lg text-forest-300 text-sm">
         {t('tools.widgetNotImplemented')} <code>{tool.data.componentName}</code>.
       </div>
