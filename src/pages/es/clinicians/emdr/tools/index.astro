@@ -6,7 +6,7 @@ import type { Lang } from '../../../../../i18n';
 
 const lang: Lang = 'es';
 
-const allTools = await getCollection('tools', (t) => t.data.locale === 'en');
+const allTools = await getCollection('tools', (t) => t.data.locale === 'es');
 const clinicianTools = allTools
   .filter((t) => t.data.audience.includes('clinician'))
   .sort((a, b) => a.data.name.localeCompare(b.data.name));

@@ -20,9 +20,9 @@ import type { Lang } from '../../../../i18n';
 const lang: Lang = 'es';
 
 export async function getStaticPaths() {
-  const tools = await getCollection('tools', (t) => t.data.locale === 'en');
+  const tools = await getCollection('tools', (t) => t.data.locale === 'es');
   return tools.map((tool) => ({
-    params: { slug: tool.slug },
+    params: { slug: tool.slug.replace(/es$/, '') },
     props: { tool },
   }));
 }
@@ -41,7 +41,7 @@ const widgets: Record<string, any> = {
 };
 
 const Widget = widgets[tool.data.componentName] ?? null;
-const exitHref = `/es/tools/${tool.slug}`;
+const exitHref = `/es/tools/${tool.slug.replace(/es$/, '')}`;
 ---
 
 <FullscreenLayout title={`${tool.data.name} — Pantalla completa`} exitHref={exitHref} lang={lang}>

@@ -27,7 +27,8 @@ const evidenceLabel: Record<string, string> = {
   'widely-used': t('tools.evidence.widely'),
 };
 
-const href = translatePath(`/tools/${tool.slug}`);
+const slug = tool.slug.replace(/es$/, '');
+const href = translatePath(`/tools/${slug}`);
 ---
 
 <a

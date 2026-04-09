@@ -23,9 +23,9 @@ const lang: Lang = 'es';
 const t = useTranslations(lang);
 
 export async function getStaticPaths() {
-  const tools = await getCollection('tools', (t) => t.data.locale === 'en');
+  const tools = await getCollection('tools', (t) => t.data.locale === 'es');
   return tools.map((tool) => ({
-    params: { slug: tool.slug },
+    params: { slug: tool.slug.replace(/es$/, '') },
     props: { tool },
   }));
 }

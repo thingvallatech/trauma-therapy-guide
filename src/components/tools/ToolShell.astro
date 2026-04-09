@@ -33,7 +33,8 @@ const evidenceColor: Record<string, string> = {
   'widely-used': 'bg-wood-600 text-wood-50',
 };
 
-const fullscreenHref = translatePath(`/tools/${tool.slug}/fullscreen`);
+const slugBase = tool.slug.replace(/es$/, '');
+const fullscreenHref = translatePath(`/tools/${slugBase}/fullscreen`);
 ---
 
 <section class="dark-zone py-10 sm:py-16">
