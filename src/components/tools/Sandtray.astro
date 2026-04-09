@@ -18,17 +18,31 @@ const t = {
     canvasAriaLabel: 'Sandtray canvas',
     figuresLabel: 'Placed figures',
     paletteLabel: 'Figure palette',
+    stepBack: 'Step back',
+    returnToTray: 'Return to tray',
+    saveImage: 'Save image',
+    levelSand: 'Level the sand',
+    clearTray: 'Clear tray',
   },
   es: {
     canvasAriaLabel: 'Lienzo de bandeja de arena',
     figuresLabel: 'Figuras colocadas',
     paletteLabel: 'Paleta de figuras',
+    stepBack: 'Da un paso atrás',
+    returnToTray: 'Volver a la bandeja',
+    saveImage: 'Guardar imagen',
+    levelSand: 'Aplanar la arena',
+    clearTray: 'Limpiar bandeja',
   },
 };
 const s = t[lang];
 ---
 
-<div class:list={[containerClass]} data-sandtray-widget>
+<div
+  class:list={[containerClass]}
+  data-sandtray-widget
+  data-sandtray-i18n={JSON.stringify({ stepBack: s.stepBack, returnToTray: s.returnToTray })}
+>
   <div data-sandtray-frame class="relative w-full" style="
     padding: 18px;
     border-radius: 14px;
@@ -63,7 +77,7 @@ const s = t[lang];
 
   <div
     data-sandtray-chrome
-    class="mt-4 flex flex-wrap gap-2 p-3 bg-forest-900 rounded-lg border border-forest-700"
+    class="mt-4 flex flex-wrap gap-2 p-3 bg-forest-900 rounded-lg border border-forest-700 transition-opacity duration-500"
     data-sandtray-palette
     aria-label={s.paletteLabel}
   >
@@ -71,6 +85,33 @@ const s = t[lang];
     <button data-placeholder-figure data-color="#3d6b4a" aria-label="Placeholder forest" class="w-12 h-12 rounded border border-forest-600 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background:#3d6b4a"></button>
     <button data-placeholder-figure data-color="#6b4a85" aria-label="Placeholder violet" class="w-12 h-12 rounded border border-forest-600 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background:#6b4a85"></button>
     <button data-placeholder-figure data-color="#85553d" aria-label="Placeholder rust" class="w-12 h-12 rounded border border-forest-600 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background:#85553d"></button>
+  </div>
+
+  <div data-sandtray-chrome class="mt-3 flex flex-wrap gap-2 items-center">
+    <button
+      data-sandtray-witness
+      class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
+    >
+      {s.stepBack}
+    </button>
+    <button
+      data-sandtray-capture
+      class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
+    >
+      {s.saveImage}
+    </button>
+    <button
+      data-sandtray-level
+      class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
+    >
+      {s.levelSand}
+    </button>
+    <button
+      data-sandtray-clear
+      class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
+    >
+      {s.clearTray}
+    </button>
   </div>
 </div>
 
@@ -478,6 +519,46 @@ const s = t[lang];
     relayout(): void {
       for (const f of this.figures) this.applyTransform(f);
     }
+
+    /**
+     * Composite the sand canvas + placed figures into a single PNG and trigger
+     * download. Placeholder version draws figures as solid rectangles; Task 8
+     * swaps in real images.
+     */
+    capture(filename = 'sandtray.png'): void {
+      const out = document.createElement('canvas');
+      out.width = this.renderer.width;
+      out.height = this.renderer.height;
+      const octx = out.getContext('2d');
+      if (!octx) return;
+
+      // 1. The sand canvas itself.
+      octx.drawImage(this.canvas, 0, 0, out.width, out.height);
+
+      // 2. Each placed figure as a rotated rectangle (placeholder).
+      for (const fig of this.figures) {
+        const w = fig.naturalW * fig.scale;
+        const h = fig.naturalH * fig.scale;
+        octx.save();
+        octx.translate(fig.x, fig.y);
+        octx.rotate((fig.rotation * Math.PI) / 180);
+        octx.shadowColor = 'rgba(0,0,0,0.45)';
+        octx.shadowBlur = 8;
+        octx.shadowOffsetX = 4;
+        octx.shadowOffsetY = 6;
+        octx.fillStyle = fig.el.style.background || '#888';
+        octx.fillRect(-w / 2, -h / 2, w, h);
+        octx.restore();
+      }
+
+      const url = out.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
   }
 
   // ----- Bootstrap -----
@@ -616,6 +697,51 @@ const s = t[lang];
         window.addEventListener('pointerup', onUp);
         window.addEventListener('pointercancel', onUp);
       });
+    });
+
+    // ----- Witness mode -----
+    const i18n = JSON.parse(root.getAttribute('data-sandtray-i18n') || '{}');
+    const chromeEls = root.querySelectorAll<HTMLElement>('[data-sandtray-chrome]');
+    const witnessBtn = root.querySelector<HTMLButtonElement>('[data-sandtray-witness]');
+    let witnessing = false;
+
+    function setWitness(on: boolean): void {
+      witnessing = on;
+      chromeEls.forEach((el) => {
+        el.style.opacity = on ? '0' : '1';
+        el.style.pointerEvents = on ? 'none' : '';
+      });
+      if (witnessBtn) witnessBtn.textContent = on ? i18n.returnToTray : i18n.stepBack;
+    }
+
+    witnessBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      setWitness(!witnessing);
+    });
+    document.addEventListener('click', (e) => {
+      if (!witnessing) return;
+      const target = e.target as HTMLElement;
+      if (target === witnessBtn) return;
+      if (canvas.contains(target)) return;
+      setWitness(false);
+    });
+
+    // ----- Capture / level / clear -----
+    root.querySelector<HTMLButtonElement>('[data-sandtray-capture]')?.addEventListener('click', () => {
+      figureLayer.capture('sandtray.png');
+    });
+
+    root.querySelector<HTMLButtonElement>('[data-sandtray-level]')?.addEventListener('click', () => {
+      renderer.seed();
+      renderer.markDirtyAll();
+      renderer.render();
+    });
+
+    root.querySelector<HTMLButtonElement>('[data-sandtray-clear]')?.addEventListener('click', () => {
+      figureLayer.clear();
+      renderer.seed();
+      renderer.markDirtyAll();
+      renderer.render();
     });
   });
 </script>
