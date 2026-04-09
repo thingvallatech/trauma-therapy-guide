@@ -15,6 +15,7 @@ import SafePlace from '../../components/tools/SafePlace.astro';
 import Lightstream from '../../components/tools/Lightstream.astro';
 import ButterflyHug from '../../components/tools/ButterflyHug.astro';
 import FeelingWheel from '../../components/tools/FeelingWheel.astro';
+import Sandtray from '../../components/tools/Sandtray.astro';
 
 export async function getStaticPaths() {
   const tools = await getCollection('tools', (t) => t.data.locale === 'en');
@@ -47,6 +48,7 @@ const widgets: Record<string, any> = {
   'Lightstream': Lightstream,
   'ButterflyHug': ButterflyHug,
   'FeelingWheel': FeelingWheel,
+  'Sandtray': Sandtray,
 };
 
 const Widget = widgets[tool.data.componentName] ?? null;

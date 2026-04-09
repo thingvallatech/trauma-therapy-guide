@@ -14,6 +14,7 @@ import SafePlace from '../../../../components/tools/SafePlace.astro';
 import Lightstream from '../../../../components/tools/Lightstream.astro';
 import ButterflyHug from '../../../../components/tools/ButterflyHug.astro';
 import FeelingWheel from '../../../../components/tools/FeelingWheel.astro';
+import Sandtray from '../../../../components/tools/Sandtray.astro';
 import type { Lang } from '../../../../i18n';
 
 const lang: Lang = 'es';
@@ -36,7 +37,7 @@ const { tool } = Astro.props;
 const widgets: Record<string, any> = {
   SUDScale, VOCScale, BreathPacer, Grounding,
   BLSVisual, BLSAudio, BLSCombined, BLSTapping,
-  Container, SafePlace, Lightstream, ButterflyHug, FeelingWheel,
+  Container, SafePlace, Lightstream, ButterflyHug, FeelingWheel, Sandtray,
 };
 
 const Widget = widgets[tool.data.componentName] ?? null;
