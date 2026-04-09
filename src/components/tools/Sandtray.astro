@@ -453,11 +453,19 @@ const s = t[lang];
         return;
       }
       // Single finger down → start carving at the hit point (if any).
+      // Defer the initial carve by one microtask so a second pointerdown
+      // landing in the same input task can cancel it (two-finger twist
+      // start). Without this, every touch-initiated twist would leave a
+      // spurious divot under the first finger.
       const w = canvasToWorld(e);
       if (!w) return;
       isCarving = true;
       canvas.setPointerCapture(e.pointerId);
-      renderer.carve(w.x, w.z, 0.8, 0.12);
+      queueMicrotask(() => {
+        if (isCarving && activePointers.size === 1) {
+          renderer.carve(w.x, w.z, 0.8, 0.12);
+        }
+      });
     });
 
     canvas.addEventListener('pointermove', (e: PointerEvent) => {
