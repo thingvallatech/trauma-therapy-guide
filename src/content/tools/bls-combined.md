@@ -7,7 +7,7 @@ evidence: research-backed
 shortDescription: "Visual dot synced with alternating left/right audio tones. Dual-channel BLS for clients who benefit from multiple modalities."
 componentName: "BLSCombined"
 citations:
-  - label: "Shapiro (2018). Eye Movement Desensitization and Reprocessing (EMDR) Therapy, 3rd ed."
+  - label: "Shapiro, F. (2018). Eye Movement Desensitization and Reprocessing (EMDR) Therapy: Basic Principles, Protocols, and Procedures, 3rd ed. Guilford Press."
 warnings:
   - "Photosensitive epilepsy warning: this tool uses sustained horizontal motion."
   - "Headphones required for audio component."

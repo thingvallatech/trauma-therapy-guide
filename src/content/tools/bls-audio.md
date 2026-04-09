@@ -7,7 +7,7 @@ evidence: research-backed
 shortDescription: "Alternating left/right stereo tones for auditory BLS. Requires headphones. Adjustable speed, tone, volume."
 componentName: "BLSAudio"
 citations:
-  - label: "Shapiro (2018). Eye Movement Desensitization and Reprocessing (EMDR) Therapy, 3rd ed."
+  - label: "Shapiro, F. (2018). Eye Movement Desensitization and Reprocessing (EMDR) Therapy: Basic Principles, Protocols, and Procedures, 3rd ed. Guilford Press."
 warnings:
   - "Headphones required — stereo separation is what makes this bilateral."
   - "Not recommended for home use without clinician supervision."

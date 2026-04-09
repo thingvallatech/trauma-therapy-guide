@@ -7,7 +7,7 @@ evidence: clinical-consensus
 shortDescription: "Clickable emotion wheel. Six core emotions at the center, specific variations around the edge. Helps clients — especially kids — name what they feel."
 componentName: "FeelingWheel"
 citations:
-  - label: "Willcox, G. (1982). The Feeling Wheel: A Tool for Expanding Awareness of Emotions. Transactional Analysis Journal, 12(4)."
+  - label: "Willcox, G. (1982). The Feeling Wheel: A Tool for Expanding Awareness of Emotions and Increasing Spontaneity and Intimacy. Transactional Analysis Journal, 12(4), 274–276."
 warnings: []
 ---
 

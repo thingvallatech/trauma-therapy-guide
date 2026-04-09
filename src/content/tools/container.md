@@ -7,7 +7,7 @@ evidence: clinical-consensus
 shortDescription: "Interactive container visualization — pick a box, name what's bothering you, put it inside, lock it, put it somewhere safe until you can come back to it."
 componentName: "Container"
 citations:
-  - label: "Shapiro (2018). EMDR Therapy, 3rd ed. — Phase 2 resource installation."
+  - label: "Shapiro, F. (2018). Eye Movement Desensitization and Reprocessing (EMDR) Therapy: Basic Principles, Protocols, and Procedures, 3rd ed. Guilford Press. (Phase 2 resource installation procedures.)"
 warnings: []
 ---
 

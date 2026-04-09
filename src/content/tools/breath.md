@@ -3,13 +3,13 @@ name: "Breath Pacer"
 category: regulation
 audience: [clinician, family]
 useContext: [in-session, practice, home]
-evidence: research-backed
+evidence: clinical-consensus
 shortDescription: "Animated breath pacer with box breathing, 4-7-8, and coherent breathing patterns. For closure, grounding, and home use."
 componentName: "BreathPacer"
 citations:
-  - label: "Elliott, S. (2010). Coherent Breathing and HRV — The New Science of Heart Rate Variability Biofeedback."
-  - label: "Weil, A. (2011). 4-7-8 breathing technique."
-  - label: "US Navy SEAL combat/tactical breathing — box breathing protocol."
+  - label: "Elliott, S. (2008). Coherent Breathing: The Definitive Method — Theory and Practice. COHERENCE."
+  - label: "Weil, A. (2000). Breathing: The Master Key to Self Healing. Sounds True. (4-7-8 technique popularized via this audio program and drweil.com; no standalone peer-reviewed RCT.)"
+  - label: "Box (tactical) breathing: widely taught in military and clinical stress-management settings. Slow-paced breathing evidence: Zaccaro et al. (2018). How Breath-Control Can Change Your Life. Frontiers in Human Neuroscience, 12, 353. No single authoritative 'Navy SEAL' citation."
 warnings: []
 ---
 

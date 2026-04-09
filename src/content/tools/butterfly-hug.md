@@ -7,7 +7,8 @@ evidence: research-backed
 shortDescription: "Paced self-hug tapping visual. A gentle, self-administered bilateral technique originally developed for children after disaster."
 componentName: "ButterflyHug"
 citations:
-  - label: "Artigas, L., & Jarero, I. (1998). The Butterfly Hug. Developed after Hurricane Pauline for children with trauma."
+  - label: "Artigas, L., Jarero, I., Mauer, M., López Cano, T., & Alcalá, N. (2000). EMDR and traumatic stress after natural disasters: Integrative treatment protocol and the Butterfly Hug. Poster, EMDRIA Conference, Toronto. (Technique originated 1998, Hurricane Pauline; first citable presentation 2000.)"
+  - label: "Boel, J. (1999). The Butterfly Hug. EMDRIA Newsletter, 4(4), 11–13."
 warnings: []
 ---
 

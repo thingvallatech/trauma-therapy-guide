@@ -7,7 +7,7 @@ evidence: clinical-consensus
 shortDescription: "Guided color-flow visualization: pick a healing color, watch it flow through a body outline, follow the script to soften tension."
 componentName: "Lightstream"
 citations:
-  - label: "Shapiro (2018). EMDR Therapy, 3rd ed. — Lightstream Technique."
+  - label: "Shapiro, F. (2018). Eye Movement Desensitization and Reprocessing (EMDR) Therapy: Basic Principles, Protocols, and Procedures, 3rd ed. Guilford Press. (Lightstream Technique — Phase 2 and closure.)"
 warnings: []
 ---
 

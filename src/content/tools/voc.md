@@ -7,7 +7,7 @@ evidence: research-backed
 shortDescription: "Rate how true a positive belief feels, from 1 (completely false) to 7 (completely true). Used in Phase 3 assessment and Phase 5 installation."
 componentName: "VOCScale"
 citations:
-  - label: "Shapiro (2018). Eye Movement Desensitization and Reprocessing (EMDR) Therapy: Basic Principles, Protocols, and Procedures, 3rd ed."
+  - label: "Shapiro, F. (2018). Eye Movement Desensitization and Reprocessing (EMDR) Therapy: Basic Principles, Protocols, and Procedures, 3rd ed. Guilford Press."
 warnings: []
 ---
 

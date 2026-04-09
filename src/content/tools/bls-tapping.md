@@ -7,8 +7,8 @@ evidence: research-backed
 shortDescription: "Large alternating left/right visual cues to pace self-administered tapping (butterfly hug, knee-tap) when eye movements are contraindicated."
 componentName: "BLSTapping"
 citations:
-  - label: "Shapiro (2018). EMDR Therapy, 3rd ed."
-  - label: "Artigas & Jarero (1998). Butterfly Hug protocol."
+  - label: "Shapiro, F. (2018). Eye Movement Desensitization and Reprocessing (EMDR) Therapy: Basic Principles, Protocols, and Procedures, 3rd ed. Guilford Press."
+  - label: "Artigas, L., Jarero, I., et al. (2000). EMDR and traumatic stress after natural disasters: Butterfly Hug. Poster, EMDRIA Conference, Toronto. (Technique originated 1998, first citable presentation 2000.)"
 warnings:
   - "Not recommended for home use without clinician supervision."
 ---

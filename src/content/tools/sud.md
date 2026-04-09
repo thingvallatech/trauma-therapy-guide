@@ -7,7 +7,7 @@ evidence: research-backed
 shortDescription: "Measure distress from 0 (none) to 10 (worst imaginable). Includes a kid-friendly faces mode for younger clients."
 componentName: "SUDScale"
 citations:
-  - label: "Shapiro (2018). Eye Movement Desensitization and Reprocessing (EMDR) Therapy: Basic Principles, Protocols, and Procedures, 3rd ed."
+  - label: "Shapiro, F. (2018). Eye Movement Desensitization and Reprocessing (EMDR) Therapy: Basic Principles, Protocols, and Procedures, 3rd ed. Guilford Press."
 warnings: []
 ---
 

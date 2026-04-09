@@ -3,11 +3,12 @@ name: "Safe Place Builder"
 category: preparation
 audience: [clinician, family]
 useContext: [in-session, practice, home]
-evidence: research-backed
+evidence: clinical-consensus
 shortDescription: "Guided picker for building a calm, safe inner place with sensory details. Phase 2 resource installation made interactive."
 componentName: "SafePlace"
 citations:
-  - label: "Shapiro (2018). EMDR Therapy, 3rd ed. — Phase 2 Safe/Calm Place protocol."
+  - label: "Shapiro, F. (2018). Eye Movement Desensitization and Reprocessing (EMDR) Therapy: Basic Principles, Protocols, and Procedures, 3rd ed. Guilford Press. (pp. 117–119, Safe/Calm Place protocol.)"
+  - label: "Korn, D. L., & Leeds, A. M. (2002). Preliminary evidence of efficacy for EMDR resource development and installation. Journal of Clinical Psychology, 58(12), 1465–1487. (Provides preliminary RCT-adjacent evidence for resource installation including safe place.)"
 warnings: []
 ---
 

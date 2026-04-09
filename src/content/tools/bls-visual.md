@@ -7,8 +7,8 @@ evidence: research-backed
 shortDescription: "Horizontal-moving dot for eye-movement bilateral stimulation. Adjustable speed, size, color. Use fullscreen for in-session delivery."
 componentName: "BLSVisual"
 citations:
-  - label: "Shapiro (2018). Eye Movement Desensitization and Reprocessing (EMDR) Therapy: Basic Principles, Protocols, and Procedures, 3rd ed."
-  - label: "EMDRIA — Standard EMDR Protocol"
+  - label: "Shapiro, F. (2018). Eye Movement Desensitization and Reprocessing (EMDR) Therapy: Basic Principles, Protocols, and Procedures, 3rd ed. Guilford Press."
+  - label: "EMDRIA. Standard EMDR Therapy Protocol — organizational training standard. See also: Luber, M. (Ed.) (2016). A Guide to the Standard EMDR Therapy Protocols. Springer."
     url: "https://www.emdria.org"
 warnings:
   - "Photosensitive epilepsy warning: this tool uses sustained horizontal motion."
@@ -26,7 +26,7 @@ A horizontal-moving visual stimulus for eye-movement bilateral stimulation durin
 
 ## Clinical notes
 
-Shapiro's standard is approximately 1 second per full left-right cycle (1 Hz), with sets of roughly 24 passes. Faster for desensitization, slower for installation. Adjust per client tolerance and response. Use fullscreen mode to remove visual distractions and give the client clean tracking.
+Shapiro's published guidance describes speed as "as fast as the client can comfortably track" rather than a fixed Hz value. The 1.0 Hz default (one full left-right cycle per second) is a reasonable middle estimate from EMDR training materials; adjust freely per client tolerance and response. Sets of ~24 passes are a commonly taught starting point; shorter or longer sets are appropriate depending on the session. Faster movement is generally used for desensitization, slower for installation. Use fullscreen mode to remove visual distractions and give the client clean tracking.
 
 ## Parameter defaults
 
