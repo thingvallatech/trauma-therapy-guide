@@ -1,0 +1,117 @@
+---
+interface Props {
+  fullscreen?: boolean;
+}
+
+const { fullscreen = false } = Astro.props;
+const containerClass = fullscreen
+  ? "w-full max-w-2xl mx-auto p-8"
+  : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
+---
+
+<div class:list={[containerClass]} data-safeplace-widget>
+  <div data-step="env" data-step-active>
+    <h2 class="font-serif text-xl text-forest-100 mb-3">Step 1: Where is your calm place?</h2>
+    <div class="grid grid-cols-2 gap-3">
+      {['A forest', 'A beach', 'A meadow', 'A mountain top', 'A room I know', 'Somewhere imagined'].map((e) => (
+        <button data-pick-env={e} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm">
+          {e}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <div data-step="comfort" class="hidden">
+    <h2 class="font-serif text-xl text-forest-100 mb-3">Step 2: What's with you there?</h2>
+    <p class="text-forest-300 text-sm mb-4">Pick anything that feels comforting. You can pick more than one.</p>
+    <div class="grid grid-cols-2 gap-3 mb-4" data-comfort-options>
+      {['An animal', 'A soft blanket', 'Music', 'A person who feels safe', 'Warm sun', 'Cool breeze'].map((c) => (
+        <button data-pick-comfort={c} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm">
+          {c}
+        </button>
+      ))}
+    </div>
+    <button data-to-senses class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors">
+      Next
+    </button>
+  </div>
+
+  <div data-step="senses" class="hidden">
+    <h2 class="font-serif text-xl text-forest-100 mb-3">Step 3: Use your senses</h2>
+    <p class="text-forest-300 text-sm mb-4">Picture it as clearly as you can. Take your time with each one.</p>
+    <ol class="space-y-3 text-forest-200 text-sm mb-6 list-decimal list-inside">
+      <li>What do you <strong>see</strong>?</li>
+      <li>What do you <strong>hear</strong>?</li>
+      <li>What do you <strong>smell</strong>?</li>
+      <li>What do you <strong>feel</strong> — on your skin, under your feet?</li>
+      <li>How does your body feel when you're there?</li>
+    </ol>
+    <button data-to-done class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors">
+      Stay here for a moment
+    </button>
+  </div>
+
+  <div data-step="done" class="hidden text-center">
+    <h2 class="font-serif text-2xl text-forest-100 mb-3">This place is yours.</h2>
+    <p data-safe-summary class="text-forest-300 mb-4"></p>
+    <p class="text-forest-300 text-sm mb-6">Rest here as long as you need. When you're ready, you can open your eyes.</p>
+    <button data-restart class="px-4 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 hover:bg-forest-600 transition-colors">Start over</button>
+  </div>
+</div>
+
+<script>
+  const widgets = document.querySelectorAll('[data-safeplace-widget]');
+  widgets.forEach((root) => {
+    const steps: Record<string, HTMLElement> = {};
+    root.querySelectorAll<HTMLElement>('[data-step]').forEach((el) => {
+      steps[el.getAttribute('data-step')!] = el;
+    });
+
+    let state = { env: '', comforts: [] as string[] };
+
+    function showStep(n: string) {
+      Object.values(steps).forEach((el) => el.classList.add('hidden'));
+      steps[n].classList.remove('hidden');
+    }
+
+    root.querySelectorAll<HTMLButtonElement>('[data-pick-env]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.env = btn.getAttribute('data-pick-env')!;
+        showStep('comfort');
+      });
+    });
+
+    root.querySelectorAll<HTMLButtonElement>('[data-pick-comfort]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const val = btn.getAttribute('data-pick-comfort')!;
+        if (state.comforts.includes(val)) {
+          state.comforts = state.comforts.filter((c) => c !== val);
+          btn.classList.remove('bg-bronze-500', 'text-forest-900');
+          btn.classList.add('bg-forest-700', 'text-forest-100');
+        } else {
+          state.comforts.push(val);
+          btn.classList.add('bg-bronze-500', 'text-forest-900');
+          btn.classList.remove('bg-forest-700', 'text-forest-100');
+        }
+      });
+    });
+
+    root.querySelector<HTMLButtonElement>('[data-to-senses]')!.addEventListener('click', () => showStep('senses'));
+    root.querySelector<HTMLButtonElement>('[data-to-done]')!.addEventListener('click', () => {
+      const summary = root.querySelector<HTMLElement>('[data-safe-summary]')!;
+      const comforts = state.comforts.length > 0
+        ? ` With you: ${state.comforts.map((c) => c.toLowerCase()).join(', ')}.`
+        : '';
+      summary.textContent = `${state.env}.${comforts}`;
+      showStep('done');
+    });
+    root.querySelector<HTMLButtonElement>('[data-restart]')!.addEventListener('click', () => {
+      state = { env: '', comforts: [] };
+      root.querySelectorAll<HTMLButtonElement>('[data-pick-comfort]').forEach((btn) => {
+        btn.classList.remove('bg-bronze-500', 'text-forest-900');
+        btn.classList.add('bg-forest-700', 'text-forest-100');
+      });
+      showStep('env');
+    });
+  });
+</script>
