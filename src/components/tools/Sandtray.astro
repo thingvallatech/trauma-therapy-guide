@@ -117,6 +117,7 @@ const s = t[lang];
 
 <script>
   import * as THREE from 'three';
+  import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
   // ----- SandRenderer -----
   // Three.js scene: subdivided plane whose vertices are displaced from a
@@ -378,26 +379,69 @@ const s = t[lang];
     }
   }
 
-  // ----- FigureLayer -----
-  // Stub. Rewritten in Task 5 as a 3D scene-graph-based FigureManager.
-  // The old bootstrap still calls addPlaceholder/relayout/capture/clear;
-  // these no-ops keep the build compiling until Task 5.
+  // ----- FigureManager -----
+  // Loads GLB models via GLTFLoader, caches templates by path, clones them
+  // for placement in the Three.js scene, and removes them on clear.
 
-  class FigureLayer {
-    constructor(_container: HTMLElement, _canvas: HTMLCanvasElement, _renderer: SandRenderer) {
-      // no-op
+  interface PlacedFigure {
+    instanceId: string;
+    figureId: string;
+    group: THREE.Group;
+    x: number;
+    z: number;
+    rotationY: number;
+    scale: number;
+  }
+
+  class FigureManager {
+    scene: THREE.Scene;
+    renderer: SandRenderer;
+    loader: GLTFLoader;
+    cache: Map<string, THREE.Group> = new Map();
+    placed: PlacedFigure[] = [];
+    idCounter: number = 0;
+
+    constructor(scene: THREE.Scene, renderer: SandRenderer) {
+      this.scene = scene;
+      this.renderer = renderer;
+      this.loader = new GLTFLoader();
     }
-    addPlaceholder(_cx: number, _cy: number, _color: string): void {
-      // TODO Task 5
+
+    /** Load a GLB file by path, caching the result. Returns a cloneable template group. */
+    async loadTemplate(modelPath: string): Promise<THREE.Group> {
+      const cached = this.cache.get(modelPath);
+      if (cached) return cached;
+      const gltf = await this.loader.loadAsync(modelPath);
+      this.cache.set(modelPath, gltf.scene);
+      return gltf.scene;
     }
-    relayout(): void {
-      // TODO Task 5
+
+    /** Place a new figure instance at the given world (x, z) position. */
+    async place(figureId: string, modelPath: string, x: number, z: number, scale = 1): Promise<PlacedFigure> {
+      const template = await this.loadTemplate(modelPath);
+      const group = template.clone(true);
+      // KayKit characters are ~1.8 units tall in the Y axis. Scale accordingly.
+      group.scale.setScalar(scale);
+      group.position.set(x, 0, z);
+      group.rotation.y = 0;
+      this.scene.add(group);
+
+      const instance: PlacedFigure = {
+        instanceId: `fig-${++this.idCounter}`,
+        figureId,
+        group,
+        x,
+        z,
+        rotationY: 0,
+        scale,
+      };
+      this.placed.push(instance);
+      return instance;
     }
-    capture(_filename?: string): void {
-      // TODO Task 5/7: composite WebGL canvas + figures into a PNG.
-    }
-    clear(): void {
-      // TODO Task 5
+
+    clearAll(): void {
+      for (const f of this.placed) this.scene.remove(f.group);
+      this.placed = [];
     }
   }
 
@@ -501,76 +545,12 @@ const s = t[lang];
       isCarving = false;
     });
 
-    // ----- Figure layer + placeholder palette -----
-    const figContainer = root.querySelector<HTMLElement>('[data-sandtray-figures]');
-    if (!figContainer) return;
-    const figureLayer = new FigureLayer(figContainer, canvas, renderer);
-
-    window.addEventListener('resize', () => {
-      window.setTimeout(() => figureLayer.relayout(), 200);
-    });
-
-    const placeholderButtons = root.querySelectorAll<HTMLButtonElement>('[data-placeholder-figure]');
-    placeholderButtons.forEach((btn) => {
-      const color = btn.getAttribute('data-color') || '#888';
-
-      // Click fallback: add at center with random offset.
-      btn.addEventListener('click', (e) => {
-        if ((btn as any).__draggedJustNow) {
-          (btn as any).__draggedJustNow = false;
-          return;
-        }
-        e.preventDefault();
-        const cx = renderer.width / 2 + (Math.random() - 0.5) * 80;
-        const cy = renderer.height / 2 + (Math.random() - 0.5) * 60;
-        figureLayer.addPlaceholder(cx, cy, color);
-      });
-
-      // Drag from palette to canvas with a ghost element following the cursor.
-      btn.addEventListener('pointerdown', (e) => {
-        e.preventDefault();
-        const ghost = document.createElement('div');
-        ghost.style.position = 'fixed';
-        ghost.style.left = '0';
-        ghost.style.top = '0';
-        ghost.style.width = '48px';
-        ghost.style.height = '48px';
-        ghost.style.background = color;
-        ghost.style.border = '1px solid rgba(0,0,0,0.3)';
-        ghost.style.borderRadius = '4px';
-        ghost.style.pointerEvents = 'none';
-        ghost.style.opacity = '0.85';
-        ghost.style.transform = `translate(${e.clientX - 24}px, ${e.clientY - 24}px)`;
-        ghost.style.zIndex = '9999';
-        document.body.appendChild(ghost);
-
-        let moved = false;
-
-        const onMove = (ev: PointerEvent) => {
-          moved = true;
-          ghost.style.transform = `translate(${ev.clientX - 24}px, ${ev.clientY - 24}px)`;
-        };
-        const onUp = (ev: PointerEvent) => {
-          window.removeEventListener('pointermove', onMove);
-          window.removeEventListener('pointerup', onUp);
-          window.removeEventListener('pointercancel', onUp);
-          ghost.remove();
-          if (!moved) return; // Click handler will fire instead.
-          (btn as any).__draggedJustNow = true;
-          const cRect = canvas.getBoundingClientRect();
-          if (
-            ev.clientX >= cRect.left && ev.clientX <= cRect.right &&
-            ev.clientY >= cRect.top && ev.clientY <= cRect.bottom
-          ) {
-            const x = ev.clientX - cRect.left;
-            const y = ev.clientY - cRect.top;
-            figureLayer.addPlaceholder(x, y, color);
-          }
-        };
-        window.addEventListener('pointermove', onMove);
-        window.addEventListener('pointerup', onUp);
-        window.addEventListener('pointercancel', onUp);
-      });
+    // ----- Figure manager -----
+    const figureManager = new FigureManager(renderer.scene, renderer);
+    // TEMPORARY: for this task we hard-code one Knight at the origin.
+    // Task 7 replaces this with palette-driven placement.
+    figureManager.place('knight', '/sandtray/models/Knight.glb', 0, 0, 1).catch((err) => {
+      console.error('[sandtray] failed to load Knight model:', err);
     });
 
     // ----- Witness mode -----
@@ -601,8 +581,9 @@ const s = t[lang];
     });
 
     // ----- Capture / level / clear -----
+    // Capture button is a no-op until Task 8 rewires it.
     root.querySelector<HTMLButtonElement>('[data-sandtray-capture]')?.addEventListener('click', () => {
-      figureLayer.capture('sandtray.png');
+      // TODO Task 8: renderer.renderer.domElement.toDataURL()
     });
 
     root.querySelector<HTMLButtonElement>('[data-sandtray-level]')?.addEventListener('click', () => {
@@ -610,7 +591,7 @@ const s = t[lang];
     });
 
     root.querySelector<HTMLButtonElement>('[data-sandtray-clear]')?.addEventListener('click', () => {
-      figureLayer.clear();
+      figureManager.clearAll();
       renderer.level();
     });
   });
