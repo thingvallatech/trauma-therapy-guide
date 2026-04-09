@@ -14,13 +14,14 @@ const containerClass = fullscreen
   : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600 flex flex-col";
 
 const t = {
-  en: { canvasAriaLabel: 'Sandtray canvas' },
-  es: { canvasAriaLabel: 'Lienzo de bandeja de arena' },
+  en: {
+    canvasAriaLabel: 'Sandtray canvas',
+  },
+  es: {
+    canvasAriaLabel: 'Lienzo de bandeja de arena',
+  },
 };
 const s = t[lang];
-
-// Suppress unused-import lint until Task 8 wires categories.
-void sandtrayCategories;
 ---
 
 <div class:list={[containerClass]} data-sandtray-widget>
@@ -63,16 +64,17 @@ void sandtrayCategories;
     width = 0;
     height = 0;
     heights!: Float32Array;     // length = width * height
-    grain!: Float32Array;       // per-pixel static noise, length = width * height
+    grain!: Float32Array;       // per-pixel static noise
     imageData!: ImageData;
     dirty: Rect | null = null;
 
     // Light direction (normalized). From upper-left, pointing down-right into the page.
+    // Larger lz = flatter lighting.
     readonly lx = -0.55;
     readonly ly = -0.55;
     readonly lz = 0.62;
 
-    // Base sand color and lighting modulation range.
+    // Base sand color and modulation range.
     readonly baseR = 224;
     readonly baseG = 204;
     readonly baseB = 156;
@@ -106,7 +108,7 @@ void sandtrayCategories;
       this.render();
     }
 
-    /** Seed the height map with low-frequency noise so resting sand isn't perfectly flat. */
+    /** Seed the height map with low-frequency sinusoidal noise + per-pixel grain. */
     seed(): void {
       const w = this.width, h = this.height;
       for (let y = 0; y < h; y++) {
@@ -116,6 +118,7 @@ void sandtrayCategories;
             Math.sin(x * 0.027 - y * 0.021) * 0.012 +
             Math.sin(x * 0.005 + y * 0.041) * 0.008;
           this.heights[y * w + x] = 0.5 + n;
+          // Grain is regenerated on each seed so "level the sand" looks fresh.
           this.grain[y * w + x] = (Math.random() - 0.5) * 0.04;
         }
       }
@@ -142,7 +145,7 @@ void sandtrayCategories;
       this.dirty = { x: x1, y: y1, w: x2 - x1, h: y2 - y1 };
     }
 
-    /** Shade and write pixels in the dirty rect. */
+    /** Shade and write pixels in the dirty rect, then putImageData with subrect. */
     render(): void {
       if (!this.dirty) return;
       const w = this.width;
@@ -155,12 +158,18 @@ void sandtrayCategories;
       const y2 = ry + rh;
 
       const lx = this.lx, ly = this.ly, lz = this.lz;
+      // Height-to-world scale factor for normal computation. Larger = more dramatic shading.
       const slope = 6.0;
+
+      const baseR = this.baseR, baseG = this.baseG, baseB = this.baseB;
+      const hiR = this.hiR, hiG = this.hiG, hiB = this.hiB;
+      const loR = this.loR, loG = this.loG, loB = this.loB;
 
       for (let y = ry; y < y2; y++) {
         for (let x = rx; x < x2; x++) {
           const i = y * w + x;
 
+          // Sample neighbors with edge clamp.
           const xl = x > 0 ? x - 1 : x;
           const xr = x < w - 1 ? x + 1 : x;
           const yu = y > 0 ? y - 1 : y;
@@ -169,7 +178,7 @@ void sandtrayCategories;
           const dzdx = (heights[y * w + xr] - heights[y * w + xl]) * slope;
           const dzdy = (heights[yd * w + x] - heights[yu * w + x]) * slope;
 
-          // Surface normal (unnormalized): (-dzdx, -dzdy, 1)
+          // Surface normal (-dzdx, -dzdy, 1), normalized.
           const nx = -dzdx;
           const ny = -dzdy;
           const nz = 1;
@@ -178,30 +187,34 @@ void sandtrayCategories;
           const nny = ny * invLen;
           const nnz = nz * invLen;
 
+          // Lambert dot product, clamped.
           let lit = nnx * lx + nny * ly + nnz * lz;
           if (lit < 0) lit = 0;
           if (lit > 1) lit = 1;
 
+          // Gentle ambient floor.
           const shade = 0.55 + lit * 0.45;
 
           const g = grain[i];
-          let r = this.baseR * shade + (this.hiR - this.baseR) * Math.max(0, shade - 0.85) * 4;
-          let gC = this.baseG * shade + (this.hiG - this.baseG) * Math.max(0, shade - 0.85) * 4;
-          let b = this.baseB * shade + (this.hiB - this.baseB) * Math.max(0, shade - 0.85) * 4;
+          let r = baseR * shade + (hiR - baseR) * Math.max(0, shade - 0.85) * 4;
+          let gC = baseG * shade + (hiG - baseG) * Math.max(0, shade - 0.85) * 4;
+          let b = baseB * shade + (hiB - baseB) * Math.max(0, shade - 0.85) * 4;
 
+          // Pull toward lo color in dark regions.
           const dark = Math.max(0, 0.7 - shade);
-          r -= dark * (this.baseR - this.loR) * 1.4;
-          gC -= dark * (this.baseG - this.loG) * 1.4;
-          b -= dark * (this.baseB - this.loB) * 1.4;
+          r -= dark * (baseR - loR) * 1.4;
+          gC -= dark * (baseG - loG) * 1.4;
+          b -= dark * (baseB - loB) * 1.4;
 
+          // Per-pixel grain.
           r += g * 255;
           gC += g * 255;
           b += g * 255;
 
           const di = i * 4;
-          data[di]     = r  < 0 ? 0 : r  > 255 ? 255 : r;
+          data[di] = r < 0 ? 0 : r > 255 ? 255 : r;
           data[di + 1] = gC < 0 ? 0 : gC > 255 ? 255 : gC;
-          data[di + 2] = b  < 0 ? 0 : b  > 255 ? 255 : b;
+          data[di + 2] = b < 0 ? 0 : b > 255 ? 255 : b;
           data[di + 3] = 255;
         }
       }
