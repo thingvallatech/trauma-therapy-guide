@@ -128,8 +128,8 @@ const s = t[lang];
     scene: THREE.Scene;
     camera: THREE.OrthographicCamera;
     cube: THREE.Mesh;
-    width: number;
-    height: number;
+    width: number;   // CSS pixels (was device pixels in the 2D version)
+    height: number;  // CSS pixels
 
     constructor(canvas: HTMLCanvasElement) {
       this.canvas = canvas;
@@ -177,10 +177,6 @@ const s = t[lang];
       const mat = new THREE.MeshStandardMaterial({ color: 0xc4a77d }); // wood-400
       this.cube = new THREE.Mesh(geom, mat);
       this.scene.add(this.cube);
-
-      // Resize observer so the canvas scales with its container.
-      const ro = new ResizeObserver(() => this.resize());
-      ro.observe(canvas);
 
       // Start the render loop.
       this.renderer.setAnimationLoop(() => this.render());
@@ -232,14 +228,6 @@ const s = t[lang];
     clientToCanvas(clientX: number, clientY: number): { x: number; y: number } {
       const rect = this.canvas.getBoundingClientRect();
       return { x: clientX - rect.left, y: clientY - rect.top };
-    }
-
-    level(): void {
-      // TODO Task 3: reset the height map to noisy-flat.
-    }
-
-    clear(): void {
-      // TODO Task 7: delegates to FigureManager to clear placed figures.
     }
   }
 
