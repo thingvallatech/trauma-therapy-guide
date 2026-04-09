@@ -16,9 +16,13 @@ const containerClass = fullscreen
 const t = {
   en: {
     canvasAriaLabel: 'Sandtray canvas',
+    figuresLabel: 'Placed figures',
+    paletteLabel: 'Figure palette',
   },
   es: {
     canvasAriaLabel: 'Lienzo de bandeja de arena',
+    figuresLabel: 'Figuras colocadas',
+    paletteLabel: 'Paleta de figuras',
   },
 };
 const s = t[lang];
@@ -37,18 +41,36 @@ const s = t[lang];
       0 -2px 0 rgba(0,0,0,0.35) inset,
       0 18px 30px -12px rgba(0,0,0,0.55);
   ">
-    <canvas
-      data-sandtray-canvas
-      class="block w-full rounded-md touch-none select-none"
-      style="
-        height: 24rem;
-        box-shadow:
-          0 0 0 2px #3a2611 inset,
-          0 6px 14px rgba(0,0,0,0.35) inset,
-          0 -2px 6px rgba(255,235,200,0.18) inset;
-      "
-      aria-label={s.canvasAriaLabel}
-    ></canvas>
+    <div data-sandtray-stage class="relative w-full" style="height: 24rem;">
+      <canvas
+        data-sandtray-canvas
+        class="absolute inset-0 block w-full h-full rounded-md touch-none select-none"
+        style="
+          box-shadow:
+            0 0 0 2px #3a2611 inset,
+            0 6px 14px rgba(0,0,0,0.35) inset,
+            0 -2px 6px rgba(255,235,200,0.18) inset;
+        "
+        aria-label={s.canvasAriaLabel}
+      ></canvas>
+      <div
+        data-sandtray-figures
+        class="absolute inset-0 pointer-events-none"
+        aria-label={s.figuresLabel}
+      ></div>
+    </div>
+  </div>
+
+  <div
+    data-sandtray-chrome
+    class="mt-4 flex flex-wrap gap-2 p-3 bg-forest-900 rounded-lg border border-forest-700"
+    data-sandtray-palette
+    aria-label={s.paletteLabel}
+  >
+    <button data-placeholder-figure data-color="#9a6b3f" aria-label="Placeholder umber" class="w-12 h-12 rounded border border-forest-600 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background:#9a6b3f"></button>
+    <button data-placeholder-figure data-color="#3d6b4a" aria-label="Placeholder forest" class="w-12 h-12 rounded border border-forest-600 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background:#3d6b4a"></button>
+    <button data-placeholder-figure data-color="#6b4a85" aria-label="Placeholder violet" class="w-12 h-12 rounded border border-forest-600 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background:#6b4a85"></button>
+    <button data-placeholder-figure data-color="#85553d" aria-label="Placeholder rust" class="w-12 h-12 rounded border border-forest-600 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background:#85553d"></button>
   </div>
 </div>
 
@@ -268,6 +290,196 @@ const s = t[lang];
     }
   }
 
+  // ----- FigureLayer -----
+  // DOM-based, layered above the canvas. Each placed figure is a focusable button.
+
+  interface PlacedFigure {
+    el: HTMLButtonElement;
+    x: number;       // canvas-pixel center x
+    y: number;       // canvas-pixel center y
+    rotation: number;
+    scale: number;
+    naturalW: number; // figure intrinsic width in canvas pixels at scale=1
+    naturalH: number; // figure intrinsic height in canvas pixels at scale=1
+  }
+
+  class FigureLayer {
+    container: HTMLElement;
+    canvas: HTMLCanvasElement;
+    renderer: SandRenderer;
+    figures: PlacedFigure[] = [];
+
+    constructor(container: HTMLElement, canvas: HTMLCanvasElement, renderer: SandRenderer) {
+      this.container = container;
+      this.canvas = canvas;
+      this.renderer = renderer;
+    }
+
+    /** Add a placeholder colored rectangle. Real images come in Task 8. */
+    addPlaceholder(cx: number, cy: number, color: string): PlacedFigure {
+      const el = document.createElement('button');
+      el.type = 'button';
+      el.className = 'absolute pointer-events-auto rounded-sm cursor-grab focus:outline-none focus:ring-2 focus:ring-bronze-500';
+      el.style.background = color;
+      el.style.border = '1px solid rgba(0,0,0,0.3)';
+      el.style.willChange = 'transform';
+      el.style.touchAction = 'none';
+      // Drop shadow that matches sand light direction (upper-left source → lower-right shadow).
+      el.style.filter = 'drop-shadow(4px 6px 4px rgba(0,0,0,0.45))';
+      el.setAttribute('aria-label', 'Placed figure');
+
+      const naturalW = 64;
+      const naturalH = 64;
+      const fig: PlacedFigure = {
+        el, x: cx, y: cy, rotation: (Math.random() * 16 - 8), scale: 1,
+        naturalW, naturalH,
+      };
+      this.figures.push(fig);
+      this.container.appendChild(el);
+      this.applyTransform(fig);
+      this.attachHandlers(fig);
+      this.depressSandUnder(fig);
+
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!reduceMotion) {
+        el.animate(
+          [{ transform: this.composeTransform(fig, 0.8) }, { transform: this.composeTransform(fig, 1) }],
+          { duration: 220, easing: 'cubic-bezier(0.2, 0.8, 0.2, 1.05)', fill: 'none' },
+        );
+      }
+      return fig;
+    }
+
+    /** Build the CSS transform string (rotation + optional scale multiplier for animation). */
+    private composeTransform(fig: PlacedFigure, scaleMul = 1): string {
+      return `rotate(${fig.rotation}deg) scale(${scaleMul})`;
+    }
+
+    /** Position+size the figure element from its canvas-space state. */
+    private applyTransform(fig: PlacedFigure): void {
+      const rect = this.canvas.getBoundingClientRect();
+      const sxToDisplay = rect.width / this.renderer.width;
+      const dispW = fig.naturalW * fig.scale * sxToDisplay;
+      const dispH = fig.naturalH * fig.scale * sxToDisplay;
+      const dispX = fig.x * sxToDisplay - dispW / 2;
+      const dispY = fig.y * sxToDisplay - dispH / 2;
+      fig.el.style.left = `${dispX}px`;
+      fig.el.style.top = `${dispY}px`;
+      fig.el.style.width = `${dispW}px`;
+      fig.el.style.height = `${dispH}px`;
+      fig.el.style.transform = this.composeTransform(fig);
+    }
+
+    /** Lower the sand under the figure's footprint to make it look placed. */
+    private depressSandUnder(fig: PlacedFigure): void {
+      const rx = (fig.naturalW * fig.scale) / 2;
+      const ry = (fig.naturalH * fig.scale) / 2;
+      const radius = Math.max(rx, ry) * 0.7;
+      this.renderer.carve(fig.x, fig.y, radius, 0.025);
+      this.renderer.render();
+    }
+
+    private attachHandlers(fig: PlacedFigure): void {
+      const el = fig.el;
+      let dragging = false;
+      let startX = 0, startY = 0;
+      let origX = 0, origY = 0;
+      let pointerMoved = false;
+      let longPressTimer: number | null = null;
+
+      el.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dragging = true;
+        pointerMoved = false;
+        startX = e.clientX;
+        startY = e.clientY;
+        origX = fig.x;
+        origY = fig.y;
+        el.setPointerCapture(e.pointerId);
+        // Bring to front
+        this.container.appendChild(el);
+        if (longPressTimer !== null) window.clearTimeout(longPressTimer);
+        longPressTimer = window.setTimeout(() => {
+          if (!pointerMoved) this.remove(fig);
+        }, 500);
+      });
+
+      el.addEventListener('pointermove', (e) => {
+        if (!dragging) return;
+        const dx = e.clientX - startX;
+        const dy = e.clientY - startY;
+        if (!pointerMoved && (Math.abs(dx) > 4 || Math.abs(dy) > 4)) {
+          pointerMoved = true;
+          if (longPressTimer !== null) {
+            window.clearTimeout(longPressTimer);
+            longPressTimer = null;
+          }
+        }
+        if (pointerMoved) {
+          const rect = this.canvas.getBoundingClientRect();
+          const sxToCanvas = this.renderer.width / rect.width;
+          fig.x = origX + dx * sxToCanvas;
+          fig.y = origY + dy * sxToCanvas;
+          this.clamp(fig);
+          this.applyTransform(fig);
+        }
+      });
+
+      const endDrag = (e: PointerEvent) => {
+        if (!dragging) return;
+        dragging = false;
+        try { el.releasePointerCapture(e.pointerId); } catch {}
+        if (longPressTimer !== null) {
+          window.clearTimeout(longPressTimer);
+          longPressTimer = null;
+        }
+      };
+      el.addEventListener('pointerup', endDrag);
+      el.addEventListener('pointercancel', endDrag);
+
+      el.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const delta = e.deltaY < 0 ? 1.05 : 0.95;
+        fig.scale = Math.max(0.4, Math.min(2.0, fig.scale * delta));
+        this.applyTransform(fig);
+      }, { passive: false });
+
+      el.addEventListener('keydown', (e) => {
+        const step = e.shiftKey ? 12 : 4;
+        if (e.key === 'ArrowLeft')  { fig.x -= step; this.clamp(fig); this.applyTransform(fig); e.preventDefault(); }
+        if (e.key === 'ArrowRight') { fig.x += step; this.clamp(fig); this.applyTransform(fig); e.preventDefault(); }
+        if (e.key === 'ArrowUp')    { fig.y -= step; this.clamp(fig); this.applyTransform(fig); e.preventDefault(); }
+        if (e.key === 'ArrowDown')  { fig.y += step; this.clamp(fig); this.applyTransform(fig); e.preventDefault(); }
+        if (e.key === '+' || e.key === '=') { fig.scale = Math.min(2.0, fig.scale * 1.1); this.applyTransform(fig); e.preventDefault(); }
+        if (e.key === '-')                  { fig.scale = Math.max(0.4, fig.scale * 0.9); this.applyTransform(fig); e.preventDefault(); }
+        if (e.key === 'Backspace' || e.key === 'Delete') { this.remove(fig); e.preventDefault(); }
+      });
+    }
+
+    private clamp(fig: PlacedFigure): void {
+      const halfW = (fig.naturalW * fig.scale) / 2;
+      const halfH = (fig.naturalH * fig.scale) / 2;
+      fig.x = Math.max(halfW, Math.min(this.renderer.width - halfW, fig.x));
+      fig.y = Math.max(halfH, Math.min(this.renderer.height - halfH, fig.y));
+    }
+
+    remove(fig: PlacedFigure): void {
+      fig.el.remove();
+      this.figures = this.figures.filter((f) => f !== fig);
+    }
+
+    clear(): void {
+      for (const f of this.figures) f.el.remove();
+      this.figures = [];
+    }
+
+    /** Re-apply transforms after a canvas resize. */
+    relayout(): void {
+      for (const f of this.figures) this.applyTransform(f);
+    }
+  }
+
   // ----- Bootstrap -----
   const widgets = document.querySelectorAll<HTMLElement>('[data-sandtray-widget]');
   widgets.forEach((root) => {
@@ -334,5 +546,76 @@ const s = t[lang];
 
     canvas.addEventListener('pointerup', endCarve);
     canvas.addEventListener('pointercancel', endCarve);
+
+    // ----- Figure layer + placeholder palette -----
+    const figContainer = root.querySelector<HTMLElement>('[data-sandtray-figures]');
+    if (!figContainer) return;
+    const figureLayer = new FigureLayer(figContainer, canvas, renderer);
+
+    window.addEventListener('resize', () => {
+      window.setTimeout(() => figureLayer.relayout(), 200);
+    });
+
+    const placeholderButtons = root.querySelectorAll<HTMLButtonElement>('[data-placeholder-figure]');
+    placeholderButtons.forEach((btn) => {
+      const color = btn.getAttribute('data-color') || '#888';
+
+      // Click fallback: add at center with random offset.
+      btn.addEventListener('click', (e) => {
+        if ((btn as any).__draggedJustNow) {
+          (btn as any).__draggedJustNow = false;
+          return;
+        }
+        e.preventDefault();
+        const cx = renderer.width / 2 + (Math.random() - 0.5) * 80;
+        const cy = renderer.height / 2 + (Math.random() - 0.5) * 60;
+        figureLayer.addPlaceholder(cx, cy, color);
+      });
+
+      // Drag from palette to canvas with a ghost element following the cursor.
+      btn.addEventListener('pointerdown', (e) => {
+        e.preventDefault();
+        const ghost = document.createElement('div');
+        ghost.style.position = 'fixed';
+        ghost.style.left = '0';
+        ghost.style.top = '0';
+        ghost.style.width = '48px';
+        ghost.style.height = '48px';
+        ghost.style.background = color;
+        ghost.style.border = '1px solid rgba(0,0,0,0.3)';
+        ghost.style.borderRadius = '4px';
+        ghost.style.pointerEvents = 'none';
+        ghost.style.opacity = '0.85';
+        ghost.style.transform = `translate(${e.clientX - 24}px, ${e.clientY - 24}px)`;
+        ghost.style.zIndex = '9999';
+        document.body.appendChild(ghost);
+
+        let moved = false;
+
+        const onMove = (ev: PointerEvent) => {
+          moved = true;
+          ghost.style.transform = `translate(${ev.clientX - 24}px, ${ev.clientY - 24}px)`;
+        };
+        const onUp = (ev: PointerEvent) => {
+          window.removeEventListener('pointermove', onMove);
+          window.removeEventListener('pointerup', onUp);
+          window.removeEventListener('pointercancel', onUp);
+          ghost.remove();
+          if (!moved) return; // Click handler will fire instead.
+          (btn as any).__draggedJustNow = true;
+          const cRect = canvas.getBoundingClientRect();
+          if (
+            ev.clientX >= cRect.left && ev.clientX <= cRect.right &&
+            ev.clientY >= cRect.top && ev.clientY <= cRect.bottom
+          ) {
+            const { x, y } = renderer.clientToCanvas(ev.clientX, ev.clientY);
+            figureLayer.addPlaceholder(x, y, color);
+          }
+        };
+        window.addEventListener('pointermove', onMove);
+        window.addEventListener('pointerup', onUp);
+        window.addEventListener('pointercancel', onUp);
+      });
+    });
   });
 </script>
