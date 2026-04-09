@@ -119,15 +119,26 @@ const s = t[lang];
   import * as THREE from 'three';
 
   // ----- SandRenderer -----
-  // Three.js scene scaffold. Task 2 placeholder: a spinning cube.
-  // Task 3 will replace the cube with a height-map-based sand mesh.
+  // Three.js scene: subdivided plane whose vertices are displaced from a
+  // Float32Array height map wrapped in a DataTexture. Carving writes into
+  // the array and flags the texture needsUpdate.
 
   class SandRenderer {
+    // Sand height map. heightData[y*mapW + x] is displacement in world units.
+    static readonly MAP_W = 160;
+    static readonly MAP_H = 112;
+    // Tray dimensions in world units. The plane spans ±TRAY_W/2 in X and ±TRAY_H/2 in Z.
+    static readonly TRAY_W = 14;
+    static readonly TRAY_H = 10;
+
     canvas: HTMLCanvasElement;
     renderer: THREE.WebGLRenderer;
     scene: THREE.Scene;
     camera: THREE.OrthographicCamera;
-    cube: THREE.Mesh;
+    heightData!: Float32Array;
+    heightTexture!: THREE.DataTexture;
+    sand!: THREE.Mesh;
+    sandGeometry!: THREE.PlaneGeometry;
     width: number;   // CSS pixels (was device pixels in the 2D version)
     height: number;  // CSS pixels
 
@@ -172,14 +183,111 @@ const s = t[lang];
       this.scene.add(dir);
       this.scene.add(new THREE.AmbientLight(0xffffff, 0.35));
 
-      // Placeholder cube so we can see the pipeline works at all.
-      const geom = new THREE.BoxGeometry(2, 2, 2);
-      const mat = new THREE.MeshStandardMaterial({ color: 0xc4a77d }); // wood-400
-      this.cube = new THREE.Mesh(geom, mat);
-      this.scene.add(this.cube);
+      this.buildSand();
 
       // Start the render loop.
       this.renderer.setAnimationLoop(() => this.render());
+    }
+
+    initHeightMap(): void {
+      const W = SandRenderer.MAP_W;
+      const H = SandRenderer.MAP_H;
+      this.heightData = new Float32Array(W * H);
+      // Faint sinusoidal noise, amplitude ~0.02 world units, to give the sand
+      // some initial texture so it doesn't look like a flat green plate.
+      for (let y = 0; y < H; y++) {
+        for (let x = 0; x < W; x++) {
+          const n = (
+            Math.sin(x * 0.21 + y * 0.13) * 0.010 +
+            Math.sin(x * 0.07 - y * 0.19) * 0.008 +
+            Math.cos(x * 0.33 + y * 0.05) * 0.006
+          );
+          this.heightData[y * W + x] = n;
+        }
+      }
+    }
+
+    buildSand(): void {
+      this.initHeightMap();
+
+      this.heightTexture = new THREE.DataTexture(
+        this.heightData,
+        SandRenderer.MAP_W,
+        SandRenderer.MAP_H,
+        THREE.RedFormat,
+        THREE.FloatType,
+      );
+      this.heightTexture.minFilter = THREE.LinearFilter;
+      this.heightTexture.magFilter = THREE.LinearFilter;
+      this.heightTexture.needsUpdate = true;
+
+      // Highly subdivided plane so the vertex displacement has resolution.
+      this.sandGeometry = new THREE.PlaneGeometry(
+        SandRenderer.TRAY_W,
+        SandRenderer.TRAY_H,
+        SandRenderer.MAP_W - 1,
+        SandRenderer.MAP_H - 1,
+      );
+      // Rotate the plane so it lies flat on the XZ plane (Y = up).
+      this.sandGeometry.rotateX(-Math.PI / 2);
+
+      // Custom ShaderMaterial that displaces vertices from the height texture.
+      const sandMat = new THREE.ShaderMaterial({
+        uniforms: {
+          uHeight:    { value: this.heightTexture },
+          uLightDir:  { value: new THREE.Vector3(-0.6, 1.0, 0.4).normalize() },
+          uSandColor: { value: new THREE.Color(0xe2ceb1) }, // wood-300 tinted warmer
+          uAmbient:   { value: 0.35 },
+        },
+        vertexShader: /* glsl */`
+          uniform sampler2D uHeight;
+          varying vec3 vNormalW;
+          varying float vHeight;
+
+          // Sobel-like normal reconstruction from the height texture.
+          // Samples neighbours in texture space and builds a tangent-space normal.
+          vec3 computeNormal(vec2 uv) {
+            vec2 texel = vec2(1.0 / ${SandRenderer.MAP_W}.0, 1.0 / ${SandRenderer.MAP_H}.0);
+            float hL = texture2D(uHeight, uv + vec2(-texel.x, 0.0)).r;
+            float hR = texture2D(uHeight, uv + vec2( texel.x, 0.0)).r;
+            float hD = texture2D(uHeight, uv + vec2(0.0, -texel.y)).r;
+            float hU = texture2D(uHeight, uv + vec2(0.0,  texel.y)).r;
+            // World-space step between samples (tray dimensions / map resolution).
+            float dx = ${SandRenderer.TRAY_W.toFixed(4)} / ${SandRenderer.MAP_W}.0;
+            float dz = ${SandRenderer.TRAY_H.toFixed(4)} / ${SandRenderer.MAP_H}.0;
+            vec3 n = normalize(vec3((hL - hR) / (2.0 * dx), 1.0, (hD - hU) / (2.0 * dz)));
+            return n;
+          }
+
+          void main() {
+            vec2 flippedUv = vec2(uv.x, 1.0 - uv.y);
+            float h = texture2D(uHeight, flippedUv).r;
+            vec3 displaced = position + vec3(0.0, h, 0.0);
+            vNormalW = computeNormal(flippedUv);
+            vHeight = h;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced, 1.0);
+          }
+        `,
+        fragmentShader: /* glsl */`
+          uniform vec3  uLightDir;
+          uniform vec3  uSandColor;
+          uniform float uAmbient;
+          varying vec3  vNormalW;
+          varying float vHeight;
+
+          void main() {
+            float ndotl = max(dot(normalize(vNormalW), normalize(uLightDir)), 0.0);
+            float lit = uAmbient + ndotl * (1.0 - uAmbient);
+            // Slight darken-with-depth for valleys, slight lift for ridges.
+            float depthShade = clamp(0.5 + vHeight * 6.0, 0.85, 1.15);
+            vec3 col = uSandColor * lit * depthShade;
+            gl_FragColor = vec4(col, 1.0);
+          }
+        `,
+      });
+
+      this.sand = new THREE.Mesh(this.sandGeometry, sandMat);
+      this.scene.add(this.sand);
     }
 
     resize(): void {
@@ -199,35 +307,54 @@ const s = t[lang];
     }
 
     render(): void {
-      // Gentle cube rotation so we can confirm the render loop is alive.
-      this.cube.rotation.y += 0.01;
       this.renderer.render(this.scene, this.camera);
     }
 
-    // ---- Stubs below keep the existing bootstrap compiling. ----
-    // Task 3 fills in carving / level / height-map logic.
+    /**
+     * Lower the sand in a circular region.
+     * x, z are in world space (the tray plane). radius is in world units.
+     * depth is the maximum additional lowering at the centre of the brush (world units).
+     */
+    carve(x: number, z: number, radius: number, depth: number): void {
+      const W = SandRenderer.MAP_W;
+      const H = SandRenderer.MAP_H;
+      // Convert world (x, z) to map indices.
+      const cx = ((x + SandRenderer.TRAY_W / 2) / SandRenderer.TRAY_W) * (W - 1);
+      const cy = ((z + SandRenderer.TRAY_H / 2) / SandRenderer.TRAY_H) * (H - 1);
+      // Convert world radius to map pixels (use the larger of the two axes for a conservative bound).
+      const rPix = Math.max(
+        (radius / SandRenderer.TRAY_W) * W,
+        (radius / SandRenderer.TRAY_H) * H,
+      );
+      const rPix2 = rPix * rPix;
 
-    carve(_x: number, _y: number, _radius: number, _depth: number): void {
-      // TODO Task 3: port carve math to write into the DataTexture height map.
+      const x0 = Math.max(0, Math.floor(cx - rPix));
+      const x1 = Math.min(W - 1, Math.ceil(cx + rPix));
+      const y0 = Math.max(0, Math.floor(cy - rPix));
+      const y1 = Math.min(H - 1, Math.ceil(cy + rPix));
+
+      for (let y = y0; y <= y1; y++) {
+        for (let px = x0; px <= x1; px++) {
+          const dx = px - cx;
+          const dy = y - cy;
+          const d2 = dx * dx + dy * dy;
+          if (d2 > rPix2) continue;
+          // Quadratic falloff from 1.0 at centre to 0.0 at edge.
+          const falloff = 1 - d2 / rPix2;
+          this.heightData[y * W + px] -= depth * falloff * falloff;
+        }
+      }
+      this.heightTexture.needsUpdate = true;
     }
 
-    // Old bootstrap calls renderer.seed() from the "level" button.
-    seed(): void {
-      // TODO Task 3: reset the height map to noisy-flat.
-    }
-
-    // Old bootstrap calls markDirtyAll() after seed(). No-op under Three.js
-    // (the animation loop re-renders every frame).
-    markDirtyAll(): void {
-      // no-op
-    }
-
-    // Old bootstrap uses this to translate pointer events into canvas-pixel
-    // coords for carving. Returns CSS-pixel coords so drag-to-carve stays
-    // inert but well-defined until Task 3 wires raycasting.
-    clientToCanvas(clientX: number, clientY: number): { x: number; y: number } {
-      const rect = this.canvas.getBoundingClientRect();
-      return { x: clientX - rect.left, y: clientY - rect.top };
+    level(): void {
+      this.initHeightMap();
+      // initHeightMap wrote new values into a *new* Float32Array, which won't update
+      // the texture. Copy them back into the texture's buffer so the existing
+      // DataTexture sees the new data.
+      const data = this.heightTexture.image.data as Float32Array;
+      data.set(this.heightData);
+      this.heightTexture.needsUpdate = true;
     }
   }
 
@@ -269,57 +396,39 @@ const s = t[lang];
     });
 
     // ----- Carving interaction -----
-    let carving = false;
-    let lastX = 0;
-    let lastY = 0;
-    let hasLast = false;
+    const raycaster = new THREE.Raycaster();
+    const ndc = new THREE.Vector2();
 
-    function carveStep(clientX: number, clientY: number): void {
-      const { x, y } = renderer.clientToCanvas(clientX, clientY);
-      // Brush radius scales with canvas resolution.
-      const radius = Math.max(18, renderer.width * 0.05);
-      if (hasLast) {
-        // Interpolate so fast moves don't dot-stitch.
-        const dx = x - lastX;
-        const dy = y - lastY;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-        const steps = Math.max(1, Math.floor(dist / (radius * 0.4)));
-        for (let i = 1; i <= steps; i++) {
-          const t = i / steps;
-          renderer.carve(lastX + dx * t, lastY + dy * t, radius, 0.06);
-        }
-      } else {
-        renderer.carve(x, y, radius, 0.06);
-      }
-      lastX = x;
-      lastY = y;
-      hasLast = true;
-      renderer.render();
+    function canvasToWorld(evt: PointerEvent): { x: number; z: number } | null {
+      const rect = canvas.getBoundingClientRect();
+      ndc.x = ((evt.clientX - rect.left) / rect.width) * 2 - 1;
+      ndc.y = -((evt.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(ndc, renderer.camera);
+      const hits = raycaster.intersectObject(renderer.sand, false);
+      if (hits.length === 0) return null;
+      const p = hits[0].point;
+      return { x: p.x, z: p.z };
     }
 
-    canvas.addEventListener('pointerdown', (e) => {
-      if (e.button !== 0 && e.pointerType === 'mouse') return;
-      e.preventDefault();
-      carving = true;
-      hasLast = false;
+    let isCarving = false;
+    canvas.addEventListener('pointerdown', (e: PointerEvent) => {
+      const w = canvasToWorld(e);
+      if (!w) return;
+      isCarving = true;
       canvas.setPointerCapture(e.pointerId);
-      carveStep(e.clientX, e.clientY);
+      renderer.carve(w.x, w.z, 0.8, 0.12);
     });
-
-    canvas.addEventListener('pointermove', (e) => {
-      if (!carving) return;
-      carveStep(e.clientX, e.clientY);
+    canvas.addEventListener('pointermove', (e: PointerEvent) => {
+      if (!isCarving) return;
+      const w = canvasToWorld(e);
+      if (!w) return;
+      renderer.carve(w.x, w.z, 0.8, 0.08);
     });
-
-    function endCarve(e: PointerEvent): void {
-      if (!carving) return;
-      carving = false;
-      hasLast = false;
-      try { canvas.releasePointerCapture(e.pointerId); } catch {}
-    }
-
-    canvas.addEventListener('pointerup', endCarve);
-    canvas.addEventListener('pointercancel', endCarve);
+    canvas.addEventListener('pointerup', (e: PointerEvent) => {
+      isCarving = false;
+      if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+    });
+    canvas.addEventListener('pointercancel', () => { isCarving = false; });
 
     // ----- Figure layer + placeholder palette -----
     const figContainer = root.querySelector<HTMLElement>('[data-sandtray-figures]');
@@ -382,7 +491,8 @@ const s = t[lang];
             ev.clientX >= cRect.left && ev.clientX <= cRect.right &&
             ev.clientY >= cRect.top && ev.clientY <= cRect.bottom
           ) {
-            const { x, y } = renderer.clientToCanvas(ev.clientX, ev.clientY);
+            const x = ev.clientX - cRect.left;
+            const y = ev.clientY - cRect.top;
             figureLayer.addPlaceholder(x, y, color);
           }
         };
@@ -425,16 +535,12 @@ const s = t[lang];
     });
 
     root.querySelector<HTMLButtonElement>('[data-sandtray-level]')?.addEventListener('click', () => {
-      renderer.seed();
-      renderer.markDirtyAll();
-      renderer.render();
+      renderer.level();
     });
 
     root.querySelector<HTMLButtonElement>('[data-sandtray-clear]')?.addEventListener('click', () => {
       figureLayer.clear();
-      renderer.seed();
-      renderer.markDirtyAll();
-      renderer.render();
+      renderer.level();
     });
   });
 </script>
