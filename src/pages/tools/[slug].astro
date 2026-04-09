@@ -1,0 +1,41 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ToolShell from '../../components/tools/ToolShell.astro';
+
+export async function getStaticPaths() {
+  const tools = await getCollection('tools', (t) => t.data.locale === 'en');
+  return tools.map((tool) => ({
+    params: { slug: tool.slug },
+    props: { tool },
+  }));
+}
+
+interface Props {
+  tool: CollectionEntry<'tools'>;
+}
+
+const { tool } = Astro.props;
+const { Content } = await tool.render();
+
+// Widget component map — populated as each widget is built.
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const widgets: Record<string, any> = {
+  // 'SUDScale': (await import('../../components/tools/SUDScale.astro')).default,
+};
+
+const Widget = widgets[tool.data.componentName] ?? null;
+---
+
+<BaseLayout title={tool.data.name} description={tool.data.shortDescription} noAnalytics={true}>
+  <ToolShell tool={tool}>
+    {Widget ? <Widget /> : (
+      <div class="p-6 border border-dashed border-forest-600 rounded-lg text-forest-300 text-sm">
+        Widget not yet implemented for <code>{tool.data.componentName}</code>.
+      </div>
+    )}
+  </ToolShell>
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pb-16 prose prose-invert">
+    <Content />
+  </article>
+</BaseLayout>
