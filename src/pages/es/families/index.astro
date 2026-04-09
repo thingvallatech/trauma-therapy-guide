@@ -34,7 +34,7 @@ const translatePath = useTranslatedPath(lang);
           </span>
         </div>
 
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid md:grid-cols-2 gap-6">
           <!-- EMDR Card -->
           <a
             href={translatePath('/families/emdr')}
@@ -173,6 +173,42 @@ const translatePath = useTranslatedPath(lang);
               </p>
               <div class="mt-4 flex items-center gap-1 text-sm font-medium text-white/90 group-hover:gap-2 transition-all">
                 {t('families.browseResources')}
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </a>
+
+          <!-- Interactive Tools Card -->
+          <a
+            href={translatePath('/families/emdr/tools')}
+            class="block group relative bg-gradient-to-br from-forest-600 to-forest-700 rounded-2xl p-6 text-white overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+          >
+            <div class="absolute inset-0 opacity-10">
+              <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <defs>
+                  <pattern id="grid-tools-fam-es" width="10" height="10" patternUnits="userSpaceOnUse">
+                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" stroke-width="0.5"/>
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill="url(#grid-tools-fam-es)" />
+              </svg>
+            </div>
+            <div class="relative">
+              <div class="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm mb-4">
+                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </div>
+              <h2 class="font-serif text-xl font-semibold mb-2 group-hover:underline decoration-2 underline-offset-4">
+                Juegos y Herramientas para Calmar
+              </h2>
+              <p class="text-white/85 text-sm mb-4">
+                Lugar seguro, contenedor, respiración, enraizamiento — juegos y ejercicios para practicar en casa con tu hijo.
+              </p>
+              <div class="mt-4 flex items-center gap-1 text-sm font-medium text-white/90 group-hover:gap-2 transition-all">
+                Abrir herramientas
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                 </svg>

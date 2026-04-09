@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Interactive EMDR Tools" description="Interactive EMDR tools — bilateral stimulation, resource installation, assessment scales, and regulation exercises. Built into the site, free, no tracking.">
+  <section class="bg-gradient-to-br from-forest-900 via-forest-800 to-forest-900 py-10 sm:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="max-w-3xl">
+        <h1 class="font-serif text-4xl font-semibold text-bronze-gradient mb-4">
+          Interactive EMDR Tools
+        </h1>
+        <p class="text-lg text-forest-100 leading-relaxed">
+          Bilateral stimulation, resource installation, assessment scales, and regulation exercises — all built into the website. Free, no accounts, no tracking. Choose which set you're looking for:
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="dark-zone py-10 sm:py-16">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 gap-6">
+        <a
+          href="/clinicians/emdr/tools"
+          class="block group bg-forest-800 border border-forest-600 rounded-2xl p-8 hover:border-bronze-500 hover:bg-forest-700 transition-all duration-200"
+        >
+          <div class="w-14 h-14 bg-forest-700 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-7 h-7 text-bronze-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+          </div>
+          <h2 class="font-serif text-2xl font-semibold text-forest-100 mb-2 group-hover:text-bronze-400 transition-colors">
+            For Clinicians
+          </h2>
+          <p class="text-forest-200 leading-relaxed mb-4">
+            BLS delivery tools (visual, audio, combined, self-tapping), preparation exercises, assessment scales, and regulation tools. Grouped by EMDR phase. Includes fullscreen mode for in-session use.
+          </p>
+          <span class="inline-flex items-center gap-1 text-sm font-medium text-bronze-400 group-hover:gap-2 transition-all">
+            Open clinician tools
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </span>
+        </a>
+
+        <a
+          href="/families/emdr/tools"
+          class="block group bg-forest-800 border border-forest-600 rounded-2xl p-8 hover:border-bronze-500 hover:bg-forest-700 transition-all duration-200"
+        >
+          <div class="w-14 h-14 bg-forest-700 rounded-xl flex items-center justify-center mb-4">
+            <svg class="w-7 h-7 text-bronze-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          </div>
+          <h2 class="font-serif text-2xl font-semibold text-forest-100 mb-2 group-hover:text-bronze-400 transition-colors">
+            For Patients &amp; Families
+          </h2>
+          <p class="text-forest-200 leading-relaxed mb-4">
+            Games and exercises to practice at home with your child — safe place, container, breath pacer, grounding, feeling wheel, butterfly hug. A support, not a replacement for therapy.
+          </p>
+          <span class="inline-flex items-center gap-1 text-sm font-medium text-bronze-400 group-hover:gap-2 transition-all">
+            Open family tools
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
