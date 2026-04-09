@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import ToolCard from '../../../../components/tools/ToolCard.astro';
+import { getCollection } from 'astro:content';
+
+const allTools = await getCollection('tools', (t) => t.data.locale === 'en');
+const familyTools = allTools
+  .filter((t) => t.data.audience.includes('family'))
+  .sort((a, b) => a.data.name.localeCompare(b.data.name));
+
+const feelingGroups = [
+  { key: 'preparation', title: 'Building a calm place', description: 'Tools that help create a safe, comforting inner space to return to when things feel big.' },
+  { key: 'regulation', title: 'For big feelings', description: 'Breathing, grounding, and body-based tools to help when feelings get overwhelming.' },
+  { key: 'assessment', title: 'Understanding how I feel', description: 'Ways to name, measure, and talk about what\'s happening inside.' },
+] as const;
+---
+
+<BaseLayout title="EMDR Tools for Families" description="Games and exercises to help your child build calm, ground themselves, and name their feelings — all built into the website.">
+  <section class="dark-zone py-10 sm:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="text-sm text-forest-400 mb-4">
+        <a href="/families" class="hover:text-forest-200 transition-colors">Families</a>
+        <span class="mx-2">/</span>
+        <a href="/families/emdr" class="hover:text-forest-200 transition-colors">EMDR</a>
+        <span class="mx-2">/</span>
+        <span class="text-forest-100">Tools</span>
+      </nav>
+
+      <div class="max-w-3xl mb-10">
+        <h1 class="font-serif text-4xl font-semibold text-forest-100 mb-4">Tools for Families</h1>
+        <p class="text-lg text-forest-200 leading-relaxed">
+          Games and exercises you can try with your child to help them feel calm and safe. These are things a therapist might teach in session — practicing at home can make them easier to use when a hard moment comes. These tools are a support, not a replacement for therapy.
+        </p>
+      </div>
+
+      {feelingGroups.map((group) => {
+        const toolsInGroup = familyTools.filter((t) => t.data.category === group.key);
+        if (toolsInGroup.length === 0) return null;
+        return (
+          <div class="mb-12">
+            <h2 class="font-serif text-2xl font-semibold text-forest-100 mb-2">{group.title}</h2>
+            <p class="text-forest-300 text-sm mb-6">{group.description}</p>
+            <div class="grid md:grid-cols-2 gap-6">
+              {toolsInGroup.map((tool) => <ToolCard tool={tool} />)}
+            </div>
+          </div>
+        );
+      })}
+
+      {familyTools.length === 0 && (
+        <p class="text-forest-300">No tools available yet.</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>
