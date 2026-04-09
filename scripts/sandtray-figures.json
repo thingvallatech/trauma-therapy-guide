@@ -1,0 +1,4 @@
+{
+  "comment": "Source list for sandtray figure curation. Each entry is a candidate; we discard any that don't process cleanly. Categories: people, animals, plants, earth, shelter. Only public-domain sources allowed.",
+  "figures": []
+}
