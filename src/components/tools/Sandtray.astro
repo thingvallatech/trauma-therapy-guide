@@ -172,6 +172,9 @@ const s = t[lang];
     cameraYaw: number = Math.PI * 0.25; // 45° so we start looking from the south-east
     cameraDistance: number = 15;
     cameraHeight: number = 12;
+    isStepped: boolean = false;
+    baseFrustumSize: number = 12;
+    steppedFrustumSize: number = 18;
 
     constructor(canvas: HTMLCanvasElement) {
       this.canvas = canvas;
@@ -327,13 +330,35 @@ const s = t[lang];
       this.width = w;
       this.height = h;
       this.renderer.setSize(w, h, false);
-      const aspect = w / h;
-      const frustumSize = 12;
+      this.updateZoom(this.isStepped ? this.steppedFrustumSize : this.baseFrustumSize);
+    }
+
+    updateZoom(frustumSize: number): void {
+      const aspect = this.width / this.height;
       this.camera.left = (-frustumSize * aspect) / 2;
       this.camera.right = (frustumSize * aspect) / 2;
       this.camera.top = frustumSize / 2;
       this.camera.bottom = -frustumSize / 2;
       this.camera.updateProjectionMatrix();
+    }
+
+    stepBack(): void {
+      this.isStepped = true;
+      this.updateZoom(this.steppedFrustumSize);
+    }
+
+    stepIn(): void {
+      this.isStepped = false;
+      this.updateZoom(this.baseFrustumSize);
+    }
+
+    toggleStep(): boolean {
+      if (this.isStepped) {
+        this.stepIn();
+        return false;
+      }
+      this.stepBack();
+      return true;
     }
 
     updateCamera(): void {
@@ -470,6 +495,13 @@ const s = t[lang];
       for (const f of this.placed) this.scene.remove(f.group);
       this.placed = [];
     }
+
+    remove(instanceId: string): void {
+      const idx = this.placed.findIndex((f) => f.instanceId === instanceId);
+      if (idx < 0) return;
+      this.scene.remove(this.placed[idx].group);
+      this.placed.splice(idx, 1);
+    }
   }
 
   // ----- Bootstrap -----
@@ -506,11 +538,25 @@ const s = t[lang];
     let isCarving = false;
     let twistStartAngle: number | null = null;
     let twistStartYaw = 0;
+    let draggingFigure: PlacedFigure | null = null;
 
     function anglesFromPointers(): number | null {
       if (activePointers.size < 2) return null;
       const [a, b] = Array.from(activePointers.values());
       return Math.atan2(b.y - a.y, b.x - a.x);
+    }
+
+    function findFigureAtPointer(evt: PointerEvent | MouseEvent): PlacedFigure | null {
+      const rect = canvas.getBoundingClientRect();
+      ndc.x = ((evt.clientX - rect.left) / rect.width) * 2 - 1;
+      ndc.y = -((evt.clientY - rect.top) / rect.height) * 2 + 1;
+      raycaster.setFromCamera(ndc, renderer.camera);
+      // Raycast against every placed figure's group. Take the first hit.
+      for (const fig of figureManager.placed) {
+        const hits = raycaster.intersectObject(fig.group, true);
+        if (hits.length > 0) return fig;
+      }
+      return null;
     }
 
     canvas.addEventListener('pointerdown', (e: PointerEvent) => {
@@ -535,6 +581,13 @@ const s = t[lang];
           pendingFigure.scale,
         ).catch((err) => console.error('[sandtray] place failed:', err));
         setPendingFigure(null);
+        return;
+      }
+      // Drag existing figure? Raycast against placed figures; if we hit one, start dragging it.
+      const hit = findFigureAtPointer(e);
+      if (hit) {
+        draggingFigure = hit;
+        canvas.setPointerCapture(e.pointerId);
         return;
       }
       // Single finger down → start carving at the hit point (if any).
@@ -564,6 +617,15 @@ const s = t[lang];
         }
         return;
       }
+      // Drag in progress → reposition the figure along the sand plane.
+      if (draggingFigure) {
+        const w = canvasToWorld(e);
+        if (!w) return;
+        draggingFigure.x = w.x;
+        draggingFigure.z = w.z;
+        draggingFigure.group.position.set(w.x, 0, w.z);
+        return;
+      }
       // Single-finger carving → brush at the current hit point.
       if (!isCarving) return;
       const w = canvasToWorld(e);
@@ -574,14 +636,21 @@ const s = t[lang];
     canvas.addEventListener('pointerup', (e: PointerEvent) => {
       activePointers.delete(e.pointerId);
       if (activePointers.size < 2) twistStartAngle = null;
-      isCarving = false;
       if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+      draggingFigure = null;
+      isCarving = false;
     });
 
     canvas.addEventListener('pointercancel', (e: PointerEvent) => {
       activePointers.delete(e.pointerId);
       if (activePointers.size < 2) twistStartAngle = null;
+      draggingFigure = null;
       isCarving = false;
+    });
+
+    canvas.addEventListener('dblclick', (e: MouseEvent) => {
+      const hit = findFigureAtPointer(e);
+      if (hit) figureManager.remove(hit.instanceId);
     });
 
     // ----- Figure manager -----
@@ -627,35 +696,21 @@ const s = t[lang];
 
     // ----- Witness mode -----
     const i18n = JSON.parse(root.getAttribute('data-sandtray-i18n') || '{}');
-    const chromeEls = root.querySelectorAll<HTMLElement>('[data-sandtray-chrome]');
     const witnessBtn = root.querySelector<HTMLButtonElement>('[data-sandtray-witness]');
-    let witnessing = false;
-
-    function setWitness(on: boolean): void {
-      witnessing = on;
-      chromeEls.forEach((el) => {
-        el.style.opacity = on ? '0' : '1';
-        el.style.pointerEvents = on ? 'none' : '';
-      });
-      if (witnessBtn) witnessBtn.textContent = on ? i18n.returnToTray : i18n.stepBack;
-    }
-
-    witnessBtn?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      setWitness(!witnessing);
-    });
-    document.addEventListener('click', (e) => {
-      if (!witnessing) return;
-      const target = e.target as HTMLElement;
-      if (target === witnessBtn) return;
-      if (canvas.contains(target)) return;
-      setWitness(false);
+    witnessBtn?.addEventListener('click', () => {
+      const stepped = renderer.toggleStep();
+      witnessBtn.textContent = stepped ? i18n.returnToTray : i18n.stepBack;
     });
 
     // ----- Capture / level / clear -----
-    // Capture button is a no-op until Task 8 rewires it.
     root.querySelector<HTMLButtonElement>('[data-sandtray-capture]')?.addEventListener('click', () => {
-      // TODO Task 8: renderer.renderer.domElement.toDataURL()
+      // Force one render so the back buffer is current before we read it.
+      renderer.renderer.render(renderer.scene, renderer.camera);
+      const dataUrl = renderer.renderer.domElement.toDataURL('image/png');
+      const a = document.createElement('a');
+      a.href = dataUrl;
+      a.download = 'sandtray.png';
+      a.click();
     });
 
     root.querySelector<HTMLButtonElement>('[data-sandtray-level]')?.addEventListener('click', () => {
