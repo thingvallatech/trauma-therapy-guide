@@ -1,0 +1,73 @@
+---
+interface Props {
+  fullscreen?: boolean;
+}
+
+const { fullscreen = false } = Astro.props;
+const containerClass = fullscreen
+  ? "w-full max-w-2xl mx-auto p-8"
+  : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
+---
+
+<div class:list={[containerClass]} data-voc-widget>
+  <h2 class="text-forest-100 font-semibold mb-4">How true does the positive belief feel?</h2>
+
+  <label class="block text-sm text-forest-300 mb-2">Positive cognition (optional, not stored):</label>
+  <input
+    type="text"
+    data-voc-pc
+    placeholder="e.g. I am safe now"
+    class="w-full mb-6 px-3 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 placeholder:text-forest-400 focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
+  />
+
+  <div class="text-center mb-6">
+    <div data-voc-display aria-live="polite" aria-atomic="true" class="font-serif text-7xl font-semibold text-bronze-400 mb-2 tabular-nums">4</div>
+    <div data-voc-label aria-live="polite" class="text-forest-300 text-sm">Somewhat true</div>
+  </div>
+
+  <input
+    type="range"
+    min="1"
+    max="7"
+    step="1"
+    value="4"
+    data-voc-slider
+    aria-label="VOC level from 1 to 7"
+    class="w-full h-2 rounded-full bg-forest-700 appearance-none cursor-pointer accent-bronze-500"
+  />
+
+  <div class="flex justify-between text-xs text-forest-400 mt-2">
+    <span>1 — completely false</span>
+    <span>7 — completely true</span>
+  </div>
+
+  <p class="mt-6 text-sm text-forest-300">
+    <em>"Think about that incident. When you think of the incident, how true do those words feel to you now, on a scale of 1 to 7?"</em>
+  </p>
+</div>
+
+<script>
+  const widgets = document.querySelectorAll('[data-voc-widget]');
+  widgets.forEach((root) => {
+    const slider = root.querySelector<HTMLInputElement>('[data-voc-slider]')!;
+    const display = root.querySelector<HTMLElement>('[data-voc-display]')!;
+    const label = root.querySelector<HTMLElement>('[data-voc-label]')!;
+    const labels = [
+      '',
+      'Completely false',
+      'Mostly false',
+      'A little false',
+      'Somewhat true',
+      'Moderately true',
+      'Mostly true',
+      'Completely true',
+    ];
+    function update() {
+      const v = parseInt(slider.value, 10);
+      display.textContent = String(v);
+      label.textContent = labels[v];
+    }
+    slider.addEventListener('input', update);
+    update();
+  });
+</script>

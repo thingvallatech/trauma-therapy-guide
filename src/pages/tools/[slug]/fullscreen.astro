@@ -1,0 +1,57 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import FullscreenLayout from '../../../layouts/FullscreenLayout.astro';
+import SUDScale from '../../../components/tools/SUDScale.astro';
+import VOCScale from '../../../components/tools/VOCScale.astro';
+import BreathPacer from '../../../components/tools/BreathPacer.astro';
+import Grounding from '../../../components/tools/Grounding.astro';
+import BLSVisual from '../../../components/tools/BLSVisual.astro';
+import BLSAudio from '../../../components/tools/BLSAudio.astro';
+import BLSCombined from '../../../components/tools/BLSCombined.astro';
+import BLSTapping from '../../../components/tools/BLSTapping.astro';
+import Container from '../../../components/tools/Container.astro';
+import SafePlace from '../../../components/tools/SafePlace.astro';
+import Lightstream from '../../../components/tools/Lightstream.astro';
+import ButterflyHug from '../../../components/tools/ButterflyHug.astro';
+import FeelingWheel from '../../../components/tools/FeelingWheel.astro';
+
+export async function getStaticPaths() {
+  const tools = await getCollection('tools', (t) => t.data.locale === 'en');
+  return tools.map((tool) => ({
+    params: { slug: tool.slug },
+    props: { tool },
+  }));
+}
+
+interface Props {
+  tool: CollectionEntry<'tools'>;
+}
+
+const { tool } = Astro.props;
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const widgets: Record<string, any> = {
+  'SUDScale': SUDScale,
+  'VOCScale': VOCScale,
+  'BreathPacer': BreathPacer,
+  'Grounding': Grounding,
+  'BLSVisual': BLSVisual,
+  'BLSAudio': BLSAudio,
+  'BLSCombined': BLSCombined,
+  'BLSTapping': BLSTapping,
+  'Container': Container,
+  'SafePlace': SafePlace,
+  'Lightstream': Lightstream,
+  'ButterflyHug': ButterflyHug,
+  'FeelingWheel': FeelingWheel,
+};
+
+const Widget = widgets[tool.data.componentName] ?? null;
+const exitHref = `/tools/${tool.slug}`;
+---
+
+<FullscreenLayout title={`${tool.data.name} — Fullscreen`} exitHref={exitHref}>
+  {Widget ? <Widget fullscreen={true} /> : (
+    <div class="text-forest-300 text-sm">Widget not yet implemented.</div>
+  )}
+</FullscreenLayout>

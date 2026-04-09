@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import ToolCard from '../../../../../components/tools/ToolCard.astro';
+import { getCollection } from 'astro:content';
+import type { Lang } from '../../../../../i18n';
+
+const lang: Lang = 'es';
+
+const allTools = await getCollection('tools', (t) => t.data.locale === 'en');
+const clinicianTools = allTools
+  .filter((t) => t.data.audience.includes('clinician'))
+  .sort((a, b) => a.data.name.localeCompare(b.data.name));
+
+const categoryGroups = [
+  { key: 'bls', title: 'Estimulación Bilateral', description: 'Para uso en sesión durante la desensibilización (Fase 4) e instalación (Fase 5).' },
+  { key: 'preparation', title: 'Preparación y Recursos', description: 'Instalación de recursos de Fase 2, contención y estabilización.' },
+  { key: 'assessment', title: 'Escalas de Evaluación', description: 'SUD, VOC e identificación de emociones para Fase 3 en adelante.' },
+  { key: 'regulation', title: 'Regulación y Cuerpo', description: 'Cierre, enraizamiento y apoyo entre sesiones.' },
+] as const;
+---
+
+<BaseLayout title="Herramientas EMDR" description="Herramientas EMDR interactivas para clínicos — entrega de EMB, instalación de recursos, escalas de evaluación y ejercicios de regulación." lang={lang}>
+  <section class="dark-zone py-10 sm:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="text-sm text-forest-400 mb-4">
+        <a href="/es/clinicians" class="hover:text-forest-200 transition-colors">Clínicos</a>
+        <span class="mx-2">/</span>
+        <a href="/es/clinicians/emdr" class="hover:text-forest-200 transition-colors">EMDR</a>
+        <span class="mx-2">/</span>
+        <span class="text-forest-100">Herramientas</span>
+      </nav>
+
+      <div class="max-w-3xl mb-10">
+        <h1 class="font-serif text-4xl font-semibold text-forest-100 mb-4">Herramientas EMDR</h1>
+        <p class="text-lg text-forest-200 leading-relaxed">
+          Herramientas interactivas que puedes usar en sesión o asignar para la práctica. Integradas en el sitio — sin descargas, sin cuentas, sin seguimiento. Cada herramienta tiene un modo de pantalla completa para uso sin distracciones.
+        </p>
+      </div>
+
+      {categoryGroups.map((group) => {
+        const toolsInGroup = clinicianTools.filter((t) => t.data.category === group.key);
+        if (toolsInGroup.length === 0) return null;
+        return (
+          <div class="mb-12">
+            <h2 class="font-serif text-2xl font-semibold text-forest-100 mb-2">{group.title}</h2>
+            <p class="text-forest-300 text-sm mb-6">{group.description}</p>
+            <div class="grid md:grid-cols-2 gap-6">
+              {toolsInGroup.map((tool) => <ToolCard tool={tool} />)}
+            </div>
+          </div>
+        );
+      })}
+
+      {clinicianTools.length === 0 && (
+        <p class="text-forest-300">No hay herramientas disponibles aún.</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>

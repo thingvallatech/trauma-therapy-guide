@@ -1,0 +1,120 @@
+---
+interface Props {
+  fullscreen?: boolean;
+}
+
+const { fullscreen = false } = Astro.props;
+const containerClass = fullscreen
+  ? "w-full max-w-2xl mx-auto p-8"
+  : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
+---
+
+<div class:list={[containerClass]} data-sud-widget>
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-forest-100 font-semibold">
+      How disturbing is it right now?
+    </h2>
+    <label class="flex items-center gap-2 text-sm text-forest-300 cursor-pointer">
+      <input type="checkbox" data-sud-kid-toggle class="w-4 h-4 accent-bronze-500 focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" />
+      <span>Kid mode</span>
+    </label>
+  </div>
+
+  <div class="text-center mb-6">
+    <div
+      data-sud-display
+      aria-live="polite"
+      aria-atomic="true"
+      class="font-serif text-7xl font-semibold text-bronze-400 mb-2 tabular-nums"
+    >
+      5
+    </div>
+    <div data-sud-label aria-live="polite" class="text-forest-300 text-sm">Moderate disturbance</div>
+    <div data-sud-faces class="text-6xl hidden" aria-hidden="true">😐</div>
+  </div>
+
+  <input
+    type="range"
+    min="0"
+    max="10"
+    step="1"
+    value="5"
+    data-sud-slider
+    aria-label="SUD level from 0 to 10"
+    class="w-full h-2 rounded-full bg-forest-700 appearance-none cursor-pointer accent-bronze-500"
+  />
+
+  <div class="flex justify-between text-xs text-forest-400 mt-2">
+    <span>0 — none</span>
+    <span>5</span>
+    <span>10 — worst imaginable</span>
+  </div>
+
+  <div class="mt-6 text-sm text-forest-300" data-sud-wording>
+    <em>"On a scale of 0 to 10, where 0 is no disturbance or neutral and 10 is the worst disturbance you can imagine, how disturbing does the incident feel to you now?"</em>
+  </div>
+</div>
+
+<script>
+  const widgets = document.querySelectorAll('[data-sud-widget]');
+  widgets.forEach((root) => {
+    const slider = root.querySelector<HTMLInputElement>('[data-sud-slider]')!;
+    const display = root.querySelector<HTMLElement>('[data-sud-display]')!;
+    const label = root.querySelector<HTMLElement>('[data-sud-label]')!;
+    const faces = root.querySelector<HTMLElement>('[data-sud-faces]')!;
+    const wording = root.querySelector<HTMLElement>('[data-sud-wording]')!;
+    const kidToggle = root.querySelector<HTMLInputElement>('[data-sud-kid-toggle]')!;
+
+    const adultLabels = [
+      'No disturbance',
+      'Barely noticeable',
+      'Mild',
+      'Mild-moderate',
+      'Moderate',
+      'Moderate',
+      'Moderate-high',
+      'High',
+      'Very high',
+      'Nearly unbearable',
+      'Worst imaginable',
+    ];
+
+    const kidFaces = ['😊', '🙂', '😐', '😕', '😟', '😖', '😣', '😫', '😩', '😭', '😱'];
+    const kidLabels = [
+      'Not yucky at all',
+      'A tiny bit',
+      'A little',
+      'Some',
+      'Medium',
+      'Kind of big',
+      'Big',
+      'Really big',
+      'Super big',
+      'Huge',
+      'The biggest',
+    ];
+
+    const adultWording = '"On a scale of 0 to 10, where 0 is no disturbance or neutral and 10 is the worst disturbance you can imagine, how disturbing does the incident feel to you now?"';
+    const kidWording = '"How yucky does it feel in your body right now? Zero is not yucky at all, ten is the worst yucky you can imagine."';
+
+    function update() {
+      const val = parseInt(slider.value, 10);
+      const isKid = kidToggle.checked;
+      display.textContent = String(val);
+      if (isKid) {
+        faces.textContent = kidFaces[val];
+        faces.classList.remove('hidden');
+        label.textContent = kidLabels[val];
+        wording.innerHTML = `<em>${kidWording}</em>`;
+      } else {
+        faces.classList.add('hidden');
+        label.textContent = adultLabels[val];
+        wording.innerHTML = `<em>${adultWording}</em>`;
+      }
+    }
+
+    slider.addEventListener('input', update);
+    kidToggle.addEventListener('change', update);
+    update();
+  });
+</script>

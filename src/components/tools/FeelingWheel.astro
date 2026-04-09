@@ -1,0 +1,105 @@
+---
+interface Props {
+  fullscreen?: boolean;
+}
+
+const { fullscreen = false } = Astro.props;
+const containerClass = fullscreen
+  ? "w-full max-w-2xl mx-auto p-8"
+  : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
+---
+
+<div class:list={[containerClass]} data-feeling-widget>
+  <h2 class="font-serif text-xl text-forest-100 mb-4">What are you feeling?</h2>
+  <p class="text-forest-300 text-sm mb-6">Start at the center. If a word fits, tap it. If it almost fits, look at the words around it for something closer.</p>
+
+  <div class="grid grid-cols-2 gap-3 mb-6" data-core-grid></div>
+
+  <div data-secondary-wrap class="hidden mb-6">
+    <h3 class="text-forest-200 text-sm mb-2" data-secondary-title></h3>
+    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2" data-secondary-grid></div>
+  </div>
+
+  <div data-detail-wrap class="hidden p-4 border border-bronze-500/50 bg-forest-900 rounded-lg">
+    <h3 data-detail-name class="font-serif text-lg text-bronze-400 mb-2"></h3>
+    <p data-detail-desc class="text-forest-200 text-sm mb-3"></p>
+    <p class="text-forest-300 text-xs">Where do you feel it in your body? What does it want you to do?</p>
+  </div>
+</div>
+
+<script>
+  const core = [
+    { name: 'Sad', color: '#6B8FB3', secondary: [
+      { name: 'Lonely', desc: 'A sad feeling of being alone or separated from people who matter.' },
+      { name: 'Gloomy', desc: 'A heavy, low sadness that colors everything gray.' },
+      { name: 'Hurt', desc: 'Sad because someone or something wounded you.' },
+      { name: 'Bored', desc: 'A restless, unsatisfied kind of sad — nothing interests you.' },
+    ]},
+    { name: 'Mad', color: '#B36B6B', secondary: [
+      { name: 'Frustrated', desc: 'Mad because something keeps getting in your way.' },
+      { name: 'Jealous', desc: 'Mad because someone has something you want, or is taking something that feels yours.' },
+      { name: 'Furious', desc: 'Very big anger — a mad that feels out of control.' },
+      { name: 'Irritated', desc: 'Small, scratchy mad — the kind that builds up if you ignore it.' },
+    ]},
+    { name: 'Scared', color: '#B39B6B', secondary: [
+      { name: 'Anxious', desc: 'Scared about something that hasn\'t happened yet.' },
+      { name: 'Overwhelmed', desc: 'Scared because there\'s too much at once.' },
+      { name: 'Insecure', desc: 'Scared that you\'re not enough, or that people will see.' },
+      { name: 'Helpless', desc: 'Scared because you don\'t know what to do.' },
+    ]},
+    { name: 'Joyful', color: '#8DB47B', secondary: [
+      { name: 'Excited', desc: 'Joyful with energy — something good is happening or coming.' },
+      { name: 'Content', desc: 'Calm, settled joy — a quiet enough.' },
+      { name: 'Grateful', desc: 'Joyful because of something or someone you appreciate.' },
+      { name: 'Playful', desc: 'Joyful in a silly, light way.' },
+    ]},
+    { name: 'Peaceful', color: '#7BB39B', secondary: [
+      { name: 'Relaxed', desc: 'Your body is loose and your breath is slow.' },
+      { name: 'Safe', desc: 'You know nothing bad is about to happen.' },
+      { name: 'Loved', desc: 'You know someone cares about you.' },
+      { name: 'Calm', desc: 'Your mind is quiet and still.' },
+    ]},
+    { name: 'Powerful', color: '#B38D7B', secondary: [
+      { name: 'Proud', desc: 'Powerful because of something you did.' },
+      { name: 'Confident', desc: 'Powerful because you trust yourself.' },
+      { name: 'Brave', desc: 'Powerful even though something is scary.' },
+      { name: 'Capable', desc: 'Powerful because you know you can do this.' },
+    ]},
+  ];
+
+  const widgets = document.querySelectorAll('[data-feeling-widget]');
+  widgets.forEach((root) => {
+    const coreGrid = root.querySelector<HTMLElement>('[data-core-grid]')!;
+    const secondaryWrap = root.querySelector<HTMLElement>('[data-secondary-wrap]')!;
+    const secondaryTitle = root.querySelector<HTMLElement>('[data-secondary-title]')!;
+    const secondaryGrid = root.querySelector<HTMLElement>('[data-secondary-grid]')!;
+    const detailWrap = root.querySelector<HTMLElement>('[data-detail-wrap]')!;
+    const detailName = root.querySelector<HTMLElement>('[data-detail-name]')!;
+    const detailDesc = root.querySelector<HTMLElement>('[data-detail-desc]')!;
+
+    core.forEach((c) => {
+      const btn = document.createElement('button');
+      btn.textContent = c.name;
+      btn.className = 'p-4 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800';
+      btn.style.backgroundColor = c.color;
+      btn.addEventListener('click', () => {
+        secondaryTitle.textContent = `More specifically, is it...`;
+        secondaryGrid.innerHTML = '';
+        c.secondary.forEach((s) => {
+          const sbtn = document.createElement('button');
+          sbtn.textContent = s.name;
+          sbtn.className = 'px-3 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800';
+          sbtn.addEventListener('click', () => {
+            detailName.textContent = s.name;
+            detailDesc.textContent = s.desc;
+            detailWrap.classList.remove('hidden');
+          });
+          secondaryGrid.appendChild(sbtn);
+        });
+        secondaryWrap.classList.remove('hidden');
+        detailWrap.classList.add('hidden');
+      });
+      coreGrid.appendChild(btn);
+    });
+  });
+</script>

@@ -1,0 +1,102 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  tool: CollectionEntry<'tools'>;
+}
+
+const { tool } = Astro.props;
+const { name, category, evidence, shortDescription, citations, warnings } = tool.data;
+
+const categoryLabel: Record<string, string> = {
+  bls: 'Bilateral Stimulation',
+  preparation: 'Preparation / Resource',
+  assessment: 'Assessment Scale',
+  regulation: 'Regulation / Body',
+};
+
+const evidenceLabel: Record<string, string> = {
+  'research-backed': 'Research-backed',
+  'clinical-consensus': 'Clinical consensus',
+  'widely-used': 'Widely used',
+};
+
+const evidenceColor: Record<string, string> = {
+  'research-backed': 'bg-forest-600 text-forest-50',
+  'clinical-consensus': 'bg-bronze-600 text-bronze-50',
+  'widely-used': 'bg-wood-600 text-wood-50',
+};
+
+const fullscreenHref = `/tools/${tool.slug}/fullscreen`;
+---
+
+<section class="dark-zone py-10 sm:py-16">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Breadcrumb -->
+    <nav class="text-sm text-forest-400 mb-4">
+      <a href="/clinicians/emdr/tools" class="hover:text-forest-200 transition-colors">Tools</a>
+      <span class="mx-2">/</span>
+      <span class="text-forest-100">{name}</span>
+    </nav>
+
+    <!-- Header -->
+    <div class="mb-6">
+      <div class="flex items-center gap-2 mb-3">
+        <span class="text-xs uppercase tracking-wide text-forest-400">{categoryLabel[category]}</span>
+        <span class:list={["px-2 py-0.5 rounded-full text-xs font-medium", evidenceColor[evidence]]}>
+          {evidenceLabel[evidence]}
+        </span>
+      </div>
+      <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-forest-100 mb-3">{name}</h1>
+      <p class="text-forest-200 leading-relaxed">{shortDescription}</p>
+    </div>
+
+    <!-- Disclaimer -->
+    <div class="mb-6 p-4 border-l-4 border-bronze-500 bg-forest-800/50 text-sm text-forest-200">
+      <strong class="text-forest-100">This is a reference tool, not a replacement for EMDR therapy.</strong>
+      {' '}EMDR must be delivered by a trained clinician. If you are using these tools outside of therapy and become distressed, stop, ground yourself, and contact a mental health professional.
+    </div>
+
+    <!-- Warnings (epilepsy, headphones, etc.) -->
+    {warnings.length > 0 && (
+      <div class="mb-6 p-4 border border-amber-500/50 bg-amber-900/20 rounded-lg">
+        <h2 class="text-amber-200 font-semibold text-sm mb-2">Before you start</h2>
+        <ul class="text-amber-100 text-sm space-y-1 list-disc list-inside">
+          {warnings.map((w) => <li>{w}</li>)}
+        </ul>
+      </div>
+    )}
+
+    <!-- Fullscreen link -->
+    <div class="mb-8">
+      <a
+        href={fullscreenHref}
+        class="inline-flex items-center gap-2 px-4 py-2 bg-forest-700 border border-forest-500 text-forest-100 rounded-md hover:bg-forest-600 transition-colors text-sm font-medium focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
+      >
+        <svg class="w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4h4M4 16v4h4m8-16h4v4m-4 12h4v-4" />
+        </svg>
+        Open in fullscreen
+      </a>
+    </div>
+
+    <!-- Widget slot -->
+    <div class="mb-10">
+      <slot />
+    </div>
+
+    <!-- Citations -->
+    {citations.length > 0 && (
+      <div class="pt-6 border-t border-forest-700">
+        <h2 class="text-sm font-semibold text-forest-300 mb-3 uppercase tracking-wide">Clinical sources</h2>
+        <ul class="text-sm text-forest-300 space-y-1">
+          {citations.map((c) => (
+            <li>
+              {c.url ? <a href={c.url} class="underline hover:text-forest-100">{c.label}</a> : c.label}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </div>
+</section>

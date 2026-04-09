@@ -1,0 +1,133 @@
+---
+interface Props {
+  fullscreen?: boolean;
+}
+
+const { fullscreen = false } = Astro.props;
+const containerClass = fullscreen
+  ? "w-full max-w-2xl mx-auto p-8"
+  : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
+---
+
+<div class:list={[containerClass]} data-container-widget>
+  <!-- Step 1: choose container -->
+  <div data-step="1" data-step-active>
+    <h2 class="font-serif text-xl text-forest-100 mb-3">Step 1: Pick your container</h2>
+    <p class="text-forest-300 text-sm mb-4">Which of these feels right for today?</p>
+    <div class="grid grid-cols-2 gap-3">
+      {['Wooden box', 'Steel vault', 'Treasure chest', 'Balloon'].map((c) => (
+        <button data-pick-container={c} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
+          {c}
+        </button>
+      ))}
+    </div>
+  </div>
+
+  <!-- Step 2: add worries -->
+  <div data-step="2" class="hidden">
+    <h2 class="font-serif text-xl text-forest-100 mb-3">Step 2: Put things inside</h2>
+    <p class="text-forest-300 text-sm mb-4">Type a word or phrase for something you want to set aside, then add it. You can add as many as you want.</p>
+    <div class="flex gap-2 mb-4">
+      <input type="text" data-worry-input aria-label="Something to set aside" placeholder="e.g. the test on Friday" class="flex-1 px-3 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 placeholder:text-forest-400 focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" />
+      <button data-worry-add class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">Add</button>
+    </div>
+    <ul data-worry-list class="mb-4 space-y-1 text-forest-200 text-sm"></ul>
+    <button data-to-step-3 class="px-4 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
+      Close the container
+    </button>
+  </div>
+
+  <!-- Step 3: lock -->
+  <div data-step="3" class="hidden">
+    <h2 class="font-serif text-xl text-forest-100 mb-3">Step 3: Lock it</h2>
+    <p class="text-forest-300 text-sm mb-4">Imagine closing your container. What kind of lock does it have?</p>
+    <div class="grid grid-cols-2 gap-3 mb-4">
+      {['Key', 'Combination', 'Magic word', 'Knot'].map((l) => (
+        <button data-pick-lock={l} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{l}</button>
+      ))}
+    </div>
+  </div>
+
+  <!-- Step 4: place -->
+  <div data-step="4" class="hidden">
+    <h2 class="font-serif text-xl text-forest-100 mb-3">Step 4: Put it somewhere safe</h2>
+    <p class="text-forest-300 text-sm mb-4">Where will you keep it until you're ready to come back?</p>
+    <div class="grid grid-cols-2 gap-3 mb-4">
+      {['High shelf', 'Deep ocean', 'Locked room', 'Another planet'].map((p) => (
+        <button data-pick-place={p} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{p}</button>
+      ))}
+    </div>
+  </div>
+
+  <!-- Step 5: done -->
+  <div data-step="5" class="hidden text-center">
+    <h2 class="font-serif text-2xl text-forest-100 mb-3">It's put away.</h2>
+    <p data-summary class="text-forest-300 mb-6"></p>
+    <p class="text-forest-300 text-sm mb-6">Take a slow breath. You can come back to it whenever you're ready.</p>
+    <button data-restart class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">Do it again</button>
+  </div>
+</div>
+
+<script>
+  const widgets = document.querySelectorAll('[data-container-widget]');
+  widgets.forEach((root) => {
+    const steps: Record<string, HTMLElement> = {};
+    root.querySelectorAll<HTMLElement>('[data-step]').forEach((el) => {
+      steps[el.getAttribute('data-step')!] = el;
+    });
+
+    let state = { container: '', lock: '', place: '', worries: [] as string[] };
+
+    function showStep(n: string) {
+      Object.values(steps).forEach((el) => el.classList.add('hidden'));
+      steps[n].classList.remove('hidden');
+    }
+
+    root.querySelectorAll<HTMLButtonElement>('[data-pick-container]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.container = btn.getAttribute('data-pick-container')!;
+        showStep('2');
+      });
+    });
+
+    const input = root.querySelector<HTMLInputElement>('[data-worry-input]')!;
+    const list = root.querySelector<HTMLElement>('[data-worry-list]')!;
+    root.querySelector<HTMLButtonElement>('[data-worry-add]')!.addEventListener('click', () => {
+      const v = input.value.trim();
+      if (!v) return;
+      state.worries.push(v);
+      const li = document.createElement('li');
+      li.textContent = `• ${v}`;
+      list.appendChild(li);
+      input.value = '';
+      input.focus();
+    });
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') root.querySelector<HTMLButtonElement>('[data-worry-add]')!.click();
+    });
+
+    root.querySelector<HTMLButtonElement>('[data-to-step-3]')!.addEventListener('click', () => showStep('3'));
+
+    root.querySelectorAll<HTMLButtonElement>('[data-pick-lock]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.lock = btn.getAttribute('data-pick-lock')!;
+        showStep('4');
+      });
+    });
+
+    root.querySelectorAll<HTMLButtonElement>('[data-pick-place]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        state.place = btn.getAttribute('data-pick-place')!;
+        const summary = root.querySelector<HTMLElement>('[data-summary]')!;
+        summary.textContent = `Your ${state.container.toLowerCase()} is locked with a ${state.lock.toLowerCase()} and kept ${state.place.toLowerCase()}.`;
+        showStep('5');
+      });
+    });
+
+    root.querySelector<HTMLButtonElement>('[data-restart]')!.addEventListener('click', () => {
+      state = { container: '', lock: '', place: '', worries: [] };
+      list.innerHTML = '';
+      showStep('1');
+    });
+  });
+</script>

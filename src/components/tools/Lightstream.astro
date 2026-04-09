@@ -1,0 +1,129 @@
+---
+interface Props {
+  fullscreen?: boolean;
+}
+
+const { fullscreen = false } = Astro.props;
+const containerClass = fullscreen
+  ? "w-full max-w-2xl mx-auto p-8 flex flex-col items-center"
+  : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600 flex flex-col items-center";
+---
+
+<div class:list={[containerClass]} data-lightstream-widget>
+  <div data-step="color" data-step-active class="w-full">
+    <h2 class="font-serif text-xl text-forest-100 mb-3">Pick a healing color</h2>
+    <p class="text-forest-300 text-sm mb-4">Choose the color that feels most soothing to you right now. There is no wrong answer.</p>
+    <div class="grid grid-cols-3 sm:grid-cols-6 gap-3">
+      {[
+        { label: 'Gold', hex: '#F5C46B' },
+        { label: 'Blue', hex: '#6BB3F5' },
+        { label: 'Green', hex: '#7BC47B' },
+        { label: 'White', hex: '#FFFFFF' },
+        { label: 'Pink', hex: '#F5A5C4' },
+        { label: 'Violet', hex: '#B78BE0' },
+      ].map((c) => (
+        <button
+          data-pick-color={c.hex}
+          data-color-label={c.label}
+          class="aspect-square rounded-full border-2 border-forest-600 hover:border-white transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
+          style={`background-color: ${c.hex}`}
+          aria-label={c.label}
+        ></button>
+      ))}
+    </div>
+  </div>
+
+  <div data-step="flow" class="hidden w-full flex flex-col items-center">
+    <div class="relative w-48 h-72 mb-4">
+      <svg viewBox="0 0 100 150" class="w-full h-full" aria-hidden="true">
+        <circle cx="50" cy="18" r="12" fill="none" stroke="#8DB496" stroke-width="2" />
+        <rect x="35" y="30" width="30" height="50" rx="6" fill="none" stroke="#8DB496" stroke-width="2" />
+        <rect x="40" y="80" width="20" height="50" rx="4" fill="none" stroke="#8DB496" stroke-width="2" />
+        <line x1="35" y1="35" x2="25" y2="65" stroke="#8DB496" stroke-width="2" />
+        <line x1="65" y1="35" x2="75" y2="65" stroke="#8DB496" stroke-width="2" />
+        <circle
+          data-lightstream-blob
+          cx="50" cy="18" r="14"
+          fill="#F5C46B"
+          opacity="0.55"
+          class="transition-all duration-1000 ease-in-out"
+        />
+      </svg>
+    </div>
+    <p data-flow-script aria-live="polite" class="text-forest-100 text-center text-lg mb-6 min-h-[4em]"></p>
+    <button
+      data-flow-next
+      class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
+    >
+      Next
+    </button>
+  </div>
+
+  <div data-step="done" class="hidden text-center">
+    <h2 class="font-serif text-2xl text-forest-100 mb-3">The light is with you.</h2>
+    <p class="text-forest-300 mb-6">Notice anything that shifted. When you're ready, you can open your eyes.</p>
+    <button data-restart class="px-4 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">Do it again</button>
+  </div>
+</div>
+
+<script>
+  const bodyAreas = [
+    { label: 'Let the color begin at the top of your head. Notice where it feels warm and soft.', cy: 18 },
+    { label: 'Let it flow down into your face and jaw. Soften anything tight.', cy: 28 },
+    { label: 'Into your neck and shoulders. Let them drop a little.', cy: 38 },
+    { label: 'Into your chest. Notice your breath under the color.', cy: 50 },
+    { label: 'Into your belly. Let it warm the center of you.', cy: 68 },
+    { label: 'Into your hips and low back.', cy: 85 },
+    { label: 'Down through your legs.', cy: 105 },
+    { label: 'All the way to your feet. Let it pool there.', cy: 130 },
+  ];
+
+  const widgets = document.querySelectorAll('[data-lightstream-widget]');
+  widgets.forEach((root) => {
+    const steps: Record<string, HTMLElement> = {};
+    root.querySelectorAll<HTMLElement>('[data-step]').forEach((el) => {
+      steps[el.getAttribute('data-step')!] = el;
+    });
+    const blob = root.querySelector<SVGCircleElement>('[data-lightstream-blob]')!;
+    const scriptEl = root.querySelector<HTMLElement>('[data-flow-script]')!;
+    const nextBtn = root.querySelector<HTMLButtonElement>('[data-flow-next]')!;
+
+    let idx = 0;
+
+    function showStep(n: string) {
+      Object.values(steps).forEach((el) => el.classList.add('hidden'));
+      steps[n].classList.remove('hidden');
+    }
+
+    function renderFlow() {
+      if (idx >= bodyAreas.length) {
+        showStep('done');
+        return;
+      }
+      const area = bodyAreas[idx];
+      scriptEl.textContent = area.label;
+      blob.setAttribute('cy', String(area.cy));
+      nextBtn.textContent = idx === bodyAreas.length - 1 ? 'Finish' : 'Next';
+    }
+
+    root.querySelectorAll<HTMLButtonElement>('[data-pick-color]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const hex = btn.getAttribute('data-pick-color')!;
+        blob.setAttribute('fill', hex);
+        idx = 0;
+        showStep('flow');
+        renderFlow();
+      });
+    });
+
+    nextBtn.addEventListener('click', () => {
+      idx += 1;
+      renderFlow();
+    });
+
+    root.querySelector<HTMLButtonElement>('[data-restart]')!.addEventListener('click', () => {
+      idx = 0;
+      showStep('color');
+    });
+  });
+</script>

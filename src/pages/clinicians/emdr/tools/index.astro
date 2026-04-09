@@ -1,0 +1,56 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import ToolCard from '../../../../components/tools/ToolCard.astro';
+import { getCollection } from 'astro:content';
+
+const allTools = await getCollection('tools', (t) => t.data.locale === 'en');
+const clinicianTools = allTools
+  .filter((t) => t.data.audience.includes('clinician'))
+  .sort((a, b) => a.data.name.localeCompare(b.data.name));
+
+const categoryGroups = [
+  { key: 'bls', title: 'Bilateral Stimulation', description: 'For in-session delivery during desensitization (Phase 4) and installation (Phase 5).' },
+  { key: 'preparation', title: 'Preparation & Resource', description: 'Phase 2 resource installation, containment, and stabilization.' },
+  { key: 'assessment', title: 'Assessment Scales', description: 'SUD, VOC, and emotion identification for Phases 3 and onward.' },
+  { key: 'regulation', title: 'Regulation & Body', description: 'Closure, grounding, and between-session support.' },
+] as const;
+---
+
+<BaseLayout title="EMDR Tools" description="Interactive EMDR tools for clinicians — BLS delivery, resource installation, assessment scales, and regulation exercises.">
+  <section class="dark-zone py-10 sm:py-16">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <nav class="text-sm text-forest-400 mb-4">
+        <a href="/clinicians" class="hover:text-forest-200 transition-colors">Clinicians</a>
+        <span class="mx-2">/</span>
+        <a href="/clinicians/emdr" class="hover:text-forest-200 transition-colors">EMDR</a>
+        <span class="mx-2">/</span>
+        <span class="text-forest-100">Tools</span>
+      </nav>
+
+      <div class="max-w-3xl mb-10">
+        <h1 class="font-serif text-4xl font-semibold text-forest-100 mb-4">EMDR Tools</h1>
+        <p class="text-lg text-forest-200 leading-relaxed">
+          Interactive tools you can use in-session or assign for practice. Built into the site — no downloads, no accounts, no tracking. Every tool has a fullscreen mode for distraction-free use.
+        </p>
+      </div>
+
+      {categoryGroups.map((group) => {
+        const toolsInGroup = clinicianTools.filter((t) => t.data.category === group.key);
+        if (toolsInGroup.length === 0) return null;
+        return (
+          <div class="mb-12">
+            <h2 class="font-serif text-2xl font-semibold text-forest-100 mb-2">{group.title}</h2>
+            <p class="text-forest-300 text-sm mb-6">{group.description}</p>
+            <div class="grid md:grid-cols-2 gap-6">
+              {toolsInGroup.map((tool) => <ToolCard tool={tool} />)}
+            </div>
+          </div>
+        );
+      })}
+
+      {clinicianTools.length === 0 && (
+        <p class="text-forest-300">No tools available yet.</p>
+      )}
+    </div>
+  </section>
+</BaseLayout>
