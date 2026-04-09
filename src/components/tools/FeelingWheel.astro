@@ -1,17 +1,116 @@
 ---
+import type { Lang } from '../../i18n';
+
 interface Props {
   fullscreen?: boolean;
+  lang?: Lang;
 }
 
-const { fullscreen = false } = Astro.props;
+const { fullscreen = false, lang = 'en' } = Astro.props;
 const containerClass = fullscreen
   ? "w-full max-w-2xl mx-auto p-8"
   : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
+
+const t = {
+  en: {
+    heading: 'What are you feeling?',
+    intro: 'Start at the center. If a word fits, tap it. If it almost fits, look at the words around it for something closer.',
+    bodyPrompt: 'Where do you feel it in your body? What does it want you to do?',
+    moreSpecifically: 'More specifically, is it...',
+    core: [
+      { name: 'Sad', color: '#6B8FB3', secondary: [
+        { name: 'Lonely', desc: 'A sad feeling of being alone or separated from people who matter.' },
+        { name: 'Gloomy', desc: 'A heavy, low sadness that colors everything gray.' },
+        { name: 'Hurt', desc: 'Sad because someone or something wounded you.' },
+        { name: 'Bored', desc: 'A restless, unsatisfied kind of sad — nothing interests you.' },
+      ]},
+      { name: 'Mad', color: '#B36B6B', secondary: [
+        { name: 'Frustrated', desc: 'Mad because something keeps getting in your way.' },
+        { name: 'Jealous', desc: 'Mad because someone has something you want, or is taking something that feels yours.' },
+        { name: 'Furious', desc: 'Very big anger — a mad that feels out of control.' },
+        { name: 'Irritated', desc: 'Small, scratchy mad — the kind that builds up if you ignore it.' },
+      ]},
+      { name: 'Scared', color: '#B39B6B', secondary: [
+        { name: 'Anxious', desc: "Scared about something that hasn't happened yet." },
+        { name: 'Overwhelmed', desc: "Scared because there's too much at once." },
+        { name: 'Insecure', desc: "Scared that you're not enough, or that people will see." },
+        { name: 'Helpless', desc: "Scared because you don't know what to do." },
+      ]},
+      { name: 'Joyful', color: '#8DB47B', secondary: [
+        { name: 'Excited', desc: 'Joyful with energy — something good is happening or coming.' },
+        { name: 'Content', desc: 'Calm, settled joy — a quiet enough.' },
+        { name: 'Grateful', desc: 'Joyful because of something or someone you appreciate.' },
+        { name: 'Playful', desc: 'Joyful in a silly, light way.' },
+      ]},
+      { name: 'Peaceful', color: '#7BB39B', secondary: [
+        { name: 'Relaxed', desc: 'Your body is loose and your breath is slow.' },
+        { name: 'Safe', desc: 'You know nothing bad is about to happen.' },
+        { name: 'Loved', desc: 'You know someone cares about you.' },
+        { name: 'Calm', desc: 'Your mind is quiet and still.' },
+      ]},
+      { name: 'Powerful', color: '#B38D7B', secondary: [
+        { name: 'Proud', desc: 'Powerful because of something you did.' },
+        { name: 'Confident', desc: 'Powerful because you trust yourself.' },
+        { name: 'Brave', desc: 'Powerful even though something is scary.' },
+        { name: 'Capable', desc: 'Powerful because you know you can do this.' },
+      ]},
+    ],
+  },
+  es: {
+    heading: '¿Qué estás sintiendo?',
+    intro: 'Comienza en el centro. Si una palabra encaja, tócala. Si casi encaja, mira las palabras alrededor para encontrar algo más cercano.',
+    bodyPrompt: '¿Dónde lo sientes en tu cuerpo? ¿Qué quiere que hagas?',
+    moreSpecifically: 'Más específicamente, ¿es...?',
+    core: [
+      { name: 'Triste', color: '#6B8FB3', secondary: [
+        { name: 'Solo/a', desc: 'Un sentimiento triste de estar solo o separado de personas importantes.' },
+        { name: 'Melancólico/a', desc: 'Una tristeza pesada y baja que colorea todo de gris.' },
+        { name: 'Herido/a', desc: 'Triste porque alguien o algo te lastimó.' },
+        { name: 'Aburrido/a', desc: 'Un tipo de tristeza inquieta e insatisfecha — nada te interesa.' },
+      ]},
+      { name: 'Enojado/a', color: '#B36B6B', secondary: [
+        { name: 'Frustrado/a', desc: 'Enojado porque algo sigue interponiéndose en tu camino.' },
+        { name: 'Celoso/a', desc: 'Enojado porque alguien tiene algo que quieres, o está tomando algo que sientes tuyo.' },
+        { name: 'Furioso/a', desc: 'Enojo muy grande — un enojo que se siente fuera de control.' },
+        { name: 'Irritado/a', desc: 'Enojo pequeño y raspante — el tipo que se acumula si lo ignoras.' },
+      ]},
+      { name: 'Asustado/a', color: '#B39B6B', secondary: [
+        { name: 'Ansioso/a', desc: 'Asustado por algo que aún no ha pasado.' },
+        { name: 'Abrumado/a', desc: 'Asustado porque hay demasiado a la vez.' },
+        { name: 'Inseguro/a', desc: 'Asustado de no ser suficiente, o de que la gente lo vea.' },
+        { name: 'Indefenso/a', desc: 'Asustado porque no sabes qué hacer.' },
+      ]},
+      { name: 'Alegre', color: '#8DB47B', secondary: [
+        { name: 'Emocionado/a', desc: 'Alegre con energía — algo bueno está pasando o viene.' },
+        { name: 'Contento/a', desc: 'Alegría calma y asentada — un suficiente tranquilo.' },
+        { name: 'Agradecido/a', desc: 'Alegre por algo o alguien que aprecias.' },
+        { name: 'Juguetón/a', desc: 'Alegre de una manera tonta y ligera.' },
+      ]},
+      { name: 'En paz', color: '#7BB39B', secondary: [
+        { name: 'Relajado/a', desc: 'Tu cuerpo está suelto y tu respiración es lenta.' },
+        { name: 'Seguro/a', desc: 'Sabes que nada malo va a pasar.' },
+        { name: 'Amado/a', desc: 'Sabes que alguien se preocupa por ti.' },
+        { name: 'Calma', desc: 'Tu mente está quieta y tranquila.' },
+      ]},
+      { name: 'Poderoso/a', color: '#B38D7B', secondary: [
+        { name: 'Orgulloso/a', desc: 'Poderoso por algo que hiciste.' },
+        { name: 'Confiado/a', desc: 'Poderoso porque confías en ti mismo.' },
+        { name: 'Valiente', desc: 'Poderoso aunque algo sea aterrador.' },
+        { name: 'Capaz', desc: 'Poderoso porque sabes que puedes hacer esto.' },
+      ]},
+    ],
+  },
+};
+
+const s = t[lang];
 ---
 
-<div class:list={[containerClass]} data-feeling-widget>
-  <h2 class="font-serif text-xl text-forest-100 mb-4">What are you feeling?</h2>
-  <p class="text-forest-300 text-sm mb-6">Start at the center. If a word fits, tap it. If it almost fits, look at the words around it for something closer.</p>
+<div class:list={[containerClass]} data-feeling-widget data-feeling-i18n={JSON.stringify({
+  core: s.core,
+  moreSpecifically: s.moreSpecifically,
+})}>
+  <h2 class="font-serif text-xl text-forest-100 mb-4">{s.heading}</h2>
+  <p class="text-forest-300 text-sm mb-6">{s.intro}</p>
 
   <div class="grid grid-cols-2 gap-3 mb-6" data-core-grid></div>
 
@@ -23,52 +122,21 @@ const containerClass = fullscreen
   <div data-detail-wrap class="hidden p-4 border border-bronze-500/50 bg-forest-900 rounded-lg">
     <h3 data-detail-name class="font-serif text-lg text-bronze-400 mb-2"></h3>
     <p data-detail-desc class="text-forest-200 text-sm mb-3"></p>
-    <p class="text-forest-300 text-xs">Where do you feel it in your body? What does it want you to do?</p>
+    <p class="text-forest-300 text-xs">{s.bodyPrompt}</p>
   </div>
 </div>
 
 <script>
-  const core = [
-    { name: 'Sad', color: '#6B8FB3', secondary: [
-      { name: 'Lonely', desc: 'A sad feeling of being alone or separated from people who matter.' },
-      { name: 'Gloomy', desc: 'A heavy, low sadness that colors everything gray.' },
-      { name: 'Hurt', desc: 'Sad because someone or something wounded you.' },
-      { name: 'Bored', desc: 'A restless, unsatisfied kind of sad — nothing interests you.' },
-    ]},
-    { name: 'Mad', color: '#B36B6B', secondary: [
-      { name: 'Frustrated', desc: 'Mad because something keeps getting in your way.' },
-      { name: 'Jealous', desc: 'Mad because someone has something you want, or is taking something that feels yours.' },
-      { name: 'Furious', desc: 'Very big anger — a mad that feels out of control.' },
-      { name: 'Irritated', desc: 'Small, scratchy mad — the kind that builds up if you ignore it.' },
-    ]},
-    { name: 'Scared', color: '#B39B6B', secondary: [
-      { name: 'Anxious', desc: 'Scared about something that hasn\'t happened yet.' },
-      { name: 'Overwhelmed', desc: 'Scared because there\'s too much at once.' },
-      { name: 'Insecure', desc: 'Scared that you\'re not enough, or that people will see.' },
-      { name: 'Helpless', desc: 'Scared because you don\'t know what to do.' },
-    ]},
-    { name: 'Joyful', color: '#8DB47B', secondary: [
-      { name: 'Excited', desc: 'Joyful with energy — something good is happening or coming.' },
-      { name: 'Content', desc: 'Calm, settled joy — a quiet enough.' },
-      { name: 'Grateful', desc: 'Joyful because of something or someone you appreciate.' },
-      { name: 'Playful', desc: 'Joyful in a silly, light way.' },
-    ]},
-    { name: 'Peaceful', color: '#7BB39B', secondary: [
-      { name: 'Relaxed', desc: 'Your body is loose and your breath is slow.' },
-      { name: 'Safe', desc: 'You know nothing bad is about to happen.' },
-      { name: 'Loved', desc: 'You know someone cares about you.' },
-      { name: 'Calm', desc: 'Your mind is quiet and still.' },
-    ]},
-    { name: 'Powerful', color: '#B38D7B', secondary: [
-      { name: 'Proud', desc: 'Powerful because of something you did.' },
-      { name: 'Confident', desc: 'Powerful because you trust yourself.' },
-      { name: 'Brave', desc: 'Powerful even though something is scary.' },
-      { name: 'Capable', desc: 'Powerful because you know you can do this.' },
-    ]},
-  ];
-
   const widgets = document.querySelectorAll('[data-feeling-widget]');
   widgets.forEach((root) => {
+    const i18n = JSON.parse(root.getAttribute('data-feeling-i18n') || '{}');
+    const core: Array<{
+      name: string;
+      color: string;
+      secondary: Array<{ name: string; desc: string }>;
+    }> = i18n.core || [];
+    const moreSpecifically: string = i18n.moreSpecifically || 'More specifically, is it...';
+
     const coreGrid = root.querySelector<HTMLElement>('[data-core-grid]')!;
     const secondaryWrap = root.querySelector<HTMLElement>('[data-secondary-wrap]')!;
     const secondaryTitle = root.querySelector<HTMLElement>('[data-secondary-title]')!;
@@ -83,7 +151,7 @@ const containerClass = fullscreen
       btn.className = 'p-4 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800';
       btn.style.backgroundColor = c.color;
       btn.addEventListener('click', () => {
-        secondaryTitle.textContent = `More specifically, is it...`;
+        secondaryTitle.textContent = moreSpecifically;
         secondaryGrid.innerHTML = '';
         c.secondary.forEach((s) => {
           const sbtn = document.createElement('button');

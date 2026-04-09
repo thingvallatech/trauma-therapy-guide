@@ -1,33 +1,87 @@
 ---
+import type { Lang } from '../../i18n';
+
 interface Props {
   fullscreen?: boolean;
+  lang?: Lang;
 }
 
-const { fullscreen = false } = Astro.props;
+const { fullscreen = false, lang = 'en' } = Astro.props;
 const containerClass = fullscreen
   ? "w-full max-w-2xl mx-auto p-8 flex flex-col items-center"
   : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600 flex flex-col items-center";
+
+const t = {
+  en: {
+    heading: 'Pick a healing color',
+    instructions: 'Choose the color that feels most soothing to you right now. There is no wrong answer.',
+    nextText: 'Next',
+    finishText: 'Finish',
+    doneHeading: 'The light is with you.',
+    doneBody: "Notice anything that shifted. When you're ready, you can open your eyes.",
+    doItAgain: 'Do it again',
+    colorLabels: ['Gold', 'Blue', 'Green', 'White', 'Pink', 'Violet'],
+    bodyAreaLabels: [
+      'Let the color begin at the top of your head. Notice where it feels warm and soft.',
+      'Let it flow down into your face and jaw. Soften anything tight.',
+      'Into your neck and shoulders. Let them drop a little.',
+      'Into your chest. Notice your breath under the color.',
+      'Into your belly. Let it warm the center of you.',
+      'Into your hips and low back.',
+      'Down through your legs.',
+      'All the way to your feet. Let it pool there.',
+    ],
+  },
+  es: {
+    heading: 'Elige un color sanador',
+    instructions: 'Elige el color que se sienta más calmante para ti ahora. No hay respuesta incorrecta.',
+    nextText: 'Siguiente',
+    finishText: 'Terminar',
+    doneHeading: 'La luz está contigo.',
+    doneBody: 'Nota cualquier cosa que haya cambiado. Cuando estés listo, puedes abrir los ojos.',
+    doItAgain: 'Hazlo de nuevo',
+    colorLabels: ['Oro', 'Azul', 'Verde', 'Blanco', 'Rosa', 'Violeta'],
+    bodyAreaLabels: [
+      'Deja que el color comience en la parte superior de tu cabeza. Nota dónde se siente cálido y suave.',
+      'Deja que fluya hacia tu cara y mandíbula. Suaviza cualquier tensión.',
+      'Hacia tu cuello y hombros. Déjalos caer un poco.',
+      'Hacia tu pecho. Nota tu respiración bajo el color.',
+      'Hacia tu vientre. Deja que caliente tu centro.',
+      'Hacia tus caderas y espalda baja.',
+      'Hacia abajo por tus piernas.',
+      'Hasta tus pies. Deja que se acumule ahí.',
+    ],
+  },
+};
+
+const s = t[lang];
+
+const colors = [
+  { hex: '#F5C46B' },
+  { hex: '#6BB3F5' },
+  { hex: '#7BC47B' },
+  { hex: '#FFFFFF' },
+  { hex: '#F5A5C4' },
+  { hex: '#B78BE0' },
+];
 ---
 
-<div class:list={[containerClass]} data-lightstream-widget>
+<div class:list={[containerClass]} data-lightstream-widget data-lightstream-i18n={JSON.stringify({
+  bodyAreas: s.bodyAreaLabels,
+  next: s.nextText,
+  finish: s.finishText,
+})}>
   <div data-step="color" data-step-active class="w-full">
-    <h2 class="font-serif text-xl text-forest-100 mb-3">Pick a healing color</h2>
-    <p class="text-forest-300 text-sm mb-4">Choose the color that feels most soothing to you right now. There is no wrong answer.</p>
+    <h2 class="font-serif text-xl text-forest-100 mb-3">{s.heading}</h2>
+    <p class="text-forest-300 text-sm mb-4">{s.instructions}</p>
     <div class="grid grid-cols-3 sm:grid-cols-6 gap-3">
-      {[
-        { label: 'Gold', hex: '#F5C46B' },
-        { label: 'Blue', hex: '#6BB3F5' },
-        { label: 'Green', hex: '#7BC47B' },
-        { label: 'White', hex: '#FFFFFF' },
-        { label: 'Pink', hex: '#F5A5C4' },
-        { label: 'Violet', hex: '#B78BE0' },
-      ].map((c) => (
+      {colors.map((c, i) => (
         <button
           data-pick-color={c.hex}
-          data-color-label={c.label}
+          data-color-label={s.colorLabels[i]}
           class="aspect-square rounded-full border-2 border-forest-600 hover:border-white transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
           style={`background-color: ${c.hex}`}
-          aria-label={c.label}
+          aria-label={s.colorLabels[i]}
         ></button>
       ))}
     </div>
@@ -55,31 +109,25 @@ const containerClass = fullscreen
       data-flow-next
       class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
     >
-      Next
+      {s.nextText}
     </button>
   </div>
 
   <div data-step="done" class="hidden text-center">
-    <h2 class="font-serif text-2xl text-forest-100 mb-3">The light is with you.</h2>
-    <p class="text-forest-300 mb-6">Notice anything that shifted. When you're ready, you can open your eyes.</p>
-    <button data-restart class="px-4 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">Do it again</button>
+    <h2 class="font-serif text-2xl text-forest-100 mb-3">{s.doneHeading}</h2>
+    <p class="text-forest-300 mb-6">{s.doneBody}</p>
+    <button data-restart class="px-4 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.doItAgain}</button>
   </div>
 </div>
 
 <script>
-  const bodyAreas = [
-    { label: 'Let the color begin at the top of your head. Notice where it feels warm and soft.', cy: 18 },
-    { label: 'Let it flow down into your face and jaw. Soften anything tight.', cy: 28 },
-    { label: 'Into your neck and shoulders. Let them drop a little.', cy: 38 },
-    { label: 'Into your chest. Notice your breath under the color.', cy: 50 },
-    { label: 'Into your belly. Let it warm the center of you.', cy: 68 },
-    { label: 'Into your hips and low back.', cy: 85 },
-    { label: 'Down through your legs.', cy: 105 },
-    { label: 'All the way to your feet. Let it pool there.', cy: 130 },
-  ];
-
   const widgets = document.querySelectorAll('[data-lightstream-widget]');
   widgets.forEach((root) => {
+    const i18n = JSON.parse(root.getAttribute('data-lightstream-i18n') || '{}');
+    const labels: string[] = i18n.bodyAreas || [];
+    const cyCoords = [18, 28, 38, 50, 68, 85, 105, 130];
+    const bodyAreas = labels.map((label, i) => ({ label, cy: cyCoords[i] }));
+
     const steps: Record<string, HTMLElement> = {};
     root.querySelectorAll<HTMLElement>('[data-step]').forEach((el) => {
       steps[el.getAttribute('data-step')!] = el;
@@ -103,7 +151,7 @@ const containerClass = fullscreen
       const area = bodyAreas[idx];
       scriptEl.textContent = area.label;
       blob.setAttribute('cy', String(area.cy));
-      nextBtn.textContent = idx === bodyAreas.length - 1 ? 'Finish' : 'Next';
+      nextBtn.textContent = idx === bodyAreas.length - 1 ? i18n.finish : i18n.next;
     }
 
     root.querySelectorAll<HTMLButtonElement>('[data-pick-color]').forEach((btn) => {
