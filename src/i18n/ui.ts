@@ -140,6 +140,25 @@ export const ui = {
     'resource.countPlural': '{count} resources',
     'resource.by': 'by',
 
+    // Tools section
+    'tools.breadcrumbRoot': 'Tools',
+    'tools.landingTitle': 'Interactive EMDR Tools',
+    'tools.category.bls': 'Bilateral Stimulation',
+    'tools.category.preparation': 'Preparation / Resource',
+    'tools.category.assessment': 'Assessment Scale',
+    'tools.category.regulation': 'Regulation / Body',
+    'tools.evidence.research': 'Research-backed',
+    'tools.evidence.consensus': 'Clinical consensus',
+    'tools.evidence.widely': 'Widely used',
+    'tools.disclaimerStrong': 'This is a reference tool, not a replacement for EMDR therapy.',
+    'tools.disclaimerBody': 'EMDR must be delivered by a trained clinician. If you are using these tools outside of therapy and become distressed, stop, ground yourself, and contact a mental health professional.',
+    'tools.beforeYouStart': 'Before you start',
+    'tools.openFullscreen': 'Open in fullscreen',
+    'tools.clinicalSources': 'Clinical sources',
+    'tools.exitFullscreen': 'Exit fullscreen',
+    'tools.fullscreenTitleSuffix': 'Fullscreen',
+    'tools.widgetNotImplemented': 'Widget not yet implemented for',
+
     // Content fallback banner
     'fallback.banner': 'This content is not yet available in Spanish. It is shown in English.',
 
@@ -388,6 +407,25 @@ export const ui = {
     'resource.count': '{count} recurso',
     'resource.countPlural': '{count} recursos',
     'resource.by': 'por',
+
+    // Tools section
+    'tools.breadcrumbRoot': 'Herramientas',
+    'tools.landingTitle': 'Herramientas EMDR Interactivas',
+    'tools.category.bls': 'Estimulación Bilateral',
+    'tools.category.preparation': 'Preparación / Recurso',
+    'tools.category.assessment': 'Escala de Evaluación',
+    'tools.category.regulation': 'Regulación / Cuerpo',
+    'tools.evidence.research': 'Basado en investigación',
+    'tools.evidence.consensus': 'Consenso clínico',
+    'tools.evidence.widely': 'Ampliamente usado',
+    'tools.disclaimerStrong': 'Esta es una herramienta de referencia, no un reemplazo de la terapia EMDR.',
+    'tools.disclaimerBody': 'La terapia EMDR debe ser administrada por un clínico capacitado. Si usas estas herramientas fuera de terapia y te sientes angustiado, detente, aterrízate y contacta a un profesional de salud mental.',
+    'tools.beforeYouStart': 'Antes de empezar',
+    'tools.openFullscreen': 'Abrir en pantalla completa',
+    'tools.clinicalSources': 'Fuentes clínicas',
+    'tools.exitFullscreen': 'Salir de pantalla completa',
+    'tools.fullscreenTitleSuffix': 'Pantalla completa',
+    'tools.widgetNotImplemented': 'Widget aún no implementado para',
 
     // Content fallback banner
     'fallback.banner': 'Este contenido aún no está disponible en español. Se muestra en inglés.',

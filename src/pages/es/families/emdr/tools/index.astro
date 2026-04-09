@@ -44,7 +44,7 @@ const feelingGroups = [
             <h2 class="font-serif text-2xl font-semibold text-forest-100 mb-2">{group.title}</h2>
             <p class="text-forest-300 text-sm mb-6">{group.description}</p>
             <div class="grid md:grid-cols-2 gap-6">
-              {toolsInGroup.map((tool) => <ToolCard tool={tool} />)}
+              {toolsInGroup.map((tool) => <ToolCard tool={tool} lang={lang} />)}
             </div>
           </div>
         );

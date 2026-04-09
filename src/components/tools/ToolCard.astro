@@ -1,11 +1,17 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { getLangFromUrl, useTranslations, useTranslatedPath, type Lang } from '../../i18n';
 
 interface Props {
   tool: CollectionEntry<'tools'>;
+  lang?: Lang;
 }
 
-const { tool } = Astro.props;
+const detectedLang = getLangFromUrl(Astro.url);
+const { tool, lang = detectedLang } = Astro.props;
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
 const { name, category, evidence, shortDescription } = tool.data;
 
 const categoryIcon: Record<string, string> = {
@@ -16,12 +22,12 @@ const categoryIcon: Record<string, string> = {
 };
 
 const evidenceLabel: Record<string, string> = {
-  'research-backed': 'Research-backed',
-  'clinical-consensus': 'Clinical consensus',
-  'widely-used': 'Widely used',
+  'research-backed': t('tools.evidence.research'),
+  'clinical-consensus': t('tools.evidence.consensus'),
+  'widely-used': t('tools.evidence.widely'),
 };
 
-const href = `/tools/${tool.slug}`;
+const href = translatePath(`/tools/${tool.slug}`);
 ---
 
 <a

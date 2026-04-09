@@ -1,24 +1,30 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { getLangFromUrl, useTranslations, useTranslatedPath, type Lang } from '../../i18n';
 
 interface Props {
   tool: CollectionEntry<'tools'>;
+  lang?: Lang;
 }
 
-const { tool } = Astro.props;
+const detectedLang = getLangFromUrl(Astro.url);
+const { tool, lang = detectedLang } = Astro.props;
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
 const { name, category, evidence, shortDescription, citations, warnings } = tool.data;
 
 const categoryLabel: Record<string, string> = {
-  bls: 'Bilateral Stimulation',
-  preparation: 'Preparation / Resource',
-  assessment: 'Assessment Scale',
-  regulation: 'Regulation / Body',
+  bls: t('tools.category.bls'),
+  preparation: t('tools.category.preparation'),
+  assessment: t('tools.category.assessment'),
+  regulation: t('tools.category.regulation'),
 };
 
 const evidenceLabel: Record<string, string> = {
-  'research-backed': 'Research-backed',
-  'clinical-consensus': 'Clinical consensus',
-  'widely-used': 'Widely used',
+  'research-backed': t('tools.evidence.research'),
+  'clinical-consensus': t('tools.evidence.consensus'),
+  'widely-used': t('tools.evidence.widely'),
 };
 
 const evidenceColor: Record<string, string> = {
@@ -27,14 +33,14 @@ const evidenceColor: Record<string, string> = {
   'widely-used': 'bg-wood-600 text-wood-50',
 };
 
-const fullscreenHref = `/tools/${tool.slug}/fullscreen`;
+const fullscreenHref = translatePath(`/tools/${tool.slug}/fullscreen`);
 ---
 
 <section class="dark-zone py-10 sm:py-16">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <!-- Breadcrumb -->
     <nav class="text-sm text-forest-400 mb-4">
-      <a href="/clinicians/emdr/tools" class="hover:text-forest-200 transition-colors">Tools</a>
+      <a href={translatePath('/clinicians/emdr/tools')} class="hover:text-forest-200 transition-colors">{t('tools.breadcrumbRoot')}</a>
       <span class="mx-2">/</span>
       <span class="text-forest-100">{name}</span>
     </nav>
@@ -53,14 +59,14 @@ const fullscreenHref = `/tools/${tool.slug}/fullscreen`;
 
     <!-- Disclaimer -->
     <div class="mb-6 p-4 border-l-4 border-bronze-500 bg-forest-800/50 text-sm text-forest-200">
-      <strong class="text-forest-100">This is a reference tool, not a replacement for EMDR therapy.</strong>
-      {' '}EMDR must be delivered by a trained clinician. If you are using these tools outside of therapy and become distressed, stop, ground yourself, and contact a mental health professional.
+      <strong class="text-forest-100">{t('tools.disclaimerStrong')}</strong>
+      {' '}{t('tools.disclaimerBody')}
     </div>
 
     <!-- Warnings (epilepsy, headphones, etc.) -->
     {warnings.length > 0 && (
       <div class="mb-6 p-4 border border-amber-500/50 bg-amber-900/20 rounded-lg">
-        <h2 class="text-amber-200 font-semibold text-sm mb-2">Before you start</h2>
+        <h2 class="text-amber-200 font-semibold text-sm mb-2">{t('tools.beforeYouStart')}</h2>
         <ul class="text-amber-100 text-sm space-y-1 list-disc list-inside">
           {warnings.map((w) => <li>{w}</li>)}
         </ul>
@@ -76,7 +82,7 @@ const fullscreenHref = `/tools/${tool.slug}/fullscreen`;
         <svg class="w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4h4M4 16v4h4m8-16h4v4m-4 12h4v-4" />
         </svg>
-        Open in fullscreen
+        {t('tools.openFullscreen')}
       </a>
     </div>
 
@@ -88,7 +94,7 @@ const fullscreenHref = `/tools/${tool.slug}/fullscreen`;
     <!-- Citations -->
     {citations.length > 0 && (
       <div class="pt-6 border-t border-forest-700">
-        <h2 class="text-sm font-semibold text-forest-300 mb-3 uppercase tracking-wide">Clinical sources</h2>
+        <h2 class="text-sm font-semibold text-forest-300 mb-3 uppercase tracking-wide">{t('tools.clinicalSources')}</h2>
         <ul class="text-sm text-forest-300 space-y-1">
           {citations.map((c) => (
             <li>
