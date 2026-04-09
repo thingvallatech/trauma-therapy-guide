@@ -1,40 +1,70 @@
 ---
+import type { Lang } from '../../i18n';
+
 interface Props {
   fullscreen?: boolean;
+  lang?: Lang;
 }
 
-const { fullscreen = false } = Astro.props;
+const { fullscreen = false, lang = 'en' } = Astro.props;
 const containerClass = fullscreen
   ? "w-full max-w-5xl mx-auto p-4 flex flex-col"
   : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
 const trackHeight = fullscreen ? "h-96" : "h-64";
+
+const t = {
+  en: {
+    epilepsyWarning: '⚠ Photosensitive epilepsy warning: this tool uses sustained horizontal motion.',
+    speed: 'Speed (Hz)',
+    passes: 'Passes / set',
+    dotSize: 'Dot size',
+    dotColor: 'Dot color',
+    start: 'Start',
+    stop: 'Stop',
+    continuous: 'continuous',
+    motionNotice: "This tool uses motion by design. If that's uncomfortable, consider the audio-only or butterfly-hug tool instead.",
+  },
+  es: {
+    epilepsyWarning: '⚠ Advertencia de epilepsia fotosensible: esta herramienta utiliza movimiento horizontal sostenido.',
+    speed: 'Velocidad (Hz)',
+    passes: 'Pases / set',
+    dotSize: 'Tamaño del punto',
+    dotColor: 'Color del punto',
+    start: 'Comenzar',
+    stop: 'Detener',
+    continuous: 'continuo',
+    motionNotice: 'Esta herramienta usa movimiento por diseño. Si eso es incómodo, considera la herramienta solo de audio o el abrazo de mariposa.',
+  },
+};
+
+const s = t[lang];
 ---
 
-<div class:list={[containerClass]} data-bls-visual-widget data-fullscreen={fullscreen}>
+<div class:list={[containerClass]} data-bls-visual-widget data-fullscreen={fullscreen} data-bls-i18n={JSON.stringify({ start: s.start, stop: s.stop })}>
   {!fullscreen && (
     <div class="mb-4 p-3 border border-amber-500/50 bg-amber-900/20 rounded-md text-amber-100 text-xs">
-      ⚠ Photosensitive epilepsy warning: this tool uses sustained horizontal motion.
+      {s.epilepsyWarning}
     </div>
   )}
 
   <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
     <label class="text-forest-200 text-xs">
-      Speed (Hz)
+      {s.speed}
       <input data-bls-speed type="range" min="0.3" max="2" step="0.1" value="1.0" class="w-full accent-bronze-500" />
       <span data-bls-speed-value class="block text-center text-forest-100 tabular-nums">1.0</span>
     </label>
     <label class="text-forest-200 text-xs">
-      Passes / set
+      {s.passes}
       <input data-bls-passes type="range" min="6" max="48" step="2" value="24" class="w-full accent-bronze-500" />
       <span data-bls-passes-value class="block text-center text-forest-100 tabular-nums">24</span>
     </label>
     <label class="text-forest-200 text-xs">
-      Dot size
+      {s.dotSize}
       <input data-bls-size type="range" min="20" max="100" step="4" value="48" class="w-full accent-bronze-500" />
       <span data-bls-size-value class="block text-center text-forest-100 tabular-nums">48</span>
     </label>
     <label class="text-forest-200 text-xs">
-      Dot color
+      {s.dotColor}
       <input data-bls-color type="color" value="#FFF8E7" class="w-full h-6" />
     </label>
   </div>
@@ -52,20 +82,21 @@ const trackHeight = fullscreen ? "h-96" : "h-64";
       data-bls-toggle
       class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
     >
-      Start
+      {s.start}
     </button>
     <span data-bls-count aria-live="polite" aria-atomic="true" class="text-forest-300 text-sm tabular-nums">0 / 24</span>
     <div class="flex-1"></div>
     <label class="text-forest-300 text-xs flex items-center gap-2">
-      <input type="checkbox" data-bls-continuous class="accent-bronze-500 focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" /> continuous
+      <input type="checkbox" data-bls-continuous class="accent-bronze-500 focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" /> {s.continuous}
     </label>
   </div>
-  <p class="text-forest-400 text-xs mt-2">This tool uses motion by design. If that's uncomfortable, consider the audio-only or butterfly-hug tool instead.</p>
+  <p class="text-forest-400 text-xs mt-2">{s.motionNotice}</p>
 </div>
 
 <script>
   const widgets = document.querySelectorAll('[data-bls-visual-widget]');
   widgets.forEach((root) => {
+    const i18n = JSON.parse(root.getAttribute('data-bls-i18n') || '{}');
     const track = root.querySelector<HTMLElement>('[data-bls-track]')!;
     const dot = root.querySelector<HTMLElement>('[data-bls-dot]')!;
     const speed = root.querySelector<HTMLInputElement>('[data-bls-speed]')!;
@@ -95,7 +126,7 @@ const trackHeight = fullscreen ? "h-96" : "h-64";
       running = false;
       cancelAnimationFrame(rafId);
       passCount = 0;
-      toggle.textContent = 'Start';
+      toggle.textContent = i18n.start || 'Start';
       count.textContent = `0 / ${passes.value}`;
       dot.style.transform = 'translate(0, -50%)';
     }
@@ -126,7 +157,7 @@ const trackHeight = fullscreen ? "h-96" : "h-64";
       running = true;
       startTs = 0;
       passCount = 0;
-      toggle.textContent = 'Stop';
+      toggle.textContent = i18n.stop || 'Stop';
       rafId = requestAnimationFrame(tick);
     }
 
