@@ -10,6 +10,7 @@ import BLSVisual from '../../components/tools/BLSVisual.astro';
 import BLSAudio from '../../components/tools/BLSAudio.astro';
 import BLSCombined from '../../components/tools/BLSCombined.astro';
 import BLSTapping from '../../components/tools/BLSTapping.astro';
+import Container from '../../components/tools/Container.astro';
 
 export async function getStaticPaths() {
   const tools = await getCollection('tools', (t) => t.data.locale === 'en');
@@ -37,6 +38,7 @@ const widgets: Record<string, any> = {
   'BLSAudio': BLSAudio,
   'BLSCombined': BLSCombined,
   'BLSTapping': BLSTapping,
+  'Container': Container,
 };
 
 const Widget = widgets[tool.data.componentName] ?? null;
