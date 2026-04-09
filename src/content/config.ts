@@ -27,7 +27,27 @@ const resourcesCollection = defineCollection({
   }),
 });
 
+const toolsCollection = defineCollection({
+  type: 'content',
+  schema: z.object({
+    name: z.string(),
+    category: z.enum(['bls', 'preparation', 'assessment', 'regulation']),
+    audience: z.array(z.enum(['clinician', 'family'])).min(1),
+    useContext: z.array(z.enum(['in-session', 'practice', 'home'])).min(1),
+    evidence: z.enum(['research-backed', 'clinical-consensus', 'widely-used']),
+    shortDescription: z.string(),
+    componentName: z.string(),
+    citations: z.array(z.object({
+      label: z.string(),
+      url: z.string().optional(),
+    })).default([]),
+    warnings: z.array(z.string()).default([]),
+    locale: z.enum(['en', 'es']).default('en'),
+  }),
+});
+
 export const collections = {
   'emdr-phases': emdrPhasesCollection,
   'resources': resourcesCollection,
+  'tools': toolsCollection,
 };
