@@ -1,0 +1,166 @@
+---
+interface Props {
+  fullscreen?: boolean;
+}
+
+const { fullscreen = false } = Astro.props;
+const containerClass = fullscreen
+  ? "w-full max-w-2xl mx-auto p-8 flex flex-col items-center justify-center"
+  : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600 flex flex-col items-center";
+---
+
+<div class:list={[containerClass]} data-breath-widget>
+  <div class="mb-4 flex flex-wrap gap-2 justify-center">
+    <button data-breath-pattern="box" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors">
+      Box (4-4-4-4)
+    </button>
+    <button data-breath-pattern="478" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors">
+      4-7-8
+    </button>
+    <button data-breath-pattern="coherent" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors">
+      Coherent (5-5)
+    </button>
+  </div>
+
+  <div class="mb-4 flex gap-2 justify-center">
+    {[1, 3, 5, 10].map((m) => (
+      <button data-breath-minutes={m} class="px-3 py-1 rounded-md bg-forest-700 border border-forest-600 text-forest-200 text-xs hover:bg-forest-600 transition-colors">
+        {m} min
+      </button>
+    ))}
+  </div>
+
+  <div class="relative w-64 h-64 flex items-center justify-center my-6">
+    <div
+      data-breath-circle
+      class="w-32 h-32 rounded-full bg-bronze-500/30 border-2 border-bronze-400 transition-transform ease-in-out"
+      style="transform: scale(1);"
+    ></div>
+    <div data-breath-phase class="absolute font-serif text-xl text-forest-100">Ready</div>
+  </div>
+
+  <div data-breath-remaining class="text-forest-300 text-sm mb-4"></div>
+
+  <button
+    data-breath-toggle
+    class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors"
+  >
+    Start
+  </button>
+</div>
+
+<script>
+  type Phase = { name: string; seconds: number; scale: number };
+  const patterns: Record<string, Phase[]> = {
+    box: [
+      { name: 'Inhale', seconds: 4, scale: 2 },
+      { name: 'Hold', seconds: 4, scale: 2 },
+      { name: 'Exhale', seconds: 4, scale: 1 },
+      { name: 'Hold', seconds: 4, scale: 1 },
+    ],
+    '478': [
+      { name: 'Inhale', seconds: 4, scale: 2 },
+      { name: 'Hold', seconds: 7, scale: 2 },
+      { name: 'Exhale', seconds: 8, scale: 1 },
+    ],
+    coherent: [
+      { name: 'Inhale', seconds: 5, scale: 2 },
+      { name: 'Exhale', seconds: 5, scale: 1 },
+    ],
+  };
+
+  const widgets = document.querySelectorAll('[data-breath-widget]');
+  widgets.forEach((root) => {
+    const circle = root.querySelector<HTMLElement>('[data-breath-circle]')!;
+    const phaseLabel = root.querySelector<HTMLElement>('[data-breath-phase]')!;
+    const remaining = root.querySelector<HTMLElement>('[data-breath-remaining]')!;
+    const toggle = root.querySelector<HTMLButtonElement>('[data-breath-toggle]')!;
+
+    let currentPattern: Phase[] = patterns.box;
+    let totalSeconds = 3 * 60;
+    let running = false;
+    let phaseIdx = 0;
+    let phaseElapsed = 0;
+    let totalElapsed = 0;
+    let rafId = 0;
+    let lastTs = 0;
+
+    function highlight(group: string, value: string) {
+      root.querySelectorAll(`[data-breath-${group}]`).forEach((b) => {
+        const active = b.getAttribute(`data-breath-${group}`) === value;
+        b.classList.toggle('bg-bronze-600', active);
+        b.classList.toggle('text-forest-900', active);
+      });
+    }
+
+    root.querySelectorAll<HTMLButtonElement>('[data-breath-pattern]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (running) return;
+        const key = btn.getAttribute('data-breath-pattern')!;
+        currentPattern = patterns[key];
+        highlight('pattern', key);
+      });
+    });
+    highlight('pattern', 'box');
+
+    root.querySelectorAll<HTMLButtonElement>('[data-breath-minutes]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (running) return;
+        totalSeconds = parseInt(btn.getAttribute('data-breath-minutes')!, 10) * 60;
+        highlight('minutes', String(totalSeconds / 60));
+      });
+    });
+    highlight('minutes', '3');
+
+    function enterPhase(i: number) {
+      const p = currentPattern[i];
+      phaseLabel.textContent = p.name;
+      circle.style.transitionDuration = `${p.seconds}s`;
+      circle.style.transform = `scale(${p.scale})`;
+    }
+
+    function tick(ts: number) {
+      if (!lastTs) lastTs = ts;
+      const dt = (ts - lastTs) / 1000;
+      lastTs = ts;
+      phaseElapsed += dt;
+      totalElapsed += dt;
+      const current = currentPattern[phaseIdx];
+      if (phaseElapsed >= current.seconds) {
+        phaseElapsed = 0;
+        phaseIdx = (phaseIdx + 1) % currentPattern.length;
+        enterPhase(phaseIdx);
+      }
+      const left = Math.max(0, totalSeconds - totalElapsed);
+      remaining.textContent = `${Math.floor(left / 60)}:${String(Math.floor(left % 60)).padStart(2, '0')}`;
+      if (totalElapsed >= totalSeconds) {
+        stop();
+        return;
+      }
+      if (running) rafId = requestAnimationFrame(tick);
+    }
+
+    function start() {
+      running = true;
+      toggle.textContent = 'Stop';
+      phaseIdx = 0;
+      phaseElapsed = 0;
+      totalElapsed = 0;
+      lastTs = 0;
+      enterPhase(0);
+      rafId = requestAnimationFrame(tick);
+    }
+
+    function stop() {
+      running = false;
+      cancelAnimationFrame(rafId);
+      toggle.textContent = 'Start';
+      circle.style.transitionDuration = '500ms';
+      circle.style.transform = 'scale(1)';
+      phaseLabel.textContent = 'Ready';
+      remaining.textContent = '';
+    }
+
+    toggle.addEventListener('click', () => (running ? stop() : start()));
+  });
+</script>
