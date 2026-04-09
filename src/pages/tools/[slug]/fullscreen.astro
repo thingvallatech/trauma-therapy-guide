@@ -8,6 +8,7 @@ import Grounding from '../../../components/tools/Grounding.astro';
 import BLSVisual from '../../../components/tools/BLSVisual.astro';
 import BLSAudio from '../../../components/tools/BLSAudio.astro';
 import BLSCombined from '../../../components/tools/BLSCombined.astro';
+import BLSTapping from '../../../components/tools/BLSTapping.astro';
 
 export async function getStaticPaths() {
   const tools = await getCollection('tools', (t) => t.data.locale === 'en');
@@ -32,6 +33,7 @@ const widgets: Record<string, any> = {
   'BLSVisual': BLSVisual,
   'BLSAudio': BLSAudio,
   'BLSCombined': BLSCombined,
+  'BLSTapping': BLSTapping,
 };
 
 const Widget = widgets[tool.data.componentName] ?? null;

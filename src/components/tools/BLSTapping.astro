@@ -1,0 +1,116 @@
+---
+interface Props {
+  fullscreen?: boolean;
+}
+
+const { fullscreen = false } = Astro.props;
+const containerClass = fullscreen
+  ? "w-full max-w-5xl mx-auto p-4 flex flex-col"
+  : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
+const panelHeight = fullscreen ? "h-80" : "h-48";
+---
+
+<div class:list={[containerClass]} data-bls-tapping-widget>
+  <div class="mb-4 grid grid-cols-3 gap-3">
+    <label class="text-forest-200 text-xs">
+      Speed (Hz)
+      <input data-speed type="range" min="0.3" max="2" step="0.1" value="1.0" class="w-full accent-bronze-500" />
+      <span data-speed-value class="block text-center text-forest-100 tabular-nums">1.0</span>
+    </label>
+    <label class="text-forest-200 text-xs">
+      Passes / set
+      <input data-passes type="range" min="6" max="48" step="2" value="24" class="w-full accent-bronze-500" />
+      <span data-passes-value class="block text-center text-forest-100 tabular-nums">24</span>
+    </label>
+    <div class="text-forest-200 text-xs flex flex-col justify-end">
+      <span data-count class="text-center text-forest-100 text-sm tabular-nums">0 / 24</span>
+    </div>
+  </div>
+
+  <div class:list={["grid grid-cols-2 gap-3", panelHeight]}>
+    <div data-side="L" class="rounded-lg border-2 border-forest-600 bg-forest-900 flex items-center justify-center text-forest-500 text-5xl font-bold transition-all duration-100">
+      L
+    </div>
+    <div data-side="R" class="rounded-lg border-2 border-forest-600 bg-forest-900 flex items-center justify-center text-forest-500 text-5xl font-bold transition-all duration-100">
+      R
+    </div>
+  </div>
+
+  <div class="mt-4 flex items-center gap-4">
+    <button
+      data-toggle
+      class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors"
+    >
+      Start
+    </button>
+    <p class="text-forest-300 text-xs">Tap your own knees / shoulders / butterfly hug in time with the highlighted side.</p>
+  </div>
+</div>
+
+<script>
+  const widgets = document.querySelectorAll('[data-bls-tapping-widget]');
+  widgets.forEach((root) => {
+    const speed = root.querySelector<HTMLInputElement>('[data-speed]')!;
+    const speedVal = root.querySelector<HTMLElement>('[data-speed-value]')!;
+    const passes = root.querySelector<HTMLInputElement>('[data-passes]')!;
+    const passesVal = root.querySelector<HTMLElement>('[data-passes-value]')!;
+    const count = root.querySelector<HTMLElement>('[data-count]')!;
+    const toggle = root.querySelector<HTMLButtonElement>('[data-toggle]')!;
+    const panelL = root.querySelector<HTMLElement>('[data-side="L"]')!;
+    const panelR = root.querySelector<HTMLElement>('[data-side="R"]')!;
+
+    let running = false;
+    let passCount = 0;
+    let side: 'L' | 'R' = 'L';
+    let intervalId = 0;
+
+    function highlight(which: 'L' | 'R') {
+      [panelL, panelR].forEach((p) => {
+        p.classList.remove('bg-bronze-500', 'text-forest-900', 'border-bronze-300');
+        p.classList.add('bg-forest-900', 'text-forest-500', 'border-forest-600');
+      });
+      const active = which === 'L' ? panelL : panelR;
+      active.classList.remove('bg-forest-900', 'text-forest-500', 'border-forest-600');
+      active.classList.add('bg-bronze-500', 'text-forest-900', 'border-bronze-300');
+    }
+
+    function tick() {
+      highlight(side);
+      side = side === 'L' ? 'R' : 'L';
+      passCount += 1;
+      count.textContent = `${passCount} / ${passes.value}`;
+      if (passCount >= parseInt(passes.value, 10)) {
+        stop();
+      }
+    }
+
+    function start() {
+      running = true;
+      passCount = 0;
+      side = 'L';
+      toggle.textContent = 'Stop';
+      tick();
+      const hz = parseFloat(speed.value);
+      const intervalMs = 1000 / (hz * 2);
+      intervalId = window.setInterval(tick, intervalMs);
+    }
+
+    function stop() {
+      running = false;
+      clearInterval(intervalId);
+      toggle.textContent = 'Start';
+      [panelL, panelR].forEach((p) => {
+        p.classList.remove('bg-bronze-500', 'text-forest-900', 'border-bronze-300');
+        p.classList.add('bg-forest-900', 'text-forest-500', 'border-forest-600');
+      });
+      count.textContent = `0 / ${passes.value}`;
+    }
+
+    toggle.addEventListener('click', () => (running ? stop() : start()));
+    speed.addEventListener('input', () => (speedVal.textContent = parseFloat(speed.value).toFixed(1)));
+    passes.addEventListener('input', () => {
+      passesVal.textContent = passes.value;
+      if (!running) count.textContent = `0 / ${passes.value}`;
+    });
+  });
+</script>
