@@ -9,10 +9,11 @@ interface Props {
   title: string;
   description?: string;
   lang?: Lang;
+  noAnalytics?: boolean;
 }
 
 const detectedLang = getLangFromUrl(Astro.url);
-const { title, description, lang = detectedLang } = Astro.props;
+const { title, description, lang = detectedLang, noAnalytics = false } = Astro.props;
 const t = useTranslations(lang);
 
 const defaultDescription = t('site.defaultDescription');
@@ -112,6 +113,8 @@ const structuredData = {
     <SearchModal lang={lang} />
 
     <!-- GoatCounter Analytics -->
-    <script data-goatcounter="https://therapy.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    {!noAnalytics && (
+      <script data-goatcounter="https://therapy.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    )}
   </body>
 </html>
