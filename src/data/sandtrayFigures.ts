@@ -1,3 +1,14 @@
+/**
+ * Sandtray figure collection — single source of truth.
+ *
+ * Figures are vintage public-domain color plates (Audubon, Haeckel, Köhler, Redouté,
+ * Millot, Greenaway, Crane, etc.) sourced from Wikimedia Commons / Smithsonian /
+ * Biodiversity Heritage Library and processed via scripts/sandtray-figures.py.
+ *
+ * Adding a new figure: drop the processed PNG into public/sandtray/figures/, add
+ * an entry below, run `npm run build` to validate.
+ */
+
 export type SandtrayCategory = 'people' | 'animals' | 'plants' | 'earth' | 'shelter';
 
 export interface SandtrayFigure {
@@ -8,7 +19,7 @@ export interface SandtrayFigure {
   /** Bilingual short name, used as alt text and aria-label. */
   alt: { en: string; es: string };
   category: SandtrayCategory;
-  /** Render scale at canvas resolution. 1.0 = ~96px on the long edge. Tune per figure. */
+  /** Render scale at canvas resolution. 1.0 ≈ 96px on the long edge. Tune per figure. */
   defaultScale: number;
   /** Attribution string. Recorded for the data file; not displayed in the UI. */
   source: string;
@@ -28,7 +39,7 @@ export const sandtrayCategories: SandtrayCategoryDef[] = [
 ];
 
 /**
- * The figure collection. Populated by the asset curation task.
+ * The figure collection. Populated by scripts/sandtray-figures.py output.
  *
  * Constraints (validated by validateSandtrayFigures below):
  * - All ids unique

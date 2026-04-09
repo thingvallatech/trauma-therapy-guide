@@ -10,17 +10,219 @@ interface Props {
 const { fullscreen = false, lang = 'en' } = Astro.props;
 
 const containerClass = fullscreen
-  ? "w-full max-w-5xl mx-auto p-4"
-  : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
+  ? "w-full max-w-5xl mx-auto p-4 flex flex-col"
+  : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600 flex flex-col";
 
 const t = {
-  en: { placeholder: 'Sandtray (under construction)' },
-  es: { placeholder: 'Bandeja de arena (en construcción)' },
+  en: { canvasAriaLabel: 'Sandtray canvas' },
+  es: { canvasAriaLabel: 'Lienzo de bandeja de arena' },
 };
 const s = t[lang];
+
+// Suppress unused-import lint until Task 8 wires categories.
+void sandtrayCategories;
 ---
 
 <div class:list={[containerClass]} data-sandtray-widget>
-  <p class="text-forest-200">{s.placeholder}</p>
-  <p class="text-forest-400 text-xs mt-2">categories: {sandtrayCategories.map(c => c.key).join(', ')}</p>
+  <div data-sandtray-frame class="relative w-full" style="
+    padding: 18px;
+    border-radius: 14px;
+    background:
+      linear-gradient(180deg, #6b4a25 0%, #8a5f31 14%, #6e4922 50%, #8a5f31 86%, #5b3c1d 100%),
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 1px, transparent 1px, transparent 6px);
+    background-blend-mode: multiply;
+    box-shadow:
+      0 1px 0 rgba(255,235,200,0.25) inset,
+      0 -2px 0 rgba(0,0,0,0.35) inset,
+      0 18px 30px -12px rgba(0,0,0,0.55);
+  ">
+    <canvas
+      data-sandtray-canvas
+      class="block w-full rounded-md touch-none select-none"
+      style="
+        height: 24rem;
+        box-shadow:
+          0 0 0 2px #3a2611 inset,
+          0 6px 14px rgba(0,0,0,0.35) inset,
+          0 -2px 6px rgba(255,235,200,0.18) inset;
+      "
+      aria-label={s.canvasAriaLabel}
+    ></canvas>
+  </div>
 </div>
+
+<script>
+  // ----- SandRenderer -----
+  // Procedural sand with height-map shading. Demand-driven redraw.
+
+  type Rect = { x: number; y: number; w: number; h: number };
+
+  class SandRenderer {
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
+    width = 0;
+    height = 0;
+    heights!: Float32Array;     // length = width * height
+    grain!: Float32Array;       // per-pixel static noise, length = width * height
+    imageData!: ImageData;
+    dirty: Rect | null = null;
+
+    // Light direction (normalized). From upper-left, pointing down-right into the page.
+    readonly lx = -0.55;
+    readonly ly = -0.55;
+    readonly lz = 0.62;
+
+    // Base sand color and lighting modulation range.
+    readonly baseR = 224;
+    readonly baseG = 204;
+    readonly baseB = 156;
+    readonly hiR = 250;
+    readonly hiG = 235;
+    readonly hiB = 195;
+    readonly loR = 158;
+    readonly loG = 134;
+    readonly loB = 80;
+
+    constructor(canvas: HTMLCanvasElement) {
+      this.canvas = canvas;
+      const ctx = canvas.getContext('2d', { alpha: false });
+      if (!ctx) throw new Error('2D canvas context unavailable');
+      this.ctx = ctx;
+    }
+
+    /** (Re)allocate buffers to match the current canvas pixel size. */
+    resize(): void {
+      const rect = this.canvas.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      this.width = Math.max(1, Math.round(rect.width * dpr));
+      this.height = Math.max(1, Math.round(rect.height * dpr));
+      this.canvas.width = this.width;
+      this.canvas.height = this.height;
+      this.heights = new Float32Array(this.width * this.height);
+      this.grain = new Float32Array(this.width * this.height);
+      this.imageData = this.ctx.createImageData(this.width, this.height);
+      this.seed();
+      this.markDirtyAll();
+      this.render();
+    }
+
+    /** Seed the height map with low-frequency noise so resting sand isn't perfectly flat. */
+    seed(): void {
+      const w = this.width, h = this.height;
+      for (let y = 0; y < h; y++) {
+        for (let x = 0; x < w; x++) {
+          const n =
+            Math.sin(x * 0.013 + y * 0.009) * 0.018 +
+            Math.sin(x * 0.027 - y * 0.021) * 0.012 +
+            Math.sin(x * 0.005 + y * 0.041) * 0.008;
+          this.heights[y * w + x] = 0.5 + n;
+          this.grain[y * w + x] = (Math.random() - 0.5) * 0.04;
+        }
+      }
+    }
+
+    markDirtyAll(): void {
+      this.dirty = { x: 0, y: 0, w: this.width, h: this.height };
+    }
+
+    markDirtyRect(x: number, y: number, w: number, h: number): void {
+      const rx = Math.max(0, Math.floor(x));
+      const ry = Math.max(0, Math.floor(y));
+      const rw = Math.min(this.width - rx, Math.ceil(w));
+      const rh = Math.min(this.height - ry, Math.ceil(h));
+      if (rw <= 0 || rh <= 0) return;
+      if (!this.dirty) {
+        this.dirty = { x: rx, y: ry, w: rw, h: rh };
+        return;
+      }
+      const x1 = Math.min(this.dirty.x, rx);
+      const y1 = Math.min(this.dirty.y, ry);
+      const x2 = Math.max(this.dirty.x + this.dirty.w, rx + rw);
+      const y2 = Math.max(this.dirty.y + this.dirty.h, ry + rh);
+      this.dirty = { x: x1, y: y1, w: x2 - x1, h: y2 - y1 };
+    }
+
+    /** Shade and write pixels in the dirty rect. */
+    render(): void {
+      if (!this.dirty) return;
+      const w = this.width;
+      const h = this.height;
+      const data = this.imageData.data;
+      const heights = this.heights;
+      const grain = this.grain;
+      const { x: rx, y: ry, w: rw, h: rh } = this.dirty;
+      const x2 = rx + rw;
+      const y2 = ry + rh;
+
+      const lx = this.lx, ly = this.ly, lz = this.lz;
+      const slope = 6.0;
+
+      for (let y = ry; y < y2; y++) {
+        for (let x = rx; x < x2; x++) {
+          const i = y * w + x;
+
+          const xl = x > 0 ? x - 1 : x;
+          const xr = x < w - 1 ? x + 1 : x;
+          const yu = y > 0 ? y - 1 : y;
+          const yd = y < h - 1 ? y + 1 : y;
+
+          const dzdx = (heights[y * w + xr] - heights[y * w + xl]) * slope;
+          const dzdy = (heights[yd * w + x] - heights[yu * w + x]) * slope;
+
+          // Surface normal (unnormalized): (-dzdx, -dzdy, 1)
+          const nx = -dzdx;
+          const ny = -dzdy;
+          const nz = 1;
+          const invLen = 1 / Math.sqrt(nx * nx + ny * ny + nz * nz);
+          const nnx = nx * invLen;
+          const nny = ny * invLen;
+          const nnz = nz * invLen;
+
+          let lit = nnx * lx + nny * ly + nnz * lz;
+          if (lit < 0) lit = 0;
+          if (lit > 1) lit = 1;
+
+          const shade = 0.55 + lit * 0.45;
+
+          const g = grain[i];
+          let r = this.baseR * shade + (this.hiR - this.baseR) * Math.max(0, shade - 0.85) * 4;
+          let gC = this.baseG * shade + (this.hiG - this.baseG) * Math.max(0, shade - 0.85) * 4;
+          let b = this.baseB * shade + (this.hiB - this.baseB) * Math.max(0, shade - 0.85) * 4;
+
+          const dark = Math.max(0, 0.7 - shade);
+          r -= dark * (this.baseR - this.loR) * 1.4;
+          gC -= dark * (this.baseG - this.loG) * 1.4;
+          b -= dark * (this.baseB - this.loB) * 1.4;
+
+          r += g * 255;
+          gC += g * 255;
+          b += g * 255;
+
+          const di = i * 4;
+          data[di]     = r  < 0 ? 0 : r  > 255 ? 255 : r;
+          data[di + 1] = gC < 0 ? 0 : gC > 255 ? 255 : gC;
+          data[di + 2] = b  < 0 ? 0 : b  > 255 ? 255 : b;
+          data[di + 3] = 255;
+        }
+      }
+
+      this.ctx.putImageData(this.imageData, 0, 0, rx, ry, rw, rh);
+      this.dirty = null;
+    }
+  }
+
+  // ----- Bootstrap -----
+  const widgets = document.querySelectorAll<HTMLElement>('[data-sandtray-widget]');
+  widgets.forEach((root) => {
+    const canvas = root.querySelector<HTMLCanvasElement>('[data-sandtray-canvas]');
+    if (!canvas) return;
+    const renderer = new SandRenderer(canvas);
+    renderer.resize();
+
+    let resizeTimer: number | null = null;
+    window.addEventListener('resize', () => {
+      if (resizeTimer !== null) window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => renderer.resize(), 150);
+    });
+  });
+</script>
