@@ -15,7 +15,7 @@ const containerClass = fullscreen
       How disturbing is it right now?
     </h2>
     <label class="flex items-center gap-2 text-sm text-forest-300 cursor-pointer">
-      <input type="checkbox" data-sud-kid-toggle class="w-4 h-4 accent-bronze-500" />
+      <input type="checkbox" data-sud-kid-toggle class="w-4 h-4 accent-bronze-500 focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" />
       <span>Kid mode</span>
     </label>
   </div>
@@ -23,11 +23,13 @@ const containerClass = fullscreen
   <div class="text-center mb-6">
     <div
       data-sud-display
+      aria-live="polite"
+      aria-atomic="true"
       class="font-serif text-7xl font-semibold text-bronze-400 mb-2 tabular-nums"
     >
       5
     </div>
-    <div data-sud-label class="text-forest-300 text-sm">Moderate disturbance</div>
+    <div data-sud-label aria-live="polite" class="text-forest-300 text-sm">Moderate disturbance</div>
     <div data-sud-faces class="text-6xl hidden" aria-hidden="true">😐</div>
   </div>
 

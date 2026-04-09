@@ -15,7 +15,7 @@ const containerClass = fullscreen
   </p>
 
   <div class="relative w-64 h-40 mb-6">
-    <svg viewBox="0 0 200 120" class="w-full h-full">
+    <svg viewBox="0 0 200 120" class="w-full h-full" aria-hidden="true">
       <ellipse
         data-wing="L"
         cx="70" cy="60" rx="45" ry="35"
@@ -35,13 +35,13 @@ const containerClass = fullscreen
   <div class="mb-4">
     <label class="text-forest-200 text-xs">
       Speed
-      <input data-speed type="range" min="0.4" max="1.5" step="0.1" value="0.8" class="w-48 accent-bronze-500" />
+      <input data-speed type="range" min="0.4" max="1.5" step="0.1" value="0.8" aria-label="Wing speed" class="w-48 accent-bronze-500" />
     </label>
   </div>
 
   <button
     data-toggle
-    class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors"
+    class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
   >
     Start
   </button>

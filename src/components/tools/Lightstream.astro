@@ -25,7 +25,7 @@ const containerClass = fullscreen
         <button
           data-pick-color={c.hex}
           data-color-label={c.label}
-          class="aspect-square rounded-full border-2 border-forest-600 hover:border-white transition-colors"
+          class="aspect-square rounded-full border-2 border-forest-600 hover:border-white transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
           style={`background-color: ${c.hex}`}
           aria-label={c.label}
         ></button>
@@ -35,7 +35,7 @@ const containerClass = fullscreen
 
   <div data-step="flow" class="hidden w-full flex flex-col items-center">
     <div class="relative w-48 h-72 mb-4">
-      <svg viewBox="0 0 100 150" class="w-full h-full">
+      <svg viewBox="0 0 100 150" class="w-full h-full" aria-hidden="true">
         <circle cx="50" cy="18" r="12" fill="none" stroke="#8DB496" stroke-width="2" />
         <rect x="35" y="30" width="30" height="50" rx="6" fill="none" stroke="#8DB496" stroke-width="2" />
         <rect x="40" y="80" width="20" height="50" rx="4" fill="none" stroke="#8DB496" stroke-width="2" />
@@ -50,10 +50,10 @@ const containerClass = fullscreen
         />
       </svg>
     </div>
-    <p data-flow-script class="text-forest-100 text-center text-lg mb-6 min-h-[4em]"></p>
+    <p data-flow-script aria-live="polite" class="text-forest-100 text-center text-lg mb-6 min-h-[4em]"></p>
     <button
       data-flow-next
-      class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors"
+      class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
     >
       Next
     </button>
@@ -62,7 +62,7 @@ const containerClass = fullscreen
   <div data-step="done" class="hidden text-center">
     <h2 class="font-serif text-2xl text-forest-100 mb-3">The light is with you.</h2>
     <p class="text-forest-300 mb-6">Notice anything that shifted. When you're ready, you can open your eyes.</p>
-    <button data-restart class="px-4 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 hover:bg-forest-600 transition-colors">Do it again</button>
+    <button data-restart class="px-4 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">Do it again</button>
   </div>
 </div>
 

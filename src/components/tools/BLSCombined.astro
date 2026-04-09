@@ -51,15 +51,16 @@ const trackHeight = fullscreen ? "h-96" : "h-64";
   <div class="mt-4 flex items-center gap-4 flex-wrap">
     <button
       data-toggle
-      class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors"
+      class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
     >
       Start
     </button>
-    <span data-count class="text-forest-300 text-sm tabular-nums">0 / 24</span>
+    <span data-count aria-live="polite" aria-atomic="true" class="text-forest-300 text-sm tabular-nums">0 / 24</span>
     <label class="text-forest-300 text-xs flex items-center gap-2">
-      <input type="checkbox" data-audio-on checked class="accent-bronze-500" /> audio
+      <input type="checkbox" data-audio-on checked class="accent-bronze-500 focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" /> audio
     </label>
   </div>
+  <p class="text-forest-400 text-xs mt-2">This tool uses motion by design. If that's uncomfortable, consider the audio-only or butterfly-hug tool instead.</p>
 </div>
 
 <script>

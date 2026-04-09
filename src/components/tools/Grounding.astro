@@ -10,24 +10,24 @@ const containerClass = fullscreen
 ---
 
 <div class:list={[containerClass]} data-grounding-widget>
-  <h2 data-grounding-prompt class="font-serif text-2xl text-forest-100 mb-2">Name 5 things you can see</h2>
+  <h2 data-grounding-prompt aria-live="polite" class="font-serif text-2xl text-forest-100 mb-2">Name 5 things you can see</h2>
   <p class="text-forest-300 text-sm mb-6">Look around. Tap the button as you name each one out loud or in your head.</p>
 
   <div class="flex items-center gap-4 mb-6">
-    <div data-grounding-count class="font-serif text-6xl font-semibold text-bronze-400 tabular-nums">5</div>
+    <div data-grounding-count aria-live="polite" aria-atomic="true" class="font-serif text-6xl font-semibold text-bronze-400 tabular-nums">5</div>
     <div class="text-forest-300 text-sm">remaining</div>
   </div>
 
   <button
     data-grounding-tap
-    class="w-full py-4 rounded-lg bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors"
+    class="w-full py-4 rounded-lg bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
   >
     I named one
   </button>
 
   <button
     data-grounding-reset
-    class="w-full mt-3 py-2 text-sm text-forest-400 hover:text-forest-200 transition-colors"
+    class="w-full mt-3 py-2 text-sm text-forest-400 hover:text-forest-200 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
   >
     Start over
   </button>

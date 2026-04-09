@@ -14,7 +14,7 @@ const containerClass = fullscreen
     <h2 class="font-serif text-xl text-forest-100 mb-3">Step 1: Where is your calm place?</h2>
     <div class="grid grid-cols-2 gap-3">
       {['A forest', 'A beach', 'A meadow', 'A mountain top', 'A room I know', 'Somewhere imagined'].map((e) => (
-        <button data-pick-env={e} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm">
+        <button data-pick-env={e} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
           {e}
         </button>
       ))}
@@ -26,12 +26,12 @@ const containerClass = fullscreen
     <p class="text-forest-300 text-sm mb-4">Pick anything that feels comforting. You can pick more than one.</p>
     <div class="grid grid-cols-2 gap-3 mb-4" data-comfort-options>
       {['An animal', 'A soft blanket', 'Music', 'A person who feels safe', 'Warm sun', 'Cool breeze'].map((c) => (
-        <button data-pick-comfort={c} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm">
+        <button data-pick-comfort={c} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
           {c}
         </button>
       ))}
     </div>
-    <button data-to-senses class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors">
+    <button data-to-senses class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
       Next
     </button>
   </div>
@@ -46,7 +46,7 @@ const containerClass = fullscreen
       <li>What do you <strong>feel</strong> — on your skin, under your feet?</li>
       <li>How does your body feel when you're there?</li>
     </ol>
-    <button data-to-done class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors">
+    <button data-to-done class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
       Stay here for a moment
     </button>
   </div>
@@ -55,7 +55,7 @@ const containerClass = fullscreen
     <h2 class="font-serif text-2xl text-forest-100 mb-3">This place is yours.</h2>
     <p data-safe-summary class="text-forest-300 mb-4"></p>
     <p class="text-forest-300 text-sm mb-6">Rest here as long as you need. When you're ready, you can open your eyes.</p>
-    <button data-restart class="px-4 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 hover:bg-forest-600 transition-colors">Start over</button>
+    <button data-restart class="px-4 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">Start over</button>
   </div>
 </div>
 

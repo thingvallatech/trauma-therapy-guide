@@ -16,7 +16,7 @@ const containerClass = fullscreen
     <p class="text-forest-300 text-sm mb-4">Which of these feels right for today?</p>
     <div class="grid grid-cols-2 gap-3">
       {['Wooden box', 'Steel vault', 'Treasure chest', 'Balloon'].map((c) => (
-        <button data-pick-container={c} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors">
+        <button data-pick-container={c} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
           {c}
         </button>
       ))}
@@ -28,11 +28,11 @@ const containerClass = fullscreen
     <h2 class="font-serif text-xl text-forest-100 mb-3">Step 2: Put things inside</h2>
     <p class="text-forest-300 text-sm mb-4">Type a word or phrase for something you want to set aside, then add it. You can add as many as you want.</p>
     <div class="flex gap-2 mb-4">
-      <input type="text" data-worry-input placeholder="e.g. the test on Friday" class="flex-1 px-3 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 placeholder:text-forest-400 focus:outline-none focus:ring-2 focus:ring-bronze-500" />
-      <button data-worry-add class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors">Add</button>
+      <input type="text" data-worry-input aria-label="Something to set aside" placeholder="e.g. the test on Friday" class="flex-1 px-3 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 placeholder:text-forest-400 focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" />
+      <button data-worry-add class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">Add</button>
     </div>
     <ul data-worry-list class="mb-4 space-y-1 text-forest-200 text-sm"></ul>
-    <button data-to-step-3 class="px-4 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 hover:bg-forest-600 transition-colors">
+    <button data-to-step-3 class="px-4 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
       Close the container
     </button>
   </div>
@@ -43,7 +43,7 @@ const containerClass = fullscreen
     <p class="text-forest-300 text-sm mb-4">Imagine closing your container. What kind of lock does it have?</p>
     <div class="grid grid-cols-2 gap-3 mb-4">
       {['Key', 'Combination', 'Magic word', 'Knot'].map((l) => (
-        <button data-pick-lock={l} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors">{l}</button>
+        <button data-pick-lock={l} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{l}</button>
       ))}
     </div>
   </div>
@@ -54,7 +54,7 @@ const containerClass = fullscreen
     <p class="text-forest-300 text-sm mb-4">Where will you keep it until you're ready to come back?</p>
     <div class="grid grid-cols-2 gap-3 mb-4">
       {['High shelf', 'Deep ocean', 'Locked room', 'Another planet'].map((p) => (
-        <button data-pick-place={p} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors">{p}</button>
+        <button data-pick-place={p} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{p}</button>
       ))}
     </div>
   </div>
@@ -64,7 +64,7 @@ const containerClass = fullscreen
     <h2 class="font-serif text-2xl text-forest-100 mb-3">It's put away.</h2>
     <p data-summary class="text-forest-300 mb-6"></p>
     <p class="text-forest-300 text-sm mb-6">Take a slow breath. You can come back to it whenever you're ready.</p>
-    <button data-restart class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors">Do it again</button>
+    <button data-restart class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">Do it again</button>
   </div>
 </div>
 

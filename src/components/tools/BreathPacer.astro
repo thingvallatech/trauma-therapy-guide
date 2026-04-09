@@ -11,20 +11,20 @@ const containerClass = fullscreen
 
 <div class:list={[containerClass]} data-breath-widget>
   <div class="mb-4 flex flex-wrap gap-2 justify-center">
-    <button data-breath-pattern="box" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors">
+    <button data-breath-pattern="box" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
       Box (4-4-4-4)
     </button>
-    <button data-breath-pattern="478" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors">
+    <button data-breath-pattern="478" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
       4-7-8
     </button>
-    <button data-breath-pattern="coherent" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors">
+    <button data-breath-pattern="coherent" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
       Coherent (5-5)
     </button>
   </div>
 
   <div class="mb-4 flex gap-2 justify-center">
     {[1, 3, 5, 10].map((m) => (
-      <button data-breath-minutes={m} class="px-3 py-1 rounded-md bg-forest-700 border border-forest-600 text-forest-200 text-xs hover:bg-forest-600 transition-colors">
+      <button data-breath-minutes={m} class="px-3 py-1 rounded-md bg-forest-700 border border-forest-600 text-forest-200 text-xs hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
         {m} min
       </button>
     ))}
@@ -36,14 +36,14 @@ const containerClass = fullscreen
       class="w-32 h-32 rounded-full bg-bronze-500/30 border-2 border-bronze-400 transition-transform ease-in-out"
       style="transform: scale(1);"
     ></div>
-    <div data-breath-phase class="absolute font-serif text-xl text-forest-100">Ready</div>
+    <div data-breath-phase aria-live="polite" class="absolute font-serif text-xl text-forest-100">Ready</div>
   </div>
 
-  <div data-breath-remaining class="text-forest-300 text-sm mb-4"></div>
+  <div data-breath-remaining aria-live="polite" class="text-forest-300 text-sm mb-4"></div>
 
   <button
     data-breath-toggle
-    class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors"
+    class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
   >
     Start
   </button>

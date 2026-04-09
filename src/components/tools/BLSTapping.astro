@@ -23,7 +23,7 @@ const panelHeight = fullscreen ? "h-80" : "h-48";
       <span data-passes-value class="block text-center text-forest-100 tabular-nums">24</span>
     </label>
     <div class="text-forest-200 text-xs flex flex-col justify-end">
-      <span data-count class="text-center text-forest-100 text-sm tabular-nums">0 / 24</span>
+      <span data-count aria-live="polite" aria-atomic="true" class="text-center text-forest-100 text-sm tabular-nums">0 / 24</span>
     </div>
   </div>
 
@@ -39,12 +39,13 @@ const panelHeight = fullscreen ? "h-80" : "h-48";
   <div class="mt-4 flex items-center gap-4">
     <button
       data-toggle
-      class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors"
+      class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
     >
       Start
     </button>
     <p class="text-forest-300 text-xs">Tap your own knees / shoulders / butterfly hug in time with the highlighted side.</p>
   </div>
+  <p class="text-forest-400 text-xs mt-2">This tool uses motion by design. If that's uncomfortable, consider the audio-only or butterfly-hug tool instead.</p>
 </div>
 
 <script>
