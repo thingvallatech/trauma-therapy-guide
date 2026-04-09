@@ -2,6 +2,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import FullscreenLayout from '../../../layouts/FullscreenLayout.astro';
 import SUDScale from '../../../components/tools/SUDScale.astro';
+import VOCScale from '../../../components/tools/VOCScale.astro';
 
 export async function getStaticPaths() {
   const tools = await getCollection('tools', (t) => t.data.locale === 'en');
@@ -20,6 +21,7 @@ const { tool } = Astro.props;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const widgets: Record<string, any> = {
   'SUDScale': SUDScale,
+  'VOCScale': VOCScale,
 };
 
 const Widget = widgets[tool.data.componentName] ?? null;
