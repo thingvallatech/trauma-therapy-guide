@@ -1,0 +1,136 @@
+---
+interface Props {
+  fullscreen?: boolean;
+}
+
+const { fullscreen = false } = Astro.props;
+const containerClass = fullscreen
+  ? "w-full max-w-2xl mx-auto p-8"
+  : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
+---
+
+<div class:list={[containerClass]} data-bls-audio-widget>
+  <div class="mb-4 p-3 border border-amber-500/50 bg-amber-900/20 rounded-md text-amber-100 text-xs">
+    🎧 Headphones required — stereo separation is what makes this bilateral.
+  </div>
+
+  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+    <label class="text-forest-200 text-xs">
+      Speed (Hz)
+      <input data-bls-speed type="range" min="0.3" max="2" step="0.1" value="1.0" class="w-full accent-bronze-500" />
+      <span data-bls-speed-value class="block text-center text-forest-100 tabular-nums">1.0</span>
+    </label>
+    <label class="text-forest-200 text-xs">
+      Passes / set
+      <input data-bls-passes type="range" min="6" max="48" step="2" value="24" class="w-full accent-bronze-500" />
+      <span data-bls-passes-value class="block text-center text-forest-100 tabular-nums">24</span>
+    </label>
+    <label class="text-forest-200 text-xs">
+      Tone (Hz)
+      <input data-bls-freq type="range" min="220" max="880" step="10" value="440" class="w-full accent-bronze-500" />
+      <span data-bls-freq-value class="block text-center text-forest-100 tabular-nums">440</span>
+    </label>
+    <label class="text-forest-200 text-xs">
+      Volume
+      <input data-bls-volume type="range" min="0" max="1" step="0.05" value="0.3" class="w-full accent-bronze-500" />
+      <span data-bls-volume-value class="block text-center text-forest-100 tabular-nums">30%</span>
+    </label>
+  </div>
+
+  <div class="flex items-center gap-4">
+    <button
+      data-bls-toggle
+      class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors"
+    >
+      Start
+    </button>
+    <span data-bls-count class="text-forest-300 text-sm tabular-nums">0 / 24</span>
+    <div class="flex-1"></div>
+    <div class="flex gap-4 text-forest-300 text-sm">
+      <span data-bls-indicator-l class="opacity-30">◀ L</span>
+      <span data-bls-indicator-r class="opacity-30">R ▶</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  const widgets = document.querySelectorAll('[data-bls-audio-widget]');
+  widgets.forEach((root) => {
+    const speed = root.querySelector<HTMLInputElement>('[data-bls-speed]')!;
+    const speedVal = root.querySelector<HTMLElement>('[data-bls-speed-value]')!;
+    const passes = root.querySelector<HTMLInputElement>('[data-bls-passes]')!;
+    const passesVal = root.querySelector<HTMLElement>('[data-bls-passes-value]')!;
+    const freq = root.querySelector<HTMLInputElement>('[data-bls-freq]')!;
+    const freqVal = root.querySelector<HTMLElement>('[data-bls-freq-value]')!;
+    const vol = root.querySelector<HTMLInputElement>('[data-bls-volume]')!;
+    const volVal = root.querySelector<HTMLElement>('[data-bls-volume-value]')!;
+    const toggle = root.querySelector<HTMLButtonElement>('[data-bls-toggle]')!;
+    const count = root.querySelector<HTMLElement>('[data-bls-count]')!;
+    const indL = root.querySelector<HTMLElement>('[data-bls-indicator-l]')!;
+    const indR = root.querySelector<HTMLElement>('[data-bls-indicator-r]')!;
+
+    let ctx: AudioContext | null = null;
+    let running = false;
+    let passCount = 0;
+    let intervalId = 0;
+    let side: 'L' | 'R' = 'L';
+
+    function playPulse(pan: number) {
+      if (!ctx) return;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const panner = ctx.createStereoPanner();
+      osc.type = 'sine';
+      osc.frequency.value = parseFloat(freq.value);
+      panner.pan.value = pan;
+      gain.gain.value = 0;
+      gain.gain.linearRampToValueAtTime(parseFloat(vol.value), ctx.currentTime + 0.01);
+      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.15);
+      osc.connect(gain).connect(panner).connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.2);
+    }
+
+    function tick() {
+      const pan = side === 'L' ? -1 : 1;
+      playPulse(pan);
+      indL.style.opacity = side === 'L' ? '1' : '0.3';
+      indR.style.opacity = side === 'R' ? '1' : '0.3';
+      side = side === 'L' ? 'R' : 'L';
+      passCount += 1;
+      count.textContent = `${passCount} / ${passes.value}`;
+      if (passCount >= parseInt(passes.value, 10)) {
+        stop();
+      }
+    }
+
+    function start() {
+      ctx = ctx ?? new (window.AudioContext || (window as any).webkitAudioContext)();
+      running = true;
+      passCount = 0;
+      side = 'L';
+      toggle.textContent = 'Stop';
+      const hz = parseFloat(speed.value);
+      const intervalMs = 1000 / (hz * 2);
+      tick();
+      intervalId = window.setInterval(tick, intervalMs);
+    }
+
+    function stop() {
+      running = false;
+      clearInterval(intervalId);
+      toggle.textContent = 'Start';
+      indL.style.opacity = '0.3';
+      indR.style.opacity = '0.3';
+    }
+
+    toggle.addEventListener('click', () => (running ? stop() : start()));
+    speed.addEventListener('input', () => (speedVal.textContent = parseFloat(speed.value).toFixed(1)));
+    passes.addEventListener('input', () => {
+      passesVal.textContent = passes.value;
+      if (!running) count.textContent = `0 / ${passes.value}`;
+    });
+    freq.addEventListener('input', () => (freqVal.textContent = freq.value));
+    vol.addEventListener('input', () => (volVal.textContent = `${Math.round(parseFloat(vol.value) * 100)}%`));
+  });
+</script>
