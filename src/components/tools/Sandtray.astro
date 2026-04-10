@@ -137,6 +137,7 @@ const s = t[lang];
 <script>
   import * as THREE from 'three';
   import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+  import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js';
 
   // ----- SandRenderer -----
   // Three.js scene: subdivided plane whose vertices are displaced from a
@@ -463,7 +464,11 @@ const s = t[lang];
     /** Place a new figure instance at the given world (x, z) position. */
     async place(figureId: string, modelPath: string, x: number, z: number, scale = 1): Promise<PlacedFigure> {
       const template = await this.loadTemplate(modelPath);
-      const group = template.clone(true);
+      // SkeletonUtils.clone correctly rebinds skinned meshes to their cloned
+      // skeletons. Object3D.clone(true) does NOT — the cloned mesh's bones
+      // still reference the original skeleton, causing armor to float and
+      // rigged characters to collapse to their bind pose.
+      const group = SkeletonUtils.clone(template) as THREE.Group;
       // KayKit characters are ~1.8 units tall in the Y axis. Scale accordingly.
       group.scale.setScalar(scale);
       group.position.set(x, 0, z);
