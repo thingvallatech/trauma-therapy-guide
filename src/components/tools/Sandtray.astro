@@ -16,7 +16,6 @@ const containerClass = fullscreen
 const t = {
   en: {
     canvasAriaLabel: 'Sandtray canvas',
-    figuresLabel: 'Placed figures',
     paletteLabel: 'Figure palette',
     stepBack: 'Step back',
     returnToTray: 'Return to tray',
@@ -26,7 +25,6 @@ const t = {
   },
   es: {
     canvasAriaLabel: 'Lienzo de bandeja de arena',
-    figuresLabel: 'Figuras colocadas',
     paletteLabel: 'Paleta de figuras',
     stepBack: 'Da un paso atrás',
     returnToTray: 'Volver a la bandeja',
@@ -67,11 +65,6 @@ const s = t[lang];
         "
         aria-label={s.canvasAriaLabel}
       ></canvas>
-      <div
-        data-sandtray-figures
-        class="absolute inset-0 pointer-events-none"
-        aria-label={s.figuresLabel}
-      ></div>
     </div>
   </div>
 
@@ -612,7 +605,7 @@ const s = t[lang];
         const a = anglesFromPointers();
         if (a !== null) {
           const delta = a - twistStartAngle;
-          renderer.setYaw(twistStartYaw + delta);
+          renderer.setYaw(twistStartYaw - delta);
         }
         return;
       }
