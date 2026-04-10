@@ -53,7 +53,7 @@ const s = t[lang];
       0 -2px 0 rgba(0,0,0,0.35) inset,
       0 18px 30px -12px rgba(0,0,0,0.55);
   ">
-    <div data-sandtray-stage class="relative w-full" style="height: 24rem;">
+    <div data-sandtray-stage class="relative w-full" style="height: clamp(16rem, 50vw, 28rem);">
       <canvas
         data-sandtray-canvas
         class="absolute inset-0 block w-full h-full rounded-md touch-none select-none"
@@ -75,7 +75,7 @@ const s = t[lang];
       data-sandtray-palette
       role="group"
       aria-label={s.paletteLabel}
-      class="overflow-x-auto"
+      class="overflow-y-auto max-h-48 sm:max-h-72"
     >
       {sandtrayCategories.map((cat) => {
         const figs = sandtrayFigures.filter((f) => f.category === cat.key);
@@ -92,7 +92,7 @@ const s = t[lang];
                   data-sandtray-palette-item={f.id}
                   data-model-path={f.modelPath}
                   data-default-scale={f.defaultScale}
-                  class="px-3 py-2 bg-wood-100 text-charcoal rounded-md border border-wood-300 text-sm hover:bg-wood-200"
+                  class="px-2 py-1.5 sm:px-3 sm:py-2 bg-wood-100 text-charcoal rounded-md border border-wood-300 text-xs sm:text-sm hover:bg-wood-200"
                   aria-label={f.alt[lang]}
                   aria-pressed="false"
                 >
@@ -530,7 +530,7 @@ const s = t[lang];
       return { x: p.x, z: p.z };
     }
 
-    // Pointer state for carving, two-finger twist, right-click orbit, and figure drag.
+    // Pointer state for carving, two-finger twist, right-click orbit, figure drag, and pinch-to-scale.
     const activePointers = new Map<number, { x: number; y: number }>();
     let isCarving = false;
     let twistStartAngle: number | null = null;
@@ -540,11 +540,21 @@ const s = t[lang];
     let isRightDragOrbit = false;
     let rightDragStartX = 0;
     let rightDragStartYaw = 0;
+    // Pinch-to-scale (two-finger gesture on a placed figure).
+    let pinchFigure: PlacedFigure | null = null;
+    let pinchStartDist = 0;
+    let pinchStartScale = 1;
 
     function anglesFromPointers(): number | null {
       if (activePointers.size < 2) return null;
       const [a, b] = Array.from(activePointers.values());
       return Math.atan2(b.y - a.y, b.x - a.x);
+    }
+
+    function distBetweenPointers(): number {
+      if (activePointers.size < 2) return 0;
+      const [a, b] = Array.from(activePointers.values());
+      return Math.hypot(b.x - a.x, b.y - a.y);
     }
 
     function findFigureAtPointer(evt: PointerEvent | MouseEvent): PlacedFigure | null {
@@ -565,12 +575,22 @@ const s = t[lang];
 
     canvas.addEventListener('pointerdown', (e: PointerEvent) => {
       activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
-      // Two fingers down → stop carving and start a twist. Must run BEFORE
-      // we kick off carving for the second finger, so check the size first.
+      // Two fingers down → check if first finger was on a figure (pinch-to-scale)
+      // or on empty sand (two-finger orbit). Must run BEFORE the single-finger
+      // carve path can fire.
       if (activePointers.size === 2) {
         isCarving = false;
-        twistStartAngle = anglesFromPointers();
-        twistStartYaw = renderer.cameraYaw;
+        // If we were dragging a figure with the first finger, convert to pinch-scale.
+        if (draggingFigure) {
+          pinchFigure = draggingFigure;
+          pinchStartDist = distBetweenPointers();
+          pinchStartScale = draggingFigure.scale;
+          draggingFigure = null; // release drag; pinch takes over
+        } else {
+          // No figure drag → orbit the camera.
+          twistStartAngle = anglesFromPointers();
+          twistStartYaw = renderer.cameraYaw;
+        }
         return;
       }
       // Right-click drag → orbit the camera (mouse alternative to two-finger twist).
@@ -620,6 +640,17 @@ const s = t[lang];
       if (activePointers.has(e.pointerId)) {
         activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       }
+      // Pinch-to-scale a placed figure.
+      if (pinchFigure) {
+        const dist = distBetweenPointers();
+        if (pinchStartDist > 0) {
+          const ratio = dist / pinchStartDist;
+          const newScale = Math.max(0.2, Math.min(5.0, pinchStartScale * ratio));
+          pinchFigure.scale = newScale;
+          pinchFigure.group.scale.setScalar(newScale);
+        }
+        return;
+      }
       // Right-click drag orbit → rotate camera proportionally to horizontal mouse delta.
       if (isRightDragOrbit) {
         const dx = e.clientX - rightDragStartX;
@@ -653,7 +684,7 @@ const s = t[lang];
 
     canvas.addEventListener('pointerup', (e: PointerEvent) => {
       activePointers.delete(e.pointerId);
-      if (activePointers.size < 2) twistStartAngle = null;
+      if (activePointers.size < 2) { twistStartAngle = null; pinchFigure = null; }
       if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
       isRightDragOrbit = false;
       draggingFigure = null;
@@ -662,7 +693,7 @@ const s = t[lang];
 
     canvas.addEventListener('pointercancel', (e: PointerEvent) => {
       activePointers.delete(e.pointerId);
-      if (activePointers.size < 2) twistStartAngle = null;
+      if (activePointers.size < 2) { twistStartAngle = null; pinchFigure = null; }
       isRightDragOrbit = false;
       draggingFigure = null;
       isCarving = false;
@@ -673,9 +704,20 @@ const s = t[lang];
       if (hit) figureManager.remove(hit.instanceId);
     });
 
-    // Scroll wheel → continuous zoom (adjusts orthographic frustum size).
+    // Scroll wheel → scale figure if cursor is over one, else zoom camera.
     canvas.addEventListener('wheel', (e: WheelEvent) => {
       e.preventDefault();
+      // Check if cursor is over a placed figure.
+      const hit = findFigureAtPointer(e as unknown as PointerEvent);
+      if (hit) {
+        // Scale the figure under the cursor.
+        const scaleSpeed = 0.002;
+        const newScale = Math.max(0.2, Math.min(5.0, hit.scale - e.deltaY * scaleSpeed));
+        hit.scale = newScale;
+        hit.group.scale.setScalar(newScale);
+        return;
+      }
+      // No figure under cursor → zoom camera.
       const zoomSpeed = 0.005;
       const current = renderer.isStepped ? renderer.steppedFrustumSize : renderer.baseFrustumSize;
       const next = Math.max(6, Math.min(30, current + e.deltaY * zoomSpeed));
