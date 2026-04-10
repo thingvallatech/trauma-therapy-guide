@@ -525,12 +525,16 @@ const s = t[lang];
       return { x: p.x, z: p.z };
     }
 
-    // Pointer state for both single-finger carving and two-finger twist.
+    // Pointer state for carving, two-finger twist, right-click orbit, and figure drag.
     const activePointers = new Map<number, { x: number; y: number }>();
     let isCarving = false;
     let twistStartAngle: number | null = null;
     let twistStartYaw = 0;
     let draggingFigure: PlacedFigure | null = null;
+    // Right-click orbit (mouse users who can't two-finger twist).
+    let isRightDragOrbit = false;
+    let rightDragStartX = 0;
+    let rightDragStartYaw = 0;
 
     function anglesFromPointers(): number | null {
       if (activePointers.size < 2) return null;
@@ -551,6 +555,9 @@ const s = t[lang];
       return null;
     }
 
+    // Prevent context menu on canvas so right-drag orbit works.
+    canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
     canvas.addEventListener('pointerdown', (e: PointerEvent) => {
       activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       // Two fingers down → stop carving and start a twist. Must run BEFORE
@@ -559,6 +566,14 @@ const s = t[lang];
         isCarving = false;
         twistStartAngle = anglesFromPointers();
         twistStartYaw = renderer.cameraYaw;
+        return;
+      }
+      // Right-click drag → orbit the camera (mouse alternative to two-finger twist).
+      if (e.button === 2) {
+        isRightDragOrbit = true;
+        rightDragStartX = e.clientX;
+        rightDragStartYaw = renderer.cameraYaw;
+        canvas.setPointerCapture(e.pointerId);
         return;
       }
       const w = canvasToWorld(e);
@@ -600,6 +615,12 @@ const s = t[lang];
       if (activePointers.has(e.pointerId)) {
         activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       }
+      // Right-click drag orbit → rotate camera proportionally to horizontal mouse delta.
+      if (isRightDragOrbit) {
+        const dx = e.clientX - rightDragStartX;
+        renderer.setYaw(rightDragStartYaw - dx * 0.008);
+        return;
+      }
       // Two-finger twist in progress → update camera yaw and skip carving.
       if (twistStartAngle !== null) {
         const a = anglesFromPointers();
@@ -629,6 +650,7 @@ const s = t[lang];
       activePointers.delete(e.pointerId);
       if (activePointers.size < 2) twistStartAngle = null;
       if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
+      isRightDragOrbit = false;
       draggingFigure = null;
       isCarving = false;
     });
@@ -636,6 +658,7 @@ const s = t[lang];
     canvas.addEventListener('pointercancel', (e: PointerEvent) => {
       activePointers.delete(e.pointerId);
       if (activePointers.size < 2) twistStartAngle = null;
+      isRightDragOrbit = false;
       draggingFigure = null;
       isCarving = false;
     });
@@ -644,6 +667,20 @@ const s = t[lang];
       const hit = findFigureAtPointer(e);
       if (hit) figureManager.remove(hit.instanceId);
     });
+
+    // Scroll wheel → continuous zoom (adjusts orthographic frustum size).
+    canvas.addEventListener('wheel', (e: WheelEvent) => {
+      e.preventDefault();
+      const zoomSpeed = 0.005;
+      const current = renderer.isStepped ? renderer.steppedFrustumSize : renderer.baseFrustumSize;
+      const next = Math.max(6, Math.min(30, current + e.deltaY * zoomSpeed));
+      if (renderer.isStepped) {
+        renderer.steppedFrustumSize = next;
+      } else {
+        renderer.baseFrustumSize = next;
+      }
+      renderer.updateZoom(next);
+    }, { passive: false });
 
     // ----- Figure manager -----
     const figureManager = new FigureManager(renderer.scene, renderer);
