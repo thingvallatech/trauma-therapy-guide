@@ -1,88 +1,39 @@
 {
-  "comment": "Curated starter list of CC0 low-poly 3D models for the sandtray. Sources: KayKit Character Pack Adventures (5 characters as People) and KayKit Dungeon Remastered (4 props as Shelter). Animals / Plants / Earth are empty in v1 because KayKit does not have self-contained GLB files for those archetypes; adding them is deferred to a follow-up milestone (candidate sources: Quaternius website scraping, Poly.pizza). License: CC0-1.0, no attribution required, but we record it here anyway.",
+  "comment": "Curated CC0 low-poly 3D models for the sandtray. Sources: KayKit Character Pack Adventures (5 heroes), KayKit Character Pack Skeletons (4 skeletons), KayKit Dungeon Remastered (props). License: CC0-1.0.",
   "license": "CC0-1.0",
   "source_attribution": "KayKit by Kay Lousberg (https://kaylousberg.com/), CC0",
   "models": [
-    {
-      "id": "knight",
-      "file": "Knight.glb",
-      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0/main/addons/kaykit_character_pack_adventures/Characters/gltf/Knight.glb",
-      "category": "people",
-      "alt_en": "Knight",
-      "alt_es": "Caballero",
-      "defaultScale": 1.0
-    },
-    {
-      "id": "mage",
-      "file": "Mage.glb",
-      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0/main/addons/kaykit_character_pack_adventures/Characters/gltf/Mage.glb",
-      "category": "people",
-      "alt_en": "Mage",
-      "alt_es": "Mago",
-      "defaultScale": 1.0
-    },
-    {
-      "id": "rogue",
-      "file": "Rogue.glb",
-      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0/main/addons/kaykit_character_pack_adventures/Characters/gltf/Rogue.glb",
-      "category": "people",
-      "alt_en": "Rogue",
-      "alt_es": "Pícaro",
-      "defaultScale": 1.0
-    },
-    {
-      "id": "barbarian",
-      "file": "Barbarian.glb",
-      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0/main/addons/kaykit_character_pack_adventures/Characters/gltf/Barbarian.glb",
-      "category": "people",
-      "alt_en": "Warrior",
-      "alt_es": "Guerrero",
-      "defaultScale": 1.0
-    },
-    {
-      "id": "rogue-hooded",
-      "file": "Rogue_Hooded.glb",
-      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0/main/addons/kaykit_character_pack_adventures/Characters/gltf/Rogue_Hooded.glb",
-      "category": "people",
-      "alt_en": "Traveler",
-      "alt_es": "Viajero",
-      "defaultScale": 1.0
-    },
-    {
-      "id": "shelter-chest",
-      "file": "chest.glb",
-      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/chest.glb",
-      "category": "shelter",
-      "alt_en": "Treasure chest",
-      "alt_es": "Cofre",
-      "defaultScale": 1.0
-    },
-    {
-      "id": "shelter-doorway",
-      "file": "wall_doorway.glb",
-      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/wall_doorway.glb",
-      "category": "shelter",
-      "alt_en": "Doorway",
-      "alt_es": "Puerta",
-      "defaultScale": 1.0
-    },
-    {
-      "id": "shelter-torch",
-      "file": "torch.gltf.glb",
-      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/torch.gltf.glb",
-      "category": "shelter",
-      "alt_en": "Torch",
-      "alt_es": "Antorcha",
-      "defaultScale": 1.0
-    },
-    {
-      "id": "shelter-barrel",
-      "file": "barrel_large.gltf.glb",
-      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/barrel_large.gltf.glb",
-      "category": "shelter",
-      "alt_en": "Barrel",
-      "alt_es": "Barril",
-      "defaultScale": 1.0
-    }
+    { "id": "knight",       "file": "Knight.glb",        "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0/main/addons/kaykit_character_pack_adventures/Characters/gltf/Knight.glb",        "category": "people", "alt_en": "Knight",     "alt_es": "Caballero",  "defaultScale": 1.0 },
+    { "id": "mage",         "file": "Mage.glb",          "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0/main/addons/kaykit_character_pack_adventures/Characters/gltf/Mage.glb",          "category": "people", "alt_en": "Mage",       "alt_es": "Mago",       "defaultScale": 1.0 },
+    { "id": "rogue",        "file": "Rogue.glb",         "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0/main/addons/kaykit_character_pack_adventures/Characters/gltf/Rogue.glb",         "category": "people", "alt_en": "Rogue",      "alt_es": "Pícaro",     "defaultScale": 1.0 },
+    { "id": "barbarian",    "file": "Barbarian.glb",     "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0/main/addons/kaykit_character_pack_adventures/Characters/gltf/Barbarian.glb",     "category": "people", "alt_en": "Warrior",    "alt_es": "Guerrero",   "defaultScale": 1.0 },
+    { "id": "rogue-hooded", "file": "Rogue_Hooded.glb",  "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Adventures-1.0/main/addons/kaykit_character_pack_adventures/Characters/gltf/Rogue_Hooded.glb",  "category": "people", "alt_en": "Traveler",   "alt_es": "Viajero",    "defaultScale": 1.0 },
+
+    { "id": "skeleton-warrior", "file": "Skeleton_Warrior.glb", "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Skeletons-1.0/main/addons/kaykit_character_pack_skeletons/Characters/gltf/Skeleton_Warrior.glb", "category": "people", "alt_en": "Skeleton",   "alt_es": "Esqueleto",     "defaultScale": 1.0 },
+    { "id": "skeleton-mage",    "file": "Skeleton_Mage.glb",    "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Skeletons-1.0/main/addons/kaykit_character_pack_skeletons/Characters/gltf/Skeleton_Mage.glb",    "category": "people", "alt_en": "Dark mage",  "alt_es": "Mago oscuro",   "defaultScale": 1.0 },
+    { "id": "skeleton-rogue",   "file": "Skeleton_Rogue.glb",   "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Skeletons-1.0/main/addons/kaykit_character_pack_skeletons/Characters/gltf/Skeleton_Rogue.glb",   "category": "people", "alt_en": "Shadow",     "alt_es": "Sombra",        "defaultScale": 1.0 },
+    { "id": "skeleton-minion",  "file": "Skeleton_Minion.glb",  "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Character-Pack-Skeletons-1.0/main/addons/kaykit_character_pack_skeletons/Characters/gltf/Skeleton_Minion.glb",  "category": "people", "alt_en": "Minion",     "alt_es": "Esbirro",       "defaultScale": 1.0 },
+
+    { "id": "shelter-chest",      "file": "chest.glb",                  "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/chest.glb",                  "category": "shelter", "alt_en": "Treasure chest", "alt_es": "Cofre",          "defaultScale": 1.0 },
+    { "id": "shelter-chest-gold", "file": "chest_gold.glb",             "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/chest_gold.glb",             "category": "shelter", "alt_en": "Gold chest",     "alt_es": "Cofre dorado",   "defaultScale": 1.0 },
+    { "id": "shelter-doorway",    "file": "wall_doorway.glb",           "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/wall_doorway.glb",           "category": "shelter", "alt_en": "Doorway",        "alt_es": "Puerta",         "defaultScale": 1.0 },
+    { "id": "shelter-torch",      "file": "torch.gltf.glb",             "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/torch.gltf.glb",             "category": "shelter", "alt_en": "Torch",          "alt_es": "Antorcha",       "defaultScale": 1.0 },
+    { "id": "shelter-barrel",     "file": "barrel_large.gltf.glb",      "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/barrel_large.gltf.glb",      "category": "shelter", "alt_en": "Barrel",         "alt_es": "Barril",         "defaultScale": 1.0 },
+    { "id": "shelter-bed",        "file": "bed_decorated.gltf.glb",     "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/bed_decorated.gltf.glb",     "category": "shelter", "alt_en": "Bed",            "alt_es": "Cama",           "defaultScale": 1.0 },
+    { "id": "shelter-chair",      "file": "chair.gltf.glb",             "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/chair.gltf.glb",             "category": "shelter", "alt_en": "Chair",          "alt_es": "Silla",          "defaultScale": 1.0 },
+    { "id": "shelter-table",      "file": "table_long.gltf.glb",        "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/table_long.gltf.glb",        "category": "shelter", "alt_en": "Table",          "alt_es": "Mesa",           "defaultScale": 1.0 },
+
+    { "id": "earth-candle",    "file": "candle_lit.gltf.glb",     "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/candle_lit.gltf.glb",     "category": "earth", "alt_en": "Candle",      "alt_es": "Vela",        "defaultScale": 1.0 },
+    { "id": "earth-coin",     "file": "coin_stack_large.gltf.glb","url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/coin_stack_large.gltf.glb","category": "earth", "alt_en": "Coins",       "alt_es": "Monedas",     "defaultScale": 1.0 },
+    { "id": "earth-key",      "file": "key.gltf.glb",             "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/key.gltf.glb",             "category": "earth", "alt_en": "Key",         "alt_es": "Llave",       "defaultScale": 1.0 },
+    { "id": "earth-feast-a",  "file": "plate_food_A.gltf.glb",    "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/plate_food_A.gltf.glb",    "category": "earth", "alt_en": "Feast",       "alt_es": "Banquete",    "defaultScale": 1.0 },
+    { "id": "earth-feast-b",  "file": "plate_food_B.gltf.glb",    "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/plate_food_B.gltf.glb",    "category": "earth", "alt_en": "Food",        "alt_es": "Comida",      "defaultScale": 1.0 },
+    { "id": "earth-bottle",   "file": "bottle_A_green.gltf.glb",  "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/bottle_A_green.gltf.glb",  "category": "earth", "alt_en": "Potion",      "alt_es": "Poción",      "defaultScale": 1.0 },
+    { "id": "earth-pillar",   "file": "pillar.gltf.glb",          "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/pillar.gltf.glb",          "category": "earth", "alt_en": "Pillar",      "alt_es": "Pilar",       "defaultScale": 1.0 },
+
+    { "id": "earth-banner-blue",  "file": "banner_blue.gltf.glb",  "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/banner_blue.gltf.glb",  "category": "earth", "alt_en": "Blue banner",  "alt_es": "Estandarte azul", "defaultScale": 1.0 },
+    { "id": "earth-banner-green", "file": "banner_green.gltf.glb", "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/banner_green.gltf.glb", "category": "earth", "alt_en": "Green banner", "alt_es": "Estandarte verde","defaultScale": 1.0 },
+
+    { "id": "earth-sword",   "file": "sword_shield.gltf.glb",    "url": "https://raw.githubusercontent.com/KayKit-Game-Assets/KayKit-Dungeon-Remastered-1.0/main/addons/kaykit_dungeon_remastered/Assets/gltf/sword_shield.gltf.glb",    "category": "earth", "alt_en": "Sword & shield", "alt_es": "Espada y escudo", "defaultScale": 1.0 }
   ]
 }
