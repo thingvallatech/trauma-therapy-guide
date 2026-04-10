@@ -16,7 +16,7 @@ locale: es
 
 ## Qué es esto
 
-Una bandeja de arena digital que puedes usar en el navegador. Elige figuras de la paleta — personas, animales, árboles, casas, símbolos — y colócalas en la arena para construir una escena. La escena puede representar cualquier cosa: cómo se sienten las cosas ahora, un recuerdo, una preocupación, un lugar seguro, algo que no terminas de poner en palabras.
+Una bandeja de arena digital que puedes usar en el navegador. Elige una figura de la paleta — actualmente un pequeño conjunto de personajes arquetípicos y objetos simbólicos de refugio — y toca la arena para colocarla. Las figuras son modelos 3D que se asientan sobre la superficie de la arena; puedes moverlas, girar toda la bandeja con dos dedos para verla desde otro ángulo, y construir una escena que represente lo que sea importante ahora: cómo se sienten las cosas, un recuerdo, una preocupación, un lugar seguro, algo que no terminas de poner en palabras.
 
 La terapia de bandeja de arena se ha utilizado desde la década de 1930 (la "Técnica del Mundo" de Margaret Lowenfeld) y fue desarrollada como juego de arena junguiano por Dora Kalff. Es especialmente útil cuando las palabras parecen insuficientes — para los niños, para material traumático difícil de verbalizar, o cuando simplemente quieres externalizar algo y mirarlo desde afuera.
 
@@ -29,11 +29,16 @@ La terapia de bandeja de arena se ha utilizado desde la década de 1930 (la "Té
 
 Nada de lo que colocas se guarda. Al cerrar o actualizar la página, la escena desaparece — esto es intencional. El *proceso* de elegir, colocar y organizar es el punto, no el registro.
 
-La paleta de figuras utiliza emojis en lugar de imágenes con licencia. Esto mantiene la herramienta gratuita y ampliamente accesible, pero el vocabulario es más pequeño que el de una colección física de bandeja de arena. Para el trabajo clínico en sesión, una bandeja de arena física y una biblioteca de figuras sigue siendo la opción más rica — esta versión digital es más útil para la práctica en casa, la teleterapia o la construcción rápida de escenas en sesión cuando no hay una bandeja física disponible.
+La biblioteca de figuras es intencionalmente pequeña en la v1 — un puñado de personajes arquetípicos y algunos objetos simbólicos de refugio de la biblioteca de código abierto KayKit. La terapia tradicional de bandeja de arena se basa en cientos de miniaturas físicas con una rica variedad categórica (personas, animales, naturaleza, vehículos, figuras mitológicas, etc.), y una bandeja física sigue siendo la opción más rica para el trabajo clínico en sesión. Esta versión digital es más útil cuando no hay una bandeja física disponible — para la práctica en casa, la teleterapia o la construcción rápida de escenas — y el conjunto de figuras crecerá a medida que agreguemos más modelos 3D.
 
 ## Cómo usarla
 
-- **Agregar una figura:** Toca cualquier emoji en la paleta debajo del lienzo.
-- **Mover una figura:** Arrástrala sobre el lienzo.
-- **Eliminar una figura:** Toca dos veces (o haz doble clic) sobre ella.
-- **Empezar de nuevo:** Toca "Limpiar bandeja".
+1. **Talla la arena.** Arrastra un dedo por la arena vacía para presionar surcos en ella. La luz real realza las crestas para que la arena se sienta tangible.
+2. **Coloca una figura.** Toca un botón de figura en la paleta debajo de la bandeja, luego toca la arena donde quieras colocarla. La figura aterriza como un pequeño modelo 3D — un caballero, un mago, un viajero, un cofre del tesoro, una puerta — que puedes organizar como un juguete sobre una bandeja de arena real.
+3. **Mueve una figura.** Arrastra cualquier figura colocada para deslizarla por la arena.
+4. **Elimina una figura.** Tócala dos veces (o haz doble clic).
+5. **Rodea la bandeja.** Pellizca-gira con dos dedos para rotar la cámara. La arena, las marcas y las figuras giran juntas — la bandeja es la que gira, no las figuras.
+6. **Da un paso atrás.** Toca **Da un paso atrás** para ampliar la vista y ver toda la bandeja desde más lejos. Tócalo de nuevo para volver.
+7. **Aplana la arena.** Toca **Aplanar la arena** para restablecer la superficie sin quitar las figuras.
+8. **Limpia todo.** Toca **Limpiar bandeja** para quitar todas las figuras y aplanar la arena.
+9. **Guarda una imagen.** Toca **Guardar imagen** para descargar un PNG de la bandeja actual.
