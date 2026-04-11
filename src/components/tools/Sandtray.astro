@@ -71,11 +71,17 @@ const s = t[lang];
   <div
     class="mt-4 flex flex-col gap-2 p-3 bg-forest-900 rounded-lg border border-forest-700"
   >
+    <input
+      data-sandtray-search
+      type="search"
+      placeholder={lang === 'es' ? 'Buscar figuras...' : 'Search figures...'}
+      class="w-full mb-2 px-2 py-1.5 text-xs sm:text-sm bg-wood-50 text-charcoal rounded-md border border-wood-300 focus:outline-none focus:ring-2 focus:ring-forest-500"
+    />
     <div
       data-sandtray-palette
       role="group"
       aria-label={s.paletteLabel}
-      class="overflow-y-auto max-h-48 sm:max-h-72"
+      class="overflow-y-auto max-h-40 sm:max-h-64"
     >
       {sandtrayCategories.map((cat) => {
         const figs = sandtrayFigures.filter((f) => f.category === cat.key);
@@ -106,7 +112,15 @@ const s = t[lang];
     </div>
   </div>
 
-  <div class="mt-3 flex flex-wrap gap-2 items-center">
+  <div class="mt-2 flex flex-wrap gap-1.5 items-center">
+    <span class="text-xs text-wood-300 mr-1">Sand:</span>
+    <button data-sand-color="0xe2ceb1" class="w-6 h-6 rounded-full border-2 border-wood-400 ring-2 ring-transparent hover:ring-wood-300" style="background: #e2ceb1;" aria-label="Tan sand" title="Tan"></button>
+    <button data-sand-color="0x8fb4c9" class="w-6 h-6 rounded-full border-2 border-wood-400 ring-2 ring-transparent hover:ring-wood-300" style="background: #8fb4c9;" aria-label="Blue sand" title="Blue"></button>
+    <button data-sand-color="0xf0ebe3" class="w-6 h-6 rounded-full border-2 border-wood-400 ring-2 ring-transparent hover:ring-wood-300" style="background: #f0ebe3;" aria-label="White sand" title="White"></button>
+    <button data-sand-color="0x6b5b4f" class="w-6 h-6 rounded-full border-2 border-wood-400 ring-2 ring-transparent hover:ring-wood-300" style="background: #6b5b4f;" aria-label="Dark sand" title="Dark"></button>
+    <button data-sand-color="0xc9a96e" class="w-6 h-6 rounded-full border-2 border-wood-400 ring-2 ring-transparent hover:ring-wood-300" style="background: #c9a96e;" aria-label="Gold sand" title="Gold"></button>
+  </div>
+  <div class="mt-2 flex flex-wrap gap-2 items-center">
     <button
       data-sandtray-witness
       class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
@@ -204,8 +218,20 @@ const s = t[lang];
       this.updateCamera();
 
       // Directional light from upper-left, matching the old 2D directional shading.
+      // Shadow maps enabled for figure drop-shadows on the sand.
+      this.renderer.shadowMap.enabled = true;
+      this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
       const dir = new THREE.DirectionalLight(0xffffff, 1.3);
       dir.position.set(-6, 10, 4);
+      dir.castShadow = true;
+      dir.shadow.mapSize.set(1024, 1024);
+      dir.shadow.camera.near = 0.5;
+      dir.shadow.camera.far = 30;
+      dir.shadow.camera.left = -10;
+      dir.shadow.camera.right = 10;
+      dir.shadow.camera.top = 10;
+      dir.shadow.camera.bottom = -10;
       this.scene.add(dir);
       this.scene.add(new THREE.AmbientLight(0xffffff, 0.35));
 
@@ -313,7 +339,21 @@ const s = t[lang];
       });
 
       this.sand = new THREE.Mesh(this.sandGeometry, sandMat);
+      this.sand.receiveShadow = true;
       this.scene.add(this.sand);
+
+      // Add a shadow-receiving plane just below the sand so figures cast
+      // visible shadows. The custom ShaderMaterial doesn't receive Three.js
+      // shadows natively, so we layer a transparent MeshStandardMaterial
+      // plane underneath that captures the shadow map.
+      const shadowPlane = new THREE.Mesh(
+        new THREE.PlaneGeometry(SandRenderer.TRAY_W, SandRenderer.TRAY_H),
+        new THREE.ShadowMaterial({ opacity: 0.3 }),
+      );
+      shadowPlane.rotation.x = -Math.PI / 2;
+      shadowPlane.position.y = -0.01; // just below sand surface
+      shadowPlane.receiveShadow = true;
+      this.scene.add(shadowPlane);
     }
 
     resize(): void {
@@ -415,6 +455,23 @@ const s = t[lang];
       this.heightTexture.needsUpdate = true;
     }
 
+    /** Sample the height map at world (x, z) and return the Y displacement. */
+    sampleHeight(x: number, z: number): number {
+      const W = SandRenderer.MAP_W;
+      const H = SandRenderer.MAP_H;
+      const mx = ((x + SandRenderer.TRAY_W / 2) / SandRenderer.TRAY_W) * (W - 1);
+      const my = ((SandRenderer.TRAY_H / 2 - z) / SandRenderer.TRAY_H) * (H - 1);
+      const ix = Math.max(0, Math.min(W - 1, Math.round(mx)));
+      const iy = Math.max(0, Math.min(H - 1, Math.round(my)));
+      return this.heightData[iy * W + ix];
+    }
+
+    /** Change the sand color at runtime. */
+    setSandColor(hex: number): void {
+      const mat = this.sand.material as THREE.ShaderMaterial;
+      (mat.uniforms.uSandColor.value as THREE.Color).set(hex);
+    }
+
     level(): void {
       // Refill this.heightData (which is the same buffer the DataTexture wraps)
       // in place, so the GPU sees the refreshed noise and subsequent carve()
@@ -471,8 +528,17 @@ const s = t[lang];
       const group = SkeletonUtils.clone(template) as THREE.Group;
       // KayKit characters are ~1.8 units tall in the Y axis. Scale accordingly.
       group.scale.setScalar(scale);
-      group.position.set(x, 0, z);
+      // Snap Y to the sand surface height at this position.
+      const sandY = this.renderer.sampleHeight(x, z);
+      group.position.set(x, sandY, z);
       group.rotation.y = 0;
+      group.userData.modelPath = modelPath; // for undo restore
+      // Enable shadow casting on every mesh in the figure.
+      group.traverse((child) => {
+        if ((child as THREE.Mesh).isMesh) {
+          child.castShadow = true;
+        }
+      });
       this.scene.add(group);
 
       const instance: PlacedFigure = {
@@ -605,13 +671,10 @@ const s = t[lang];
       if (!w) return;
       // Tap-to-place: if a palette figure is pending, place it and clear selection.
       if (pendingFigure) {
-        figureManager.place(
-          pendingFigure.figureId,
-          pendingFigure.modelPath,
-          w.x,
-          w.z,
-          pendingFigure.scale,
-        ).catch((err) => console.error('[sandtray] place failed:', err));
+        const pf = pendingFigure;
+        figureManager.place(pf.figureId, pf.modelPath, w.x, w.z, pf.scale)
+          .then((fig) => pushUndo({ type: 'place', instanceId: fig.instanceId }))
+          .catch((err) => console.error('[sandtray] place failed:', err));
         setPendingFigure(null);
         return;
       }
@@ -623,10 +686,8 @@ const s = t[lang];
         return;
       }
       // Single finger down → start carving at the hit point (if any).
-      // Defer the initial carve by one microtask so a second pointerdown
-      // landing in the same input task can cancel it (two-finger twist
-      // start). Without this, every touch-initiated twist would leave a
-      // spurious divot under the first finger.
+      // Snapshot the height map for undo before first carve stroke.
+      pushUndo({ type: 'carve', snapshot: snapshotHeightMap() });
       isCarving = true;
       canvas.setPointerCapture(e.pointerId);
       queueMicrotask(() => {
@@ -666,13 +727,25 @@ const s = t[lang];
         }
         return;
       }
-      // Drag in progress → reposition the figure along the sand plane.
+      // Drag in progress → move or rotate the figure.
       if (draggingFigure) {
-        const w = canvasToWorld(e);
-        if (!w) return;
-        draggingFigure.x = w.x;
-        draggingFigure.z = w.z;
-        draggingFigure.group.position.set(w.x, 0, w.z);
+        if (e.shiftKey) {
+          // Shift+drag → rotate the figure around Y based on horizontal mouse delta.
+          const prev = activePointers.get(e.pointerId);
+          if (prev) {
+            const dx = e.clientX - prev.x;
+            draggingFigure.rotationY += dx * 0.015;
+            draggingFigure.group.rotation.y = draggingFigure.rotationY;
+          }
+        } else {
+          // Normal drag → reposition along the sand plane, snapping Y to sand height.
+          const w = canvasToWorld(e);
+          if (!w) return;
+          draggingFigure.x = w.x;
+          draggingFigure.z = w.z;
+          const sandY = renderer.sampleHeight(w.x, w.z);
+          draggingFigure.group.position.set(w.x, sandY, w.z);
+        }
         return;
       }
       // Single-finger carving → brush at the current hit point.
@@ -701,7 +774,44 @@ const s = t[lang];
 
     canvas.addEventListener('dblclick', (e: MouseEvent) => {
       const hit = findFigureAtPointer(e);
-      if (hit) figureManager.remove(hit.instanceId);
+      if (hit) {
+        // Save enough state to undo the removal.
+        pushUndo({
+          type: 'remove',
+          figureId: hit.figureId,
+          modelPath: hit.group.userData.modelPath || '',
+          x: hit.x,
+          z: hit.z,
+          rotationY: hit.rotationY,
+          scale: hit.scale,
+        });
+        figureManager.remove(hit.instanceId);
+      }
+    });
+
+    // Ctrl+Z / Cmd+Z → undo last action.
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
+        e.preventDefault();
+        const action = undoStack.pop();
+        if (!action) return;
+        if (action.type === 'place') {
+          // Undo a placement → remove the figure.
+          figureManager.remove(action.instanceId);
+        } else if (action.type === 'remove') {
+          // Undo a removal → re-place the figure.
+          figureManager.place(action.figureId, action.modelPath, action.x, action.z, action.scale)
+            .then((fig) => {
+              fig.rotationY = action.rotationY;
+              fig.group.rotation.y = action.rotationY;
+            })
+            .catch(() => {});
+        } else if (action.type === 'carve') {
+          // Undo a carve stroke → restore the height map snapshot.
+          renderer.heightData.set(action.snapshot);
+          renderer.heightTexture.needsUpdate = true;
+        }
+      }
     });
 
     // Scroll wheel → scale figure if cursor is over one, else zoom camera.
@@ -728,6 +838,23 @@ const s = t[lang];
       }
       renderer.updateZoom(next);
     }, { passive: false });
+
+    // ----- Undo stack -----
+    type UndoAction =
+      | { type: 'place'; instanceId: string }
+      | { type: 'remove'; figureId: string; modelPath: string; x: number; z: number; rotationY: number; scale: number }
+      | { type: 'carve'; snapshot: Float32Array };
+    const undoStack: UndoAction[] = [];
+    const MAX_UNDO = 30;
+
+    function pushUndo(action: UndoAction): void {
+      undoStack.push(action);
+      if (undoStack.length > MAX_UNDO) undoStack.shift();
+    }
+
+    function snapshotHeightMap(): Float32Array {
+      return new Float32Array(renderer.heightData);
+    }
 
     // ----- Figure manager -----
     const figureManager = new FigureManager(renderer.scene, renderer);
@@ -796,6 +923,34 @@ const s = t[lang];
     root.querySelector<HTMLButtonElement>('[data-sandtray-clear]')?.addEventListener('click', () => {
       figureManager.clearAll();
       renderer.level();
+    });
+
+    // ----- Sand color picker -----
+    root.querySelectorAll<HTMLButtonElement>('[data-sand-color]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const hex = parseInt(btn.dataset.sandColor || '0xe2ceb1');
+        renderer.setSandColor(hex);
+        // Highlight selected swatch.
+        root.querySelectorAll<HTMLButtonElement>('[data-sand-color]').forEach((b) => {
+          b.classList.toggle('ring-forest-400', b === btn);
+          b.classList.toggle('ring-transparent', b !== btn);
+        });
+      });
+    });
+
+    // ----- Figure search / filter -----
+    const searchInput = root.querySelector<HTMLInputElement>('[data-sandtray-search]');
+    searchInput?.addEventListener('input', () => {
+      const q = (searchInput.value || '').toLowerCase().trim();
+      root.querySelectorAll<HTMLButtonElement>('[data-sandtray-palette-item]').forEach((btn) => {
+        const label = (btn.textContent || '').toLowerCase();
+        btn.style.display = q && !label.includes(q) ? 'none' : '';
+      });
+      // Hide category headers if all their buttons are hidden.
+      root.querySelectorAll<HTMLElement>('[data-sandtray-palette] > div').forEach((catDiv) => {
+        const visible = catDiv.querySelectorAll<HTMLButtonElement>('[data-sandtray-palette-item]:not([style*="display: none"])');
+        (catDiv as HTMLElement).style.display = visible.length === 0 && q ? 'none' : '';
+      });
     });
   });
 </script>
