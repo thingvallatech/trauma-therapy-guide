@@ -1065,7 +1065,8 @@ const s = t[lang];
     // "Face" for precise skin-tone changes.
     // KayKit models use a single texture atlas on one material. For those,
     // we tint the whole model as a fallback.
-    const SKIN_MAT_NAMES = new Set(['skin', 'face', 'body', 'head']);
+    // Only "Skin" and "Body" — NOT "Face" (which includes eyes/eyebrows/mouth).
+    const SKIN_MAT_NAMES = new Set(['skin', 'body']);
 
     const skinPicker = root.querySelector<HTMLInputElement>('[data-fig-skin-picker]');
     function applyModelTint(hexStr: string): void {
