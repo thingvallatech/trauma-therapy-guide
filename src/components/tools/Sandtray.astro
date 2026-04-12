@@ -94,13 +94,13 @@ const s = t[lang];
     <button data-fig-rotate-left class="w-9 h-9 rounded-md bg-white text-charcoal text-lg hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title="Rotate left" aria-label="Rotate left">↺</button>
     <button data-fig-rotate-right class="w-9 h-9 rounded-md bg-white text-charcoal text-lg hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title="Rotate right" aria-label="Rotate right">↻</button>
     <span class="text-wood-400 mx-0.5">|</span>
-    <span class="text-xs text-charcoal mr-0.5">Color:</span>
-    <button data-fig-color="0xffffff" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #ffffff;" title="Default" aria-label="Default color"></button>
-    <button data-fig-color="0xff6b6b" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #ff6b6b;" title="Red" aria-label="Red tint"></button>
-    <button data-fig-color="0x6bc5ff" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #6bc5ff;" title="Blue" aria-label="Blue tint"></button>
-    <button data-fig-color="0x7bde7b" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #7bde7b;" title="Green" aria-label="Green tint"></button>
-    <button data-fig-color="0xffd93d" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #ffd93d;" title="Yellow" aria-label="Yellow tint"></button>
-    <button data-fig-color="0xc084fc" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #c084fc;" title="Purple" aria-label="Purple tint"></button>
+    <span class="text-xs text-charcoal mr-0.5">Skin:</span>
+    <button data-fig-skin="0xf5d0a9" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #f5d0a9;" title="Light" aria-label="Light skin tone"></button>
+    <button data-fig-skin="0xe8b88a" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #e8b88a;" title="Light-medium" aria-label="Light-medium skin tone"></button>
+    <button data-fig-skin="0xc68c53" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #c68c53;" title="Medium" aria-label="Medium skin tone"></button>
+    <button data-fig-skin="0x8d5524" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #8d5524;" title="Medium-dark" aria-label="Medium-dark skin tone"></button>
+    <button data-fig-skin="0x5c3317" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #5c3317;" title="Dark" aria-label="Dark skin tone"></button>
+    <button data-fig-skin="0x3b1f0b" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #3b1f0b;" title="Deep" aria-label="Deep skin tone"></button>
     <span class="text-wood-400 mx-0.5">|</span>
     <button data-fig-remove class="w-9 h-9 rounded-md bg-red-50 text-red-600 text-lg font-bold hover:bg-red-100 border border-red-300 flex items-center justify-center" title="Remove" aria-label="Remove figure">✕</button>
     <button data-fig-deselect class="ml-auto text-sm text-charcoal hover:text-forest-600 font-medium" aria-label="Deselect">Done</button>
@@ -1054,22 +1054,52 @@ const s = t[lang];
       hideToolbar();
     });
 
-    // Color tint buttons — multiply a color into every mesh material on the selected figure.
-    root.querySelectorAll<HTMLButtonElement>('[data-fig-color]').forEach((btn) => {
+    // Skin tone buttons — only tint meshes whose original color looks like skin
+    // (warm beige/pink hue, mid-to-light saturation). This targets faces, hands,
+    // and exposed skin without recoloring armor, clothing, or hair.
+    function isSkinColor(c: THREE.Color): boolean {
+      const hsl = { h: 0, s: 0, l: 0 };
+      c.getHSL(hsl);
+      // Skin tones in KayKit/Quaternius models sit around hue 0.03–0.12 (orange-peach),
+      // saturation 0.2–0.8, lightness 0.4–0.85. Also catch very light near-white skin
+      // meshes (low saturation, high lightness) that some Quaternius characters use.
+      const hueOk = (hsl.h >= 0.0 && hsl.h <= 0.12) || hsl.h >= 0.95; // wraps around red
+      const satOk = hsl.s >= 0.1 && hsl.s <= 0.9;
+      const litOk = hsl.l >= 0.35 && hsl.l <= 0.9;
+      return hueOk && satOk && litOk;
+    }
+
+    root.querySelectorAll<HTMLButtonElement>('[data-fig-skin]').forEach((btn) => {
       btn.addEventListener('click', () => {
         if (!selectedFigure) return;
-        const hex = parseInt(btn.dataset.figColor || '0xffffff');
-        const tint = new THREE.Color(hex);
+        const hex = parseInt(btn.dataset.figSkin || '0xf5d0a9');
+        const skinTone = new THREE.Color(hex);
         selectedFigure.group.traverse((child) => {
           const mesh = child as THREE.Mesh;
-          if (mesh.isMesh && mesh.material) {
-            // Clone material on first tint so we don't affect the cached template.
-            if (!mesh.userData._tinted) {
-              mesh.material = (mesh.material as THREE.Material).clone();
-              mesh.userData._tinted = true;
+          if (!mesh.isMesh || !mesh.material) return;
+          // Handle both single materials and material arrays.
+          const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+          mats.forEach((mat, i) => {
+            const m = mat as THREE.MeshStandardMaterial;
+            if (!m.color) return;
+            // Save the original color on first encounter so we can detect skin.
+            if (!mesh.userData._origColors) {
+              mesh.userData._origColors = mats.map((mt) => (mt as THREE.MeshStandardMaterial).color?.clone());
             }
-            (mesh.material as any).color?.copy(tint);
-          }
+            const orig = mesh.userData._origColors[i] as THREE.Color | undefined;
+            if (!orig || !isSkinColor(orig)) return;
+            // Clone material on first skin tint so we don't affect the cached template.
+            if (!mesh.userData._skinTinted) {
+              if (Array.isArray(mesh.material)) {
+                mesh.material = mesh.material.map((mt) => mt.clone());
+              } else {
+                mesh.material = mesh.material.clone();
+              }
+              mesh.userData._skinTinted = true;
+            }
+            const target = Array.isArray(mesh.material) ? mesh.material[i] : mesh.material;
+            (target as THREE.MeshStandardMaterial).color.copy(skinTone);
+          });
         });
       });
     });
