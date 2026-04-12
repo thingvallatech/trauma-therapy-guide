@@ -1065,8 +1065,10 @@ const s = t[lang];
     // "Face" for precise skin-tone changes.
     // KayKit models use a single texture atlas on one material. For those,
     // we tint the whole model as a fallback.
-    // Only "Skin" and "Body" — NOT "Face" (which includes eyes/eyebrows/mouth).
-    const SKIN_MAT_NAMES = new Set(['skin', 'body']);
+    // "Skin" = body/hands, "Face" = head face panel, "Body"/"Head" = alternate names.
+    // The dark "eyes" on Quaternius models are holes in the Face geometry where the
+    // darker Skin body shows through — so tinting both keeps eyes naturally darker.
+    const SKIN_MAT_NAMES = new Set(['skin', 'face', 'body', 'head']);
 
     const skinPicker = root.querySelector<HTMLInputElement>('[data-fig-skin-picker]');
     function applyModelTint(hexStr: string): void {
