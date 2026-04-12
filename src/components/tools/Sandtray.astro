@@ -293,27 +293,34 @@ const s = t[lang];
       this.sandGeometry.rotateX(-Math.PI / 2);
 
       // Custom ShaderMaterial that displaces vertices from the height texture.
+      // Three terrain zones blended by height:
+      //   Below waterLevel → blue water with subtle wave sheen
+      //   Around zero      → sand (user-chosen color)
+      //   Above rockLevel  → grey-brown rock/mountain
       const sandMat = new THREE.ShaderMaterial({
         uniforms: {
-          uHeight:    { value: this.heightTexture },
-          uLightDir:  { value: new THREE.Vector3(-0.6, 1.0, 0.4).normalize() },
-          uSandColor: { value: new THREE.Color(0xe2ceb1) }, // wood-300 tinted warmer
-          uAmbient:   { value: 0.35 },
+          uHeight:     { value: this.heightTexture },
+          uLightDir:   { value: new THREE.Vector3(-0.6, 1.0, 0.4).normalize() },
+          uSandColor:  { value: new THREE.Color(0xe2ceb1) },
+          uWaterColor: { value: new THREE.Color(0x3b7ea1) },
+          uRockColor:  { value: new THREE.Color(0x7a7265) },
+          uAmbient:    { value: 0.35 },
+          uWaterLevel: { value: -0.15 },
+          uRockLevel:  { value: 0.25 },
+          uTime:       { value: 0.0 },
         },
         vertexShader: /* glsl */`
           uniform sampler2D uHeight;
           varying vec3 vNormalW;
           varying float vHeight;
+          varying vec2 vUv;
 
-          // Sobel-like normal reconstruction from the height texture.
-          // Samples neighbours in texture space and builds a tangent-space normal.
           vec3 computeNormal(vec2 uv) {
             vec2 texel = vec2(1.0 / ${SandRenderer.MAP_W}.0, 1.0 / ${SandRenderer.MAP_H}.0);
             float hL = texture2D(uHeight, uv + vec2(-texel.x, 0.0)).r;
             float hR = texture2D(uHeight, uv + vec2( texel.x, 0.0)).r;
             float hD = texture2D(uHeight, uv + vec2(0.0, -texel.y)).r;
             float hU = texture2D(uHeight, uv + vec2(0.0,  texel.y)).r;
-            // World-space step between samples (tray dimensions / map resolution).
             float dx = ${SandRenderer.TRAY_W.toFixed(4)} / ${SandRenderer.MAP_W}.0;
             float dz = ${SandRenderer.TRAY_H.toFixed(4)} / ${SandRenderer.MAP_H}.0;
             vec3 n = normalize(vec3((hL - hR) / (2.0 * dx), 1.0, (hD - hU) / (2.0 * dz)));
@@ -325,22 +332,49 @@ const s = t[lang];
             vec3 displaced = position + vec3(0.0, h, 0.0);
             vNormalW = computeNormal(uv);
             vHeight = h;
+            vUv = uv;
             gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced, 1.0);
           }
         `,
         fragmentShader: /* glsl */`
           uniform vec3  uLightDir;
           uniform vec3  uSandColor;
+          uniform vec3  uWaterColor;
+          uniform vec3  uRockColor;
           uniform float uAmbient;
+          uniform float uWaterLevel;
+          uniform float uRockLevel;
+          uniform float uTime;
           varying vec3  vNormalW;
           varying float vHeight;
+          varying vec2  vUv;
 
           void main() {
             float ndotl = max(dot(normalize(vNormalW), normalize(uLightDir)), 0.0);
             float lit = uAmbient + ndotl * (1.0 - uAmbient);
-            // Slight darken-with-depth for valleys, slight lift for ridges.
-            float depthShade = clamp(0.5 + vHeight * 6.0, 0.85, 1.15);
-            vec3 col = uSandColor * lit * depthShade;
+
+            // Blend zones based on height.
+            vec3 baseColor;
+            if (vHeight < uWaterLevel) {
+              // Water zone: flat blue with subtle animated shimmer.
+              float shimmer = 0.03 * sin(vUv.x * 40.0 + uTime * 2.0) * sin(vUv.y * 30.0 + uTime * 1.5);
+              float depth = smoothstep(uWaterLevel, uWaterLevel - 0.3, vHeight);
+              baseColor = mix(uSandColor, uWaterColor, depth) + shimmer;
+              // Water is flatter-lit (less directional shading).
+              lit = mix(lit, uAmbient + 0.4, depth);
+            } else if (vHeight > uRockLevel) {
+              // Rock/mountain zone: grey-brown, rougher shading.
+              float rockBlend = smoothstep(uRockLevel, uRockLevel + 0.2, vHeight);
+              baseColor = mix(uSandColor, uRockColor, rockBlend);
+              // Rock has more contrast (stronger directional light).
+              lit = lit * (1.0 + rockBlend * 0.3);
+            } else {
+              // Sand zone: normal behavior.
+              baseColor = uSandColor;
+            }
+
+            float depthShade = clamp(0.5 + vHeight * 4.0, 0.8, 1.2);
+            vec3 col = baseColor * lit * depthShade;
             gl_FragColor = vec4(col, 1.0);
           }
         `,
@@ -428,6 +462,9 @@ const s = t[lang];
     }
 
     render(): void {
+      // Update water shimmer animation time.
+      const mat = this.sand.material as THREE.ShaderMaterial;
+      mat.uniforms.uTime.value = performance.now() * 0.001;
       this.renderer.render(this.scene, this.camera);
     }
 
