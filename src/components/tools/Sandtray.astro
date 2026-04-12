@@ -66,16 +66,53 @@ const s = t[lang];
         aria-label={s.canvasAriaLabel}
       ></canvas>
     </div>
+
+    <!-- Controls bar: right below the sand, inside the wood frame -->
+    <div class="mt-3 flex flex-wrap gap-2 items-center">
+      <button data-sandtray-witness class="px-3 py-1.5 rounded-md bg-wood-100 text-charcoal text-sm font-medium hover:bg-wood-200 border border-wood-300">{s.stepBack}</button>
+      <button data-sandtray-capture class="px-3 py-1.5 rounded-md bg-wood-100 text-charcoal text-sm font-medium hover:bg-wood-200 border border-wood-300">{s.saveImage}</button>
+      <button data-sandtray-level class="px-3 py-1.5 rounded-md bg-wood-100 text-charcoal text-sm font-medium hover:bg-wood-200 border border-wood-300">{s.levelSand}</button>
+      <button data-sandtray-clear class="px-3 py-1.5 rounded-md bg-wood-100 text-charcoal text-sm font-medium hover:bg-wood-200 border border-wood-300">{s.clearTray}</button>
+      <span class="text-xs text-wood-200 ml-auto mr-1">Sand:</span>
+      <button data-sand-color="0xe2ceb1" class="w-6 h-6 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #e2ceb1;" aria-label="Tan sand" title="Tan"></button>
+      <button data-sand-color="0x8fb4c9" class="w-6 h-6 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #8fb4c9;" aria-label="Blue sand" title="Blue"></button>
+      <button data-sand-color="0xf0ebe3" class="w-6 h-6 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #f0ebe3;" aria-label="White sand" title="White"></button>
+      <button data-sand-color="0x6b5b4f" class="w-6 h-6 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #6b5b4f;" aria-label="Dark sand" title="Dark"></button>
+      <button data-sand-color="0xc9a96e" class="w-6 h-6 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #c9a96e;" aria-label="Gold sand" title="Gold"></button>
+    </div>
   </div>
 
+  <!-- Figure toolbar: appears when a figure is selected -->
   <div
-    class="mt-4 flex flex-col gap-2 p-3 bg-forest-900 rounded-lg border border-forest-700"
+    data-sandtray-figure-toolbar
+    class="mt-2 hidden flex-wrap gap-1.5 items-center bg-wood-50 rounded-lg border border-wood-300 px-3 py-2"
   >
+    <span data-figure-toolbar-label class="text-sm text-charcoal mr-2 font-semibold">Selected:</span>
+    <button data-fig-scale-down class="w-9 h-9 rounded-md bg-white text-charcoal text-lg font-bold hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title="Smaller" aria-label="Make smaller">−</button>
+    <button data-fig-scale-up class="w-9 h-9 rounded-md bg-white text-charcoal text-lg font-bold hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title="Bigger" aria-label="Make bigger">+</button>
+    <span class="text-wood-400 mx-0.5">|</span>
+    <button data-fig-rotate-left class="w-9 h-9 rounded-md bg-white text-charcoal text-lg hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title="Rotate left" aria-label="Rotate left">↺</button>
+    <button data-fig-rotate-right class="w-9 h-9 rounded-md bg-white text-charcoal text-lg hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title="Rotate right" aria-label="Rotate right">↻</button>
+    <span class="text-wood-400 mx-0.5">|</span>
+    <span class="text-xs text-charcoal mr-0.5">Color:</span>
+    <button data-fig-color="0xffffff" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #ffffff;" title="Default" aria-label="Default color"></button>
+    <button data-fig-color="0xff6b6b" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #ff6b6b;" title="Red" aria-label="Red tint"></button>
+    <button data-fig-color="0x6bc5ff" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #6bc5ff;" title="Blue" aria-label="Blue tint"></button>
+    <button data-fig-color="0x7bde7b" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #7bde7b;" title="Green" aria-label="Green tint"></button>
+    <button data-fig-color="0xffd93d" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #ffd93d;" title="Yellow" aria-label="Yellow tint"></button>
+    <button data-fig-color="0xc084fc" class="w-6 h-6 rounded-full border-2 border-wood-300 hover:ring-2 hover:ring-wood-400" style="background: #c084fc;" title="Purple" aria-label="Purple tint"></button>
+    <span class="text-wood-400 mx-0.5">|</span>
+    <button data-fig-remove class="w-9 h-9 rounded-md bg-red-50 text-red-600 text-lg font-bold hover:bg-red-100 border border-red-300 flex items-center justify-center" title="Remove" aria-label="Remove figure">✕</button>
+    <button data-fig-deselect class="ml-auto text-sm text-charcoal hover:text-forest-600 font-medium" aria-label="Deselect">Done</button>
+  </div>
+
+  <!-- Palette -->
+  <div class="mt-3 flex flex-col gap-2 p-3 bg-cream rounded-lg border border-wood-200">
     <input
       data-sandtray-search
       type="search"
       placeholder={lang === 'es' ? 'Buscar figuras...' : 'Search figures...'}
-      class="w-full mb-2 px-2 py-1.5 text-xs sm:text-sm bg-wood-50 text-charcoal rounded-md border border-wood-300 focus:outline-none focus:ring-2 focus:ring-forest-500"
+      class="w-full mb-1 px-2 py-1.5 text-xs sm:text-sm bg-white text-charcoal rounded-md border border-wood-300 focus:outline-none focus:ring-2 focus:ring-forest-500"
     />
     <div
       data-sandtray-palette
@@ -88,17 +125,17 @@ const s = t[lang];
         if (figs.length === 0) return null;
         return (
           <div class="mb-2">
-            <div class="text-xs font-semibold text-wood-200 uppercase tracking-wide">
+            <div class="text-xs font-semibold text-charcoal uppercase tracking-wide">
               {cat.label[lang]}
             </div>
-            <div class="flex gap-2 mt-1 flex-wrap">
+            <div class="flex gap-1.5 mt-1 flex-wrap">
               {figs.map((f) => (
                 <button
                   type="button"
                   data-sandtray-palette-item={f.id}
                   data-model-path={f.modelPath}
                   data-default-scale={f.defaultScale}
-                  class="px-2 py-1.5 sm:px-3 sm:py-2 bg-wood-100 text-charcoal rounded-md border border-wood-300 text-xs sm:text-sm hover:bg-wood-200"
+                  class="px-2 py-1 sm:px-2.5 sm:py-1.5 bg-white text-charcoal rounded-md border border-wood-300 text-xs sm:text-sm font-medium hover:bg-wood-100 hover:border-wood-400"
                   aria-label={f.alt[lang]}
                   aria-pressed="false"
                 >
@@ -110,56 +147,6 @@ const s = t[lang];
         );
       })}
     </div>
-  </div>
-
-  <div
-    data-sandtray-figure-toolbar
-    class="mt-2 hidden flex-wrap gap-1.5 items-center bg-forest-800 rounded-lg border border-forest-600 px-3 py-2"
-  >
-    <span data-figure-toolbar-label class="text-xs text-wood-200 mr-2 font-semibold">Selected:</span>
-    <button data-fig-scale-down class="w-8 h-8 rounded-md bg-wood-100 text-charcoal text-lg font-bold hover:bg-wood-200 flex items-center justify-center" title="Smaller" aria-label="Make smaller">−</button>
-    <button data-fig-scale-up class="w-8 h-8 rounded-md bg-wood-100 text-charcoal text-lg font-bold hover:bg-wood-200 flex items-center justify-center" title="Bigger" aria-label="Make bigger">+</button>
-    <span class="text-xs text-wood-400 mx-1">|</span>
-    <button data-fig-rotate-left class="w-8 h-8 rounded-md bg-wood-100 text-charcoal text-base hover:bg-wood-200 flex items-center justify-center" title="Rotate left" aria-label="Rotate left">↺</button>
-    <button data-fig-rotate-right class="w-8 h-8 rounded-md bg-wood-100 text-charcoal text-base hover:bg-wood-200 flex items-center justify-center" title="Rotate right" aria-label="Rotate right">↻</button>
-    <span class="text-xs text-wood-400 mx-1">|</span>
-    <button data-fig-remove class="w-8 h-8 rounded-md bg-red-100 text-red-700 text-base hover:bg-red-200 flex items-center justify-center" title="Remove" aria-label="Remove figure">✕</button>
-    <button data-fig-deselect class="ml-auto text-xs text-wood-400 hover:text-wood-200 underline" aria-label="Deselect">done</button>
-  </div>
-
-  <div class="mt-2 flex flex-wrap gap-1.5 items-center">
-    <span class="text-xs text-wood-300 mr-1">Sand:</span>
-    <button data-sand-color="0xe2ceb1" class="w-6 h-6 rounded-full border-2 border-wood-400 ring-2 ring-transparent hover:ring-wood-300" style="background: #e2ceb1;" aria-label="Tan sand" title="Tan"></button>
-    <button data-sand-color="0x8fb4c9" class="w-6 h-6 rounded-full border-2 border-wood-400 ring-2 ring-transparent hover:ring-wood-300" style="background: #8fb4c9;" aria-label="Blue sand" title="Blue"></button>
-    <button data-sand-color="0xf0ebe3" class="w-6 h-6 rounded-full border-2 border-wood-400 ring-2 ring-transparent hover:ring-wood-300" style="background: #f0ebe3;" aria-label="White sand" title="White"></button>
-    <button data-sand-color="0x6b5b4f" class="w-6 h-6 rounded-full border-2 border-wood-400 ring-2 ring-transparent hover:ring-wood-300" style="background: #6b5b4f;" aria-label="Dark sand" title="Dark"></button>
-    <button data-sand-color="0xc9a96e" class="w-6 h-6 rounded-full border-2 border-wood-400 ring-2 ring-transparent hover:ring-wood-300" style="background: #c9a96e;" aria-label="Gold sand" title="Gold"></button>
-  </div>
-  <div class="mt-2 flex flex-wrap gap-2 items-center">
-    <button
-      data-sandtray-witness
-      class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
-    >
-      {s.stepBack}
-    </button>
-    <button
-      data-sandtray-capture
-      class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
-    >
-      {s.saveImage}
-    </button>
-    <button
-      data-sandtray-level
-      class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
-    >
-      {s.levelSand}
-    </button>
-    <button
-      data-sandtray-clear
-      class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
-    >
-      {s.clearTray}
-    </button>
   </div>
 </div>
 
@@ -1065,6 +1052,26 @@ const s = t[lang];
       });
       figureManager.remove(selectedFigure.instanceId);
       hideToolbar();
+    });
+
+    // Color tint buttons — multiply a color into every mesh material on the selected figure.
+    root.querySelectorAll<HTMLButtonElement>('[data-fig-color]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (!selectedFigure) return;
+        const hex = parseInt(btn.dataset.figColor || '0xffffff');
+        const tint = new THREE.Color(hex);
+        selectedFigure.group.traverse((child) => {
+          const mesh = child as THREE.Mesh;
+          if (mesh.isMesh && mesh.material) {
+            // Clone material on first tint so we don't affect the cached template.
+            if (!mesh.userData._tinted) {
+              mesh.material = (mesh.material as THREE.Material).clone();
+              mesh.userData._tinted = true;
+            }
+            (mesh.material as any).color?.copy(tint);
+          }
+        });
+      });
     });
 
     // Deselect button
