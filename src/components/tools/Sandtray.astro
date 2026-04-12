@@ -95,11 +95,11 @@ const s = t[lang];
     <button data-fig-rotate-right class="w-9 h-9 rounded-md bg-white text-charcoal text-lg hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title="Rotate right" aria-label="Rotate right">↻</button>
     <span class="text-wood-400 mx-0.5">|</span>
     <label class="text-xs text-charcoal mr-0.5 flex items-center gap-1">
-      Skin:
+      Color:
       <input
         data-fig-skin-picker
         type="color"
-        value="#e8b88a"
+        value="#ffffff"
         class="w-8 h-8 rounded-full border-2 border-wood-300 cursor-pointer p-0 bg-transparent"
         style="-webkit-appearance: none; appearance: none;"
         title="Choose skin color"
@@ -1059,26 +1059,13 @@ const s = t[lang];
       hideToolbar();
     });
 
-    // Skin tone buttons — only tint meshes whose original color looks like skin
-    // (warm beige/pink hue, mid-to-light saturation). This targets faces, hands,
-    // and exposed skin without recoloring armor, clothing, or hair.
-    function isSkinColor(c: THREE.Color): boolean {
-      const hsl = { h: 0, s: 0, l: 0 };
-      c.getHSL(hsl);
-      // Skin tones in KayKit/Quaternius models sit around hue 0.03–0.12 (orange-peach),
-      // saturation 0.2–0.8, lightness 0.4–0.85. Also catch very light near-white skin
-      // meshes (low saturation, high lightness) that some Quaternius characters use.
-      const hueOk = (hsl.h >= 0.0 && hsl.h <= 0.12) || hsl.h >= 0.95; // wraps around red
-      const satOk = hsl.s >= 0.1 && hsl.s <= 0.9;
-      const litOk = hsl.l >= 0.35 && hsl.l <= 0.9;
-      return hueOk && satOk && litOk;
-    }
-
-    // Skin color picker — applies chosen color to skin-toned meshes only.
+    // Color picker — tints the entire model. The color multiplies against the
+    // texture atlas, so picking a skin tone shifts the whole character while
+    // preserving the texture detail. White = reset to original appearance.
     const skinPicker = root.querySelector<HTMLInputElement>('[data-fig-skin-picker]');
-    function applySkinTone(hexStr: string): void {
+    function applyModelTint(hexStr: string): void {
       if (!selectedFigure) return;
-      const skinTone = new THREE.Color(hexStr);
+      const tint = new THREE.Color(hexStr);
       selectedFigure.group.traverse((child) => {
         const mesh = child as THREE.Mesh;
         if (!mesh.isMesh || !mesh.material) return;
@@ -1086,25 +1073,21 @@ const s = t[lang];
         mats.forEach((mat, i) => {
           const m = mat as THREE.MeshStandardMaterial;
           if (!m.color) return;
-          if (!mesh.userData._origColors) {
-            mesh.userData._origColors = mats.map((mt) => (mt as THREE.MeshStandardMaterial).color?.clone());
-          }
-          const orig = mesh.userData._origColors[i] as THREE.Color | undefined;
-          if (!orig || !isSkinColor(orig)) return;
-          if (!mesh.userData._skinTinted) {
+          // Clone material on first tint so we don't affect the cached template.
+          if (!mesh.userData._tinted) {
             if (Array.isArray(mesh.material)) {
               mesh.material = mesh.material.map((mt) => mt.clone());
             } else {
               mesh.material = mesh.material.clone();
             }
-            mesh.userData._skinTinted = true;
+            mesh.userData._tinted = true;
           }
           const target = Array.isArray(mesh.material) ? mesh.material[i] : mesh.material;
-          (target as THREE.MeshStandardMaterial).color.copy(skinTone);
+          (target as THREE.MeshStandardMaterial).color.copy(tint);
         });
       });
     }
-    skinPicker?.addEventListener('input', () => applySkinTone(skinPicker.value));
+    skinPicker?.addEventListener('input', () => applyModelTint(skinPicker.value));
 
     // Deselect button
     root.querySelector('[data-fig-deselect]')?.addEventListener('click', () => {
