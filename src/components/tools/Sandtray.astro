@@ -680,6 +680,7 @@ const s = t[lang];
         if (figHit) {
           // Right-drag on a figure → rotate it around Y.
           rightDragFigure = figHit;
+          selectedFigure = figHit; // mark as selected for Ctrl+scroll scaling
           rightDragFigureStartX = e.clientX;
           rightDragFigureStartRot = figHit.rotationY;
         } else {
@@ -708,6 +709,7 @@ const s = t[lang];
       const hit = findFigureAtPointer(e);
       if (hit) {
         draggingFigure = hit;
+        selectedFigure = hit; // mark as selected for Ctrl+scroll scaling
         canvas.setPointerCapture(e.pointerId);
         return;
       }
@@ -801,7 +803,6 @@ const s = t[lang];
     canvas.addEventListener('dblclick', (e: MouseEvent) => {
       const hit = findFigureAtPointer(e);
       if (hit) {
-        // Save enough state to undo the removal.
         pushUndo({
           type: 'remove',
           figureId: hit.figureId,
@@ -811,6 +812,7 @@ const s = t[lang];
           rotationY: hit.rotationY,
           scale: hit.scale,
         });
+        if (selectedFigure?.instanceId === hit.instanceId) selectedFigure = null;
         figureManager.remove(hit.instanceId);
       }
     });
@@ -840,20 +842,23 @@ const s = t[lang];
       }
     });
 
-    // Scroll wheel → scale figure if cursor is over one, else zoom camera.
+    // Track the last-clicked figure so Ctrl+scroll can scale it.
+    let selectedFigure: PlacedFigure | null = null;
+
+    // Scroll wheel:
+    //   Plain scroll       → zoom camera
+    //   Ctrl/Cmd + scroll  → scale the selected figure (last clicked/dragged)
     canvas.addEventListener('wheel', (e: WheelEvent) => {
       e.preventDefault();
-      // Check if cursor is over a placed figure.
-      const hit = findFigureAtPointer(e as unknown as PointerEvent);
-      if (hit) {
-        // Scale the figure under the cursor.
-        const scaleSpeed = 0.002;
-        const newScale = Math.max(0.2, Math.min(5.0, hit.scale - e.deltaY * scaleSpeed));
-        hit.scale = newScale;
-        hit.group.scale.setScalar(newScale);
+      if ((e.ctrlKey || e.metaKey) && selectedFigure) {
+        // Scale the selected figure.
+        const scaleSpeed = 0.01;
+        const newScale = Math.max(0.2, Math.min(5.0, selectedFigure.scale - e.deltaY * scaleSpeed));
+        selectedFigure.scale = newScale;
+        selectedFigure.group.scale.setScalar(newScale);
         return;
       }
-      // No figure under cursor → zoom camera.
+      // Zoom camera.
       const zoomSpeed = 0.005;
       const current = renderer.isStepped ? renderer.steppedFrustumSize : renderer.baseFrustumSize;
       const next = Math.max(6, Math.min(30, current + e.deltaY * zoomSpeed));
