@@ -177,8 +177,8 @@ const s = t[lang];
     width: number;   // CSS pixels (was device pixels in the 2D version)
     height: number;  // CSS pixels
     cameraYaw: number = Math.PI * 0.25; // 45° so we start looking from the south-east
+    cameraPitch: number = 0.72; // ~41° elevation angle (radians, 0 = horizon, PI/2 = top-down)
     cameraDistance: number = 15;
-    cameraHeight: number = 12;
     isStepped: boolean = false;
     baseFrustumSize: number = 12;
     steppedFrustumSize: number = 18;
@@ -395,9 +395,11 @@ const s = t[lang];
     }
 
     updateCamera(): void {
-      const x = Math.sin(this.cameraYaw) * this.cameraDistance;
-      const z = Math.cos(this.cameraYaw) * this.cameraDistance;
-      this.camera.position.set(x, this.cameraHeight, z);
+      const horizDist = Math.cos(this.cameraPitch) * this.cameraDistance;
+      const y = Math.sin(this.cameraPitch) * this.cameraDistance;
+      const x = Math.sin(this.cameraYaw) * horizDist;
+      const z = Math.cos(this.cameraYaw) * horizDist;
+      this.camera.position.set(x, y, z);
       this.camera.lookAt(0, 0, 0);
     }
 
@@ -408,6 +410,12 @@ const s = t[lang];
 
     nudgeYaw(delta: number): void {
       this.cameraYaw += delta;
+      this.updateCamera();
+    }
+
+    setPitch(pitch: number): void {
+      // Clamp between ~10° (near horizon) and ~85° (near top-down).
+      this.cameraPitch = Math.max(0.17, Math.min(1.48, pitch));
       this.updateCamera();
     }
 
@@ -605,7 +613,13 @@ const s = t[lang];
     // Right-click orbit (mouse users who can't two-finger twist).
     let isRightDragOrbit = false;
     let rightDragStartX = 0;
+    let rightDragStartY = 0;
     let rightDragStartYaw = 0;
+    let rightDragStartPitch = 0;
+    // Right-click on a figure → rotate it instead of orbiting the camera.
+    let rightDragFigure: PlacedFigure | null = null;
+    let rightDragFigureStartX = 0;
+    let rightDragFigureStartRot = 0;
     // Pinch-to-scale (two-finger gesture on a placed figure).
     let pinchFigure: PlacedFigure | null = null;
     let pinchStartDist = 0;
@@ -653,17 +667,29 @@ const s = t[lang];
           pinchStartScale = draggingFigure.scale;
           draggingFigure = null; // release drag; pinch takes over
         } else {
-          // No figure drag → orbit the camera.
+          // No figure drag → orbit the camera (yaw + pitch).
           twistStartAngle = anglesFromPointers();
           twistStartYaw = renderer.cameraYaw;
+          pinchStartDist = distBetweenPointers(); // reuse for pitch via vertical spread change
         }
         return;
       }
-      // Right-click drag → orbit the camera (mouse alternative to two-finger twist).
+      // Right-click drag → orbit camera OR rotate a figure if clicking on one.
       if (e.button === 2) {
-        isRightDragOrbit = true;
-        rightDragStartX = e.clientX;
-        rightDragStartYaw = renderer.cameraYaw;
+        const figHit = findFigureAtPointer(e);
+        if (figHit) {
+          // Right-drag on a figure → rotate it around Y.
+          rightDragFigure = figHit;
+          rightDragFigureStartX = e.clientX;
+          rightDragFigureStartRot = figHit.rotationY;
+        } else {
+          // Right-drag on empty sand → orbit camera (yaw + pitch).
+          isRightDragOrbit = true;
+          rightDragStartX = e.clientX;
+          rightDragStartY = e.clientY;
+          rightDragStartYaw = renderer.cameraYaw;
+          rightDragStartPitch = renderer.cameraPitch;
+        }
         canvas.setPointerCapture(e.pointerId);
         return;
       }
@@ -712,10 +738,19 @@ const s = t[lang];
         }
         return;
       }
-      // Right-click drag orbit → rotate camera proportionally to horizontal mouse delta.
+      // Right-click drag on a figure → rotate it.
+      if (rightDragFigure) {
+        const dx = e.clientX - rightDragFigureStartX;
+        rightDragFigure.rotationY = rightDragFigureStartRot + dx * 0.015;
+        rightDragFigure.group.rotation.y = rightDragFigure.rotationY;
+        return;
+      }
+      // Right-click drag orbit → horizontal = yaw, vertical = pitch.
       if (isRightDragOrbit) {
         const dx = e.clientX - rightDragStartX;
+        const dy = e.clientY - rightDragStartY;
         renderer.setYaw(rightDragStartYaw - dx * 0.008);
+        renderer.setPitch(rightDragStartPitch + dy * 0.005);
         return;
       }
       // Two-finger twist in progress → update camera yaw and skip carving.
@@ -727,25 +762,14 @@ const s = t[lang];
         }
         return;
       }
-      // Drag in progress → move or rotate the figure.
+      // Drag in progress → reposition along the sand plane, snapping Y to sand height.
       if (draggingFigure) {
-        if (e.shiftKey) {
-          // Shift+drag → rotate the figure around Y based on horizontal mouse delta.
-          const prev = activePointers.get(e.pointerId);
-          if (prev) {
-            const dx = e.clientX - prev.x;
-            draggingFigure.rotationY += dx * 0.015;
-            draggingFigure.group.rotation.y = draggingFigure.rotationY;
-          }
-        } else {
-          // Normal drag → reposition along the sand plane, snapping Y to sand height.
-          const w = canvasToWorld(e);
-          if (!w) return;
-          draggingFigure.x = w.x;
-          draggingFigure.z = w.z;
-          const sandY = renderer.sampleHeight(w.x, w.z);
-          draggingFigure.group.position.set(w.x, sandY, w.z);
-        }
+        const w = canvasToWorld(e);
+        if (!w) return;
+        draggingFigure.x = w.x;
+        draggingFigure.z = w.z;
+        const sandY = renderer.sampleHeight(w.x, w.z);
+        draggingFigure.group.position.set(w.x, sandY, w.z);
         return;
       }
       // Single-finger carving → brush at the current hit point.
@@ -760,6 +784,7 @@ const s = t[lang];
       if (activePointers.size < 2) { twistStartAngle = null; pinchFigure = null; }
       if (canvas.hasPointerCapture(e.pointerId)) canvas.releasePointerCapture(e.pointerId);
       isRightDragOrbit = false;
+      rightDragFigure = null;
       draggingFigure = null;
       isCarving = false;
     });
@@ -768,6 +793,7 @@ const s = t[lang];
       activePointers.delete(e.pointerId);
       if (activePointers.size < 2) { twistStartAngle = null; pinchFigure = null; }
       isRightDragOrbit = false;
+      rightDragFigure = null;
       draggingFigure = null;
       isCarving = false;
     });
