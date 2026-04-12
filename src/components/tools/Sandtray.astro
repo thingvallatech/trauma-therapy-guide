@@ -112,6 +112,21 @@ const s = t[lang];
     </div>
   </div>
 
+  <div
+    data-sandtray-figure-toolbar
+    class="mt-2 hidden flex-wrap gap-1.5 items-center bg-forest-800 rounded-lg border border-forest-600 px-3 py-2"
+  >
+    <span data-figure-toolbar-label class="text-xs text-wood-200 mr-2 font-semibold">Selected:</span>
+    <button data-fig-scale-down class="w-8 h-8 rounded-md bg-wood-100 text-charcoal text-lg font-bold hover:bg-wood-200 flex items-center justify-center" title="Smaller" aria-label="Make smaller">−</button>
+    <button data-fig-scale-up class="w-8 h-8 rounded-md bg-wood-100 text-charcoal text-lg font-bold hover:bg-wood-200 flex items-center justify-center" title="Bigger" aria-label="Make bigger">+</button>
+    <span class="text-xs text-wood-400 mx-1">|</span>
+    <button data-fig-rotate-left class="w-8 h-8 rounded-md bg-wood-100 text-charcoal text-base hover:bg-wood-200 flex items-center justify-center" title="Rotate left" aria-label="Rotate left">↺</button>
+    <button data-fig-rotate-right class="w-8 h-8 rounded-md bg-wood-100 text-charcoal text-base hover:bg-wood-200 flex items-center justify-center" title="Rotate right" aria-label="Rotate right">↻</button>
+    <span class="text-xs text-wood-400 mx-1">|</span>
+    <button data-fig-remove class="w-8 h-8 rounded-md bg-red-100 text-red-700 text-base hover:bg-red-200 flex items-center justify-center" title="Remove" aria-label="Remove figure">✕</button>
+    <button data-fig-deselect class="ml-auto text-xs text-wood-400 hover:text-wood-200 underline" aria-label="Deselect">done</button>
+  </div>
+
   <div class="mt-2 flex flex-wrap gap-1.5 items-center">
     <span class="text-xs text-wood-300 mr-1">Sand:</span>
     <button data-sand-color="0xe2ceb1" class="w-6 h-6 rounded-full border-2 border-wood-400 ring-2 ring-transparent hover:ring-wood-300" style="background: #e2ceb1;" aria-label="Tan sand" title="Tan"></button>
@@ -977,10 +992,98 @@ const s = t[lang];
         const label = (btn.textContent || '').toLowerCase();
         btn.style.display = q && !label.includes(q) ? 'none' : '';
       });
-      // Hide category headers if all their buttons are hidden.
       root.querySelectorAll<HTMLElement>('[data-sandtray-palette] > div').forEach((catDiv) => {
         const visible = catDiv.querySelectorAll<HTMLButtonElement>('[data-sandtray-palette-item]:not([style*="display: none"])');
         (catDiv as HTMLElement).style.display = visible.length === 0 && q ? 'none' : '';
+      });
+    });
+
+    // ----- Figure toolbar (on-screen controls for scale / rotate / remove) -----
+    const toolbar = root.querySelector<HTMLElement>('[data-sandtray-figure-toolbar]');
+    const toolbarLabel = root.querySelector<HTMLElement>('[data-figure-toolbar-label]');
+
+    function showToolbar(fig: PlacedFigure): void {
+      selectedFigure = fig;
+      if (!toolbar) return;
+      toolbar.classList.remove('hidden');
+      toolbar.classList.add('flex');
+      const name = fig.figureId.replace(/^(q-|shelter-|earth-|skeleton-)/, '').replace(/-/g, ' ');
+      if (toolbarLabel) toolbarLabel.textContent = name.charAt(0).toUpperCase() + name.slice(1) + ':';
+    }
+
+    function hideToolbar(): void {
+      selectedFigure = null;
+      if (!toolbar) return;
+      toolbar.classList.add('hidden');
+      toolbar.classList.remove('flex');
+    }
+
+    // Show toolbar when a figure is clicked or dragged.
+    // Patch the existing pointerdown figure-hit path to also show toolbar.
+    const origPointerDown = canvas.onpointerdown; // can't patch addEventListener; instead we hook via selectedFigure
+    // We already set selectedFigure in the pointerdown handler when a figure is hit.
+    // Use a MutationObserver-like approach: poll selectedFigure changes via the render loop.
+    // Simpler: just react inside the existing handlers. We'll add explicit showToolbar calls.
+
+    // Scale buttons
+    root.querySelector('[data-fig-scale-up]')?.addEventListener('click', () => {
+      if (!selectedFigure) return;
+      const s = Math.min(5.0, selectedFigure.scale + 0.15);
+      selectedFigure.scale = s;
+      selectedFigure.group.scale.setScalar(s);
+    });
+    root.querySelector('[data-fig-scale-down]')?.addEventListener('click', () => {
+      if (!selectedFigure) return;
+      const s = Math.max(0.2, selectedFigure.scale - 0.15);
+      selectedFigure.scale = s;
+      selectedFigure.group.scale.setScalar(s);
+    });
+
+    // Rotate buttons (22.5° per click = 16 clicks for full rotation)
+    root.querySelector('[data-fig-rotate-left]')?.addEventListener('click', () => {
+      if (!selectedFigure) return;
+      selectedFigure.rotationY -= Math.PI / 8;
+      selectedFigure.group.rotation.y = selectedFigure.rotationY;
+    });
+    root.querySelector('[data-fig-rotate-right]')?.addEventListener('click', () => {
+      if (!selectedFigure) return;
+      selectedFigure.rotationY += Math.PI / 8;
+      selectedFigure.group.rotation.y = selectedFigure.rotationY;
+    });
+
+    // Remove button
+    root.querySelector('[data-fig-remove]')?.addEventListener('click', () => {
+      if (!selectedFigure) return;
+      pushUndo({
+        type: 'remove',
+        figureId: selectedFigure.figureId,
+        modelPath: selectedFigure.group.userData.modelPath || '',
+        x: selectedFigure.x,
+        z: selectedFigure.z,
+        rotationY: selectedFigure.rotationY,
+        scale: selectedFigure.scale,
+      });
+      figureManager.remove(selectedFigure.instanceId);
+      hideToolbar();
+    });
+
+    // Deselect button
+    root.querySelector('[data-fig-deselect]')?.addEventListener('click', () => {
+      hideToolbar();
+    });
+
+    // Clicking empty sand hides the toolbar.
+    canvas.addEventListener('pointerdown', () => {
+      // This fires AFTER the main pointerdown handler. If selectedFigure was just
+      // set (figure was clicked), the toolbar should show. If the click was on
+      // empty sand (carving), selectedFigure stays null → hide toolbar.
+      // Use a microtask so the main handler runs first.
+      queueMicrotask(() => {
+        if (selectedFigure) {
+          showToolbar(selectedFigure);
+        } else {
+          hideToolbar();
+        }
       });
     });
   });
