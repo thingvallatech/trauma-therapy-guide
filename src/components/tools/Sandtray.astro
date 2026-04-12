@@ -95,7 +95,7 @@ const s = t[lang];
     <button data-fig-rotate-right class="w-9 h-9 rounded-md bg-white text-charcoal text-lg hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title="Rotate right" aria-label="Rotate right">↻</button>
     <span class="text-wood-400 mx-0.5">|</span>
     <label class="text-xs text-charcoal mr-0.5 flex items-center gap-1">
-      Color:
+      Skin:
       <input
         data-fig-skin-picker
         type="color"
@@ -1059,13 +1059,33 @@ const s = t[lang];
       hideToolbar();
     });
 
-    // Color picker — tints the entire model. The color multiplies against the
-    // texture atlas, so picking a skin tone shifts the whole character while
-    // preserving the texture detail. White = reset to original appearance.
+    // Color picker — smart skin tinting:
+    // Quaternius models have named materials (Skin, Face, Hair, Shirt, etc.)
+    // with solid colors and no textures. We target materials named "Skin" or
+    // "Face" for precise skin-tone changes.
+    // KayKit models use a single texture atlas on one material. For those,
+    // we tint the whole model as a fallback.
+    const SKIN_MAT_NAMES = new Set(['skin', 'face', 'body', 'head']);
+
     const skinPicker = root.querySelector<HTMLInputElement>('[data-fig-skin-picker]');
     function applyModelTint(hexStr: string): void {
       if (!selectedFigure) return;
       const tint = new THREE.Color(hexStr);
+
+      // First pass: check if this model has any named skin materials.
+      let hasSkinMats = false;
+      selectedFigure.group.traverse((child) => {
+        const mesh = child as THREE.Mesh;
+        if (!mesh.isMesh || !mesh.material) return;
+        const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+        for (const m of mats) {
+          if (SKIN_MAT_NAMES.has((m.name || '').toLowerCase())) {
+            hasSkinMats = true;
+          }
+        }
+      });
+
+      // Second pass: apply tint to skin-named materials (or all, if no skin mats found).
       selectedFigure.group.traverse((child) => {
         const mesh = child as THREE.Mesh;
         if (!mesh.isMesh || !mesh.material) return;
@@ -1073,6 +1093,11 @@ const s = t[lang];
         mats.forEach((mat, i) => {
           const m = mat as THREE.MeshStandardMaterial;
           if (!m.color) return;
+          // If the model has named skin materials, only tint those.
+          // Otherwise tint everything (texture atlas fallback for KayKit).
+          const isSkin = SKIN_MAT_NAMES.has((m.name || '').toLowerCase());
+          if (hasSkinMats && !isSkin) return;
+
           // Clone material on first tint so we don't affect the cached template.
           if (!mesh.userData._tinted) {
             if (Array.isArray(mesh.material)) {
