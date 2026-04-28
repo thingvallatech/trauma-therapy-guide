@@ -26,10 +26,14 @@ const allPhases = Array.from({ length: 8 }, (_, i) => ({
 }));
 const prev = phase > 1 ? allPhases[phase - 2] : null;
 const next = phase < 8 ? allPhases[phase] : null;
+
+// Prefer the localized short title for header chrome; fall back to the
+// markdown frontmatter when no i18n key exists.
+const localizedShortTitle = t(`phase.${phase}.short` as TranslationKey) || shortTitle;
 ---
 
 <BaseLayout
-  title={`${t('phase.phase')} ${phase}: ${shortTitle} — EMDR`}
+  title={`${t('phase.phase')} ${phase}: ${localizedShortTitle} — EMDR`}
   description={description}
   lang={lang}
 >
@@ -78,7 +82,7 @@ const next = phase < 8 ? allPhases[phase] : null;
         <p class="phase-kicker">{t('phase.phase')} {phase} {t('phase.of')} 8</p>
         <h1 class="phase-h1">
           <span class="phase-h1-num">{t('phase.phase')} {phase} ·</span>
-          <em>{shortTitle}</em>
+          <em>{localizedShortTitle}</em>
         </h1>
         <p class="phase-sub">{description}</p>
       </header>
