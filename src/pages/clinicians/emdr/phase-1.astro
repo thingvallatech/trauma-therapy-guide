@@ -1,79 +1,18 @@
 ---
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import ClinicalBanner from '../../../components/ClinicalBanner.astro';
-import References from '../../../components/References.astro';
-import PhaseNav from '../../../components/PhaseNav.astro';
+import { getEntry } from 'astro:content';
+import PhaseLayout from '../../../layouts/PhaseLayout.astro';
+
+const entry = await getEntry('emdr-phases', 'phase-1');
+if (!entry) throw new Error('phase-1 not found');
 ---
 
-<BaseLayout title="Phase 1: History & Treatment Planning - EMDR" description="Gathering comprehensive client information, assessing risk factors, and creating a treatment plan with identified targets.">
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
-    <!-- Breadcrumb -->
-    <nav class="text-sm mb-6 no-print">
-      <ol class="flex items-center gap-2 text-forest-500">
-        <li><a href="/clinicians" class="hover:text-forest-600 transition-colors">Clinicians</a></li>
-        <li>/</li>
-        <li><a href="/clinicians/emdr" class="hover:text-forest-600 transition-colors">EMDR</a></li>
-        <li>/</li>
-        <li class="text-forest-900">Phase 1</li>
-      </ol>
-    </nav>
-
-    <ClinicalBanner />
-
-    <!-- Header with visual emphasis -->
-    <header class="mb-10">
-      <div class="flex items-start justify-between flex-wrap gap-4">
-        <div class="flex items-center gap-4">
-          <div class="w-16 h-16 bg-forest-50 rounded-2xl flex items-center justify-center text-bronze-700 font-serif text-2xl font-bold">
-            1
-          </div>
-          <div>
-            <p class="text-bronze-500 font-medium text-sm uppercase tracking-wide">Phase 1 of 8</p>
-            <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-bronze-gradient">
-              History & Treatment Planning
-            </h1>
-          </div>
-        </div>
-        <button
-          onclick="window.print()"
-          class="no-print inline-flex items-center gap-2 px-4 py-2 bg-forest-50 border border-forest-200 text-forest-900 rounded-lg hover:bg-forest-50 transition-colors text-sm"
-        >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-          </svg>
-          Print
-        </button>
-      </div>
-    </header>
-
-    <!-- Goals as horizontal pills -->
-    <div class="flex flex-wrap gap-2 mb-10">
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-700 rounded-full text-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        Establish alliance
-      </span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-700 rounded-full text-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        Gather history
-      </span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-700 rounded-full text-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        Assess readiness
-      </span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-700 rounded-full text-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        Identify targets
-      </span>
-    </div>
-
+<PhaseLayout
+  phase={entry.data.phase}
+  title={entry.data.title}
+  shortTitle={entry.data.shortTitle}
+  description={entry.data.description}
+  goals={entry.data.goals}
+>
     <!-- Two column layout for main content -->
     <div class="grid lg:grid-cols-3 gap-6">
 
@@ -600,10 +539,4 @@ import PhaseNav from '../../../components/PhaseNav.astro';
       </div>
     </div>
 
-    <References />
-    <!-- Navigation -->
-    <div class="phase-nav mt-10">
-      <PhaseNav currentPhase={1} />
-    </div>
-  </div>
-</BaseLayout>
+</PhaseLayout>

@@ -11,12 +11,12 @@ const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 const currentPath = Astro.url.pathname;
 const alternateUrl = getAlternateLocaleUrl(Astro.url, lang);
+const helpHref = translatePath('/help');
 
 const navLinks = [
   { href: translatePath('/'), label: t('nav.home') },
   { href: translatePath('/clinicians'), label: t('nav.clinicians') },
   { href: translatePath('/families'), label: t('nav.families') },
-  { href: translatePath('/tools'), label: t('nav.tools') },
   { href: translatePath('/about'), label: t('nav.about') },
 ];
 
@@ -28,20 +28,18 @@ function isActive(href: string): boolean {
 }
 ---
 
-<header class="bg-forest-900 backdrop-blur-sm border-b border-forest-600 sticky top-0 z-50">
-  <!-- Bronze accent line -->
+<header class="bg-forest-900 backdrop-blur-sm border-b border-forest-700 sticky top-0 z-50 no-print">
   <div class="h-[1px] bg-bronze-500"></div>
   <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-16">
-      <a href={translatePath('/')} class="group flex items-center gap-2 font-serif text-xl font-semibold transition-colors">
+    <div class="flex justify-between items-center h-16 gap-4">
+      <a href={translatePath('/')} class="group flex items-center gap-2 font-serif text-xl font-semibold transition-colors flex-shrink-0">
         <img src="/logo.png" alt="Trauma Therapy Guide" class="w-9 h-9 rounded-full" />
-        <span class="bg-gradient-to-r from-[#C49A47] to-[#D4AA63] bg-clip-text text-transparent">Trauma Therapy Guide</span>
+        <span class="text-bronze-gradient hidden sm:inline">Trauma Therapy Guide</span>
       </a>
 
-      <!-- Mobile menu button -->
       <button
         type="button"
-        class="md:hidden p-2 rounded-md text-bronze-400 hover:bg-forest-700 transition-colors"
+        class="md:hidden p-2 rounded-md text-forest-100 hover:bg-forest-700 transition-colors"
         aria-label={t('nav.toggleMenu')}
         id="mobile-menu-button"
       >
@@ -50,8 +48,7 @@ function isActive(href: string): boolean {
         </svg>
       </button>
 
-      <!-- Desktop navigation -->
-      <ul class="hidden md:flex items-center gap-8">
+      <ul class="hidden md:flex items-center gap-6 lg:gap-8 flex-shrink-0">
         {navLinks.map((link) => (
           <li>
             <a
@@ -67,40 +64,40 @@ function isActive(href: string): boolean {
             </a>
           </li>
         ))}
-        <li>
-          <button
-            type="button"
-            id="search-trigger"
-            class="flex items-center gap-1.5 text-sm text-forest-300 hover:text-forest-100 transition-colors"
-            aria-label={t('nav.searchSite')}
-          >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            <kbd class="hidden lg:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-forest-400 bg-forest-700 border border-forest-600 rounded">&#8984;K</kbd>
-          </button>
-        </li>
-        <li>
-          <a
-            href={alternateUrl}
-            class="text-sm font-medium px-2 py-1 text-forest-300 hover:text-forest-100 border border-forest-600 rounded transition-colors"
-            aria-label={t('lang.switchLabel')}
-          >
-            {t('lang.switch')}
-          </a>
-        </li>
-        <li>
-          <a
-            href="#crisis-resources"
-            class="text-sm font-medium px-3 py-1.5 bg-bronze-400/20 text-bronze-400 rounded-full hover:bg-bronze-400/30 transition-colors"
-          >
-            {t('nav.crisisLink')}
-          </a>
-        </li>
       </ul>
+
+      <div class="hidden md:flex items-center gap-3 flex-1 justify-end max-w-md">
+        <button
+          type="button"
+          id="search-trigger"
+          class="flex-1 max-w-xs flex items-center gap-2 px-3 py-1.5 rounded-md bg-forest-800 border border-forest-700 text-forest-300 hover:text-forest-100 hover:border-forest-600 transition-colors"
+          aria-label={t('nav.searchSite')}
+        >
+          <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <span class="text-sm truncate text-left flex-1">{t('nav.searchPlaceholder')}</span>
+          <kbd class="text-[10px] font-mono text-forest-400 bg-forest-900 border border-forest-700 rounded px-1.5 py-0.5 flex-shrink-0">&#8984;K</kbd>
+        </button>
+
+        <a
+          href={alternateUrl}
+          class="text-sm font-medium px-2 py-1 text-forest-300 hover:text-forest-100 border border-forest-700 rounded transition-colors flex-shrink-0"
+          aria-label={t('lang.switchLabel')}
+        >
+          {t('lang.switch')}
+        </a>
+
+        <a
+          href={helpHref}
+          class="text-sm text-forest-200 hover:text-forest-100 underline-offset-4 hover:underline flex-shrink-0"
+          aria-label={t('nav.crisisLinkLabel')}
+        >
+          {t('nav.crisisLink')}
+        </a>
+      </div>
     </div>
 
-    <!-- Mobile navigation -->
     <ul class="hidden md:hidden pb-4 space-y-2 bg-forest-800 rounded-b-lg -mx-4 px-4" id="mobile-menu">
       {navLinks.map((link) => (
         <li>
@@ -138,10 +135,10 @@ function isActive(href: string): boolean {
       </li>
       <li>
         <a
-          href="#crisis-resources"
-          class="block px-3 py-2 rounded-md text-sm font-medium text-bronze-400 hover:bg-bronze-400/20 transition-colors"
+          href={helpHref}
+          class="block px-3 py-2 rounded-md text-sm font-medium text-forest-100 hover:bg-forest-700 transition-colors"
         >
-          {t('nav.crisisLink')}
+          {t('nav.crisisLinkLabel')}
         </a>
       </li>
     </ul>
@@ -156,7 +153,6 @@ function isActive(href: string): boolean {
     menu?.classList.toggle('hidden');
   });
 
-  // Search trigger buttons
   const searchTrigger = document.getElementById('search-trigger');
   const mobileSearchTrigger = document.querySelector('.search-trigger-mobile');
 

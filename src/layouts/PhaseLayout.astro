@@ -2,9 +2,8 @@
 import BaseLayout from './BaseLayout.astro';
 import ClinicalBanner from '../components/ClinicalBanner.astro';
 import References from '../components/References.astro';
-import PhaseNav from '../components/PhaseNav.astro';
-import Callout from '../components/Callout.astro';
 import { getLangFromUrl, useTranslations, useTranslatedPath, type Lang } from '../i18n';
+import type { TranslationKey } from '../i18n/ui';
 
 interface Props {
   phase: number;
@@ -19,51 +18,536 @@ const detectedLang = getLangFromUrl(Astro.url);
 const { phase, title, shortTitle, description, goals, lang = detectedLang } = Astro.props;
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
+
+const allPhases = Array.from({ length: 8 }, (_, i) => ({
+  num: i + 1,
+  shortTitle: t(`phase.${i + 1}.short` as TranslationKey),
+}));
+const prev = phase > 1 ? allPhases[phase - 2] : null;
+const next = phase < 8 ? allPhases[phase] : null;
 ---
 
-<BaseLayout title={`${t('phase.phase')} ${phase}: ${shortTitle} - EMDR`} description={description} lang={lang}>
-  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
-    <!-- Breadcrumb -->
-    <nav class="text-sm mb-6">
-      <ol class="flex items-center gap-2 text-forest-500">
-        <li><a href={translatePath('/clinicians')} class="hover:text-forest-700 transition-colors">{t('breadcrumb.clinicians')}</a></li>
-        <li>/</li>
-        <li><a href={translatePath('/clinicians/emdr')} class="hover:text-forest-700 transition-colors">{t('breadcrumb.emdr')}</a></li>
-        <li>/</li>
-        <li class="text-forest-900 font-medium">{t('phase.phase')} {phase}</li>
-      </ol>
-    </nav>
+<BaseLayout
+  title={`${t('phase.phase')} ${phase}: ${shortTitle} — EMDR`}
+  description={description}
+  lang={lang}
+>
+  <div class="phase-shell">
+    <aside class="phase-rail" aria-label="EMDR phases">
+      <div class="phase-rail-inner">
+        <div class="rail-h">EMDR · 8 phases</div>
+        <ol class="rail-list">
+          {allPhases.map((p) => (
+            <li class:list={[
+              'rail-step',
+              p.num < phase ? 'done' : p.num === phase ? 'on' : '',
+            ]}>
+              <a href={translatePath(`/clinicians/emdr/phase-${p.num}`)}>
+                <span class="rail-n">{p.num}</span>
+                <span class="rail-label">{p.shortTitle}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
 
-    <ClinicalBanner lang={lang} />
+        <div class="rail-divider"></div>
+        <div class="rail-h">Session reference</div>
+        <ul class="rail-meta">
+          <li><a href={translatePath('/clinicians/emdr/print-package')}>Print package</a></li>
+          <li><a href={translatePath('/clinicians/emdr/tools')}>EMDR tools</a></li>
+        </ul>
+      </div>
+    </aside>
 
-    <!-- Header -->
-    <header class="mb-8">
-      <p class="text-forest-600 font-medium mb-2">{t('phase.phase')} {phase} {t('phase.of')} 8</p>
-      <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-forest-900 mb-4">
-        {title}
-      </h1>
-      <p class="text-lg text-charcoal leading-relaxed">
-        {description}
-      </p>
-    </header>
+    <div class="phase-main">
+      <nav class="phase-crumb no-print" aria-label="Breadcrumb">
+        <ol>
+          <li><a href={translatePath('/clinicians')}>{t('breadcrumb.clinicians')}</a></li>
+          <li aria-hidden="true">/</li>
+          <li><a href={translatePath('/clinicians/emdr')}>{t('breadcrumb.emdr')}</a></li>
+          <li aria-hidden="true">/</li>
+          <li>{t('phase.phase')} {phase} {t('phase.of')} 8</li>
+        </ol>
+      </nav>
 
-    <!-- Goals -->
-    <Callout type="tip" title={t('phase.goals')} lang={lang}>
-      <ul class="list-disc list-inside space-y-1">
-        {goals.map((goal) => (
-          <li>{goal}</li>
-        ))}
-      </ul>
-    </Callout>
+      <ClinicalBanner lang={lang} />
 
-    <!-- Main content -->
-    <article class="prose mt-8">
-      <slot />
-    </article>
+      <header class="phase-head">
+        <p class="phase-kicker">{t('phase.phase')} {phase} {t('phase.of')} 8</p>
+        <h1 class="phase-h1">
+          <span class="phase-h1-num">{t('phase.phase')} {phase} ·</span>
+          <em>{shortTitle}</em>
+        </h1>
+        <p class="phase-sub">{description}</p>
+      </header>
 
-    <References lang={lang} />
+      {goals && goals.length > 0 && (
+        <section class="phase-goals" aria-labelledby="phase-goals-h">
+          <h2 id="phase-goals-h" class="phase-goals-h">{t('phase.goals')}</h2>
+          <ul>
+            {goals.map((g) => <li>{g}</li>)}
+          </ul>
+        </section>
+      )}
 
-    <!-- Navigation -->
-    <PhaseNav currentPhase={phase} lang={lang} />
+      <article class="phase-prose prose">
+        <slot />
+      </article>
+
+      <References lang={lang} />
+
+      <nav class="phase-prevnext no-print" aria-label="Phase navigation">
+        {prev ? (
+          <a href={translatePath(`/clinicians/emdr/phase-${prev.num}`)} class="phase-prevnext-link">
+            <span class="phase-prevnext-dir">← {t('phase.previous')}</span>
+            <span class="phase-prevnext-title">{t('phase.phase')} {prev.num}: {prev.shortTitle}</span>
+          </a>
+        ) : (<span></span>)}
+
+        <a href={translatePath('/clinicians/emdr')} class="phase-prevnext-all">{t('phase.allPhases')}</a>
+
+        {next ? (
+          <a href={translatePath(`/clinicians/emdr/phase-${next.num}`)} class="phase-prevnext-link right">
+            <span class="phase-prevnext-dir">{t('phase.next')} →</span>
+            <span class="phase-prevnext-title">{t('phase.phase')} {next.num}: {next.shortTitle}</span>
+          </a>
+        ) : (<span></span>)}
+      </nav>
+    </div>
+
+    <aside class="phase-aside no-print" aria-label="On this page and navigation">
+      <div class="phase-aside-inner">
+        <div class="phase-toc-card">
+          <h3 class="aside-h">On this page</h3>
+          <nav id="phase-toc" class="phase-toc" aria-label="Section navigation">
+            <!-- Populated by client script -->
+          </nav>
+        </div>
+
+        <div class="phase-nav-card">
+          <h3 class="aside-h">Continue</h3>
+          <div class="phase-nav-grid">
+            {prev ? (
+              <a href={translatePath(`/clinicians/emdr/phase-${prev.num}`)} class="phase-nav-tile">
+                <small>← {t('phase.previous')}</small>
+                <b>{prev.num} · {prev.shortTitle}</b>
+              </a>
+            ) : (<span class="phase-nav-tile disabled"><small>{t('phase.previous')}</small><b>—</b></span>)}
+            {next ? (
+              <a href={translatePath(`/clinicians/emdr/phase-${next.num}`)} class="phase-nav-tile">
+                <small>{t('phase.next')} →</small>
+                <b>{next.num} · {next.shortTitle}</b>
+              </a>
+            ) : (<span class="phase-nav-tile disabled"><small>{t('phase.next')}</small><b>—</b></span>)}
+          </div>
+        </div>
+      </div>
+    </aside>
   </div>
+
+  <p class="crisis-print-foot">{t('crisis.printFooter')}</p>
 </BaseLayout>
+
+<script>
+  // Build mini-TOC from h2s in .phase-prose, scroll-spy active state
+  const tocEl = document.getElementById('phase-toc');
+  const proseEl = document.querySelector('.phase-prose');
+  if (tocEl && proseEl) {
+    const headings = Array.from(proseEl.querySelectorAll('h2'));
+    headings.forEach((h, i) => {
+      if (!h.id) {
+        const slug = (h.textContent || `section-${i}`)
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/(^-|-$)/g, '') || `section-${i}`;
+        h.id = slug;
+      }
+    });
+    if (headings.length === 0) {
+      tocEl.style.display = 'none';
+    } else {
+      tocEl.innerHTML = headings
+        .map((h) => `<a href="#${h.id}" data-target="${h.id}">${h.textContent}</a>`)
+        .join('');
+
+      const links = new Map<string, HTMLAnchorElement>();
+      tocEl.querySelectorAll('a').forEach((a) => {
+        const t = a.getAttribute('data-target');
+        if (t) links.set(t, a as HTMLAnchorElement);
+      });
+
+      let active: HTMLAnchorElement | null = null;
+      const setActive = (id: string | null) => {
+        if (active) active.classList.remove('on');
+        if (id && links.has(id)) {
+          active = links.get(id)!;
+          active.classList.add('on');
+        } else {
+          active = null;
+        }
+      };
+
+      const observer = new IntersectionObserver(
+        (entries) => {
+          // Pick the heading nearest the top of the viewport that's intersecting
+          const visible = entries
+            .filter((e) => e.isIntersecting)
+            .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+          if (visible.length > 0) {
+            setActive(visible[0].target.id);
+          }
+        },
+        { rootMargin: '-80px 0px -70% 0px', threshold: [0, 1] }
+      );
+      headings.forEach((h) => observer.observe(h));
+    }
+  }
+</script>
+
+<style>
+  :global(.phase-shell) {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr) 240px;
+    gap: 32px;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 32px 28px 80px;
+  }
+
+  /* === Left rail === */
+  :global(.phase-rail) {
+    border-right: 1px solid var(--color-line, #e5e1d6);
+    padding-right: 18px;
+  }
+  :global(.phase-rail-inner) {
+    position: sticky;
+    top: 88px;
+  }
+  :global(.rail-h) {
+    font: 600 10.5px/1 var(--font-mono);
+    color: var(--color-muted);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  :global(.rail-list) {
+    list-style: none;
+    margin: 0 0 4px;
+    padding: 0;
+  }
+  :global(.rail-step a) {
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    gap: 10px;
+    align-items: center;
+    padding: 7px 6px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--color-ink-2);
+    font-size: 13px;
+  }
+  :global(.rail-step a:hover) {
+    background: var(--color-paper-2);
+  }
+  :global(.rail-n) {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--color-paper-2);
+    color: var(--color-muted);
+    font: 600 11px/22px var(--font-mono);
+    text-align: center;
+  }
+  :global(.rail-step.done .rail-n) {
+    background: var(--color-deep-forest, #2d4a32);
+    color: #eaf0e1;
+  }
+  :global(.rail-step.on a) {
+    color: var(--color-ink);
+    font-weight: 600;
+  }
+  :global(.rail-step.on .rail-n) {
+    background: var(--color-copper);
+    color: #fff;
+  }
+  :global(.rail-divider) {
+    height: 1px;
+    background: var(--color-line, #e5e1d6);
+    margin: 18px 0 14px;
+  }
+  :global(.rail-meta) {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  :global(.rail-meta a) {
+    display: block;
+    padding: 4px 6px;
+    text-decoration: none;
+    color: var(--color-ink-2);
+    font-size: 13px;
+    border-radius: 6px;
+  }
+  :global(.rail-meta a:hover) { background: var(--color-paper-2); }
+
+  /* === Main column === */
+  :global(.phase-main) {
+    min-width: 0;
+  }
+  :global(.phase-crumb ol) {
+    list-style: none;
+    margin: 0 0 12px;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font: 500 11.5px/1 var(--font-mono);
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+  }
+  :global(.phase-crumb a) {
+    color: var(--color-ink-2);
+    text-decoration: none;
+  }
+  :global(.phase-crumb a:hover) { color: var(--color-copper); }
+
+  :global(.phase-head) {
+    margin: 14px 0 16px;
+  }
+  :global(.phase-kicker) {
+    font: 500 11px/1 var(--font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-copper);
+    margin: 0 0 12px;
+  }
+  :global(.phase-h1) {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(28px, 4vw, 40px);
+    line-height: 1.06;
+    letter-spacing: -0.015em;
+    margin: 0 0 8px;
+    color: var(--color-ink);
+  }
+  :global(.phase-h1 em) {
+    font-style: italic;
+    color: var(--color-deep-forest, #2d4a32);
+  }
+  :global(.phase-h1-num) {
+    color: var(--color-muted);
+    font-family: var(--font-display);
+    font-weight: 400;
+    margin-right: 8px;
+  }
+  :global(.phase-sub) {
+    color: var(--color-muted);
+    font-size: 15.5px;
+    margin: 0 0 22px;
+    max-width: 60ch;
+    line-height: 1.5;
+  }
+
+  :global(.phase-goals) {
+    background: var(--color-paper-2);
+    border: 1px solid var(--color-line, #e5e1d6);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 0 0 28px;
+    page-break-inside: avoid;
+    break-inside: avoid;
+  }
+  :global(.phase-goals-h) {
+    font: 600 10.5px/1 var(--font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin: 0 0 10px;
+    font-family: var(--font-mono);
+  }
+  :global(.phase-goals ul) {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px 18px;
+    font-size: 13px;
+    color: var(--color-ink-2);
+  }
+  :global(.phase-goals li) {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 8px;
+    align-items: start;
+  }
+  :global(.phase-goals li::before) {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-copper);
+    margin-top: 7px;
+  }
+
+  :global(.phase-prose) {
+    margin-top: 0;
+  }
+
+  /* === Prev/next bar at bottom of main === */
+  :global(.phase-prevnext) {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 14px;
+    margin-top: 36px;
+    padding-top: 18px;
+    border-top: 1px solid var(--color-line, #e5e1d6);
+  }
+  :global(.phase-prevnext-link) {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    text-decoration: none;
+    color: var(--color-ink-2);
+  }
+  :global(.phase-prevnext-link.right) { align-items: flex-end; text-align: right; }
+  :global(.phase-prevnext-link:hover .phase-prevnext-title) { color: var(--color-copper); }
+  :global(.phase-prevnext-dir) {
+    font: 500 11px/1 var(--font-mono);
+    letter-spacing: 0.04em;
+    color: var(--color-muted);
+    text-transform: uppercase;
+  }
+  :global(.phase-prevnext-title) {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+  :global(.phase-prevnext-all) {
+    font: 500 12px/1 var(--font-mono);
+    color: var(--color-muted);
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  :global(.phase-prevnext-all:hover) { color: var(--color-copper); }
+
+  /* === Right aside === */
+  :global(.phase-aside-inner) {
+    position: sticky;
+    top: 88px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  :global(.aside-h) {
+    font: 600 10.5px/1 var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin: 0 0 10px;
+    font-family: var(--font-mono);
+    font-weight: 600;
+  }
+  :global(.phase-toc-card),
+  :global(.phase-nav-card) {
+    background: var(--color-paper-2);
+    border: 1px solid var(--color-line, #e5e1d6);
+    border-radius: 12px;
+    padding: 14px 14px 12px;
+  }
+  :global(.phase-toc) {
+    font-size: 13px;
+    display: flex;
+    flex-direction: column;
+  }
+  :global(.phase-toc a) {
+    display: block;
+    padding: 6px 8px 6px 12px;
+    color: var(--color-ink-2);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    margin-left: -10px;
+    transition: color 0.12s;
+  }
+  :global(.phase-toc a:hover) { color: var(--color-copper); }
+  :global(.phase-toc a.on) {
+    color: var(--color-ink);
+    font-weight: 600;
+    border-left-color: var(--color-copper);
+  }
+
+  :global(.phase-nav-grid) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  :global(.phase-nav-tile) {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 10px;
+    border: 1px solid var(--color-line, #e5e1d6);
+    border-radius: 8px;
+    background: var(--color-card);
+    text-decoration: none;
+    color: var(--color-ink-2);
+    font-size: 11.5px;
+  }
+  :global(.phase-nav-tile small) {
+    color: var(--color-muted);
+    font: 500 10.5px/1 var(--font-mono);
+    letter-spacing: 0.04em;
+  }
+  :global(.phase-nav-tile b) {
+    color: var(--color-ink);
+    font-size: 12px;
+    font-weight: 600;
+  }
+  :global(.phase-nav-tile.disabled) {
+    opacity: 0.45;
+    cursor: default;
+  }
+  :global(.phase-nav-tile:hover:not(.disabled)) {
+    border-color: var(--color-copper);
+  }
+
+  /* === Responsive === */
+  @media (max-width: 1100px) {
+    :global(.phase-shell) {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    :global(.phase-rail),
+    :global(.phase-aside) {
+      border-right: 0;
+      padding-right: 0;
+    }
+    :global(.phase-rail-inner),
+    :global(.phase-aside-inner) {
+      position: static;
+    }
+    :global(.phase-rail) {
+      border-bottom: 1px solid var(--color-line, #e5e1d6);
+      padding-bottom: 16px;
+    }
+    :global(.rail-list) {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 4px;
+    }
+    :global(.rail-step a) {
+      grid-template-columns: 22px 1fr;
+      font-size: 12px;
+    }
+  }
+  @media (max-width: 640px) {
+    :global(.phase-shell) {
+      padding: 20px 16px 56px;
+    }
+    :global(.rail-list) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+</style>

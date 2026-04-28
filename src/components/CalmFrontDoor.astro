@@ -82,6 +82,12 @@ const tagKeyFor = (type: CollectionEntry<'resources'>['data']['type']) =>
       </ol>
     </section>
   )}
+
+  <section class="cfd-trust" aria-label="About this guide">
+    <p class="cfd-trust-eyebrow">{t('home.trust.eyebrow')}</p>
+    <p class="cfd-trust-body">{t('home.trust.body')}</p>
+    <a class="cfd-trust-cta" href={translatePath('/about')}>{t('home.trust.cta')} →</a>
+  </section>
 </div>
 
 <div class="home-print-notice">
@@ -234,6 +240,38 @@ const tagKeyFor = (type: CollectionEntry<'resources'>['data']['type']) =>
     text-transform: uppercase;
   }
 
+  .cfd-trust {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 56px 80px;
+  }
+  .cfd-trust-eyebrow {
+    font: 500 11px/1 var(--font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-copper);
+    margin: 0 0 12px;
+  }
+  .cfd-trust-body {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: -0.005em;
+    color: var(--color-ink);
+    max-width: 38ch;
+    margin: 0 0 16px;
+  }
+  .cfd-trust-cta {
+    font: 500 13px/1 var(--font-mono);
+    letter-spacing: 0.04em;
+    color: var(--color-copper);
+    text-decoration: none;
+  }
+  .cfd-trust-cta:hover {
+    text-decoration: underline;
+  }
+
   @media (max-width: 768px) {
     .cfd-hero {
       padding: 24px 16px 16px;
@@ -275,5 +313,7 @@ const tagKeyFor = (type: CollectionEntry<'resources'>['data']['type']) =>
       grid-column: 1 / -1;
       grid-row: 2;
     }
+    .cfd-trust { padding: 0 14px 56px; }
+    .cfd-trust-body { font-size: 18px; }
   }
 </style>

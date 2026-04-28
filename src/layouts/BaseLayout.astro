@@ -83,7 +83,7 @@ const structuredData = {
     <!-- Back to Top Button -->
     <button
       id="back-to-top"
-      class="fixed bottom-6 right-6 z-40 hidden w-10 h-10 bg-forest-600 border border-forest-500 text-white rounded-full shadow-lg hover:bg-forest-700 transition-all"
+      class="no-print fixed bottom-6 right-6 z-40 hidden w-10 h-10 bg-cream border border-linen text-forest-700 rounded-full shadow-lg hover:bg-linen transition-all"
       aria-label={t('backToTop')}
     >
       <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,13 +100,6 @@ const structuredData = {
         backToTop.addEventListener('click', () => {
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
-      }
-    </script>
-
-    <!-- Service Worker Registration -->
-    <script>
-      if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
       }
     </script>
 

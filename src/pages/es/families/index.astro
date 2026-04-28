@@ -29,7 +29,7 @@ const translatePath = useTranslatedPath(lang);
       <div class="mb-16">
         <div class="flex items-center gap-3 mb-6">
           <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-bronze-500 text-forest-900 text-sm font-medium rounded-full">
-            <span class="w-2 h-2 bg-forest-900 rounded-full animate-pulse"></span>
+            <span class="w-2 h-2 bg-forest-900 rounded-full opacity-80"></span>
             {t('home.availableNow')}
           </span>
         </div>
@@ -38,7 +38,7 @@ const translatePath = useTranslatedPath(lang);
           <!-- EMDR Card -->
           <a
             href={translatePath('/families/emdr')}
-            class="block group relative bg-forest-700 border border-bronze-500 rounded-2xl p-6 text-white overflow-hidden transition-all duration-300 hover:-translate-y-1"
+            class="block group relative bg-forest-700 border border-bronze-500 rounded-2xl p-6 text-white overflow-hidden transition-all duration-300 hover:-translate-y-0.5"
           >
             <!-- Background pattern -->
             <div class="absolute inset-0 opacity-10">
@@ -92,7 +92,7 @@ const translatePath = useTranslatedPath(lang);
           <!-- TF-CBT Card -->
           <a
             href={translatePath('/families/tfcbt')}
-            class="block group relative bg-forest-700 border border-bronze-500 rounded-2xl p-6 text-white overflow-hidden transition-all duration-300 hover:-translate-y-1"
+            class="block group relative bg-forest-700 border border-bronze-500 rounded-2xl p-6 text-white overflow-hidden transition-all duration-300 hover:-translate-y-0.5"
           >
             <!-- Background pattern -->
             <div class="absolute inset-0 opacity-10">
@@ -145,7 +145,7 @@ const translatePath = useTranslatedPath(lang);
           <!-- Recommended Reading Card -->
           <a
             href={translatePath('/families/resources')}
-            class="block group relative bg-gradient-to-br from-wood-400 to-wood-500 rounded-2xl p-6 text-white overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            class="block group relative bg-gradient-to-br from-wood-400 to-wood-500 rounded-2xl p-6 text-white overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
           >
             <div class="absolute inset-0 opacity-10">
               <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -183,7 +183,7 @@ const translatePath = useTranslatedPath(lang);
           <!-- Interactive Tools Card -->
           <a
             href={translatePath('/families/emdr/tools')}
-            class="block group relative bg-gradient-to-br from-forest-600 to-forest-700 rounded-2xl p-6 text-white overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
+            class="block group relative bg-gradient-to-br from-forest-600 to-forest-700 rounded-2xl p-6 text-white overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
           >
             <div class="absolute inset-0 opacity-10">
               <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">

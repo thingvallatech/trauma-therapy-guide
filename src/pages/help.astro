@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import HelpContent from '../components/HelpContent.astro';
+import { useTranslations, type Lang } from '../i18n';
+
+const lang: Lang = 'en';
+const t = useTranslations(lang);
+---
+
+<BaseLayout
+  lang={lang}
+  title={t('help.title')}
+  description={t('help.lede')}
+>
+  <HelpContent lang={lang} />
+</BaseLayout>

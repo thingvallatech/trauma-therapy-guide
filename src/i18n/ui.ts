@@ -16,7 +16,9 @@ export const ui = {
     'nav.about': 'About',
     'nav.tools': 'Tools',
     'nav.search': 'Search',
-    'nav.crisisLink': 'Need Help Now?',
+    'nav.searchPlaceholder': 'Search phases, tools, terms…',
+    'nav.crisisLink': 'Crisis help',
+    'nav.crisisLinkLabel': 'Crisis help · 988',
     'nav.toggleMenu': 'Toggle menu',
     'nav.searchSite': 'Search site',
 
@@ -26,8 +28,10 @@ export const ui = {
 
     // Footer
     'footer.tagline': 'A free resource for trauma therapists and families navigating evidence-based treatment.',
+    'footer.dontSell': "We don't sell anything. We don't track you. This site exists to be useful.",
     'footer.quickLinks': 'Quick Links',
     'footer.resources': 'Resources',
+    'footer.helpPage': 'Crisis help',
     'footer.emdrProtocol': 'EMDR Protocol',
     'footer.resourceLibrary': 'Resource Library',
     'footer.crisisTitle': 'Need Help Now?',
@@ -186,6 +190,9 @@ export const ui = {
     'home.tag.video': 'Video',
     'home.tag.worksheet': 'Worksheet',
     'home.tag.link': 'Link',
+    'home.trust.eyebrow': 'No accounts · no ads · no tracking',
+    'home.trust.body': "We don't sell anything. We don't track you. The site exists to be useful — to clinicians between sessions, and to families trying to understand what's happening for the person they love.",
+    'home.trust.cta': 'About this guide',
 
     // Crisis strip
     'crisis.regionLabel': 'Crisis resources',
@@ -227,6 +234,22 @@ export const ui = {
     'home.trustTitle': 'Built for Trust',
     'home.trustDesc': 'This site compiles content from established clinical protocols, peer-reviewed research, and recognized treatment guidelines. Our content is based on published science and reviewed for accuracy. We don\'t sell anything — this is a free resource for clinicians and the patients and families they serve.',
     'home.trustCta': 'Learn more about us',
+
+    // /help page
+    'help.title': 'Crisis help & support',
+    'help.lede': 'If you or someone you love is in crisis, you are not alone. The lines below are free, confidential, and available right now.',
+    'help.imminentTitle': 'In immediate danger',
+    'help.imminentBody': 'If you or someone you are with is in immediate physical danger, call 911 or go to the nearest emergency room.',
+    'help.section988Title': '988 Suicide & Crisis Lifeline',
+    'help.section988Body': 'Call or text 988 to reach trained counselors any time, day or night. Spanish-speaking counselors available.',
+    'help.sectionTextTitle': 'Crisis Text Line',
+    'help.sectionTextBody': 'Text HELLO to 741741 to chat with a trained crisis counselor.',
+    'help.sectionRainnTitle': 'RAINN — sexual assault hotline',
+    'help.sectionRainnBody': 'Call 1-800-656-HOPE (4673) for confidential support 24/7.',
+    'help.smallPrint': 'These are US-based services. If you are outside the US, your local emergency number applies.',
+    'help.notReplacement': 'This page is not a substitute for treatment. If you are seeing a clinician, please reach out to them as well.',
+    'help.callBtn': 'Call',
+    'help.textBtn': 'Text',
 
     // About page
     'about.title': 'About This Site',
@@ -315,7 +338,9 @@ export const ui = {
     'nav.about': 'Acerca de',
     'nav.tools': 'Herramientas',
     'nav.search': 'Buscar',
-    'nav.crisisLink': '¿Necesita Ayuda?',
+    'nav.searchPlaceholder': 'Buscar fases, herramientas, términos…',
+    'nav.crisisLink': 'Ayuda en crisis',
+    'nav.crisisLinkLabel': 'Ayuda en crisis · 988',
     'nav.toggleMenu': 'Abrir menú',
     'nav.searchSite': 'Buscar en el sitio',
 
@@ -325,8 +350,10 @@ export const ui = {
 
     // Footer
     'footer.tagline': 'Un recurso gratuito para terapeutas de trauma y familias que navegan tratamientos basados en evidencia.',
+    'footer.dontSell': 'No vendemos nada. No te rastreamos. Este sitio existe para ser útil.',
     'footer.quickLinks': 'Enlaces Rápidos',
     'footer.resources': 'Recursos',
+    'footer.helpPage': 'Ayuda en crisis',
     'footer.emdrProtocol': 'Protocolo EMDR',
     'footer.resourceLibrary': 'Biblioteca de Recursos',
     'footer.crisisTitle': '¿Necesita Ayuda?',
@@ -485,6 +512,9 @@ export const ui = {
     'home.tag.video': 'Video',
     'home.tag.worksheet': 'Hoja',
     'home.tag.link': 'Enlace',
+    'home.trust.eyebrow': 'Sin cuentas · sin anuncios · sin rastreo',
+    'home.trust.body': 'No vendemos nada. No te rastreamos. Este sitio existe para ser útil — para los profesionales entre sesiones, y para las familias que intentan entender lo que pasa con la persona que aman.',
+    'home.trust.cta': 'Acerca de esta guía',
 
     // Crisis strip
     'crisis.regionLabel': 'Recursos de crisis',
@@ -526,6 +556,22 @@ export const ui = {
     'home.trustTitle': 'Construido para la Confianza',
     'home.trustDesc': 'Este sitio recopila contenido de protocolos clínicos establecidos, investigación revisada por pares y guías de tratamiento reconocidas. Nuestro contenido se basa en ciencia publicada y es revisado para su precisión. No vendemos nada — este es un recurso gratuito para profesionales y los pacientes y familias que atienden.',
     'home.trustCta': 'Conozca más sobre nosotros',
+
+    // /help page
+    'help.title': 'Ayuda en crisis',
+    'help.lede': 'Si tú o alguien que amas está en crisis, no estás solo/a. Las líneas siguientes son gratuitas, confidenciales y están disponibles ahora mismo.',
+    'help.imminentTitle': 'En peligro inmediato',
+    'help.imminentBody': 'Si tú o alguien contigo está en peligro físico inmediato, llama al 911 o acude a la sala de emergencias más cercana.',
+    'help.section988Title': '988 — Línea de Prevención del Suicidio',
+    'help.section988Body': 'Llama o envía un mensaje al 988 para hablar con consejeros capacitados a cualquier hora. Servicio en español disponible.',
+    'help.sectionTextTitle': 'Línea de Crisis por Texto',
+    'help.sectionTextBody': 'Envía HOLA al 741741 para hablar con un consejero de crisis.',
+    'help.sectionRainnTitle': 'RAINN — agresión sexual',
+    'help.sectionRainnBody': 'Llama al 1-800-656-HOPE (4673) para apoyo confidencial las 24 horas.',
+    'help.smallPrint': 'Estos son servicios de Estados Unidos. Si estás fuera de EE. UU., aplica tu número local de emergencias.',
+    'help.notReplacement': 'Esta página no reemplaza el tratamiento. Si estás viendo a un profesional, por favor contáctalo también.',
+    'help.callBtn': 'Llamar',
+    'help.textBtn': 'Enviar texto',
 
     // About page
     'about.title': 'Acerca de Este Sitio',

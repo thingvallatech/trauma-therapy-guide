@@ -172,6 +172,20 @@ details summary:focus-visible {
     margin-top: 1.5rem;
   }
 
+  /* Phase pages: collapse rail + aside, keep main content */
+  .phase-shell {
+    display: block !important;
+  }
+  .phase-rail,
+  .phase-aside,
+  .phase-prevnext,
+  .phase-crumb {
+    display: none !important;
+  }
+  .phase-main {
+    max-width: none !important;
+  }
+
   .home-print-notice {
     padding: 1in;
     color: #000;

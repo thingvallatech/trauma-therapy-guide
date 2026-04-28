@@ -2,619 +2,490 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="What is EMDR?" description="A parent-friendly guide to EMDR therapy - what it is, how it works, and how to support your child.">
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
-    <!-- Breadcrumb -->
-    <nav class="text-sm mb-6">
-      <ol class="flex items-center gap-2 text-forest-500">
-        <li><a href="/families" class="hover:text-bronze-600 transition-colors">For Families</a></li>
-        <li>/</li>
-        <li class="text-forest-900">EMDR</li>
+<BaseLayout title="What is EMDR?" description="A parent-friendly guide to EMDR therapy — what it is, how it works, and how to support your child.">
+  <div class="fam-emdr">
+    <nav class="fam-crumb" aria-label="Breadcrumb">
+      <ol>
+        <li><a href="/families">For families</a></li>
+        <li aria-hidden="true">/</li>
+        <li>EMDR</li>
       </ol>
     </nav>
 
-    <!-- Header with visual emphasis -->
-    <header class="mb-10">
-      <div class="flex items-start gap-4">
-        <div class="w-16 h-16 bg-bronze-500 rounded-2xl flex items-center justify-center text-white flex-shrink-0">
-          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-          </svg>
-        </div>
-        <div>
-          <p class="text-bronze-500 font-medium text-sm uppercase tracking-wide">Understanding Your Child's Treatment</p>
-          <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-bronze-gradient">
-            What is EMDR Therapy?
-          </h1>
-        </div>
-      </div>
+    <header class="fam-hero">
+      <p class="fam-kicker">Understanding your child's treatment</p>
+      <h1 class="fam-h1">What is <em>EMDR</em> therapy?</h1>
+      <p class="fam-lede">
+        EMDR helps the brain process difficult memories so they stop causing distress. Your child stays in control the whole time. This page explains what it is, how it works, and what to expect.
+      </p>
     </header>
 
-    <!-- Share button -->
-    <div class="mb-6">
-      <button
-        id="copy-link-btn"
-        class="inline-flex items-center gap-2 px-3 py-1.5 bg-forest-50 border border-forest-200 text-charcoal rounded-lg text-sm hover:bg-forest-100 transition-colors"
-      >
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-        </svg>
-        <span id="copy-link-text">Share this page</span>
-      </button>
-    </div>
+    <section class="fam-safety" aria-labelledby="safety-h">
+      <h2 id="safety-h">Is EMDR safe?</h2>
+      <p>
+        EMDR is recognized as safe and effective by the World Health Organization, the American Psychological Association, and the Department of Veterans Affairs. When conducted by a trained therapist it is considered safe for both children and adults — and can be adapted for children as young as 2–3 years old. If you have concerns, talk with your therapist; they can explain how the treatment is tailored to your child.
+      </p>
+    </section>
 
-    <script>
-      const btn = document.getElementById('copy-link-btn');
-      const text = document.getElementById('copy-link-text');
-      btn?.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(window.location.href);
-          if (text) text.textContent = 'Link copied!';
-          setTimeout(() => { if (text) text.textContent = 'Share this page'; }, 2000);
-        } catch {
-          if (text) text.textContent = 'Could not copy';
-          setTimeout(() => { if (text) text.textContent = 'Share this page'; }, 2000);
-        }
-      });
-    </script>
+    <section class="fam-block" aria-labelledby="under-h">
+      <h2 id="under-h" class="fam-h2">Understanding EMDR</h2>
+      <p>
+        EMDR stands for <strong>Eye Movement Desensitization and Reprocessing</strong>. It is a therapy that helps the brain process traumatic memories so they no longer feel as overwhelming.
+      </p>
+      <p>
+        When something scary or overwhelming happens, the brain sometimes has trouble "filing away" the memory properly. It can feel like the memory is stuck — causing nightmares, anxiety, or strong reactions to reminders of what happened.
+      </p>
+      <p>
+        EMDR helps the brain unstick those memories and process them like normal memories — ones we can remember without being overwhelmed by them.
+      </p>
+    </section>
 
-    <!-- Key points as horizontal pills -->
-    <div class="flex flex-wrap gap-2 mb-10">
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-600 rounded-full text-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        Evidence-based
-      </span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-600 rounded-full text-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        Safe for children
-      </span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-600 rounded-full text-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        Child-controlled pace
-      </span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-600 rounded-full text-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        No detailed retelling required
-      </span>
-    </div>
+    <section class="fam-block" aria-labelledby="how-h">
+      <h2 id="how-h" class="fam-h2">How does it work?</h2>
+      <p>
+        During EMDR, your child will think about a difficult memory while following the therapist's fingers with their eyes (or using gentle taps or sounds). This back-and-forth movement helps the brain process the memory.
+      </p>
+      <div class="fam-pull">
+        <p class="fam-pull-eyebrow">Think of it like this</p>
+        <p>
+          When we sleep and dream, our eyes move back and forth during REM sleep, and that helps our brain process the day's events. EMDR uses a similar process while awake to help process stuck memories.
+        </p>
+      </div>
+    </section>
 
-    <!-- Tools Link -->
-    <div class="my-8">
-      <a
-        href="/families/emdr/tools"
-        class="inline-flex items-center gap-3 px-5 py-3 bg-forest-700 border border-forest-500 text-forest-100 rounded-lg hover:bg-forest-600 transition-colors font-medium"
-      >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6" />
-        </svg>
-        Games and calming tools
-        <span class="text-forest-300 text-sm font-normal">to try together</span>
-      </a>
-    </div>
+    <section class="fam-block" aria-labelledby="sessions-h">
+      <h2 id="sessions-h" class="fam-h2">What happens in sessions</h2>
 
-    <!-- Safety Callout -->
-    <div class="bg-sand border border-forest-200 rounded-xl p-5 mb-10">
-      <div class="flex items-start gap-3">
-        <svg class="w-6 h-6 text-forest-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-        </svg>
+      <h3 class="fam-h3"><span class="fam-step">1</span> Building trust first</h3>
+      <p>EMDR isn't rushed. Before any memory work begins, the therapist will:</p>
+      <ul class="fam-list">
+        <li>Get to know your child and help them feel comfortable</li>
+        <li>Learn about their history and what brought them to therapy</li>
+        <li>Teach calming and coping techniques</li>
+        <li>Create a "safe place" in their imagination they can go to anytime</li>
+      </ul>
+
+      <h3 class="fam-h3"><span class="fam-step">2</span> Processing memories</h3>
+      <p>When your child is ready, they'll begin working on difficult memories:</p>
+      <ul class="fam-list">
+        <li>Your child controls the pace — they can stop anytime</li>
+        <li>They don't have to describe everything out loud</li>
+        <li>The therapist guides them through safely</li>
+        <li>Sessions end with calming exercises</li>
+      </ul>
+
+      <div class="fam-pull">
+        <p class="fam-pull-eyebrow">Your child is in control</p>
+        <p>
+          Your child can stop the process at any time by raising their hand or saying "stop." The therapist will never push them to continue if they're not ready.
+        </p>
+      </div>
+    </section>
+
+    <section class="fam-block" aria-labelledby="after-h">
+      <h2 id="after-h" class="fam-h2">What to expect after sessions</h2>
+      <p>After EMDR sessions, your child might:</p>
+      <div class="fam-grid-4">
+        <div><b>Feel tired</b><span>Processing memories takes energy.</span></div>
+        <div><b>Have vivid dreams</b><span>Normal and usually temporary.</span></div>
+        <div><b>Notice thoughts come up</b><span>Related to the memory.</span></div>
+        <div><b>Feel lighter or relieved</b><span>As memories are processed.</span></div>
+      </div>
+      <p class="fam-small">All normal parts of healing. If you're concerned, always reach out to your child's therapist.</p>
+    </section>
+
+    <section class="fam-block" aria-labelledby="timeline-h">
+      <h2 id="timeline-h" class="fam-h2">A rough timeline</h2>
+      <p>Every child is different, but here is a general idea of how EMDR therapy unfolds. Your therapist will adjust the pace to your child's needs.</p>
+      <ol class="fam-timeline">
+        <li>
+          <div class="fam-tl-when">Weeks 1–3</div>
+          <div class="fam-tl-body"><b>Getting started.</b> Building trust, learning about your child's history, teaching coping skills. No memory processing yet.</div>
+        </li>
+        <li>
+          <div class="fam-tl-when">Weeks 3–5</div>
+          <div class="fam-tl-body"><b>Preparation.</b> Practicing calming techniques, creating a "safe place," and making sure your child feels ready.</div>
+        </li>
+        <li>
+          <div class="fam-tl-when">Weeks 5+</div>
+          <div class="fam-tl-body"><b>Processing.</b> Working through targeted memories with bilateral stimulation. Some children see relief in a few sessions; others with more complex histories may need longer.</div>
+        </li>
+        <li>
+          <div class="fam-tl-when">Ongoing</div>
+          <div class="fam-tl-body"><b>Check-ins &amp; closure.</b> Reviewing progress, addressing remaining targets, and ensuring your child feels stable before ending treatment.</div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="fam-block" aria-labelledby="say-h">
+      <h2 id="say-h" class="fam-h2">What to say (and what to avoid)</h2>
+      <div class="fam-say">
         <div>
-          <h2 class="text-forest-900 font-semibold mb-1">Is EMDR Safe?</h2>
-          <p class="text-charcoal text-sm leading-relaxed">
-            EMDR is recognized as a safe and effective treatment by the World Health Organization, the American Psychological Association, and the Department of Veterans Affairs. When conducted by a trained therapist, it is considered safe for both children and adults. EMDR can be adapted for children as young as 2-3 years old and is effective across the lifespan. If you have concerns about whether EMDR is right for your situation, talk with your therapist — they can explain how the treatment is tailored to individual needs.
-          </p>
+          <h3 class="fam-h3-mini good">Helpful</h3>
+          <ul class="fam-list">
+            <li>"I'm proud of you for going to therapy."</li>
+            <li>"You don't have to tell me what you talked about."</li>
+            <li>"It's okay to feel tired or have big feelings after."</li>
+            <li>"I'm here if you need anything."</li>
+            <li>"Want to use your calm-down exercises together?"</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="fam-h3-mini bad">Avoid</h3>
+          <ul class="fam-list">
+            <li>"What did you talk about in therapy?"</li>
+            <li>"You should be over this by now."</li>
+            <li>"Just try not to think about it."</li>
+            <li>"Other kids have been through worse."</li>
+            <li>"Are you fixed yet?"</li>
+          </ul>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Two column layout for main content -->
-    <div class="grid lg:grid-cols-3 gap-6">
+    <section class="fam-block" aria-labelledby="faq-h">
+      <h2 id="faq-h" class="fam-h2">Common questions</h2>
+      <details class="fam-faq">
+        <summary>Will my child have to relive their trauma?</summary>
+        <p>EMDR doesn't require your child to describe their trauma in detail or relive it. They can process memories with minimal verbal description. The therapist will guide them through safely.</p>
+      </details>
+      <details class="fam-faq">
+        <summary>How long does EMDR take?</summary>
+        <p>It varies for each child. Some see improvement in just a few sessions; others with more complex histories may need longer. The therapist will discuss expectations with you.</p>
+      </details>
+      <details class="fam-faq">
+        <summary>Will my child remember their trauma differently?</summary>
+        <p>EMDR doesn't change or erase memories. Your child will still remember what happened, but the memory should feel less distressing — more like a regular memory from the past.</p>
+      </details>
+      <details class="fam-faq">
+        <summary>Is EMDR safe for children?</summary>
+        <p>Yes. EMDR has been adapted specifically for children and is considered safe when conducted by a trained therapist. It can be used with children as young as 2–3 years old, with the therapist adjusting techniques to match your child's developmental stage.</p>
+      </details>
+    </section>
 
-      <!-- Left column: Main content cards -->
-      <div class="lg:col-span-2 space-y-6">
-
-        <!-- Understanding EMDR Card -->
-        <div class="bg-sand rounded-xl border border-linen overflow-hidden">
-          <div class="bg-gradient-to-r from-forest-600 to-forest-700 px-5 py-3">
-            <h2 class="text-white font-semibold flex items-center gap-2">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Understanding EMDR
-            </h2>
-          </div>
-          <div class="p-5 space-y-4">
-            <p class="text-charcoal leading-relaxed">
-              EMDR stands for <strong>Eye Movement Desensitization and Reprocessing</strong>. It's a therapy that helps the brain process traumatic memories so they no longer cause distress.
-            </p>
-            <p class="text-charcoal leading-relaxed">
-              When something scary or overwhelming happens, our brains sometimes have trouble "filing away" that memory properly. It can feel like the memory is stuck, causing nightmares, anxiety, or strong reactions to reminders of what happened.
-            </p>
-            <p class="text-charcoal leading-relaxed">
-              EMDR helps the brain unstick these memories and process them like normal memories — ones that we can remember without being overwhelmed by them.
-            </p>
-            <div class="p-4 bg-forest-50 border-l-4 border-forest-200 rounded-r-lg">
-              <p class="text-sm font-medium text-charcoal mb-1">It's Evidence-Based</p>
-              <p class="text-sm text-charcoal">EMDR is recognized by the World Health Organization and the American Psychological Association as an effective treatment for trauma and PTSD in both children and adults.</p>
-            </div>
-          </div>
+    <section class="fam-block" aria-labelledby="support-h">
+      <h2 id="support-h" class="fam-h2">How to support your child</h2>
+      <div class="fam-support-grid">
+        <div>
+          <h3 class="fam-h3-mini">Before sessions</h3>
+          <ul class="fam-list">
+            <li>Keep regular appointment times</li>
+            <li>Make sure they've eaten and rested</li>
+            <li>Don't rush to or from appointments</li>
+          </ul>
         </div>
-
-        <!-- How Does It Work Card -->
-        <div class="bg-sand rounded-xl border border-linen overflow-hidden">
-          <div class="bg-gradient-to-r from-bronze-600 to-bronze-700 px-5 py-3">
-            <h2 class="text-white font-semibold flex items-center gap-2">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-              </svg>
-              How Does It Work?
-            </h2>
-          </div>
-          <div class="p-5 space-y-4">
-            <p class="text-charcoal leading-relaxed">
-              During EMDR, your child will think about a difficult memory while following the therapist's fingers with their eyes (or using taps or sounds). This back-and-forth movement helps the brain process the memory.
-            </p>
-            <div class="bg-forest-50 rounded-xl p-4 border border-bronze-500">
-              <p class="text-sm font-medium text-forest-900 mb-2">Think of it like this:</p>
-              <p class="text-sm text-charcoal">When we sleep and dream, our eyes move back and forth during REM sleep, and this helps our brain process the day's events. EMDR uses a similar process while awake to help process stuck memories.</p>
-            </div>
-          </div>
+        <div>
+          <h3 class="fam-h3-mini">After sessions</h3>
+          <ul class="fam-list">
+            <li>Allow quiet time if needed</li>
+            <li>Have calm activities available</li>
+            <li>Don't press them to talk</li>
+          </ul>
         </div>
-
-        <!-- What Happens in Sessions Card -->
-        <div class="bg-sand rounded-xl border border-linen overflow-hidden">
-          <div class="bg-gradient-to-r from-forest-600 to-forest-700 px-5 py-3">
-            <h2 class="text-white font-semibold flex items-center gap-2">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              What Happens in Sessions
-            </h2>
-          </div>
-          <div class="p-5 space-y-6">
-            <!-- Building Trust -->
-            <div>
-              <h3 class="font-semibold text-forest-900 mb-3 flex items-center gap-2">
-                <span class="w-6 h-6 bg-bronze-400 text-white rounded flex items-center justify-center text-xs font-bold">1</span>
-                Building Trust First
-              </h3>
-              <p class="text-charcoal mb-3">EMDR isn't rushed. Before any memory work begins, the therapist will:</p>
-              <ul class="space-y-2 text-sm text-charcoal">
-                <li class="flex items-start gap-2">
-                  <svg class="w-4 h-4 text-bronze-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                  Get to know your child and help them feel comfortable
-                </li>
-                <li class="flex items-start gap-2">
-                  <svg class="w-4 h-4 text-bronze-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                  Learn about their history and what brought them to therapy
-                </li>
-                <li class="flex items-start gap-2">
-                  <svg class="w-4 h-4 text-bronze-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                  Teach calming and coping techniques
-                </li>
-                <li class="flex items-start gap-2">
-                  <svg class="w-4 h-4 text-bronze-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                  Create a "safe place" in their imagination they can go to anytime
-                </li>
-              </ul>
-            </div>
-
-            <!-- Processing Memories -->
-            <div>
-              <h3 class="font-semibold text-forest-900 mb-3 flex items-center gap-2">
-                <span class="w-6 h-6 bg-bronze-400 text-white rounded flex items-center justify-center text-xs font-bold">2</span>
-                Processing Memories
-              </h3>
-              <p class="text-charcoal mb-3">When your child is ready, they'll begin working on difficult memories:</p>
-              <ul class="space-y-2 text-sm text-charcoal">
-                <li class="flex items-start gap-2">
-                  <svg class="w-4 h-4 text-bronze-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                  Your child controls the pace — they can stop anytime
-                </li>
-                <li class="flex items-start gap-2">
-                  <svg class="w-4 h-4 text-bronze-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                  They don't have to describe everything out loud
-                </li>
-                <li class="flex items-start gap-2">
-                  <svg class="w-4 h-4 text-bronze-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                  The therapist guides them through safely
-                </li>
-                <li class="flex items-start gap-2">
-                  <svg class="w-4 h-4 text-bronze-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                  </svg>
-                  Sessions end with calming exercises
-                </li>
-              </ul>
-            </div>
-
-            <div class="p-4 bg-forest-50 border-l-4 border-bronze-500 rounded-r-lg">
-              <p class="text-sm font-medium text-charcoal mb-1">Your Child Is in Control</p>
-              <p class="text-sm text-charcoal">Your child can stop the process at any time by raising their hand or saying "stop." The therapist will never push them to continue if they're not ready.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- What to Expect After Sessions -->
-        <div class="bg-sand rounded-xl border border-linen overflow-hidden">
-          <div class="bg-gradient-to-r from-bronze-600 to-bronze-700 px-5 py-3">
-            <h2 class="text-white font-semibold flex items-center gap-2">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-              </svg>
-              What to Expect After Sessions
-            </h2>
-          </div>
-          <div class="p-5">
-            <p class="text-charcoal mb-4">After EMDR sessions, your child might:</p>
-            <div class="grid sm:grid-cols-2 gap-3">
-              <div class="p-3 bg-forest-50 rounded-lg border border-linen">
-                <p class="text-sm font-medium text-forest-900">Feel tired</p>
-                <p class="text-xs text-forest-500">Processing memories takes energy</p>
-              </div>
-              <div class="p-3 bg-forest-50 rounded-lg border border-linen">
-                <p class="text-sm font-medium text-forest-900">Have vivid dreams</p>
-                <p class="text-xs text-forest-500">Normal and usually temporary</p>
-              </div>
-              <div class="p-3 bg-forest-50 rounded-lg border border-linen">
-                <p class="text-sm font-medium text-forest-900">Notice thoughts coming up</p>
-                <p class="text-xs text-forest-500">Related to the memory</p>
-              </div>
-              <div class="p-3 bg-forest-50 rounded-lg border border-linen">
-                <p class="text-sm font-medium text-forest-900">Feel lighter or relieved</p>
-                <p class="text-xs text-forest-500">As memories are processed</p>
-              </div>
-            </div>
-            <p class="text-sm text-forest-600 mt-4">These responses are all normal parts of healing. If you're concerned about anything, always reach out to your child's therapist.</p>
-          </div>
-        </div>
-
-        <!-- Common Questions Card -->
-        <div class="bg-sand rounded-xl border border-linen overflow-hidden">
-          <div class="bg-gradient-to-r from-forest-600 to-forest-700 px-5 py-3">
-            <h2 class="text-white font-semibold flex items-center gap-2">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              Common Questions
-            </h2>
-          </div>
-          <div class="p-5 space-y-4">
-            <details class="group border border-linen rounded-lg overflow-hidden">
-              <summary class="flex items-center justify-between p-3 bg-forest-50 cursor-pointer hover:bg-forest-50 transition-colors">
-                <span class="font-medium text-forest-900 text-sm">Will my child have to relive their trauma?</span>
-                <svg class="w-5 h-5 text-forest-500 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </summary>
-              <div class="p-4 bg-sand border-t border-linen">
-                <p class="text-sm text-charcoal">EMDR doesn't require your child to describe their trauma in detail or relive it. They can process memories with minimal verbal description. The therapist will guide them through safely.</p>
-              </div>
-            </details>
-
-            <details class="group border border-linen rounded-lg overflow-hidden">
-              <summary class="flex items-center justify-between p-3 bg-forest-50 cursor-pointer hover:bg-forest-50 transition-colors">
-                <span class="font-medium text-forest-900 text-sm">How long does EMDR take?</span>
-                <svg class="w-5 h-5 text-forest-500 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </summary>
-              <div class="p-4 bg-sand border-t border-linen">
-                <p class="text-sm text-charcoal">It varies for each child. Some see improvement in just a few sessions, while others with more complex histories may need longer. The therapist will discuss expectations with you.</p>
-              </div>
-            </details>
-
-            <details class="group border border-linen rounded-lg overflow-hidden">
-              <summary class="flex items-center justify-between p-3 bg-forest-50 cursor-pointer hover:bg-forest-50 transition-colors">
-                <span class="font-medium text-forest-900 text-sm">Will my child remember their trauma differently?</span>
-                <svg class="w-5 h-5 text-forest-500 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </summary>
-              <div class="p-4 bg-sand border-t border-linen">
-                <p class="text-sm text-charcoal">EMDR doesn't change or erase memories. Your child will still remember what happened, but the memory should feel less distressing — more like a regular memory from the past.</p>
-              </div>
-            </details>
-
-            <details class="group border border-linen rounded-lg overflow-hidden">
-              <summary class="flex items-center justify-between p-3 bg-forest-50 cursor-pointer hover:bg-forest-50 transition-colors">
-                <span class="font-medium text-forest-900 text-sm">Is EMDR safe for children?</span>
-                <svg class="w-5 h-5 text-forest-500 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </summary>
-              <div class="p-4 bg-sand border-t border-linen">
-                <p class="text-sm text-charcoal">Yes. EMDR has been adapted specifically for children and is considered safe when conducted by a trained therapist. It can be used with children as young as 2-3 years old, with the therapist adjusting techniques to match your child's developmental stage. The therapist will pace the work appropriately for your child's age and needs.</p>
-              </div>
-            </details>
-          </div>
+        <div>
+          <h3 class="fam-h3-mini">At home</h3>
+          <ul class="fam-list">
+            <li>Practice calming techniques together</li>
+            <li>Remind them of their "safe place"</li>
+            <li>Maintain predictable routines</li>
+            <li>Be patient — healing isn't linear</li>
+          </ul>
         </div>
       </div>
+    </section>
 
-      <!-- Right column: Sticky Sidebar -->
-      <div class="lg:col-span-1">
-        <div class="lg:sticky lg:top-24 space-y-6">
-          <!-- How to Support Your Child -->
-          <div class="bg-sand rounded-xl border border-linen overflow-hidden">
-            <div class="bg-bronze-500 px-4 py-3">
-              <h2 class="text-white font-semibold text-sm flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-                How to Support Your Child
-              </h2>
-            </div>
-            <div class="p-4 space-y-4">
-              <div>
-                <h3 class="text-xs font-semibold text-forest-500 uppercase tracking-wide mb-2">Before Sessions</h3>
-                <ul class="space-y-1.5 text-sm text-charcoal">
-                  <li class="flex items-start gap-2">
-                    <span class="text-bronze-600 mt-0.5">•</span>
-                    Keep regular appointment times
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="text-bronze-600 mt-0.5">•</span>
-                    Ensure they've eaten and rested
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="text-bronze-600 mt-0.5">•</span>
-                    Don't rush to/from appointments
-                  </li>
-                </ul>
-              </div>
+    <section class="fam-warn" aria-labelledby="when-h">
+      <h2 id="when-h">When to talk to your therapist</h2>
+      <p>Contact your child's therapist if you notice any of the following between sessions:</p>
+      <ul>
+        <li>Significant increase in nightmares, anxiety, or behavioral changes</li>
+        <li>Talking about wanting to hurt themselves or others</li>
+        <li>Refusing to go to therapy or sudden fear of sessions</li>
+        <li>Emotional reactions that seem much stronger or longer than usual</li>
+        <li>You're unsure if what you're seeing is a normal part of treatment</li>
+      </ul>
+      <p class="fam-small">
+        If your child is in immediate danger, call <a href="tel:911">911</a> or go to your nearest emergency room. You can also reach the <a href="/help">988 Suicide &amp; Crisis Lifeline</a>.
+      </p>
+    </section>
 
-              <div>
-                <h3 class="text-xs font-semibold text-forest-500 uppercase tracking-wide mb-2">After Sessions</h3>
-                <ul class="space-y-1.5 text-sm text-charcoal">
-                  <li class="flex items-start gap-2">
-                    <span class="text-bronze-600 mt-0.5">•</span>
-                    Allow quiet time if needed
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="text-bronze-600 mt-0.5">•</span>
-                    Have calm activities available
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="text-bronze-600 mt-0.5">•</span>
-                    Don't press them to talk
-                  </li>
-                </ul>
-              </div>
+    <p class="fam-tools-link">
+      Want to try something with your child? <a href="/families/emdr/tools">Open the games &amp; calming tools →</a>
+    </p>
 
-              <div>
-                <h3 class="text-xs font-semibold text-forest-500 uppercase tracking-wide mb-2">At Home</h3>
-                <ul class="space-y-1.5 text-sm text-charcoal">
-                  <li class="flex items-start gap-2">
-                    <span class="text-bronze-600 mt-0.5">•</span>
-                    Practice calming techniques together
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="text-bronze-600 mt-0.5">•</span>
-                    Remind them of their "safe place"
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="text-bronze-600 mt-0.5">•</span>
-                    Maintain predictable routines
-                  </li>
-                  <li class="flex items-start gap-2">
-                    <span class="text-bronze-600 mt-0.5">•</span>
-                    Be patient — healing isn't linear
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <!-- For Caregivers Note -->
-          <div class="bg-sand rounded-xl border border-forest-200 overflow-hidden">
-            <div class="px-4 py-3 border-b border-forest-200">
-              <h2 class="font-semibold text-charcoal text-sm flex items-center gap-2">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                For Caregivers
-              </h2>
-            </div>
-            <div class="p-4">
-              <p class="text-sm text-charcoal leading-relaxed">
-                Supporting a child through trauma therapy can be emotionally demanding. Make sure you're taking care of yourself too. It's okay to ask the therapist for resources for your own wellbeing.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- What to Expect: Week by Week -->
-    <div class="mt-10 bg-sand rounded-xl border border-linen overflow-hidden">
-      <div class="bg-gradient-to-r from-forest-600 to-forest-700 px-5 py-3">
-        <h2 class="text-white font-semibold flex items-center gap-2">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-          </svg>
-          What to Expect: A Rough Timeline
-        </h2>
-      </div>
-      <div class="p-5 space-y-4">
-        <p class="text-sm text-forest-600">Every child is different, but here is a general idea of how EMDR therapy unfolds. Your therapist will adjust the pace to your child's needs.</p>
-        <div class="space-y-3">
-          <div class="flex gap-4 items-start">
-            <div class="flex-shrink-0 w-20 text-xs font-semibold text-bronze-600 pt-0.5">Weeks 1-3</div>
-            <div>
-              <p class="text-sm font-medium text-forest-900">Getting Started</p>
-              <p class="text-sm text-forest-600">Building trust, learning about your child's history, and teaching coping skills. No memory processing yet.</p>
-            </div>
-          </div>
-          <div class="flex gap-4 items-start">
-            <div class="flex-shrink-0 w-20 text-xs font-semibold text-bronze-600 pt-0.5">Weeks 3-5</div>
-            <div>
-              <p class="text-sm font-medium text-forest-900">Preparation</p>
-              <p class="text-sm text-forest-600">Practicing calming techniques, creating a "safe place," and making sure your child feels ready.</p>
-            </div>
-          </div>
-          <div class="flex gap-4 items-start">
-            <div class="flex-shrink-0 w-20 text-xs font-semibold text-bronze-600 pt-0.5">Weeks 5+</div>
-            <div>
-              <p class="text-sm font-medium text-forest-900">Processing</p>
-              <p class="text-sm text-forest-600">Working through targeted memories with bilateral stimulation (gentle eye movements, tapping, or sounds that engage both sides of the body). Some children see relief in a few sessions; others with more complex histories may need longer.</p>
-            </div>
-          </div>
-          <div class="flex gap-4 items-start">
-            <div class="flex-shrink-0 w-20 text-xs font-semibold text-bronze-600 pt-0.5">Ongoing</div>
-            <div>
-              <p class="text-sm font-medium text-forest-900">Check-ins & Closure</p>
-              <p class="text-sm text-forest-600">The therapist checks progress, addresses any remaining targets, and ensures your child feels stable before ending treatment.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- What to Say (and Not Say) -->
-    <div class="mt-6 bg-sand rounded-xl border border-linen overflow-hidden">
-      <div class="bg-gradient-to-r from-bronze-600 to-bronze-700 px-5 py-3">
-        <h2 class="text-white font-semibold flex items-center gap-2">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-          </svg>
-          What to Say (and Not Say)
-        </h2>
-      </div>
-      <div class="p-5">
-        <div class="grid sm:grid-cols-2 gap-4">
-          <div>
-            <h3 class="text-sm font-semibold text-forest-900 mb-3 flex items-center gap-2">
-              <svg class="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-              </svg>
-              Helpful Things to Say
-            </h3>
-            <ul class="space-y-2 text-sm text-charcoal">
-              <li class="flex items-start gap-2">
-                <span class="text-green-600 mt-0.5">&#x2022;</span>
-                "I'm proud of you for going to therapy."
-              </li>
-              <li class="flex items-start gap-2">
-                <span class="text-green-600 mt-0.5">&#x2022;</span>
-                "You don't have to tell me what you talked about."
-              </li>
-              <li class="flex items-start gap-2">
-                <span class="text-green-600 mt-0.5">&#x2022;</span>
-                "It's okay to feel tired or have big feelings after."
-              </li>
-              <li class="flex items-start gap-2">
-                <span class="text-green-600 mt-0.5">&#x2022;</span>
-                "I'm here if you need anything."
-              </li>
-              <li class="flex items-start gap-2">
-                <span class="text-green-600 mt-0.5">&#x2022;</span>
-                "Want to use your calm-down exercises together?"
-              </li>
-            </ul>
-          </div>
-          <div>
-            <h3 class="text-sm font-semibold text-forest-900 mb-3 flex items-center gap-2">
-              <svg class="w-4 h-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-              Things to Avoid
-            </h3>
-            <ul class="space-y-2 text-sm text-charcoal">
-              <li class="flex items-start gap-2">
-                <span class="text-red-600 mt-0.5">&#x2022;</span>
-                "What did you talk about in therapy?"
-              </li>
-              <li class="flex items-start gap-2">
-                <span class="text-red-600 mt-0.5">&#x2022;</span>
-                "You should be over this by now."
-              </li>
-              <li class="flex items-start gap-2">
-                <span class="text-red-600 mt-0.5">&#x2022;</span>
-                "Just try not to think about it."
-              </li>
-              <li class="flex items-start gap-2">
-                <span class="text-red-600 mt-0.5">&#x2022;</span>
-                "Other kids have been through worse."
-              </li>
-              <li class="flex items-start gap-2">
-                <span class="text-red-600 mt-0.5">&#x2022;</span>
-                "Are you fixed yet?"
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- When to Talk to Your Therapist -->
-    <div class="mt-6 bg-amber-50 border border-amber-300 rounded-xl overflow-hidden">
-      <div class="px-5 py-3 border-b border-amber-300 bg-amber-50">
-        <h2 class="font-semibold text-amber-800 flex items-center gap-2">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-          </svg>
-          When to Talk to Your Therapist
-        </h2>
-      </div>
-      <div class="p-5">
-        <p class="text-sm text-charcoal mb-3">Contact your child's therapist if you notice any of the following between sessions:</p>
-        <ul class="space-y-2 text-sm text-charcoal">
-          <li class="flex items-start gap-2">
-            <span class="text-amber-700 mt-0.5">&#x2022;</span>
-            Significant increase in nightmares, anxiety, or behavioral changes
-          </li>
-          <li class="flex items-start gap-2">
-            <span class="text-amber-700 mt-0.5">&#x2022;</span>
-            Talking about wanting to hurt themselves or others
-          </li>
-          <li class="flex items-start gap-2">
-            <span class="text-amber-700 mt-0.5">&#x2022;</span>
-            Refusing to go to therapy or sudden fear of sessions
-          </li>
-          <li class="flex items-start gap-2">
-            <span class="text-amber-700 mt-0.5">&#x2022;</span>
-            Emotional reactions that seem much stronger or longer than usual
-          </li>
-          <li class="flex items-start gap-2">
-            <span class="text-amber-700 mt-0.5">&#x2022;</span>
-            You're unsure if what you're seeing is a normal part of treatment
-          </li>
-        </ul>
-        <p class="text-xs text-forest-500 mt-4">If your child is in immediate danger, call 911 or go to your nearest emergency room. You can also call the 988 Suicide and Crisis Lifeline.</p>
-      </div>
-    </div>
-
-    <!-- Back Link -->
-    <div class="mt-12 pt-8 border-t border-linen">
-      <a href="/families" class="text-bronze-700 hover:text-bronze-600 transition-colors flex items-center gap-2">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        Back to Family Resources
-      </a>
-    </div>
+    <a class="fam-back" href="/families">← Back to family resources</a>
   </div>
 </BaseLayout>
+
+<style>
+  .fam-emdr {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+    line-height: 1.6;
+  }
+
+  .fam-crumb ol {
+    list-style: none;
+    margin: 0 0 16px;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font: 500 11.5px/1 var(--font-mono);
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .fam-crumb a { color: var(--color-ink-2); text-decoration: none; }
+  .fam-crumb a:hover { color: var(--color-copper); }
+
+  .fam-hero { margin: 14px 0 28px; }
+  .fam-kicker {
+    font: 500 11px/1 var(--font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-copper);
+    margin: 0 0 14px;
+  }
+  .fam-h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    margin: 0 0 14px;
+    color: var(--color-ink);
+  }
+  .fam-h1 em {
+    font-style: italic;
+    color: var(--color-copper);
+  }
+  .fam-lede {
+    font-size: 17px;
+    color: var(--color-ink-2);
+    max-width: 60ch;
+    margin: 0;
+  }
+
+  .fam-safety {
+    background: var(--color-paper-2);
+    border-left: 3px solid var(--color-deep-forest, #2d4a32);
+    border-radius: 0 12px 12px 0;
+    padding: 18px 20px;
+    margin: 28px 0;
+  }
+  .fam-safety h2 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0 0 6px;
+    color: var(--color-deep-forest, #2d4a32);
+  }
+  .fam-safety p { margin: 0; font-size: 14.5px; color: var(--color-ink-2); }
+
+  .fam-block { margin: 36px 0; }
+  .fam-h2 {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+    color: var(--color-ink);
+  }
+  .fam-block p { margin: 0 0 12px; color: var(--color-ink-2); font-size: 16px; }
+
+  .fam-pull {
+    background: var(--color-card);
+    border: 1px solid var(--color-card-border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 14px 0;
+  }
+  .fam-pull-eyebrow {
+    font: 500 11px/1 var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-copper);
+    margin: 0 0 8px !important;
+  }
+  .fam-pull p { margin: 0; }
+
+  .fam-h3 {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 500;
+    margin: 22px 0 8px;
+    color: var(--color-ink);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .fam-step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--color-deep-forest, #2d4a32);
+    color: #f2dca0;
+    font: 600 12px/1 var(--font-mono);
+  }
+
+  .fam-list {
+    list-style: disc;
+    padding-left: 22px;
+    margin: 0 0 12px;
+    color: var(--color-ink-2);
+    font-size: 15px;
+  }
+  .fam-list li { margin: 4px 0; }
+
+  .fam-grid-4 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .fam-grid-4 > div {
+    background: var(--color-card);
+    border: 1px solid var(--color-card-border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .fam-grid-4 b { color: var(--color-ink); font-size: 14px; }
+  .fam-grid-4 span { color: var(--color-muted); font-size: 12.5px; }
+  .fam-small { font-size: 13px; color: var(--color-muted); margin-top: 8px !important; }
+  .fam-small a { color: var(--color-deep-forest, #2d4a32); }
+
+  .fam-timeline {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+  .fam-timeline li {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 16px;
+    padding: 10px 0;
+    border-top: 1px solid var(--color-line, #e5e1d6);
+  }
+  .fam-timeline li:last-child { border-bottom: 1px solid var(--color-line, #e5e1d6); }
+  .fam-tl-when {
+    font: 500 11.5px/1.4 var(--font-mono);
+    letter-spacing: 0.06em;
+    color: var(--color-copper);
+    text-transform: uppercase;
+  }
+  .fam-tl-body { font-size: 14.5px; color: var(--color-ink-2); }
+  .fam-tl-body b { color: var(--color-ink); }
+
+  .fam-say { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .fam-h3-mini {
+    font: 600 11px/1 var(--font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin: 0 0 10px;
+  }
+  .fam-h3-mini.good { color: var(--color-deep-forest, #2d4a32); }
+  .fam-h3-mini.bad { color: #a63a2f; }
+
+  .fam-faq {
+    border-top: 1px solid var(--color-line, #e5e1d6);
+    padding: 14px 0;
+  }
+  .fam-faq:last-of-type { border-bottom: 1px solid var(--color-line, #e5e1d6); }
+  .fam-faq summary {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--color-ink);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 32px;
+  }
+  .fam-faq summary::-webkit-details-marker { display: none; }
+  .fam-faq summary::after {
+    content: "+";
+    color: var(--color-copper);
+    font: 400 22px/1 var(--font-display);
+  }
+  .fam-faq[open] summary::after { content: "−"; }
+  .fam-faq p { margin: 10px 0 0; font-size: 15px; color: var(--color-ink-2); }
+
+  .fam-support-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+  }
+
+  .fam-warn {
+    background: #fbf1dc;
+    border: 1px solid #e8d2a4;
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin: 36px 0 20px;
+  }
+  .fam-warn h2 {
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 500;
+    margin: 0 0 10px;
+    color: #6e4a10;
+  }
+  .fam-warn p { margin: 0 0 8px; color: #4f3815; font-size: 15px; }
+  .fam-warn ul {
+    margin: 0 0 10px;
+    padding-left: 22px;
+    color: #4f3815;
+    font-size: 15px;
+  }
+  .fam-warn ul li { margin: 4px 0; }
+  .fam-warn .fam-small { color: #6e4a10; }
+  .fam-warn .fam-small a { color: #6e4a10; text-decoration: underline; }
+
+  .fam-tools-link {
+    margin: 28px 0 0;
+    padding: 14px 18px;
+    background: var(--color-paper-2);
+    border-radius: 12px;
+    font-size: 15px;
+  }
+  .fam-tools-link a {
+    color: var(--color-copper);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .fam-tools-link a:hover { text-decoration: underline; }
+
+  .fam-back {
+    display: inline-block;
+    margin-top: 36px;
+    color: var(--color-muted);
+    text-decoration: none;
+    font-size: 14px;
+  }
+  .fam-back:hover { color: var(--color-copper); }
+
+  @media (max-width: 640px) {
+    .fam-grid-4,
+    .fam-say,
+    .fam-support-grid { grid-template-columns: 1fr; }
+    .fam-timeline li { grid-template-columns: 1fr; gap: 4px; }
+  }
+</style>

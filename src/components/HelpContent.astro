@@ -1,0 +1,209 @@
+---
+import { useTranslations, type Lang } from '../i18n';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const smsBody = lang === 'es' ? 'HOLA' : 'HELLO';
+---
+
+<div class="help-page">
+  <section class="help-hero">
+    <p class="help-kicker">988 · 741741 · 911</p>
+    <h1 class="help-h1">{t('help.title')}</h1>
+    <p class="help-lede">{t('help.lede')}</p>
+  </section>
+
+  <section class="help-imminent" aria-labelledby="imminent-h">
+    <h2 id="imminent-h">{t('help.imminentTitle')}</h2>
+    <p>{t('help.imminentBody')}</p>
+    <a href="tel:911" class="help-imminent-cta">
+      <span aria-hidden="true">🚨</span>
+      <span>{t('help.callBtn')} 911</span>
+    </a>
+  </section>
+
+  <section class="help-grid" aria-label="Crisis lines">
+    <article class="help-card">
+      <h3>{t('help.section988Title')}</h3>
+      <p>{t('help.section988Body')}</p>
+      <div class="help-card-actions">
+        <a href="tel:988" class="help-btn primary">{t('help.callBtn')} 988</a>
+        <a href="sms:988" class="help-btn">{t('help.textBtn')} 988</a>
+      </div>
+    </article>
+
+    <article class="help-card">
+      <h3>{t('help.sectionTextTitle')}</h3>
+      <p>{t('help.sectionTextBody')}</p>
+      <div class="help-card-actions">
+        <a href={`sms:741741&body=${smsBody}`} class="help-btn primary">
+          {t('help.textBtn')} {smsBody} → 741741
+        </a>
+      </div>
+    </article>
+
+    <article class="help-card">
+      <h3>{t('help.sectionRainnTitle')}</h3>
+      <p>{t('help.sectionRainnBody')}</p>
+      <div class="help-card-actions">
+        <a href="tel:18006564673" class="help-btn primary">{t('help.callBtn')} 1-800-656-4673</a>
+      </div>
+    </article>
+  </section>
+
+  <p class="help-fineprint">{t('help.smallPrint')}</p>
+  <p class="help-fineprint">{t('help.notReplacement')}</p>
+</div>
+
+<style>
+  .help-page {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    padding: 56px 28px 80px;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+
+  .help-hero {
+    margin-bottom: 36px;
+  }
+  .help-kicker {
+    font: 500 11px/1 var(--font-mono);
+    letter-spacing: 0.2em;
+    color: var(--color-copper);
+    margin: 0 0 14px;
+    text-transform: uppercase;
+  }
+  .help-h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(32px, 5vw, 52px);
+    letter-spacing: -0.015em;
+    line-height: 1.05;
+    margin: 0 0 16px;
+    max-width: 18ch;
+    color: var(--color-ink);
+  }
+  .help-lede {
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--color-ink-2);
+    max-width: 60ch;
+    margin: 0;
+  }
+
+  .help-imminent {
+    background: #2d4a32;
+    color: #eaf0e1;
+    padding: 22px 24px;
+    border-radius: 16px;
+    margin: 36px 0;
+    display: grid;
+    gap: 8px;
+  }
+  .help-imminent h2 {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0;
+    color: #f2dca0;
+    letter-spacing: -0.01em;
+  }
+  .help-imminent p {
+    margin: 0;
+    font-size: 14.5px;
+    line-height: 1.5;
+    color: #d3dccf;
+  }
+  .help-imminent-cta {
+    align-self: start;
+    margin-top: 6px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #1f3523;
+    color: #f2dca0;
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-weight: 600;
+    text-decoration: none;
+    min-height: 44px;
+  }
+  .help-imminent-cta:hover { background: #142a18; }
+
+  .help-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+  }
+  .help-card {
+    background: var(--color-card);
+    border: 1px solid var(--color-card-border);
+    border-radius: 14px;
+    padding: 22px 22px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .help-card h3 {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 500;
+    margin: 0;
+    color: var(--color-ink);
+    line-height: 1.2;
+  }
+  .help-card p {
+    margin: 0;
+    font-size: 13.5px;
+    color: var(--color-ink-2);
+    line-height: 1.55;
+  }
+  .help-card-actions {
+    margin-top: auto;
+    padding-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .help-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 16px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 13px;
+    background: var(--color-paper-2);
+    color: var(--color-ink);
+    border: 1px solid var(--color-card-border);
+  }
+  .help-btn.primary {
+    background: #2d4a32;
+    color: #f2dca0;
+    border-color: #2d4a32;
+  }
+  .help-btn:hover { filter: brightness(0.96); }
+
+  .help-fineprint {
+    color: var(--color-muted);
+    font-size: 13px;
+    margin: 28px 0 0;
+    max-width: 60ch;
+  }
+  .help-fineprint:first-of-type { margin-top: 36px; }
+
+  @media (max-width: 768px) {
+    .help-page { padding: 32px 16px 64px; }
+    .help-grid { grid-template-columns: 1fr; }
+    .help-card-actions { flex-direction: column; align-items: stretch; }
+    .help-btn { width: 100%; }
+  }
+</style>
