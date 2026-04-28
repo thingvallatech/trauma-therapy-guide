@@ -1,0 +1,279 @@
+---
+import CrisisStrip from './CrisisStrip.astro';
+import { useTranslations, useTranslatedPath, type Lang } from '../i18n';
+import { getCollection, type CollectionEntry } from 'astro:content';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const translatePath = useTranslatedPath(lang);
+
+const localeFilter = (entry: CollectionEntry<'resources'>) =>
+  lang === 'es' ? entry.data.locale === 'es' : entry.data.locale !== 'es';
+
+let recentlyAdded = (await getCollection('resources', localeFilter))
+  .sort((a, b) => b.data.dateAdded.getTime() - a.data.dateAdded.getTime())
+  .slice(0, 3);
+
+if (recentlyAdded.length === 0 && lang === 'es') {
+  recentlyAdded = (await getCollection('resources', (e) => e.data.locale !== 'es'))
+    .sort((a, b) => b.data.dateAdded.getTime() - a.data.dateAdded.getTime())
+    .slice(0, 3);
+}
+
+const monthShortByLang: Record<Lang, string[]> = {
+  en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+  es: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+};
+const monthShort = monthShortByLang[lang];
+
+function fmtDate(d: Date) {
+  return `${monthShort[d.getMonth()]} ${String(d.getDate()).padStart(2, '0')} · ${d.getFullYear()}`;
+}
+
+const tagKeyFor = (type: CollectionEntry<'resources'>['data']['type']) =>
+  `home.tag.${type}` as const;
+---
+
+<div class="cfd no-print">
+  <section class="cfd-hero">
+    <p class="cfd-kicker">{t('home.kicker')}</p>
+    <h1 class="cfd-h1">
+      {t('home.headlinePre')}<em>{t('home.headlineEm')}</em>{t('home.headlinePost')}
+    </h1>
+    <p class="cfd-lede">{t('home.lede')}</p>
+
+    <div class="cfd-picker">
+      <a class="cfd-card" href={translatePath('/clinicians')}>
+        <div class="cfd-card-who">{t('home.clinKicker')}</div>
+        <div class="cfd-card-what">{t('home.clinTitle')}</div>
+        <div class="cfd-card-do">{t('home.clinDo')}</div>
+        <div class="cfd-card-arr" aria-hidden="true">›</div>
+      </a>
+      <a class="cfd-card" href={translatePath('/families')}>
+        <div class="cfd-card-who">{t('home.famKicker')}</div>
+        <div class="cfd-card-what">{t('home.famTitle')}</div>
+        <div class="cfd-card-do">{t('home.famDo')}</div>
+        <div class="cfd-card-arr" aria-hidden="true">›</div>
+      </a>
+    </div>
+  </section>
+
+  <div class="cfd-safe-wrap">
+    <CrisisStrip lang={lang} />
+  </div>
+
+  {recentlyAdded.length > 0 && (
+    <section class="cfd-new" aria-labelledby="cfd-new-h">
+      <h2 id="cfd-new-h" class="cfd-new-heading">{t('home.newHeading')}</h2>
+      <ol class="cfd-new-list">
+        {recentlyAdded.map((r) => (
+          <li class="cfd-new-row">
+            <time datetime={r.data.dateAdded.toISOString().slice(0, 10)}>
+              {fmtDate(r.data.dateAdded)}
+            </time>
+            <div class="cfd-new-title">{r.data.title}</div>
+            <span class="cfd-new-tag">{t(tagKeyFor(r.data.type))}</span>
+          </li>
+        ))}
+      </ol>
+    </section>
+  )}
+</div>
+
+<div class="home-print-notice">
+  <h1>{t('site.name')}</h1>
+  <p>{t('home.printNotice')}</p>
+  <p><a href={translatePath('/clinicians/emdr')}>{t('home.printNoticeLink')} →</a></p>
+</div>
+
+<style>
+  .cfd {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  .cfd-hero {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 56px 24px;
+  }
+  .cfd-kicker {
+    font: 500 11px/1 var(--font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-copper);
+    margin: 0 0 14px;
+  }
+  .cfd-h1 {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 5vw, 56px);
+    line-height: 1.04;
+    margin: 0 0 14px;
+    max-width: 18ch;
+    font-weight: 400;
+    color: var(--color-ink);
+    letter-spacing: -0.01em;
+  }
+  .cfd-h1 em {
+    font-style: italic;
+    color: var(--color-copper);
+  }
+  .cfd-lede {
+    font-size: 17px;
+    color: var(--color-ink-2);
+    max-width: 60ch;
+    margin: 0 0 26px;
+    line-height: 1.55;
+  }
+
+  .cfd-picker {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    max-width: 720px;
+  }
+  .cfd-card {
+    display: block;
+    padding: 18px 48px 20px 18px;
+    background: var(--color-card);
+    border: 1px solid var(--color-card-border);
+    border-radius: 14px;
+    text-decoration: none;
+    color: inherit;
+    position: relative;
+    min-height: 100px;
+    transition: border-color 0.12s, box-shadow 0.12s, transform 0.12s;
+  }
+  .cfd-card:hover {
+    border-color: var(--color-copper);
+    box-shadow: 0 6px 20px rgba(20, 20, 10, 0.06);
+  }
+  .cfd-card-who {
+    font: 600 10.5px/1 var(--font-mono);
+    color: var(--color-copper);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .cfd-card-what {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 500;
+    color: var(--color-ink);
+    margin-bottom: 4px;
+    line-height: 1.2;
+  }
+  .cfd-card-do {
+    font-size: 13px;
+    color: var(--color-muted);
+    line-height: 1.4;
+  }
+  .cfd-card-arr {
+    position: absolute;
+    right: 18px;
+    top: 18px;
+    color: var(--color-copper);
+    font-size: 24px;
+    line-height: 1;
+  }
+
+  .cfd-safe-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 56px 24px;
+  }
+
+  .cfd-new {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 8px 56px 60px;
+  }
+  .cfd-new-heading {
+    font: 500 11px/1 var(--font-mono);
+    color: var(--color-copper);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0 0 10px;
+    font-weight: 500;
+  }
+  .cfd-new-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .cfd-new-row {
+    display: grid;
+    grid-template-columns: 110px 1fr auto;
+    gap: 14px;
+    padding: 12px 0;
+    border-top: 1px solid #e1d7bf;
+    font-size: 13px;
+    color: var(--color-ink-2);
+    align-items: center;
+  }
+  .cfd-new-row:last-child {
+    border-bottom: 1px solid #e1d7bf;
+  }
+  .cfd-new-row time {
+    color: var(--color-copper);
+    font: 500 11px/1.3 var(--font-mono);
+    letter-spacing: 0.04em;
+  }
+  .cfd-new-title {
+    color: var(--color-ink);
+  }
+  .cfd-new-tag {
+    color: var(--color-copper);
+    font: 500 10.5px/1 var(--font-mono);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 768px) {
+    .cfd-hero {
+      padding: 24px 16px 16px;
+    }
+    .cfd-h1 {
+      font-size: 28px;
+      max-width: none;
+    }
+    .cfd-lede {
+      font-size: 14px;
+    }
+    .cfd-picker {
+      grid-template-columns: 1fr;
+    }
+    .cfd-card {
+      min-height: 88px;
+    }
+    .cfd-safe-wrap {
+      padding: 0 14px 16px;
+    }
+    .cfd-new {
+      padding: 8px 14px 32px;
+    }
+    .cfd-new-row {
+      grid-template-columns: auto 1fr;
+      gap: 4px 12px;
+      padding: 10px 0;
+    }
+    .cfd-new-row time {
+      grid-column: 1;
+      grid-row: 1;
+    }
+    .cfd-new-tag {
+      grid-column: 2;
+      grid-row: 1;
+      justify-self: end;
+    }
+    .cfd-new-title {
+      grid-column: 1 / -1;
+      grid-row: 2;
+    }
+  }
+</style>

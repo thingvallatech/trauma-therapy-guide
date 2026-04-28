@@ -1,5 +1,5 @@
 /* Google Fonts imports - must come before tailwindcss */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Lora:wght@400;500;600;700&display=swap');
 
 @import "tailwindcss";
 
@@ -44,7 +44,22 @@
 
   /* Typography */
   --font-serif: 'Lora', Georgia, serif;
+  --font-display: 'Fraunces', Georgia, serif;
   --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+
+  /* Calm Front Door palette — paper + copper accent */
+  --color-paper: #f7f3ea;
+  --color-paper-2: #efeadd;
+  --color-card: #fdf9ee;
+  --color-card-border: #ded2b6;
+  --color-copper: #a55a2b;
+  --color-copper-2: #c87a4a;
+  --color-deep-forest: #2d4a32;
+  --color-deep-forest-2: #1f3523;
+  --color-ink: #2a2a1e;
+  --color-ink-2: #4f4a3d;
+  --color-muted: #6b6455;
 }
 
 /* Base styles — light content zone */
@@ -142,6 +157,29 @@ details summary:focus-visible {
     display: none !important;
   }
 
+  /* Print-only blocks become visible */
+  .home-print-notice { display: block !important; }
+  .crisis-print-foot { display: block !important; }
+  .no-screen { display: revert !important; }
+
+  /* Crisis line at bottom of every printed page */
+  .crisis-print-foot {
+    font-size: 8pt;
+    color: #444;
+    text-align: center;
+    border-top: 1px solid #bbb;
+    padding-top: 6pt;
+    margin-top: 1.5rem;
+  }
+
+  .home-print-notice {
+    padding: 1in;
+    color: #000;
+    font-family: var(--font-display);
+  }
+  .home-print-notice h1 { font-size: 18pt; margin-bottom: 0.5rem; }
+  .home-print-notice p { font-size: 11pt; margin-bottom: 0.5rem; font-family: var(--font-sans); }
+
   /* Reset background for printing */
   html, body {
     background: white !important;
@@ -205,7 +243,7 @@ details summary:focus-visible {
 
 /* Screen: hide print-only elements */
 @media screen {
-  .print-only, .note-lines {
+  .print-only, .note-lines, .home-print-notice, .crisis-print-foot, .no-screen {
     display: none;
   }
 }

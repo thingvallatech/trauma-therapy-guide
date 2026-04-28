@@ -165,7 +165,38 @@ export const ui = {
     // Back to top
     'backToTop': 'Back to top',
 
-    // Homepage
+    // Homepage — Calm Front Door
+    'home.kicker': 'A free guide · for clinicians & families',
+    'home.headlinePre': 'Gentle, ',
+    'home.headlineEm': 'grounded',
+    'home.headlinePost': ' reference material for trauma work.',
+    'home.lede': 'Evidence-based protocols written for practitioners between sessions — and plain-language guides for the families they care for.',
+    'home.clinKicker': "I'm a clinician",
+    'home.clinTitle': 'EMDR 8-phase protocol',
+    'home.clinDo': 'Scripts, scales, printable worksheets.',
+    'home.famKicker': "I'm a parent or caregiver",
+    'home.famTitle': 'What is EMDR therapy?',
+    'home.famDo': 'What to expect, how to help.',
+    'home.newHeading': 'Recently added',
+    'home.printNotice': 'Open the EMDR section to print clinical materials.',
+    'home.printNoticeLink': 'Browse EMDR phases',
+    'home.tag.book': 'Book',
+    'home.tag.pdf': 'PDF',
+    'home.tag.article': 'Article',
+    'home.tag.video': 'Video',
+    'home.tag.worksheet': 'Worksheet',
+    'home.tag.link': 'Link',
+
+    // Crisis strip
+    'crisis.regionLabel': 'Crisis resources',
+    'crisis.inline': "If you're in crisis right now",
+    'crisis.numbers': 'Call or text 988 · Text HELLO to 741741 · Call 911 for immediate danger',
+    'crisis.cta': 'Crisis resources',
+    'crisis.printFooter': 'If in crisis: 988 · Text 741741 · Call 911',
+    'crisis.mobileTitle': 'In crisis right now?',
+    'crisis.mobileNeedHelp': 'Need help right now?',
+
+    // Homepage — legacy keys kept for back-compat
     'home.badge': 'Free & Evidence-Based',
     'home.title': 'Trauma Therapy Reference Guide',
     'home.subtitle': 'Free, evidence-based resources for trauma therapists and the families they serve. Quick reference guides you can trust.',
@@ -433,7 +464,38 @@ export const ui = {
     // Back to top
     'backToTop': 'Volver arriba',
 
-    // Homepage
+    // Homepage — Calm Front Door
+    'home.kicker': 'Una guía gratuita · para profesionales y familias',
+    'home.headlinePre': 'Material de referencia ',
+    'home.headlineEm': 'cálido',
+    'home.headlinePost': ' y firme para el trabajo con trauma.',
+    'home.lede': 'Protocolos basados en evidencia escritos para profesionales entre sesiones — y guías en lenguaje claro para las familias que atienden.',
+    'home.clinKicker': 'Soy clínico/a',
+    'home.clinTitle': 'Protocolo EMDR de 8 fases',
+    'home.clinDo': 'Guiones, escalas, hojas imprimibles.',
+    'home.famKicker': 'Soy madre, padre o cuidador/a',
+    'home.famTitle': '¿Qué es la terapia EMDR?',
+    'home.famDo': 'Qué esperar, cómo apoyar.',
+    'home.newHeading': 'Recientemente añadido',
+    'home.printNotice': 'Abre la sección EMDR para imprimir materiales clínicos.',
+    'home.printNoticeLink': 'Ver fases EMDR',
+    'home.tag.book': 'Libro',
+    'home.tag.pdf': 'PDF',
+    'home.tag.article': 'Artículo',
+    'home.tag.video': 'Video',
+    'home.tag.worksheet': 'Hoja',
+    'home.tag.link': 'Enlace',
+
+    // Crisis strip
+    'crisis.regionLabel': 'Recursos de crisis',
+    'crisis.inline': 'Si estás en crisis ahora',
+    'crisis.numbers': 'Llama o envía mensaje al 988 · Envía HOLA al 741741 · Llama al 911 si hay peligro inmediato',
+    'crisis.cta': 'Recursos de crisis',
+    'crisis.printFooter': 'En crisis: 988 · Envía 741741 · Llama 911',
+    'crisis.mobileTitle': '¿En crisis ahora?',
+    'crisis.mobileNeedHelp': '¿Necesitas ayuda ahora?',
+
+    // Homepage — legacy keys kept for back-compat
     'home.badge': 'Gratuito y Basado en Evidencia',
     'home.title': 'Guía de Referencia de Terapia de Trauma',
     'home.subtitle': 'Recursos gratuitos y basados en evidencia para terapeutas de trauma y las familias que atienden. Guías de referencia rápida en las que puede confiar.',
