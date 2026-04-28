@@ -11,8 +11,8 @@ export const ui = {
   en: {
     // Nav + Header
     'nav.home': 'Home',
-    'nav.clinicians': 'For Clinicians',
-    'nav.families': 'For Patients & Families',
+    'nav.clinicians': 'Clinicians',
+    'nav.families': 'Families',
     'nav.about': 'About',
     'nav.tools': 'Tools',
     'nav.search': 'Search',
@@ -333,8 +333,8 @@ export const ui = {
   es: {
     // Nav + Header
     'nav.home': 'Inicio',
-    'nav.clinicians': 'Para Profesionales',
-    'nav.families': 'Para Pacientes y Familias',
+    'nav.clinicians': 'Profesionales',
+    'nav.families': 'Familias',
     'nav.about': 'Acerca de',
     'nav.tools': 'Herramientas',
     'nav.search': 'Buscar',

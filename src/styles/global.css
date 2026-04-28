@@ -276,37 +276,39 @@ details summary:focus-visible {
   overflow: hidden;
 }
 
-/* Card headers: drop gradient, use paper-2 with a bottom rule */
-.phase-prose div[class*="bg-gradient-to-r"][class*="from-forest"],
-.phase-prose div[class*="bg-gradient-to-r"][class*="from-bronze"] {
+/* Any dark-band card header (gradient OR solid) becomes calm paper-2.
+   Match by structure (a div whose direct child is h2/h3.text-white) so
+   bg-gradient-to-r, bg-forest-900, bg-bronze-500, etc. are all caught. */
+.phase-prose div:has(> h2.text-white),
+.phase-prose div:has(> h3.text-white) {
   background: var(--color-paper-2);
   background-image: none;
   border-bottom: 1px solid var(--color-card-border);
 }
 
-/* H2 + h3 inside re-skinned headers: ink + Fraunces */
-.phase-prose div[class*="bg-gradient-to-r"] > h2,
-.phase-prose div[class*="bg-gradient-to-r"] > h3 {
+.phase-prose h2.text-white,
+.phase-prose h3.text-white {
   color: var(--color-ink);
   font-family: var(--font-display);
   font-weight: 500;
   letter-spacing: -0.005em;
 }
 
-/* SVG icons inside re-skinned headers: copper, not white */
-.phase-prose div[class*="bg-gradient-to-r"] h2 svg,
-.phase-prose div[class*="bg-gradient-to-r"] h3 svg {
+.phase-prose h2.text-white svg,
+.phase-prose h3.text-white svg {
   color: var(--color-copper);
   stroke: var(--color-copper);
 }
 
 /* "Print Form" / pill buttons that lived inside the old dark headers */
-.phase-prose div[class*="bg-gradient-to-r"] a[class*="bg-white"] {
+.phase-prose div:has(> h2.text-white) a[class*="bg-white"],
+.phase-prose div:has(> h3.text-white) a[class*="bg-white"] {
   background: var(--color-card);
   color: var(--color-ink-2);
   border: 1px solid var(--color-card-border);
 }
-.phase-prose div[class*="bg-gradient-to-r"] a[class*="bg-white"]:hover {
+.phase-prose div:has(> h2.text-white) a[class*="bg-white"]:hover,
+.phase-prose div:has(> h3.text-white) a[class*="bg-white"]:hover {
   background: var(--color-paper);
 }
 

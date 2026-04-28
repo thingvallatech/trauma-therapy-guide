@@ -66,11 +66,11 @@ function isActive(href: string): boolean {
         ))}
       </ul>
 
-      <div class="hidden md:flex items-center gap-3 flex-1 justify-end max-w-md">
+      <div class="hidden md:flex items-center gap-3 flex-shrink min-w-0">
         <button
           type="button"
           id="search-trigger"
-          class="flex-1 max-w-xs flex items-center gap-2 px-3 py-1.5 rounded-md bg-forest-800 border border-forest-700 text-forest-300 hover:text-forest-100 hover:border-forest-600 transition-colors"
+          class="hidden xl:flex w-56 items-center gap-2 px-3 py-1.5 rounded-md bg-forest-800 border border-forest-700 text-forest-300 hover:text-forest-100 hover:border-forest-600 transition-colors"
           aria-label={t('nav.searchSite')}
         >
           <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -78,6 +78,17 @@ function isActive(href: string): boolean {
           </svg>
           <span class="text-sm truncate text-left flex-1">{t('nav.searchPlaceholder')}</span>
           <kbd class="text-[10px] font-mono text-forest-400 bg-forest-900 border border-forest-700 rounded px-1.5 py-0.5 flex-shrink-0">&#8984;K</kbd>
+        </button>
+
+        <button
+          type="button"
+          id="search-trigger-icon"
+          class="xl:hidden flex items-center justify-center w-9 h-9 rounded-md text-forest-300 hover:text-forest-100 hover:bg-forest-800 transition-colors flex-shrink-0"
+          aria-label={t('nav.searchSite')}
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
         </button>
 
         <a
@@ -90,7 +101,7 @@ function isActive(href: string): boolean {
 
         <a
           href={helpHref}
-          class="text-sm text-forest-200 hover:text-forest-100 underline-offset-4 hover:underline flex-shrink-0"
+          class="text-sm text-forest-200 hover:text-forest-100 underline-offset-4 hover:underline flex-shrink-0 whitespace-nowrap"
           aria-label={t('nav.crisisLinkLabel')}
         >
           {t('nav.crisisLink')}
@@ -154,6 +165,7 @@ function isActive(href: string): boolean {
   });
 
   const searchTrigger = document.getElementById('search-trigger');
+  const searchTriggerIcon = document.getElementById('search-trigger-icon');
   const mobileSearchTrigger = document.querySelector('.search-trigger-mobile');
 
   function handleSearchOpen() {
@@ -163,5 +175,6 @@ function isActive(href: string): boolean {
   }
 
   searchTrigger?.addEventListener('click', handleSearchOpen);
+  searchTriggerIcon?.addEventListener('click', handleSearchOpen);
   mobileSearchTrigger?.addEventListener('click', handleSearchOpen);
 </script>
