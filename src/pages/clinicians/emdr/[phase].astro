@@ -3,7 +3,7 @@ import { getCollection, getEntry } from 'astro:content';
 import PhaseLayout from '../../../layouts/PhaseLayout.astro';
 
 export async function getStaticPaths() {
-  const phases = await getCollection('emdr-phases');
+  const phases = await getCollection('emdr-phases', ({ data }) => data.locale === 'en');
   return phases.map((phase) => ({
     params: { phase: `phase-${phase.data.phase}` },
     props: { phase },

@@ -1,7 +1,6 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import ClinicalBanner from '../components/ClinicalBanner.astro';
-import ContentFallbackBanner from '../components/ContentFallbackBanner.astro';
 import References from '../components/References.astro';
 import { getLangFromUrl, useTranslations, useTranslatedPath, type Lang } from '../i18n';
 import type { TranslationKey } from '../i18n/ui';
@@ -76,7 +75,6 @@ const localizedShortTitle = t(`phase.${phase}.short` as TranslationKey) || short
       </nav>
 
       <ClinicalBanner lang={lang} />
-      <ContentFallbackBanner lang={lang} />
 
       <header class="phase-head">
         <p class="phase-kicker">{t('phase.phase')} {phase} {t('phase.of')} 8</p>

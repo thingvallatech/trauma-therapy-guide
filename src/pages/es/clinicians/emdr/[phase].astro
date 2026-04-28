@@ -6,7 +6,7 @@ import type { Lang } from '../../../../i18n';
 const lang: Lang = 'es';
 
 export async function getStaticPaths() {
-  const phases = await getCollection('emdr-phases');
+  const phases = await getCollection('emdr-phases', ({ data }) => data.locale === 'es');
   return phases.map((phase) => ({
     params: { phase: `phase-${phase.data.phase}` },
     props: { phase },
