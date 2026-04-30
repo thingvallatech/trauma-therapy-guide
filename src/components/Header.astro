@@ -30,7 +30,15 @@ const navItems: NavItem[] = [
       { href: translatePath('/clinicians/resources'), label: t('footer.resourceLibrary') },
     ],
   },
-  { href: translatePath('/families'), label: t('nav.families') },
+  {
+    href: translatePath('/families'),
+    label: t('nav.families'),
+    submenu: [
+      { href: translatePath('/families'), label: t('nav.overview') },
+      { href: translatePath('/families/emdr/tools'), label: t('nav.tools') },
+      { href: translatePath('/families/resources'), label: t('footer.resourceLibrary') },
+    ],
+  },
   { href: translatePath('/about'), label: t('nav.about') },
 ];
 
