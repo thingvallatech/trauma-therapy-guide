@@ -13,9 +13,23 @@ const currentPath = Astro.url.pathname;
 const alternateUrl = getAlternateLocaleUrl(Astro.url, lang);
 const helpHref = translatePath('/help');
 
-const navLinks = [
+interface NavItem {
+  href: string;
+  label: string;
+  submenu?: { href: string; label: string }[];
+}
+
+const navItems: NavItem[] = [
   { href: translatePath('/'), label: t('nav.home') },
-  { href: translatePath('/clinicians'), label: t('nav.clinicians') },
+  {
+    href: translatePath('/clinicians'),
+    label: t('nav.clinicians'),
+    submenu: [
+      { href: translatePath('/clinicians'), label: t('nav.overview') },
+      { href: translatePath('/clinicians/emdr/tools'), label: t('nav.tools') },
+      { href: translatePath('/clinicians/resources'), label: t('footer.resourceLibrary') },
+    ],
+  },
   { href: translatePath('/families'), label: t('nav.families') },
   { href: translatePath('/about'), label: t('nav.about') },
 ];
@@ -25,6 +39,11 @@ function isActive(href: string): boolean {
     return currentPath === '/' || currentPath === '/es/' || currentPath === '/es';
   }
   return currentPath.startsWith(href);
+}
+
+function isParentActive(item: NavItem): boolean {
+  if (isActive(item.href)) return true;
+  return item.submenu?.some((s) => currentPath.startsWith(s.href)) ?? false;
 }
 ---
 
@@ -49,20 +68,64 @@ function isActive(href: string): boolean {
       </button>
 
       <ul class="hidden md:flex items-center gap-6 lg:gap-8 flex-shrink-0">
-        {navLinks.map((link) => (
-          <li>
-            <a
-              href={link.href}
-              class:list={[
-                'text-sm font-medium transition-colors',
-                isActive(link.href)
-                  ? 'text-bronze-400'
-                  : 'text-forest-100 hover:text-bronze-400'
-              ]}
-            >
-              {link.label}
-            </a>
-          </li>
+        {navItems.map((item) => (
+          item.submenu ? (
+            <li class="relative" data-dropdown>
+              <button
+                type="button"
+                class:list={[
+                  'flex items-center gap-1 text-sm font-medium transition-colors',
+                  isParentActive(item)
+                    ? 'text-bronze-400'
+                    : 'text-forest-100 hover:text-bronze-400'
+                ]}
+                aria-haspopup="true"
+                aria-expanded="false"
+                data-dropdown-trigger
+              >
+                {item.label}
+                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 9l-7 7-7-7" />
+                </svg>
+              </button>
+              <div
+                class="hidden absolute top-full left-0 mt-2 w-56 bg-forest-800 border border-forest-700 rounded-lg shadow-2xl py-1 z-50"
+                role="menu"
+                data-dropdown-menu
+              >
+                {item.submenu.map((sub) => (
+                  <a
+                    href={sub.href}
+                    role="menuitem"
+                    class:list={[
+                      'block px-4 py-2 text-sm transition-colors',
+                      currentPath.startsWith(sub.href) && sub.href !== item.href
+                        ? 'text-bronze-400 bg-forest-900/50'
+                        : currentPath === sub.href
+                          ? 'text-bronze-400 bg-forest-900/50'
+                          : 'text-forest-100 hover:bg-forest-700 hover:text-bronze-400'
+                    ]}
+                  >
+                    {sub.label}
+                  </a>
+                ))}
+              </div>
+            </li>
+          ) : (
+            <li>
+              <a
+                href={item.href}
+                class:list={[
+                  'text-sm font-medium transition-colors',
+                  isActive(item.href)
+                    ? 'text-bronze-400'
+                    : 'text-forest-100 hover:text-bronze-400'
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          )
         ))}
       </ul>
 
@@ -109,21 +172,54 @@ function isActive(href: string): boolean {
       </div>
     </div>
 
-    <ul class="hidden md:hidden pb-4 space-y-2 bg-forest-800 rounded-b-lg -mx-4 px-4" id="mobile-menu">
-      {navLinks.map((link) => (
-        <li>
-          <a
-            href={link.href}
-            class:list={[
-              'block px-3 py-2 rounded-md text-sm font-medium transition-colors',
-              isActive(link.href)
-                ? 'bg-forest-700 text-bronze-400'
-                : 'text-forest-100 hover:bg-forest-700'
-            ]}
-          >
-            {link.label}
-          </a>
-        </li>
+    <ul class="hidden md:hidden pb-4 space-y-1 bg-forest-800 rounded-b-lg -mx-4 px-4" id="mobile-menu">
+      {navItems.map((item) => (
+        item.submenu ? (
+          <li>
+            <details class="group" open={isParentActive(item) || undefined}>
+              <summary class:list={[
+                'flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer list-none',
+                isParentActive(item) ? 'text-bronze-400' : 'text-forest-100 hover:bg-forest-700'
+              ]}>
+                <span>{item.label}</span>
+                <svg class="w-4 h-4 transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              </summary>
+              <ul class="mt-1 ml-4 space-y-1 border-l border-forest-700 pl-3">
+                {item.submenu.map((sub) => (
+                  <li>
+                    <a
+                      href={sub.href}
+                      class:list={[
+                        'block px-3 py-2 rounded-md text-sm transition-colors',
+                        currentPath === sub.href || (sub.href !== item.href && currentPath.startsWith(sub.href))
+                          ? 'text-bronze-400 bg-forest-900/40'
+                          : 'text-forest-200 hover:bg-forest-700 hover:text-bronze-400'
+                      ]}
+                    >
+                      {sub.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </li>
+        ) : (
+          <li>
+            <a
+              href={item.href}
+              class:list={[
+                'block px-3 py-2 rounded-md text-sm font-medium transition-colors',
+                isActive(item.href)
+                  ? 'bg-forest-700 text-bronze-400'
+                  : 'text-forest-100 hover:bg-forest-700'
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        )
       ))}
       <li>
         <button
@@ -157,24 +253,65 @@ function isActive(href: string): boolean {
 </header>
 
 <script>
-  const button = document.getElementById('mobile-menu-button');
-  const menu = document.getElementById('mobile-menu');
-
-  button?.addEventListener('click', () => {
-    menu?.classList.toggle('hidden');
+  // Mobile menu toggle
+  const mobileBtn = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  mobileBtn?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
   });
 
+  // Search triggers
   const searchTrigger = document.getElementById('search-trigger');
   const searchTriggerIcon = document.getElementById('search-trigger-icon');
   const mobileSearchTrigger = document.querySelector('.search-trigger-mobile');
-
   function handleSearchOpen() {
     if (typeof (window as any).__openSearch === 'function') {
       (window as any).__openSearch();
     }
   }
-
   searchTrigger?.addEventListener('click', handleSearchOpen);
   searchTriggerIcon?.addEventListener('click', handleSearchOpen);
   mobileSearchTrigger?.addEventListener('click', handleSearchOpen);
+
+  // Desktop dropdown menus
+  const dropdowns = Array.from(document.querySelectorAll<HTMLElement>('[data-dropdown]'));
+  const closeAllDropdowns = (except?: HTMLElement) => {
+    dropdowns.forEach((d) => {
+      if (d === except) return;
+      const menu = d.querySelector<HTMLElement>('[data-dropdown-menu]');
+      const trigger = d.querySelector<HTMLElement>('[data-dropdown-trigger]');
+      menu?.classList.add('hidden');
+      trigger?.setAttribute('aria-expanded', 'false');
+    });
+  };
+  dropdowns.forEach((d) => {
+    const trigger = d.querySelector<HTMLElement>('[data-dropdown-trigger]');
+    const menu = d.querySelector<HTMLElement>('[data-dropdown-menu]');
+    trigger?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const willOpen = menu?.classList.contains('hidden');
+      closeAllDropdowns(d);
+      if (willOpen) {
+        menu?.classList.remove('hidden');
+        trigger.setAttribute('aria-expanded', 'true');
+      } else {
+        menu?.classList.add('hidden');
+        trigger.setAttribute('aria-expanded', 'false');
+      }
+    });
+  });
+  document.addEventListener('click', (e) => {
+    const target = e.target as Node;
+    const insideDropdown = dropdowns.some((d) => d.contains(target));
+    if (!insideDropdown) closeAllDropdowns();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeAllDropdowns();
+      const openTrigger = dropdowns
+        .map((d) => d.querySelector<HTMLElement>('[data-dropdown-trigger][aria-expanded="true"]'))
+        .find(Boolean);
+      openTrigger?.focus();
+    }
+  });
 </script>
