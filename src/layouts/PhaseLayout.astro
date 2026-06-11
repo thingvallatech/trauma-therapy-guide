@@ -37,9 +37,9 @@ const localizedShortTitle = t(`phase.${phase}.short` as TranslationKey) || short
   lang={lang}
 >
   <div class="phase-shell">
-    <aside class="phase-rail" aria-label="EMDR phases">
+    <aside class="phase-rail" aria-label={t('phase.chrome.phasesAria')}>
       <div class="phase-rail-inner">
-        <div class="rail-h">EMDR · 8 phases</div>
+        <div class="rail-h">{t('phase.chrome.eightPhases')}</div>
         <ol class="rail-list">
           {allPhases.map((p) => (
             <li class:list={[
@@ -55,10 +55,11 @@ const localizedShortTitle = t(`phase.${phase}.short` as TranslationKey) || short
         </ol>
 
         <div class="rail-divider"></div>
-        <div class="rail-h">Session reference</div>
+        <div class="rail-h">{t('phase.chrome.sessionReference')}</div>
         <ul class="rail-meta">
-          <li><a href={translatePath('/clinicians/emdr/print-package')}>Print package</a></li>
-          <li><a href={translatePath('/clinicians/emdr/tools')}>EMDR tools</a></li>
+          {/* Print package has no Spanish route yet — always link the English page. */}
+          <li><a href="/clinicians/emdr/print-package">{t('phase.chrome.printPackage')}</a></li>
+          <li><a href={translatePath('/clinicians/emdr/tools')}>{t('phase.chrome.tools')}</a></li>
         </ul>
       </div>
     </aside>
@@ -122,14 +123,14 @@ const localizedShortTitle = t(`phase.${phase}.short` as TranslationKey) || short
     <aside class="phase-aside no-print" aria-label="On this page and navigation">
       <div class="phase-aside-inner">
         <div class="phase-toc-card">
-          <h3 class="aside-h">On this page</h3>
+          <h3 class="aside-h">{t('phase.chrome.onThisPage')}</h3>
           <nav id="phase-toc" class="phase-toc" aria-label="Section navigation">
             <!-- Populated by client script -->
           </nav>
         </div>
 
         <div class="phase-nav-card">
-          <h3 class="aside-h">Continue</h3>
+          <h3 class="aside-h">{t('phase.chrome.continue')}</h3>
           <div class="phase-nav-grid">
             {prev ? (
               <a href={translatePath(`/clinicians/emdr/phase-${prev.num}`)} class="phase-nav-tile">

@@ -17,7 +17,7 @@ const smsBody = lang === 'es' ? 'HOLA' : 'HELLO';
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
       <div class="md:col-span-1">
-        <h3 class="font-serif text-lg font-semibold text-bronze-gradient mb-4">Trauma Therapy Guide</h3>
+        <h2 class="font-serif text-lg font-semibold text-bronze-gradient mb-4">Trauma Therapy Guide</h2>
         <p class="text-forest-200 text-sm leading-relaxed mb-3">
           {t('footer.tagline')}
         </p>
@@ -27,7 +27,7 @@ const smsBody = lang === 'es' ? 'HOLA' : 'HELLO';
       </div>
 
       <div class="md:col-span-1">
-        <h4 class="text-bronze-400 font-semibold text-sm uppercase tracking-wide mb-4">{t('footer.quickLinks')}</h4>
+        <h3 class="text-bronze-400 font-semibold text-sm uppercase tracking-wide mb-4">{t('footer.quickLinks')}</h3>
         <ul class="space-y-2 text-sm">
           <li>
             <a href={translatePath('/clinicians')} class="text-forest-200 hover:text-bronze-400 transition-colors">
@@ -45,6 +45,11 @@ const smsBody = lang === 'es' ? 'HOLA' : 'HELLO';
             </a>
           </li>
           <li>
+            <a href={translatePath('/tools')} class="text-forest-200 hover:text-bronze-400 transition-colors">
+              {t('footer.tools')}
+            </a>
+          </li>
+          <li>
             <a href={translatePath('/clinicians/resources')} class="text-forest-200 hover:text-bronze-400 transition-colors">
               {t('footer.resourceLibrary')}
             </a>
@@ -59,7 +64,7 @@ const smsBody = lang === 'es' ? 'HOLA' : 'HELLO';
 
       <div id="crisis-resources" class="md:col-span-1">
         <div class="bg-forest-800 border border-forest-700 rounded-xl p-5">
-          <h4 class="text-bronze-400 font-semibold text-sm uppercase tracking-wide mb-3">{t('footer.crisisTitle')}</h4>
+          <h3 class="text-bronze-400 font-semibold text-sm uppercase tracking-wide mb-3">{t('footer.crisisTitle')}</h3>
           <ul class="space-y-2.5 text-sm">
             <li>
               <a href="tel:988" class="text-forest-100 hover:text-bronze-400 transition-colors font-medium">

@@ -35,6 +35,7 @@ export const ui = {
     'footer.resources': 'Resources',
     'footer.helpPage': 'Crisis help',
     'footer.emdrProtocol': 'EMDR Protocol',
+    'footer.tools': 'Interactive Tools',
     'footer.resourceLibrary': 'Resource Library',
     'footer.crisisTitle': 'Need Help Now?',
     'footer.crisis988': '988 Suicide & Crisis Lifeline',
@@ -105,6 +106,14 @@ export const ui = {
     'phase.phase': 'Phase',
     'phase.goals': 'Phase Goals',
     'phase.jumpTo': 'Jump to Phase:',
+    // Phase layout chrome
+    'phase.chrome.eightPhases': 'EMDR · 8 phases',
+    'phase.chrome.sessionReference': 'Session reference',
+    'phase.chrome.printPackage': 'Print package',
+    'phase.chrome.tools': 'EMDR tools',
+    'phase.chrome.onThisPage': 'On this page',
+    'phase.chrome.continue': 'Continue',
+    'phase.chrome.phasesAria': 'EMDR phases',
     // Phase short titles
     'phase.1.short': 'History',
     'phase.2.short': 'Preparation',
@@ -191,6 +200,7 @@ export const ui = {
     'home.famDo': 'What to expect, how to help.',
     'home.newHeading': 'Recently added',
     'home.newViewAll': 'View the resource library',
+    'home.trust.regionLabel': 'About this guide',
     'home.printNotice': 'Open the EMDR section to print clinical materials.',
     'home.printNoticeLink': 'Browse EMDR phases',
     'home.tag.book': 'Book',
@@ -214,6 +224,9 @@ export const ui = {
     'crisis.ariaCall988': 'Call 988',
     'crisis.ariaText741741': 'Text HELLO to 741741',
     'crisis.ariaCall911': 'Call 911',
+    'crisis.deskCall': 'Call or text 988',
+    'crisis.deskText': 'Text HELLO to 741741',
+    'crisis.deskEmergency': 'Call 911 for immediate danger',
 
     // Homepage — legacy keys kept for back-compat
     'home.badge': 'Free & Evidence-Based',
@@ -369,6 +382,7 @@ export const ui = {
     'footer.resources': 'Recursos',
     'footer.helpPage': 'Ayuda en crisis',
     'footer.emdrProtocol': 'Protocolo EMDR',
+    'footer.tools': 'Herramientas Interactivas',
     'footer.resourceLibrary': 'Biblioteca de Recursos',
     'footer.crisisTitle': '¿Necesita Ayuda?',
     'footer.crisis988': 'Línea 988 de Prevención del Suicidio',
@@ -439,6 +453,14 @@ export const ui = {
     'phase.phase': 'Fase',
     'phase.goals': 'Objetivos de la Fase',
     'phase.jumpTo': 'Ir a la Fase:',
+    // Phase layout chrome
+    'phase.chrome.eightPhases': 'EMDR · 8 fases',
+    'phase.chrome.sessionReference': 'Referencia de sesión',
+    'phase.chrome.printPackage': 'Paquete de impresión (en inglés)',
+    'phase.chrome.tools': 'Herramientas EMDR',
+    'phase.chrome.onThisPage': 'En esta página',
+    'phase.chrome.continue': 'Continuar',
+    'phase.chrome.phasesAria': 'Fases EMDR',
     // Phase short titles
     'phase.1.short': 'Historia',
     'phase.2.short': 'Preparación',
@@ -525,6 +547,7 @@ export const ui = {
     'home.famDo': 'Qué esperar, cómo apoyar.',
     'home.newHeading': 'Recientemente añadido',
     'home.newViewAll': 'Ver la biblioteca de recursos',
+    'home.trust.regionLabel': 'Acerca de esta guía',
     'home.printNotice': 'Abre la sección EMDR para imprimir materiales clínicos.',
     'home.printNoticeLink': 'Ver fases EMDR',
     'home.tag.book': 'Libro',
@@ -548,6 +571,9 @@ export const ui = {
     'crisis.ariaCall988': 'Llamar al 988',
     'crisis.ariaText741741': 'Enviar HOLA al 741741',
     'crisis.ariaCall911': 'Llamar al 911',
+    'crisis.deskCall': 'Llama o envía mensaje al 988',
+    'crisis.deskText': 'Envía HOLA al 741741',
+    'crisis.deskEmergency': 'Llama al 911 si hay peligro inmediato',
 
     // Homepage — legacy keys kept for back-compat
     'home.badge': 'Gratuito y Basado en Evidencia',

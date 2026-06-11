@@ -3,7 +3,7 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import ResourceCard from '../../../../components/ResourceCard.astro';
 import ContentFallbackBanner from '../../../../components/ContentFallbackBanner.astro';
 import { getCollection } from 'astro:content';
-import { useTranslations, useTranslatedPath, type Lang } from '../../../../i18n';
+import { useTranslations, useTranslatedPath, type Lang, type TranslationKey } from '../../../../i18n';
 
 const lang: Lang = 'es';
 const t = useTranslations(lang);
@@ -74,7 +74,7 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
                 aria-pressed="false"
                 class="px-3 py-1 rounded-full text-sm font-medium border border-forest-600 text-forest-300 hover:border-forest-400 hover:text-forest-100 transition-colors cursor-pointer"
               >
-                {type.charAt(0).toUpperCase() + type.slice(1)}
+                {t(`resource.${type}` as TranslationKey)}
               </button>
             ))}
           </div>

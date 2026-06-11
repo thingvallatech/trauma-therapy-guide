@@ -27,7 +27,13 @@ const helpHref = translatePath('/help');
     </span>
     <div class="crisis-strip-text">
       <b>{t('crisis.inline')}</b>
-      <span>{t('crisis.numbers')}</span>
+      <span>
+        <a href="tel:988">{t('crisis.deskCall')}</a>
+        {' · '}
+        <a href={smsHref}>{t('crisis.deskText')}</a>
+        {' · '}
+        <a href="tel:911">{t('crisis.deskEmergency')}</a>
+      </span>
     </div>
     <a class="crisis-strip-cta" href={helpHref}>{t('crisis.cta')} ›</a>
   </div>
@@ -87,6 +93,15 @@ const helpHref = translatePath('/help');
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 2px;
+  }
+  .crisis-strip-text a {
+    color: inherit;
+    text-decoration: underline;
+    text-decoration-color: rgba(234, 240, 225, 0.4);
+    text-underline-offset: 3px;
+  }
+  .crisis-strip-text a:hover {
+    text-decoration-color: currentColor;
   }
   .crisis-strip-cta {
     font-size: 12px;

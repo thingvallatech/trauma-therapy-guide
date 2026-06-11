@@ -91,7 +91,7 @@ const tagKeyFor = (type: CollectionEntry<'resources'>['data']['type']) =>
     </section>
   )}
 
-  <section class="cfd-trust" aria-label="About this guide">
+  <section class="cfd-trust" aria-label={t('home.trust.regionLabel')}>
     <p class="cfd-trust-eyebrow">{t('home.trust.eyebrow')}</p>
     <p class="cfd-trust-body">{t('home.trust.body')}</p>
     <a class="cfd-trust-cta" href={translatePath('/about')}>{t('home.trust.cta')} →</a>

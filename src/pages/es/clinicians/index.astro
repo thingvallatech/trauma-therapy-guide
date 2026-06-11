@@ -1,221 +1,274 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { useTranslations, useTranslatedPath, type Lang } from '../../../i18n';
+import { useTranslatedPath, type Lang } from '../../../i18n';
 
 const lang: Lang = 'es';
-const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 ---
 
-<BaseLayout lang={lang} title={t('clinicians.title')} description={t('clinicians.subtitle')}>
-  <!-- Hero Section -->
-  <section class="bg-gradient-to-br from-forest-900 via-forest-800 to-forest-900 py-10 sm:py-16">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-3xl">
-        <h1 class="font-serif text-4xl font-semibold text-bronze-gradient mb-4">
-          {t('clinicians.title')}
-        </h1>
-        <p class="text-lg text-forest-100 leading-relaxed">
-          {t('clinicians.subtitle')}
-        </p>
+<BaseLayout lang={lang} title="Para profesionales" description="Guías de referencia rápida para terapeutas de trauma que usan protocolos basados en evidencia.">
+  <div class="clin-hub">
+    <header class="clin-hero">
+      <p class="clin-kicker">Para profesionales con formación</p>
+      <h1 class="clin-h1">Consulta entre <em>sesiones</em>.</h1>
+      <p class="clin-lede">
+        Guías de referencia rápida para protocolos de trauma basados en evidencia. Pensadas para terapeutas con formación que necesitan un repaso — no un reemplazo de la formación ni de la supervisión.
+      </p>
+    </header>
+
+    <section class="clin-feature" aria-label="EMDR — disponible ahora">
+      <div class="clin-feature-meta">
+        <span class="clin-tag">Disponible ahora</span>
+        <span class="clin-stat">8 fases · guiones · hojas de trabajo imprimibles</span>
       </div>
-    </div>
-  </section>
-
-  <!-- Content Section -->
-  <section class="py-10 sm:py-16">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <!-- Available Now - Featured Section -->
-      <div class="mb-16">
-        <div class="flex items-center gap-3 mb-6">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-bronze-500 text-forest-900 text-sm font-medium rounded-full">
-            <span class="w-2 h-2 bg-forest-900 rounded-full opacity-80"></span>
-            {t('home.availableNow')}
-          </span>
+      <a href={translatePath('/clinicians/emdr')} class="clin-feature-card">
+        <div>
+          <h2>EMDR · protocolo de 8 fases</h2>
+          <p>La referencia completa: historia, preparación, evaluación, desensibilización, instalación, exploración corporal, cierre, reevaluación. Guiones y consideraciones clínicas en cada fase.</p>
         </div>
+        <span class="clin-feature-cta">Abrir EMDR →</span>
+      </a>
+    </section>
 
-        <!-- EMDR Featured Card -->
-        <a
-          href={translatePath('/clinicians/emdr')}
-          class="block group relative bg-forest-700 border border-bronze-500 rounded-2xl p-8 text-white overflow-hidden hover:-translate-y-0.5 transition-all duration-300"
-        >
-          <!-- Background pattern -->
-          <div class="absolute inset-0 opacity-10">
-            <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-              <defs>
-                <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
-                  <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                </pattern>
-              </defs>
-              <rect width="100%" height="100%" fill="url(#grid)" />
-            </svg>
-          </div>
+    <section class="clin-row" aria-label="Otros recursos para profesionales">
+      <a href={translatePath('/clinicians/resources')} class="clin-mini">
+        <h3>Biblioteca de recursos</h3>
+        <p>Libros, artículos, hojas de trabajo y herramientas seleccionados para la práctica informada en trauma.</p>
+      </a>
+      <a href={translatePath('/clinicians/emdr/tools')} class="clin-mini">
+        <h3>Herramientas interactivas</h3>
+        <p>Estimulación bilateral (visual / audio / combinada), escalas SUD y VOC, contenedor, lugar seguro, marcapasos de respiración. Incluye pantalla completa para uso en sesión.</p>
+      </a>
+      <a href="/clinicians/emdr/print-package" class="clin-mini">
+        <h3>Paquete de impresión</h3>
+        <p>Cada fase, cada guion, cada hoja de trabajo — imprimible como un solo PDF para consultar entre sesiones (en inglés).</p>
+      </a>
+    </section>
 
-          <div class="relative flex flex-col md:flex-row md:items-center gap-6">
-            <div class="flex-shrink-0">
-              <div class="w-20 h-20 bg-forest-600 rounded-2xl flex items-center justify-center">
-                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-              </div>
-            </div>
+    <section class="clin-coming" aria-label="En desarrollo">
+      <h2 class="clin-h2">En desarrollo</h2>
+      <ol class="clin-coming-list">
+        <li>
+          <div class="code">TF-CBT</div>
+          <div class="name">Terapia Cognitivo-Conductual Enfocada en el Trauma<small>Cohen, Mannarino, Deblinger — niños y adolescentes</small></div>
+          <div class="stat">Planificado</div>
+        </li>
+        <li>
+          <div class="code">PCIT</div>
+          <div class="name">Terapia de Interacción Padres-Hijos<small>Conductual / apego — primera infancia</small></div>
+          <div class="stat">Planificado</div>
+        </li>
+      </ol>
+    </section>
 
-            <div class="flex-1">
-              <h2 class="font-serif text-2xl md:text-3xl font-semibold mb-2 group-hover:underline decoration-2 underline-offset-4">
-                {t('clinicians.emdrTitle')}
-              </h2>
-              <p class="text-white/90 mb-4 max-w-xl">
-                {t('clinicians.emdrDesc')}
-              </p>
-              <div class="flex flex-wrap gap-3">
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-forest-600 rounded-full text-sm">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  {t('clinicians.8phases')}
-                </span>
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-forest-600 rounded-full text-sm">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  {t('clinicians.fullScripts')}
-                </span>
-                <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-forest-600 rounded-full text-sm">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  {t('clinicians.printReady')}
-                </span>
-              </div>
-            </div>
-
-            <div class="flex-shrink-0 hidden md:block">
-              <div class="w-12 h-12 bg-forest-600 rounded-full flex items-center justify-center group-hover:bg-forest-500 transition-colors">
-                <svg class="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </a>
-
-        <!-- Resource Library Card -->
-        <a
-          href={translatePath('/clinicians/resources')}
-          class="block group mt-6 bg-sand border border-linen rounded-xl p-6 hover:shadow-md hover:border-forest-300 transition-all duration-200"
-        >
-          <div class="flex items-start gap-4">
-            <div class="w-12 h-12 bg-forest-50 rounded-xl flex items-center justify-center flex-shrink-0">
-              <svg class="w-6 h-6 text-forest-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-              </svg>
-            </div>
-            <div>
-              <h3 class="font-serif text-lg font-semibold text-charcoal mb-1 group-hover:text-forest-600 transition-colors">
-                {t('clinicians.resourceLibrary')}
-              </h3>
-              <p class="text-charcoal/70 text-sm leading-relaxed">
-                {t('clinicians.resourceLibraryDesc')}
-              </p>
-            </div>
-          </div>
-        </a>
-
-        <!-- Interactive Tools Card -->
-        <a
-          href={translatePath('/clinicians/emdr/tools')}
-          class="block group mt-6 bg-sand border border-linen rounded-xl p-6 hover:shadow-md hover:border-forest-300 transition-all duration-200"
-        >
-          <div class="flex items-start gap-4">
-            <div class="w-12 h-12 bg-forest-50 rounded-xl flex items-center justify-center flex-shrink-0">
-              <svg class="w-6 h-6 text-forest-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-              </svg>
-            </div>
-            <div>
-              <h3 class="font-serif text-lg font-semibold text-charcoal mb-1 group-hover:text-forest-600 transition-colors">
-                Herramientas Interactivas
-              </h3>
-              <p class="text-charcoal/70 text-sm leading-relaxed">
-                Herramientas EMDR integradas: estimulación bilateral (visual, audio, combinada), escalas SUD/VOC, contenedor, lugar seguro, marcapasos de respiración. Incluye modo pantalla completa para uso en sesión.
-              </p>
-            </div>
-          </div>
-        </a>
-      </div>
-
-      <!-- Coming Soon Section -->
-      <div class="mb-16">
-        <div class="flex items-center gap-3 mb-6">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-forest-50 text-forest-600 text-sm font-medium rounded-full">
-            {t('home.comingSoon')}
-          </span>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-6">
-          <!-- TF-CBT Card -->
-          <div class="bg-sand border border-linen rounded-xl p-6 opacity-75">
-            <div class="flex items-start gap-4">
-              <div class="w-12 h-12 bg-forest-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                <svg class="w-6 h-6 text-forest-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-serif text-lg font-semibold text-forest-900 mb-2">{t('clinicians.tfcbtTitle')}</h3>
-                <p class="text-forest-600 text-sm leading-relaxed mb-3">
-                  {t('clinicians.tfcbtDesc')}
-                </p>
-                <span class="inline-block text-xs font-medium px-2 py-1 bg-forest-50 text-forest-600 rounded">
-                  {t('clinicians.inDevelopment')}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          <!-- PCIT Card -->
-          <div class="bg-sand border border-linen rounded-xl p-6 opacity-75">
-            <div class="flex items-start gap-4">
-              <div class="w-12 h-12 bg-forest-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                <svg class="w-6 h-6 text-forest-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-serif text-lg font-semibold text-forest-900 mb-2">{t('clinicians.pcitTitle')}</h3>
-                <p class="text-forest-600 text-sm leading-relaxed mb-3">
-                  {t('clinicians.pcitDesc')}
-                </p>
-                <span class="inline-block text-xs font-medium px-2 py-1 bg-forest-50 text-forest-600 rounded">
-                  {t('clinicians.inDevelopment')}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- How to Use Section -->
-      <div class="bg-sand rounded-xl border border-linen p-8 max-w-3xl">
-        <h2 class="font-serif text-xl font-semibold text-forest-900 mb-4">
-          {t('clinicians.howToUseTitle')}
-        </h2>
-        <div class="space-y-4 text-charcoal">
-          <p>
-            {t('clinicians.howToUseDesc')}
-          </p>
-          <ul class="list-disc list-inside space-y-2 text-sm">
-            <li>{t('clinicians.howToUse1')}</li>
-            <li>{t('clinicians.howToUse2')}</li>
-            <li>{t('clinicians.howToUse3')}</li>
-            <li>{t('clinicians.howToUse4')}</li>
-          </ul>
-          <p class="text-sm">
-            {t('clinicians.howToUseNote')}
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
+    <section class="clin-how" aria-labelledby="how-h">
+      <h2 id="how-h" class="clin-h2">Cómo usar estas guías</h2>
+      <p>
+        Estas guías de referencia están diseñadas para apoyar su práctica clínica — no para reemplazar la formación formal. Asumen que ha completado la formación adecuada en cada protocolo.
+      </p>
+      <ul>
+        <li>Úselas como repaso rápido antes de las sesiones.</li>
+        <li>Consulte guiones clave y preguntas de evaluación.</li>
+        <li>Revise consideraciones clínicas y desafíos comunes.</li>
+        <li>Acceda a orientación fase por fase durante la consulta.</li>
+      </ul>
+      <p class="clin-small">Siempre siga su formación, la orientación de supervisión y su juicio profesional al implementar cualquier protocolo.</p>
+    </section>
+  </div>
 </BaseLayout>
+
+<style>
+  .clin-hub {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    line-height: 1.6;
+  }
+
+  .clin-hero { margin-bottom: 36px; max-width: 60ch; }
+  .clin-kicker {
+    font: 500 11px/1 var(--font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-copper);
+    margin: 0 0 14px;
+  }
+  .clin-h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(34px, 5vw, 56px);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    margin: 0 0 14px;
+    max-width: 18ch;
+  }
+  .clin-h1 em { font-style: italic; color: var(--color-deep-forest, #2d4a32); }
+  .clin-lede { font-size: 17px; color: var(--color-ink-2); margin: 0; }
+
+  .clin-feature { margin: 36px 0; }
+  .clin-feature-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+  .clin-tag {
+    background: var(--color-copper);
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font: 600 11px/1 var(--font-mono);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .clin-stat {
+    font: 500 11.5px/1 var(--font-mono);
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+  }
+  .clin-feature-card {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 24px;
+    align-items: end;
+    padding: 28px 30px;
+    background: var(--color-deep-forest, #2d4a32);
+    color: #eaf0e1;
+    border-radius: 18px;
+    text-decoration: none;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .clin-feature-card:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 30px rgba(20, 30, 20, 0.18);
+  }
+  .clin-feature-card h2 {
+    font-family: var(--font-display);
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+    color: #f1efe6;
+  }
+  .clin-feature-card p {
+    margin: 0;
+    color: #c0cfbe;
+    max-width: 50ch;
+    font-size: 14.5px;
+  }
+  .clin-feature-cta {
+    font: 500 13px/1 var(--font-mono);
+    color: #f2dca0;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  .clin-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 28px 0;
+  }
+  .clin-mini {
+    display: block;
+    background: var(--color-card);
+    border: 1px solid var(--color-card-border);
+    border-radius: 14px;
+    padding: 18px 18px 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.12s, box-shadow 0.12s;
+  }
+  .clin-mini:hover {
+    border-color: var(--color-copper);
+    box-shadow: 0 6px 20px rgba(20, 20, 10, 0.06);
+  }
+  .clin-mini h3 {
+    font-family: var(--font-display);
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0 0 6px;
+    color: var(--color-ink);
+  }
+  .clin-mini p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--color-muted);
+    line-height: 1.5;
+  }
+
+  .clin-coming { margin: 40px 0; }
+  .clin-h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+    color: var(--color-ink);
+  }
+  .clin-coming-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .clin-coming-list li {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--color-line, #e5e1d6);
+    align-items: center;
+  }
+  .clin-coming-list li:last-child { border-bottom: 1px solid var(--color-line, #e5e1d6); }
+  .clin-coming-list .code {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--color-muted);
+    letter-spacing: -0.005em;
+  }
+  .clin-coming-list .name { font-size: 14.5px; color: var(--color-ink-2); }
+  .clin-coming-list .name small {
+    display: block;
+    color: var(--color-muted);
+    font-size: 12.5px;
+    margin-top: 2px;
+  }
+  .clin-coming-list .stat {
+    font: 500 11px/1 var(--font-mono);
+    color: var(--color-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .clin-how {
+    background: var(--color-paper-2);
+    border: 1px solid var(--color-line, #e5e1d6);
+    border-radius: 14px;
+    padding: 24px 26px 26px;
+    margin-top: 40px;
+  }
+  .clin-how p { color: var(--color-ink-2); font-size: 15px; margin: 0 0 12px; }
+  .clin-how ul {
+    margin: 0 0 12px;
+    padding-left: 22px;
+    color: var(--color-ink-2);
+    font-size: 15px;
+  }
+  .clin-how ul li { margin: 4px 0; }
+  .clin-small { color: var(--color-muted); font-size: 13.5px; margin: 0 !important; }
+
+  @media (max-width: 768px) {
+    .clin-hub { padding: 24px 16px 56px; }
+    .clin-feature-card { grid-template-columns: 1fr; }
+    .clin-feature-cta { justify-self: start; }
+    .clin-row { grid-template-columns: 1fr; }
+    .clin-coming-list li { grid-template-columns: 60px 1fr; gap: 12px; }
+    .clin-coming-list .stat { grid-column: 2; }
+  }
+</style>

@@ -1,276 +1,249 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import { useTranslations, useTranslatedPath, type Lang } from '../../../i18n';
+import { useTranslatedPath, type Lang } from '../../../i18n';
 
 const lang: Lang = 'es';
-const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 ---
 
-<BaseLayout lang={lang} title={t('families.title')} description={t('families.subtitle')}>
-  <!-- Hero Section -->
-  <section class="bg-gradient-to-br from-forest-900 via-forest-800 to-forest-900 py-10 sm:py-16">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="max-w-3xl">
-        <h1 class="font-serif text-4xl font-semibold text-bronze-gradient mb-4">
-          {t('families.title')}
-        </h1>
-        <p class="text-lg text-forest-100 leading-relaxed">
-          {t('families.subtitle')}
-        </p>
-      </div>
-    </div>
-  </section>
+<BaseLayout lang={lang} title="Para pacientes y familias" description="Entender la terapia de trauma — una guía para pacientes, padres y cuidadores que navegan un tratamiento basado en evidencia.">
+  <div class="fam-hub">
+    <header class="fam-hero">
+      <p class="fam-kicker">Para pacientes y familias</p>
+      <h1 class="fam-h1">Entiende lo que está <em>pasando</em>.</h1>
+      <p class="fam-lede">
+        Ya sea que estés en terapia de trauma o acompañando a alguien que lo está, estas guías explican qué sucede en el tratamiento sin jerga abrumadora.
+      </p>
+    </header>
 
-  <!-- Content Section -->
-  <section class="py-10 sm:py-16">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-      <!-- Available Now - Featured Section -->
-      <div class="mb-16">
-        <div class="flex items-center gap-3 mb-6">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-bronze-500 text-forest-900 text-sm font-medium rounded-full">
-            <span class="w-2 h-2 bg-forest-900 rounded-full opacity-80"></span>
-            {t('home.availableNow')}
-          </span>
-        </div>
+    <section class="fam-row" aria-label="Terapias">
+      <a href={translatePath('/families/emdr')} class="fam-card">
+        <div class="who">EMDR</div>
+        <div class="what">¿Qué es la terapia EMDR?</div>
+        <p>Cómo funciona, qué esperar sesión a sesión y cómo apoyar a tu hijo entre sesiones.</p>
+        <span class="fam-cta">Leer la guía →</span>
+      </a>
 
-        <div class="grid md:grid-cols-2 gap-6">
-          <!-- EMDR Card -->
-          <a
-            href={translatePath('/families/emdr')}
-            class="block group relative bg-forest-700 border border-bronze-500 rounded-2xl p-6 text-white overflow-hidden transition-all duration-300 hover:-translate-y-0.5"
-          >
-            <!-- Background pattern -->
-            <div class="absolute inset-0 opacity-10">
-              <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <defs>
-                  <pattern id="grid-emdr" width="10" height="10" patternUnits="userSpaceOnUse">
-                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid-emdr)" />
-              </svg>
-            </div>
+      <a href={translatePath('/families/tfcbt')} class="fam-card">
+        <div class="who">TF-CBT</div>
+        <div class="what">¿Qué es la TF-CBT?</div>
+        <p>La TCC Enfocada en el Trauma ayuda a los niños a procesar el trauma con la participación de los padres. El modelo PRACTICE, explicado.</p>
+        <span class="fam-cta">Leer la guía →</span>
+      </a>
+    </section>
 
-            <div class="relative">
-              <div class="w-14 h-14 bg-forest-600 rounded-xl flex items-center justify-center mb-4">
-                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                </svg>
-              </div>
+    <section class="fam-row-2" aria-label="Más para familias">
+      <a href={translatePath('/families/resources')} class="fam-mini">
+        <h3>Lectura recomendada</h3>
+        <p>Libros y recursos para ayudarte a entender el trauma y apoyar la sanación de tu hijo.</p>
+      </a>
+      <a href={translatePath('/families/emdr/tools')} class="fam-mini">
+        <h3>Juegos y herramientas para calmar</h3>
+        <p>Lugar seguro, contenedor, respiración, enraizamiento — ejercicios suaves para practicar en casa con tu hijo.</p>
+      </a>
+    </section>
 
-              <h2 class="font-serif text-xl font-semibold mb-2 group-hover:underline decoration-2 underline-offset-4">
-                {t('families.emdrTitle')}
-              </h2>
-              <p class="text-forest-200 text-sm mb-4">
-                {t('families.emdrDesc')}
-              </p>
-              <div class="flex flex-wrap gap-2">
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-forest-600 rounded-full text-xs">
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  {t('families.evidenceBased')}
-                </span>
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-forest-600 rounded-full text-xs">
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  {t('families.childPaced')}
-                </span>
-              </div>
-              <div class="mt-4 flex items-center gap-1 text-sm font-medium text-bronze-400 group-hover:gap-2 transition-all">
-                {t('families.learnMore')}
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </div>
-          </a>
+    <section class="fam-help" aria-labelledby="help-h">
+      <h2 id="help-h" class="fam-h2">Cómo puedes ayudar</h2>
+      <p>
+        Es natural tener preguntas e inquietudes sobre la terapia de tu hijo. Aprender sobre el tratamiento puede ayudarte a sentirte con más confianza y mejor preparado para apoyarlo.
+      </p>
+      <ul>
+        <li>Ten paciencia — la sanación toma tiempo y no siempre es lineal.</li>
+        <li>Mantén la comunicación abierta sin presionar.</li>
+        <li>Conserva las rutinas y la estabilidad en casa.</li>
+        <li>Pregunta al terapeuta cómo apoyar habilidades específicas en casa.</li>
+        <li>Cuídate tú también — tu bienestar importa.</li>
+      </ul>
+      <p class="fam-small">Las guías de este sitio están escritas en lenguaje claro por terapeutas de trauma que trabajan con familias todos los días.</p>
+    </section>
 
-          <!-- TF-CBT Card -->
-          <a
-            href={translatePath('/families/tfcbt')}
-            class="block group relative bg-forest-700 border border-bronze-500 rounded-2xl p-6 text-white overflow-hidden transition-all duration-300 hover:-translate-y-0.5"
-          >
-            <!-- Background pattern -->
-            <div class="absolute inset-0 opacity-10">
-              <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <defs>
-                  <pattern id="grid-tfcbt" width="10" height="10" patternUnits="userSpaceOnUse">
-                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid-tfcbt)" />
-              </svg>
-            </div>
-
-            <div class="relative">
-              <div class="w-14 h-14 bg-forest-600 rounded-xl flex items-center justify-center mb-4">
-                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
-                </svg>
-              </div>
-
-              <h2 class="font-serif text-xl font-semibold mb-2 group-hover:underline decoration-2 underline-offset-4">
-                {t('families.tfcbtTitle')}
-              </h2>
-              <p class="text-forest-200 text-sm mb-4">
-                {t('families.tfcbtDesc')}
-              </p>
-              <div class="flex flex-wrap gap-2">
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-forest-600 rounded-full text-xs">
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  {t('families.evidenceBased')}
-                </span>
-                <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-forest-600 rounded-full text-xs">
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                  {t('families.parentsInvolved')}
-                </span>
-              </div>
-              <div class="mt-4 flex items-center gap-1 text-sm font-medium text-bronze-400 group-hover:gap-2 transition-all">
-                {t('families.learnMore')}
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </div>
-          </a>
-
-          <!-- Recommended Reading Card -->
-          <a
-            href={translatePath('/families/resources')}
-            class="block group relative bg-gradient-to-br from-wood-400 to-wood-500 rounded-2xl p-6 text-white overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
-          >
-            <div class="absolute inset-0 opacity-10">
-              <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <defs>
-                  <pattern id="grid-resources" width="10" height="10" patternUnits="userSpaceOnUse">
-                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid-resources)" />
-              </svg>
-            </div>
-
-            <div class="relative">
-              <div class="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm mb-4">
-                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-                </svg>
-              </div>
-
-              <h2 class="font-serif text-xl font-semibold mb-2 group-hover:underline decoration-2 underline-offset-4">
-                {t('families.readingTitle')}
-              </h2>
-              <p class="text-white/85 text-sm mb-4">
-                {t('families.readingDesc')}
-              </p>
-              <div class="mt-4 flex items-center gap-1 text-sm font-medium text-white/90 group-hover:gap-2 transition-all">
-                {t('families.browseResources')}
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </div>
-          </a>
-
-          <!-- Interactive Tools Card -->
-          <a
-            href={translatePath('/families/emdr/tools')}
-            class="block group relative bg-gradient-to-br from-forest-600 to-forest-700 rounded-2xl p-6 text-white overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-0.5"
-          >
-            <div class="absolute inset-0 opacity-10">
-              <svg class="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
-                <defs>
-                  <pattern id="grid-tools-fam-es" width="10" height="10" patternUnits="userSpaceOnUse">
-                    <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" stroke-width="0.5"/>
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid-tools-fam-es)" />
-              </svg>
-            </div>
-            <div class="relative">
-              <div class="w-14 h-14 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm mb-4">
-                <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-              </div>
-              <h2 class="font-serif text-xl font-semibold mb-2 group-hover:underline decoration-2 underline-offset-4">
-                Juegos y Herramientas para Calmar
-              </h2>
-              <p class="text-white/85 text-sm mb-4">
-                Lugar seguro, contenedor, respiración, enraizamiento — juegos y ejercicios para practicar en casa con tu hijo.
-              </p>
-              <div class="mt-4 flex items-center gap-1 text-sm font-medium text-white/90 group-hover:gap-2 transition-all">
-                Abrir herramientas
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </div>
-          </a>
-
-        </div>
-      </div>
-
-      <!-- Coming Soon Section -->
-      <div class="mb-16">
-        <div class="flex items-center gap-3 mb-6">
-          <span class="inline-flex items-center gap-1.5 px-3 py-1 bg-forest-50 text-forest-600 text-sm font-medium rounded-full">
-            {t('home.comingSoon')}
-          </span>
-        </div>
-
-        <div class="grid md:grid-cols-1 gap-6 max-w-md">
-          <!-- PCIT Card -->
-          <div class="bg-sand border border-linen rounded-xl p-6 opacity-75">
-            <div class="flex items-start gap-4">
-              <div class="w-12 h-12 bg-forest-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                <svg class="w-6 h-6 text-forest-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-              </div>
-              <div>
-                <h3 class="font-serif text-lg font-semibold text-forest-900 mb-2">{t('families.pcitTitle')}</h3>
-                <p class="text-forest-600 text-sm leading-relaxed mb-3">
-                  {t('families.pcitDesc')}
-                </p>
-                <span class="inline-block text-xs font-medium px-2 py-1 bg-forest-50 text-forest-600 rounded">
-                  {t('clinicians.inDevelopment')}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- How You Can Help Section -->
-      <div class="bg-sand rounded-xl border border-linen p-8 max-w-3xl">
-        <h2 class="font-serif text-xl font-semibold text-forest-900 mb-4">
-          {t('families.howToHelpTitle')}
-        </h2>
-        <div class="space-y-4 text-charcoal">
-          <p>
-            {t('families.howToHelpDesc')}
-          </p>
-          <ul class="list-disc list-inside space-y-2 text-sm">
-            <li>{t('families.howToHelp1')}</li>
-            <li>{t('families.howToHelp2')}</li>
-            <li>{t('families.howToHelp3')}</li>
-            <li>{t('families.howToHelp4')}</li>
-            <li>{t('families.howToHelp5')}</li>
-          </ul>
-          <p class="text-sm">
-            {t('families.howToHelpNote')}
-          </p>
-        </div>
-      </div>
-    </div>
-  </section>
+    <section class="fam-coming" aria-label="En desarrollo">
+      <h2 class="fam-h2">En desarrollo</h2>
+      <ol>
+        <li>
+          <div class="code">PCIT</div>
+          <div class="name">Terapia de Interacción Padres-Hijos<small>Fortalece el vínculo entre padres e hijos y enseña habilidades efectivas de crianza.</small></div>
+          <div class="stat">Planificado</div>
+        </li>
+      </ol>
+    </section>
+  </div>
 </BaseLayout>
+
+<style>
+  .fam-hub {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    line-height: 1.6;
+  }
+
+  .fam-hero { margin-bottom: 36px; max-width: 60ch; }
+  .fam-kicker {
+    font: 500 11px/1 var(--font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-copper);
+    margin: 0 0 14px;
+  }
+  .fam-h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(34px, 5vw, 56px);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    margin: 0 0 14px;
+    max-width: 18ch;
+  }
+  .fam-h1 em { font-style: italic; color: var(--color-copper); }
+  .fam-lede { font-size: 17px; color: var(--color-ink-2); margin: 0; }
+
+  .fam-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 28px 0;
+  }
+  .fam-card {
+    display: block;
+    padding: 22px 22px 24px;
+    background: var(--color-card);
+    border: 1px solid var(--color-card-border);
+    border-radius: 14px;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.12s, box-shadow 0.12s;
+  }
+  .fam-card:hover {
+    border-color: var(--color-copper);
+    box-shadow: 0 6px 20px rgba(20, 20, 10, 0.06);
+  }
+  .fam-card .who {
+    font: 600 10.5px/1 var(--font-mono);
+    color: var(--color-copper);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .fam-card .what {
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 500;
+    color: var(--color-ink);
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+  .fam-card p {
+    margin: 0 0 14px;
+    font-size: 13.5px;
+    color: var(--color-muted);
+    line-height: 1.5;
+  }
+  .fam-cta {
+    font: 500 13px/1 var(--font-mono);
+    color: var(--color-copper);
+    letter-spacing: 0.04em;
+  }
+
+  .fam-row-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 12px 0 36px;
+  }
+  .fam-mini {
+    display: block;
+    padding: 16px 18px;
+    background: var(--color-paper-2);
+    border-radius: 12px;
+    text-decoration: none;
+    color: inherit;
+  }
+  .fam-mini:hover { background: var(--color-card); }
+  .fam-mini h3 {
+    font-family: var(--font-display);
+    font-size: 16.5px;
+    font-weight: 500;
+    margin: 0 0 4px;
+    color: var(--color-ink);
+  }
+  .fam-mini p {
+    margin: 0;
+    font-size: 13px;
+    color: var(--color-muted);
+    line-height: 1.5;
+  }
+
+  .fam-h2 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.01em;
+    margin: 0 0 14px;
+    color: var(--color-ink);
+  }
+
+  .fam-help {
+    background: var(--color-paper-2);
+    border: 1px solid var(--color-line, #e5e1d6);
+    border-radius: 14px;
+    padding: 24px 26px 26px;
+    margin: 40px 0;
+  }
+  .fam-help p { color: var(--color-ink-2); font-size: 15px; margin: 0 0 12px; }
+  .fam-help ul {
+    margin: 0 0 12px;
+    padding-left: 22px;
+    color: var(--color-ink-2);
+    font-size: 15px;
+  }
+  .fam-help ul li { margin: 4px 0; }
+  .fam-small { color: var(--color-muted); font-size: 13.5px; margin: 0 !important; }
+
+  .fam-coming { margin: 40px 0 0; }
+  .fam-coming ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .fam-coming li {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid var(--color-line, #e5e1d6);
+    align-items: center;
+  }
+  .fam-coming li:last-child { border-bottom: 1px solid var(--color-line, #e5e1d6); }
+  .fam-coming .code {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--color-muted);
+  }
+  .fam-coming .name { font-size: 14.5px; color: var(--color-ink-2); }
+  .fam-coming .name small {
+    display: block;
+    color: var(--color-muted);
+    font-size: 12.5px;
+    margin-top: 2px;
+  }
+  .fam-coming .stat {
+    font: 500 11px/1 var(--font-mono);
+    color: var(--color-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 768px) {
+    .fam-hub { padding: 24px 16px 56px; }
+    .fam-row { grid-template-columns: 1fr; }
+    .fam-row-2 { grid-template-columns: 1fr; }
+    .fam-coming li { grid-template-columns: 60px 1fr; gap: 12px; }
+    .fam-coming .stat { grid-column: 2; }
+  }
+</style>
