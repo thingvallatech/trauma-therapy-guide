@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import ContentFallbackBanner from '../../../components/ContentFallbackBanner.astro';
 import { useTranslations, useTranslatedPath, type Lang } from '../../../i18n';
 
 const lang: Lang = 'es';
@@ -28,15 +27,13 @@ const translatePath = useTranslatedPath(lang);
           </svg>
         </div>
         <div>
-          <p class="text-bronze-500 font-medium text-sm uppercase tracking-wide">Understanding Your Child's Treatment</p>
+          <p class="text-bronze-500 font-medium text-sm uppercase tracking-wide">Para entender el tratamiento de tu hijo/a</p>
           <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-bronze-gradient">
             {t('families.tfcbtTitle')}
           </h1>
         </div>
       </div>
     </header>
-
-    <ContentFallbackBanner lang={lang} />
 
     <!-- Key points as horizontal pills -->
     <div class="flex flex-wrap gap-2 mb-10">
@@ -50,19 +47,19 @@ const translatePath = useTranslatedPath(lang);
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        Parents are partners
+        Los padres son parte del equipo
       </span>
       <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-600 rounded-full text-sm">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        Builds coping skills
+        Desarrolla habilidades de afrontamiento
       </span>
       <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-600 rounded-full text-sm">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        Structured approach
+        Enfoque estructurado
       </span>
     </div>
 
@@ -79,22 +76,22 @@ const translatePath = useTranslatedPath(lang);
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              Understanding TF-CBT
+              Para entender TF-CBT
             </h2>
           </div>
           <div class="p-5 space-y-4">
             <p class="text-charcoal leading-relaxed">
-              TF-CBT stands for <strong>Trauma-Focused Cognitive Behavioral Therapy</strong>. It's a structured therapy designed specifically for children and teens who have experienced trauma.
+              TF-CBT son las siglas en inglés de <strong>Terapia Cognitivo-Conductual Centrada en el Trauma</strong>. Es una terapia estructurada diseñada especialmente para niños y adolescentes que han vivido un trauma.
             </p>
             <p class="text-charcoal leading-relaxed">
-              Unlike some therapies where only the child attends, TF-CBT involves <strong>you as a partner in your child's healing</strong>. You'll learn the same skills your child is learning so you can support them at home.
+              A diferencia de algunas terapias en las que solo asiste el niño, TF-CBT te incluye a ti <strong>como aliado en la sanación de tu hijo/a</strong>. Aprenderás las mismas habilidades que tu hijo/a está aprendiendo, para poder apoyarlo en casa.
             </p>
             <p class="text-charcoal leading-relaxed">
-              The therapy helps children understand their feelings about what happened, develop healthy coping skills, and process their trauma in a safe, gradual way.
+              La terapia ayuda a los niños a entender lo que sienten sobre lo que pasó, a desarrollar habilidades sanas de afrontamiento y a procesar su trauma de manera segura y gradual.
             </p>
             <div class="p-4 bg-forest-50 border-l-4 border-forest-200 rounded-r-lg">
-              <p class="text-sm font-medium text-forest-900 mb-1">Strong Research Support</p>
-              <p class="text-sm text-charcoal">TF-CBT has been studied extensively and is one of the most effective treatments for childhood trauma and PTSD. It works for many types of trauma.</p>
+              <p class="text-sm font-medium text-forest-900 mb-1">Sólido respaldo científico</p>
+              <p class="text-sm text-charcoal">TF-CBT se ha estudiado ampliamente y es uno de los tratamientos más eficaces para el trauma infantil y el TEPT. Funciona para muchos tipos de trauma.</p>
             </div>
           </div>
         </div>
@@ -106,12 +103,12 @@ const translatePath = useTranslatedPath(lang);
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
               </svg>
-              The PRACTICE Model
+              El modelo PRACTICE
             </h2>
           </div>
           <div class="p-5">
             <p class="text-charcoal mb-6">
-              TF-CBT follows a structured approach called <strong>PRACTICE</strong>. Each letter stands for a component of treatment. Your child's therapist will explain each part in detail as you go.
+              TF-CBT sigue un enfoque estructurado llamado <strong>PRACTICE</strong> (por sus siglas en inglés). Cada letra representa un componente del tratamiento. El terapeuta de tu hijo/a te explicará cada parte en detalle a lo largo del proceso.
             </p>
 
             <div class="space-y-4">
@@ -119,8 +116,8 @@ const translatePath = useTranslatedPath(lang);
                 <div class="flex items-start gap-3">
                   <span class="w-8 h-8 bg-forest-500 text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">P</span>
                   <div>
-                    <h3 class="font-semibold text-forest-900">Psychoeducation</h3>
-                    <p class="text-sm text-forest-600 mt-1">Learning about trauma and how it affects the brain and body. Both you and your child receive this education.</p>
+                    <h3 class="font-semibold text-forest-900">Psicoeducación</h3>
+                    <p class="text-sm text-forest-600 mt-1">Aprender sobre el trauma y cómo afecta al cerebro y al cuerpo. Tanto tú como tu hijo/a reciben esta información.</p>
                   </div>
                 </div>
               </div>
@@ -129,8 +126,8 @@ const translatePath = useTranslatedPath(lang);
                 <div class="flex items-start gap-3">
                   <span class="w-8 h-8 bg-bronze-500 text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">R</span>
                   <div>
-                    <h3 class="font-semibold text-forest-900">Relaxation</h3>
-                    <p class="text-sm text-forest-600 mt-1">Learning calming techniques like breathing exercises and muscle relaxation to manage stress and anxiety.</p>
+                    <h3 class="font-semibold text-forest-900">Relajación</h3>
+                    <p class="text-sm text-forest-600 mt-1">Aprender técnicas para calmarse, como ejercicios de respiración y relajación muscular, para manejar el estrés y la ansiedad.</p>
                   </div>
                 </div>
               </div>
@@ -139,8 +136,8 @@ const translatePath = useTranslatedPath(lang);
                 <div class="flex items-start gap-3">
                   <span class="w-8 h-8 bg-forest-400 text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">A</span>
                   <div>
-                    <h3 class="font-semibold text-forest-900">Affective Modulation</h3>
-                    <p class="text-sm text-forest-600 mt-1">Identifying and managing big feelings. Building a vocabulary for emotions and learning healthy ways to express them.</p>
+                    <h3 class="font-semibold text-forest-900">Modulación afectiva</h3>
+                    <p class="text-sm text-forest-600 mt-1">Identificar y manejar las emociones intensas. Construir un vocabulario para las emociones y aprender formas sanas de expresarlas.</p>
                   </div>
                 </div>
               </div>
@@ -149,8 +146,8 @@ const translatePath = useTranslatedPath(lang);
                 <div class="flex items-start gap-3">
                   <span class="w-8 h-8 bg-bronze-400 text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">C</span>
                   <div>
-                    <h3 class="font-semibold text-forest-900">Cognitive Coping</h3>
-                    <p class="text-sm text-forest-600 mt-1">Understanding how thoughts, feelings, and behaviors connect. Learning to notice unhelpful thinking patterns.</p>
+                    <h3 class="font-semibold text-forest-900">Afrontamiento cognitivo</h3>
+                    <p class="text-sm text-forest-600 mt-1">Entender cómo se conectan los pensamientos, los sentimientos y las conductas. Aprender a notar patrones de pensamiento poco útiles.</p>
                   </div>
                 </div>
               </div>
@@ -159,8 +156,8 @@ const translatePath = useTranslatedPath(lang);
                 <div class="flex items-start gap-3">
                   <span class="w-8 h-8 bg-forest-500 text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">T</span>
                   <div>
-                    <h3 class="font-semibold text-forest-900">Trauma Narrative</h3>
-                    <p class="text-sm text-forest-600 mt-1">Gradually telling their trauma story in a safe, supported way. This happens only when your child is ready and has the coping skills they need.</p>
+                    <h3 class="font-semibold text-forest-900">Narrativa del trauma</h3>
+                    <p class="text-sm text-forest-600 mt-1">Contar poco a poco su historia del trauma de forma segura y acompañada. Esto ocurre solo cuando tu hijo/a está listo/a y cuenta con las habilidades de afrontamiento que necesita.</p>
                   </div>
                 </div>
               </div>
@@ -169,8 +166,8 @@ const translatePath = useTranslatedPath(lang);
                 <div class="flex items-start gap-3">
                   <span class="w-8 h-8 bg-forest-400 text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">I</span>
                   <div>
-                    <h3 class="font-semibold text-forest-900">In Vivo Mastery <span class="font-normal text-forest-600 text-sm">(real-life practice)</span></h3>
-                    <p class="text-sm text-forest-600 mt-1">Facing trauma reminders in real life, step by step. Used when avoidance is getting in the way of everyday activities.</p>
+                    <h3 class="font-semibold text-forest-900">Dominio in vivo <span class="font-normal text-forest-600 text-sm">(práctica en la vida real)</span></h3>
+                    <p class="text-sm text-forest-600 mt-1">Enfrentar los recordatorios del trauma en la vida real, paso a paso. Se usa cuando la evitación interfiere con las actividades de todos los días.</p>
                   </div>
                 </div>
               </div>
@@ -179,8 +176,8 @@ const translatePath = useTranslatedPath(lang);
                 <div class="flex items-start gap-3">
                   <span class="w-8 h-8 bg-bronze-500 text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">C</span>
                   <div>
-                    <h3 class="font-semibold text-forest-900">Conjoint Sessions</h3>
-                    <p class="text-sm text-forest-600 mt-1">Parent and child come together to share the trauma narrative and strengthen your connection. This is a powerful healing experience for families.</p>
+                    <h3 class="font-semibold text-forest-900">Sesiones conjuntas</h3>
+                    <p class="text-sm text-forest-600 mt-1">Padres e hijo/a se reúnen para compartir la narrativa del trauma y fortalecer su vínculo. Es una experiencia de sanación muy poderosa para las familias.</p>
                   </div>
                 </div>
               </div>
@@ -189,8 +186,8 @@ const translatePath = useTranslatedPath(lang);
                 <div class="flex items-start gap-3">
                   <span class="w-8 h-8 bg-forest-500 text-white rounded-lg flex items-center justify-center font-bold text-sm flex-shrink-0">E</span>
                   <div>
-                    <h3 class="font-semibold text-forest-900">Enhancing Safety</h3>
-                    <p class="text-sm text-forest-600 mt-1">Building safety skills and planning for the future. Helping your child feel prepared and confident going forward.</p>
+                    <h3 class="font-semibold text-forest-900">Fortalecer la seguridad</h3>
+                    <p class="text-sm text-forest-600 mt-1">Desarrollar habilidades de seguridad y planificar para el futuro. Ayudar a tu hijo/a a sentirse preparado/a y con confianza de aquí en adelante.</p>
                   </div>
                 </div>
               </div>

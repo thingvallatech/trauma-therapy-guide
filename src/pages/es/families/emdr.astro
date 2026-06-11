@@ -1,132 +1,491 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
-import ContentFallbackBanner from '../../../components/ContentFallbackBanner.astro';
-import { useTranslations, useTranslatedPath, type Lang } from '../../../i18n';
-
-const lang: Lang = 'es';
-const t = useTranslations(lang);
-const translatePath = useTranslatedPath(lang);
 ---
 
-<BaseLayout title={t('families.emdrTitle')} description={t('families.emdrDesc')} lang={lang}>
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-16">
-    <!-- Breadcrumb -->
-    <nav class="text-sm mb-6">
-      <ol class="flex items-center gap-2 text-forest-500">
-        <li><a href={translatePath('/families')} class="hover:text-bronze-600 transition-colors">{t('breadcrumb.families')}</a></li>
-        <li>/</li>
-        <li class="text-forest-900">EMDR</li>
+<BaseLayout title="¿Qué es EMDR?" description="Una guía para padres sobre la terapia EMDR — qué es, cómo funciona y cómo apoyar a tu hijo/a." lang="es">
+  <div class="fam-emdr">
+    <nav class="fam-crumb" aria-label="Migas de pan">
+      <ol>
+        <li><a href="/es/families">Para familias</a></li>
+        <li aria-hidden="true">/</li>
+        <li>EMDR</li>
       </ol>
     </nav>
 
-    <!-- Header with visual emphasis -->
-    <header class="mb-10">
-      <div class="flex items-start gap-4">
-        <div class="w-16 h-16 bg-bronze-500 rounded-2xl flex items-center justify-center text-white flex-shrink-0">
-          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-          </svg>
-        </div>
-        <div>
-          <p class="text-bronze-500 font-medium text-sm uppercase tracking-wide">Understanding Your Child's Treatment</p>
-          <h1 class="font-serif text-3xl sm:text-4xl font-semibold text-bronze-gradient">
-            {t('families.emdrTitle')}
-          </h1>
-        </div>
-      </div>
+    <header class="fam-hero">
+      <p class="fam-kicker">Para entender el tratamiento de tu hijo/a</p>
+      <h1 class="fam-h1">¿Qué es la terapia <em>EMDR</em>?</h1>
+      <p class="fam-lede">
+        EMDR ayuda al cerebro a procesar recuerdos difíciles para que dejen de causar malestar. Tu hijo/a mantiene el control en todo momento. Esta página explica qué es, cómo funciona y qué esperar.
+      </p>
     </header>
 
-    <ContentFallbackBanner lang={lang} />
+    <section class="fam-safety" aria-labelledby="safety-h">
+      <h2 id="safety-h">¿Es segura la terapia EMDR?</h2>
+      <p>
+        EMDR está reconocida como una terapia segura y eficaz por la Organización Mundial de la Salud, la Asociación Americana de Psicología y el Departamento de Asuntos de Veteranos de EE. UU. Cuando la realiza un terapeuta capacitado, se considera segura tanto para niños como para adultos — y puede adaptarse incluso a niños de 2 o 3 años. Si tienes dudas, habla con tu terapeuta; puede explicarte cómo se adapta el tratamiento a tu hijo/a.
+      </p>
+    </section>
 
-    <!-- Key points as horizontal pills -->
-    <div class="flex flex-wrap gap-2 mb-10">
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-600 rounded-full text-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        {t('families.evidenceBased')}
-      </span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-600 rounded-full text-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        Safe for children
-      </span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-600 rounded-full text-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        {t('families.childPaced')}
-      </span>
-      <span class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-forest-50 text-bronze-600 rounded-full text-sm">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        No detailed retelling required
-      </span>
-    </div>
+    <section class="fam-block" aria-labelledby="under-h">
+      <h2 id="under-h" class="fam-h2">Para entender EMDR</h2>
+      <p>
+        EMDR son las siglas en inglés de <strong>Desensibilización y Reprocesamiento por Movimientos Oculares</strong>. Es una terapia que ayuda al cerebro a procesar los recuerdos traumáticos para que dejen de sentirse tan abrumadores.
+      </p>
+      <p>
+        Cuando ocurre algo aterrador o abrumador, a veces el cerebro tiene dificultades para "archivar" bien ese recuerdo. Puede sentirse como si el recuerdo se quedara atascado — provocando pesadillas, ansiedad o reacciones intensas ante cualquier cosa que recuerde lo que pasó.
+      </p>
+      <p>
+        EMDR ayuda al cerebro a desatascar esos recuerdos y procesarlos como recuerdos normales — recuerdos que podemos evocar sin sentirnos abrumados.
+      </p>
+    </section>
 
-    <!-- Tools Link -->
-    <div class="my-8">
-      <a
-        href="/es/families/emdr/tools"
-        class="inline-flex items-center gap-3 px-5 py-3 bg-forest-700 border border-forest-500 text-forest-100 rounded-lg hover:bg-forest-600 transition-colors font-medium"
-      >
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6" />
-        </svg>
-        Juegos y herramientas para calmar
-        <span class="text-forest-300 text-sm font-normal">para probar juntos</span>
-      </a>
-    </div>
+    <section class="fam-block" aria-labelledby="how-h">
+      <h2 id="how-h" class="fam-h2">¿Cómo funciona?</h2>
+      <p>
+        Durante una sesión de EMDR, tu hijo/a pensará en un recuerdo difícil mientras sigue con la mirada los dedos del terapeuta (o mientras recibe toques suaves o sonidos alternados). Este movimiento de un lado a otro ayuda al cerebro a procesar el recuerdo.
+      </p>
+      <div class="fam-pull">
+        <p class="fam-pull-eyebrow">Piénsalo así</p>
+        <p>
+          Cuando dormimos y soñamos, nuestros ojos se mueven de un lado a otro durante el sueño REM, y eso ayuda al cerebro a procesar lo que vivimos durante el día. EMDR usa un proceso parecido, pero estando despiertos, para ayudar a procesar los recuerdos atascados.
+        </p>
+      </div>
+    </section>
 
-    <!-- Safety Callout -->
-    <div class="bg-sand border border-forest-200 rounded-xl p-5 mb-10">
-      <div class="flex items-start gap-3">
-        <svg class="w-6 h-6 text-forest-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-        </svg>
+    <section class="fam-block" aria-labelledby="sessions-h">
+      <h2 id="sessions-h" class="fam-h2">Qué pasa en las sesiones</h2>
+
+      <h3 class="fam-h3"><span class="fam-step">1</span> Primero, construir confianza</h3>
+      <p>EMDR no se apresura. Antes de trabajar con cualquier recuerdo, el terapeuta va a:</p>
+      <ul class="fam-list">
+        <li>Conocer a tu hijo/a y ayudarle a sentirse en confianza</li>
+        <li>Conocer su historia y los motivos por los que llegó a terapia</li>
+        <li>Enseñarle técnicas para calmarse y manejar momentos difíciles</li>
+        <li>Crear un "lugar seguro" en su imaginación al que pueda ir en cualquier momento</li>
+      </ul>
+
+      <h3 class="fam-h3"><span class="fam-step">2</span> Procesar los recuerdos</h3>
+      <p>Cuando tu hijo/a esté listo/a, comenzará a trabajar con los recuerdos difíciles:</p>
+      <ul class="fam-list">
+        <li>Tu hijo/a controla el ritmo — puede parar en cualquier momento</li>
+        <li>No tiene que describir todo en voz alta</li>
+        <li>El terapeuta lo acompaña y lo guía de forma segura</li>
+        <li>Las sesiones terminan con ejercicios para calmarse</li>
+      </ul>
+
+      <div class="fam-pull">
+        <p class="fam-pull-eyebrow">Tu hijo/a tiene el control</p>
+        <p>
+          Tu hijo/a puede detener el proceso en cualquier momento levantando la mano o diciendo "alto". El terapeuta nunca lo presionará para continuar si no está listo/a.
+        </p>
+      </div>
+    </section>
+
+    <section class="fam-block" aria-labelledby="after-h">
+      <h2 id="after-h" class="fam-h2">Qué esperar después de las sesiones</h2>
+      <p>Después de las sesiones de EMDR, tu hijo/a podría:</p>
+      <div class="fam-grid-4">
+        <div><b>Sentirse cansado/a</b><span>Procesar recuerdos requiere energía.</span></div>
+        <div><b>Tener sueños muy vívidos</b><span>Es normal y suele ser pasajero.</span></div>
+        <div><b>Notar que surgen pensamientos</b><span>Relacionados con el recuerdo.</span></div>
+        <div><b>Sentirse más ligero/a o aliviado/a</b><span>A medida que los recuerdos se procesan.</span></div>
+      </div>
+      <p class="fam-small">Todo esto es parte normal de la sanación. Si algo te preocupa, no dudes en hablar con el terapeuta de tu hijo/a.</p>
+    </section>
+
+    <section class="fam-block" aria-labelledby="timeline-h">
+      <h2 id="timeline-h" class="fam-h2">Un cronograma aproximado</h2>
+      <p>Cada niño es diferente, pero esta es una idea general de cómo avanza la terapia EMDR. El terapeuta ajustará el ritmo a las necesidades de tu hijo/a.</p>
+      <ol class="fam-timeline">
+        <li>
+          <div class="fam-tl-when">Semanas 1–3</div>
+          <div class="fam-tl-body"><b>Los primeros pasos.</b> Construir confianza, conocer la historia de tu hijo/a y enseñarle habilidades para afrontar momentos difíciles. Todavía no se procesan recuerdos.</div>
+        </li>
+        <li>
+          <div class="fam-tl-when">Semanas 3–5</div>
+          <div class="fam-tl-body"><b>Preparación.</b> Practicar técnicas para calmarse, crear un "lugar seguro" y asegurarse de que tu hijo/a se sienta listo/a.</div>
+        </li>
+        <li>
+          <div class="fam-tl-when">Semanas 5+</div>
+          <div class="fam-tl-body"><b>Procesamiento.</b> Trabajar los recuerdos elegidos con estimulación bilateral. Algunos niños sienten alivio en pocas sesiones; otros, con historias más complejas, pueden necesitar más tiempo.</div>
+        </li>
+        <li>
+          <div class="fam-tl-when">En adelante</div>
+          <div class="fam-tl-body"><b>Seguimiento y cierre.</b> Revisar el progreso, trabajar los recuerdos que queden pendientes y asegurarse de que tu hijo/a se sienta estable antes de terminar el tratamiento.</div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="fam-block" aria-labelledby="say-h">
+      <h2 id="say-h" class="fam-h2">Qué decir (y qué evitar)</h2>
+      <div class="fam-say">
         <div>
-          <h2 class="text-forest-900 font-semibold mb-1">Is EMDR Safe?</h2>
-          <p class="text-charcoal text-sm leading-relaxed">
-            EMDR is recognized as a safe and effective treatment by the World Health Organization, the American Psychological Association, and the Department of Veterans Affairs. When conducted by a trained therapist, it is considered safe for both children and adults. EMDR can be adapted for children as young as 2-3 years old and is effective across the lifespan. If you have concerns about whether EMDR is right for your situation, talk with your therapist — they can explain how the treatment is tailored to individual needs.
-          </p>
+          <h3 class="fam-h3-mini good">Ayuda</h3>
+          <ul class="fam-list">
+            <li>"Estoy orgulloso/a de ti por ir a terapia."</li>
+            <li>"No tienes que contarme de qué hablaron."</li>
+            <li>"Está bien sentirte cansado/a o con emociones fuertes después."</li>
+            <li>"Aquí estoy si necesitas algo."</li>
+            <li>"¿Quieres que hagamos juntos tus ejercicios para calmarte?"</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="fam-h3-mini bad">Mejor evitar</h3>
+          <ul class="fam-list">
+            <li>"¿De qué hablaron en terapia?"</li>
+            <li>"Ya deberías haberlo superado."</li>
+            <li>"Simplemente trata de no pensar en eso."</li>
+            <li>"Otros niños han pasado por cosas peores."</li>
+            <li>"¿Ya estás curado/a?"</li>
+          </ul>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- Understanding EMDR Card -->
-    <div class="bg-sand rounded-xl border border-linen overflow-hidden mb-6">
-      <div class="bg-gradient-to-r from-forest-600 to-forest-700 px-5 py-3">
-        <h2 class="text-white font-semibold flex items-center gap-2">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          Understanding EMDR
-        </h2>
-      </div>
-      <div class="p-5 space-y-4">
-        <p class="text-charcoal leading-relaxed">
-          EMDR stands for <strong>Eye Movement Desensitization and Reprocessing</strong>. It's a therapy that helps the brain process traumatic memories so they no longer cause distress.
-        </p>
-        <p class="text-charcoal leading-relaxed">
-          When something scary or overwhelming happens, our brains sometimes have trouble "filing away" that memory properly. It can feel like the memory is stuck, causing nightmares, anxiety, or strong reactions to reminders of what happened.
-        </p>
-        <p class="text-charcoal leading-relaxed">
-          EMDR helps the brain unstick these memories and process them like normal memories — ones that we can remember without being overwhelmed by them.
-        </p>
-      </div>
-    </div>
+    <section class="fam-block" aria-labelledby="faq-h">
+      <h2 id="faq-h" class="fam-h2">Preguntas frecuentes</h2>
+      <details class="fam-faq">
+        <summary>¿Mi hijo/a tendrá que revivir su trauma?</summary>
+        <p>EMDR no requiere que tu hijo/a describa su trauma en detalle ni que lo reviva. Puede procesar los recuerdos con muy poca descripción verbal. El terapeuta lo acompañará de forma segura durante todo el proceso.</p>
+      </details>
+      <details class="fam-faq">
+        <summary>¿Cuánto tiempo toma EMDR?</summary>
+        <p>Varía con cada niño. Algunos mejoran en solo unas cuantas sesiones; otros, con historias más complejas, pueden necesitar más tiempo. El terapeuta hablará contigo sobre qué esperar.</p>
+      </details>
+      <details class="fam-faq">
+        <summary>¿Mi hijo/a recordará su trauma de otra manera?</summary>
+        <p>EMDR no cambia ni borra los recuerdos. Tu hijo/a seguirá recordando lo que pasó, pero el recuerdo debería sentirse menos doloroso — más como un recuerdo normal del pasado.</p>
+      </details>
+      <details class="fam-faq">
+        <summary>¿Es seguro EMDR para los niños?</summary>
+        <p>Sí. EMDR se ha adaptado especialmente para niños y se considera seguro cuando lo realiza un terapeuta capacitado. Puede usarse con niños desde los 2 o 3 años, y el terapeuta ajusta las técnicas a la etapa de desarrollo de tu hijo/a.</p>
+      </details>
+    </section>
 
-    <!-- Back Link -->
-    <div class="mt-12 pt-8 border-t border-linen">
-      <a href={translatePath('/families')} class="text-bronze-700 hover:text-bronze-600 transition-colors flex items-center gap-2">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-        </svg>
-        {t('families.backToFamilies')}
-      </a>
-    </div>
+    <section class="fam-block" aria-labelledby="support-h">
+      <h2 id="support-h" class="fam-h2">Cómo apoyar a tu hijo/a</h2>
+      <div class="fam-support-grid">
+        <div>
+          <h3 class="fam-h3-mini">Antes de las sesiones</h3>
+          <ul class="fam-list">
+            <li>Mantén horarios de cita regulares</li>
+            <li>Asegúrate de que haya comido y descansado</li>
+            <li>Eviten las prisas al ir y volver de las citas</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="fam-h3-mini">Después de las sesiones</h3>
+          <ul class="fam-list">
+            <li>Permite un rato de tranquilidad si lo necesita</li>
+            <li>Ten a la mano actividades tranquilas</li>
+            <li>No lo presiones para que hable</li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="fam-h3-mini">En casa</h3>
+          <ul class="fam-list">
+            <li>Practiquen juntos las técnicas para calmarse</li>
+            <li>Recuérdale su "lugar seguro"</li>
+            <li>Mantén rutinas predecibles</li>
+            <li>Ten paciencia — la sanación no es una línea recta</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="fam-warn" aria-labelledby="when-h">
+      <h2 id="when-h">Cuándo hablar con el terapeuta</h2>
+      <p>Comunícate con el terapeuta de tu hijo/a si notas algo de lo siguiente entre sesiones:</p>
+      <ul>
+        <li>Un aumento notable de pesadillas, ansiedad o cambios de conducta</li>
+        <li>Comentarios sobre querer hacerse daño o hacerle daño a otros</li>
+        <li>Negarse a ir a terapia o un miedo repentino a las sesiones</li>
+        <li>Reacciones emocionales mucho más intensas o duraderas de lo habitual</li>
+        <li>No estás seguro/a de si lo que ves es parte normal del tratamiento</li>
+      </ul>
+      <p class="fam-small">
+        Si tu hijo/a está en peligro inmediato, llama al <a href="tel:911">911</a> o acude a la sala de emergencias más cercana. También puedes comunicarte con la <a href="/es/help">Línea 988 de Prevención del Suicidio</a> (llama o envía un mensaje de texto al 988, o envía HOLA al 741741).
+      </p>
+    </section>
+
+    <p class="fam-tools-link">
+      ¿Quieres probar algo con tu hijo/a? <a href="/es/families/emdr/tools">Abre los juegos y herramientas para calmar →</a>
+    </p>
+
+    <a class="fam-back" href="/es/families">← Volver a los recursos para familias</a>
   </div>
 </BaseLayout>
+
+<style>
+  .fam-emdr {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+    line-height: 1.6;
+  }
+
+  .fam-crumb ol {
+    list-style: none;
+    margin: 0 0 16px;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    font: 500 11.5px/1 var(--font-mono);
+    color: var(--color-muted);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .fam-crumb a { color: var(--color-ink-2); text-decoration: none; }
+  .fam-crumb a:hover { color: var(--color-copper); }
+
+  .fam-hero { margin: 14px 0 28px; }
+  .fam-kicker {
+    font: 500 11px/1 var(--font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-copper);
+    margin: 0 0 14px;
+  }
+  .fam-h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(32px, 5vw, 52px);
+    line-height: 1.04;
+    letter-spacing: -0.015em;
+    margin: 0 0 14px;
+    color: var(--color-ink);
+  }
+  .fam-h1 em {
+    font-style: italic;
+    color: var(--color-copper);
+  }
+  .fam-lede {
+    font-size: 17px;
+    color: var(--color-ink-2);
+    max-width: 60ch;
+    margin: 0;
+  }
+
+  .fam-safety {
+    background: var(--color-paper-2);
+    border-left: 3px solid var(--color-deep-forest, #2d4a32);
+    border-radius: 0 12px 12px 0;
+    padding: 18px 20px;
+    margin: 28px 0;
+  }
+  .fam-safety h2 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 500;
+    margin: 0 0 6px;
+    color: var(--color-deep-forest, #2d4a32);
+  }
+  .fam-safety p { margin: 0; font-size: 14.5px; color: var(--color-ink-2); }
+
+  .fam-block { margin: 36px 0; }
+  .fam-h2 {
+    font-family: var(--font-display);
+    font-size: 26px;
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 12px;
+    color: var(--color-ink);
+  }
+  .fam-block p { margin: 0 0 12px; color: var(--color-ink-2); font-size: 16px; }
+
+  .fam-pull {
+    background: var(--color-card);
+    border: 1px solid var(--color-card-border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    margin: 14px 0;
+  }
+  .fam-pull-eyebrow {
+    font: 500 11px/1 var(--font-mono);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-copper);
+    margin: 0 0 8px !important;
+  }
+  .fam-pull p { margin: 0; }
+
+  .fam-h3 {
+    font-family: var(--font-display);
+    font-size: 19px;
+    font-weight: 500;
+    margin: 22px 0 8px;
+    color: var(--color-ink);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .fam-step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    background: var(--color-deep-forest, #2d4a32);
+    color: #f2dca0;
+    font: 600 12px/1 var(--font-mono);
+  }
+
+  .fam-list {
+    list-style: disc;
+    padding-left: 22px;
+    margin: 0 0 12px;
+    color: var(--color-ink-2);
+    font-size: 15px;
+  }
+  .fam-list li { margin: 4px 0; }
+
+  .fam-grid-4 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin: 12px 0;
+  }
+  .fam-grid-4 > div {
+    background: var(--color-card);
+    border: 1px solid var(--color-card-border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .fam-grid-4 b { color: var(--color-ink); font-size: 14px; }
+  .fam-grid-4 span { color: var(--color-muted); font-size: 12.5px; }
+  .fam-small { font-size: 13px; color: var(--color-muted); margin-top: 8px !important; }
+  .fam-small a { color: var(--color-deep-forest, #2d4a32); }
+
+  .fam-timeline {
+    list-style: none;
+    margin: 12px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+  }
+  .fam-timeline li {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 16px;
+    padding: 10px 0;
+    border-top: 1px solid var(--color-line, #e5e1d6);
+  }
+  .fam-timeline li:last-child { border-bottom: 1px solid var(--color-line, #e5e1d6); }
+  .fam-tl-when {
+    font: 500 11.5px/1.4 var(--font-mono);
+    letter-spacing: 0.06em;
+    color: var(--color-copper);
+    text-transform: uppercase;
+  }
+  .fam-tl-body { font-size: 14.5px; color: var(--color-ink-2); }
+  .fam-tl-body b { color: var(--color-ink); }
+
+  .fam-say { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .fam-h3-mini {
+    font: 600 11px/1 var(--font-mono);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+    margin: 0 0 10px;
+  }
+  .fam-h3-mini.good { color: var(--color-deep-forest, #2d4a32); }
+  .fam-h3-mini.bad { color: #a63a2f; }
+
+  .fam-faq {
+    border-top: 1px solid var(--color-line, #e5e1d6);
+    padding: 14px 0;
+  }
+  .fam-faq:last-of-type { border-bottom: 1px solid var(--color-line, #e5e1d6); }
+  .fam-faq summary {
+    font-family: var(--font-display);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--color-ink);
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    min-height: 32px;
+  }
+  .fam-faq summary::-webkit-details-marker { display: none; }
+  .fam-faq summary::after {
+    content: "+";
+    color: var(--color-copper);
+    font: 400 22px/1 var(--font-display);
+  }
+  .fam-faq[open] summary::after { content: "−"; }
+  .fam-faq p { margin: 10px 0 0; font-size: 15px; color: var(--color-ink-2); }
+
+  .fam-support-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 18px;
+  }
+
+  .fam-warn {
+    background: #fbf1dc;
+    border: 1px solid #e8d2a4;
+    border-radius: 14px;
+    padding: 20px 22px;
+    margin: 36px 0 20px;
+  }
+  .fam-warn h2 {
+    font-family: var(--font-display);
+    font-size: 21px;
+    font-weight: 500;
+    margin: 0 0 10px;
+    color: #6e4a10;
+  }
+  .fam-warn p { margin: 0 0 8px; color: #4f3815; font-size: 15px; }
+  .fam-warn ul {
+    margin: 0 0 10px;
+    padding-left: 22px;
+    color: #4f3815;
+    font-size: 15px;
+  }
+  .fam-warn ul li { margin: 4px 0; }
+  .fam-warn .fam-small { color: #6e4a10; }
+  .fam-warn .fam-small a { color: #6e4a10; text-decoration: underline; }
+
+  .fam-tools-link {
+    margin: 28px 0 0;
+    padding: 14px 18px;
+    background: var(--color-paper-2);
+    border-radius: 12px;
+    font-size: 15px;
+  }
+  .fam-tools-link a {
+    color: var(--color-copper);
+    font-weight: 500;
+    text-decoration: none;
+  }
+  .fam-tools-link a:hover { text-decoration: underline; }
+
+  .fam-back {
+    display: inline-block;
+    margin-top: 36px;
+    color: var(--color-muted);
+    text-decoration: none;
+    font-size: 14px;
+  }
+  .fam-back:hover { color: var(--color-copper); }
+
+  @media (max-width: 640px) {
+    .fam-grid-4,
+    .fam-say,
+    .fam-support-grid { grid-template-columns: 1fr; }
+    .fam-timeline li { grid-template-columns: 1fr; gap: 4px; }
+  }
+</style>
