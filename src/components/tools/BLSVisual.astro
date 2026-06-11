@@ -98,6 +98,8 @@ const s = t[lang];
 </div>
 
 <script>
+  import { createBlsTimer } from '../../scripts/bls-timer';
+
   const widgets = document.querySelectorAll('[data-bls-visual-widget]');
   widgets.forEach((root) => {
     const i18n = JSON.parse(root.getAttribute('data-bls-i18n') || '{}');
@@ -119,11 +121,6 @@ const s = t[lang];
       rmNotice.classList.remove('hidden');
     }
 
-    let running = false;
-    let rafId = 0;
-    let startTs = 0;
-    let passCount = 0;
-
     function applyVisuals() {
       const s = parseInt(size.value, 10);
       dot.style.width = `${s}px`;
@@ -131,50 +128,39 @@ const s = t[lang];
       dot.style.background = color.value;
     }
 
-    function reset() {
-      running = false;
-      cancelAnimationFrame(rafId);
-      passCount = 0;
-      toggle.textContent = i18n.start || 'Start';
-      count.textContent = `0 / ${passes.value}`;
-      dot.style.transform = 'translate(0, -50%)';
-    }
-
-    function tick(ts: number) {
-      if (!running) return;
-      if (!startTs) startTs = ts;
-      const hz = parseFloat(speed.value);
-      const elapsed = (ts - startTs) / 1000;
-      const phase = (elapsed * hz) % 1;
-      const trackWidth = track.clientWidth - dot.clientWidth;
-      const x = trackWidth * (0.5 - 0.5 * Math.cos(phase * 2 * Math.PI));
-      dot.style.transform = `translate(${x}px, -50%)`;
-      const newCount = Math.floor(elapsed * hz * 2);
-      if (newCount !== passCount) {
-        passCount = newCount;
-        count.textContent = `${passCount} / ${passes.value}`;
-        if (!continuous.checked && passCount >= parseInt(passes.value, 10)) {
-          reset();
-          return;
-        }
-      }
-      rafId = requestAnimationFrame(tick);
-    }
+    const timer = createBlsTimer({
+      getSpeed: () => parseFloat(speed.value),
+      onFrame(phase) {
+        const trackWidth = track.clientWidth - dot.clientWidth;
+        const x = trackWidth * (0.5 - 0.5 * Math.cos(phase * 2 * Math.PI));
+        dot.style.transform = `translate(${x}px, -50%)`;
+      },
+      onBeat(_side, beat) {
+        count.textContent = `${beat} / ${passes.value}`;
+      },
+      getTotalBeats: () => (continuous.checked ? Infinity : parseInt(passes.value, 10)),
+      onSetComplete: () => stop(),
+    });
 
     function start() {
       applyVisuals();
-      running = true;
-      startTs = 0;
-      passCount = 0;
+      count.textContent = `0 / ${passes.value}`;
       toggle.textContent = i18n.stop || 'Stop';
-      rafId = requestAnimationFrame(tick);
+      timer.start();
     }
 
-    toggle.addEventListener('click', () => (running ? reset() : start()));
+    // Stop keeps the current count visible; a fresh Start resets it to 0.
+    function stop() {
+      timer.stop();
+      toggle.textContent = i18n.start || 'Start';
+      dot.style.transform = 'translate(0, -50%)';
+    }
+
+    toggle.addEventListener('click', () => (timer.isRunning() ? stop() : start()));
     speed.addEventListener('input', () => (speedVal.textContent = parseFloat(speed.value).toFixed(1)));
     passes.addEventListener('input', () => {
       passesVal.textContent = passes.value;
-      if (!running) count.textContent = `0 / ${passes.value}`;
+      if (!timer.isRunning()) count.textContent = `0 / ${passes.value}`;
     });
     size.addEventListener('input', () => {
       sizeVal.textContent = size.value;

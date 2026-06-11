@@ -73,6 +73,8 @@ const s = t[lang];
 </div>
 
 <script>
+  import { createBlsTimer, type BlsSide } from '../../scripts/bls-timer';
+
   const widgets = document.querySelectorAll('[data-bls-tapping-widget]');
   widgets.forEach((root) => {
     const i18n = JSON.parse(root.getAttribute('data-bls-i18n') || '{}');
@@ -85,58 +87,49 @@ const s = t[lang];
     const panelL = root.querySelector<HTMLElement>('[data-side="L"]')!;
     const panelR = root.querySelector<HTMLElement>('[data-side="R"]')!;
 
-    let running = false;
-    let passCount = 0;
-    let side: 'L' | 'R' = 'L';
-    let intervalId = 0;
-
-    function highlight(which: 'L' | 'R') {
+    function clearHighlights() {
       [panelL, panelR].forEach((p) => {
         p.classList.remove('bg-bronze-500', 'text-forest-900', 'border-bronze-300');
         p.classList.add('bg-forest-900', 'text-forest-500', 'border-forest-600');
       });
+    }
+
+    function highlight(which: BlsSide) {
+      clearHighlights();
       const active = which === 'L' ? panelL : panelR;
       active.classList.remove('bg-forest-900', 'text-forest-500', 'border-forest-600');
       active.classList.add('bg-bronze-500', 'text-forest-900', 'border-bronze-300');
     }
 
-    function tick() {
-      highlight(side);
-      side = side === 'L' ? 'R' : 'L';
-      passCount += 1;
-      count.textContent = `${passCount} / ${passes.value}`;
-      if (passCount >= parseInt(passes.value, 10)) {
-        stop();
-      }
-    }
+    const timer = createBlsTimer({
+      getSpeed: () => parseFloat(speed.value),
+      onBeat(side, beat) {
+        highlight(side);
+        count.textContent = `${beat} / ${passes.value}`;
+      },
+      getTotalBeats: () => parseInt(passes.value, 10),
+      onSetComplete: () => stop(),
+    });
 
     function start() {
-      running = true;
-      passCount = 0;
-      side = 'L';
-      toggle.textContent = i18n.stop || 'Stop';
-      tick();
-      const hz = parseFloat(speed.value);
-      const intervalMs = 1000 / (hz * 2);
-      intervalId = window.setInterval(tick, intervalMs);
-    }
-
-    function stop() {
-      running = false;
-      clearInterval(intervalId);
-      toggle.textContent = i18n.start || 'Start';
-      [panelL, panelR].forEach((p) => {
-        p.classList.remove('bg-bronze-500', 'text-forest-900', 'border-bronze-300');
-        p.classList.add('bg-forest-900', 'text-forest-500', 'border-forest-600');
-      });
       count.textContent = `0 / ${passes.value}`;
+      toggle.textContent = i18n.stop || 'Stop';
+      timer.start();
+      highlight('L');
     }
 
-    toggle.addEventListener('click', () => (running ? stop() : start()));
+    // Stop keeps the current count visible; a fresh Start resets it to 0.
+    function stop() {
+      timer.stop();
+      toggle.textContent = i18n.start || 'Start';
+      clearHighlights();
+    }
+
+    toggle.addEventListener('click', () => (timer.isRunning() ? stop() : start()));
     speed.addEventListener('input', () => (speedVal.textContent = parseFloat(speed.value).toFixed(1)));
     passes.addEventListener('input', () => {
       passesVal.textContent = passes.value;
-      if (!running) count.textContent = `0 / ${passes.value}`;
+      if (!timer.isRunning()) count.textContent = `0 / ${passes.value}`;
     });
   });
 </script>

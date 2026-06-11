@@ -83,6 +83,8 @@ const s = t[lang];
 </div>
 
 <script>
+  import { createBlsTimer, playBlsPulse, type BlsSide } from '../../scripts/bls-timer';
+
   const widgets = document.querySelectorAll('[data-bls-audio-widget]');
   widgets.forEach((root) => {
     const i18n = JSON.parse(root.getAttribute('data-bls-i18n') || '{}');
@@ -100,65 +102,48 @@ const s = t[lang];
     const indR = root.querySelector<HTMLElement>('[data-bls-indicator-r]')!;
 
     let ctx: AudioContext | null = null;
-    let running = false;
-    let passCount = 0;
-    let intervalId = 0;
-    let side: 'L' | 'R' = 'L';
 
-    function playPulse(pan: number) {
-      if (!ctx) return;
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
-      const panner = ctx.createStereoPanner();
-      osc.type = 'sine';
-      osc.frequency.value = parseFloat(freq.value);
-      panner.pan.value = pan;
-      gain.gain.value = 0;
-      gain.gain.linearRampToValueAtTime(parseFloat(vol.value), ctx.currentTime + 0.01);
-      gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.15);
-      osc.connect(gain).connect(panner).connect(ctx.destination);
-      osc.start();
-      osc.stop(ctx.currentTime + 0.2);
-    }
-
-    function tick() {
-      const pan = side === 'L' ? -1 : 1;
-      playPulse(pan);
+    function pulse(side: BlsSide) {
+      if (ctx) playBlsPulse(ctx, side === 'L' ? -1 : 1, parseFloat(freq.value), parseFloat(vol.value));
       indL.style.opacity = side === 'L' ? '1' : '0.3';
       indR.style.opacity = side === 'R' ? '1' : '0.3';
-      side = side === 'L' ? 'R' : 'L';
-      passCount += 1;
-      count.textContent = `${passCount} / ${passes.value}`;
-      if (passCount >= parseInt(passes.value, 10)) {
-        stop();
-      }
     }
+
+    const timer = createBlsTimer({
+      getSpeed: () => parseFloat(speed.value),
+      onBeat(side, beat) {
+        pulse(side);
+        count.textContent = `${beat} / ${passes.value}`;
+      },
+      getTotalBeats: () => parseInt(passes.value, 10),
+      onSetComplete: () => stop(),
+    });
 
     function start() {
+      // Lazily create the AudioContext on first start (never autoplay).
       ctx = ctx ?? new (window.AudioContext || (window as any).webkitAudioContext)();
-      running = true;
-      passCount = 0;
-      side = 'L';
+      if (ctx.state === 'suspended') ctx.resume();
+      count.textContent = `0 / ${passes.value}`;
       toggle.textContent = i18n.stop || 'Stop';
-      const hz = parseFloat(speed.value);
-      const intervalMs = 1000 / (hz * 2);
-      tick();
-      intervalId = window.setInterval(tick, intervalMs);
+      timer.start();
+      pulse('L');
     }
 
+    // Stop keeps the current count visible; a fresh Start resets it to 0.
     function stop() {
-      running = false;
-      clearInterval(intervalId);
+      timer.stop();
       toggle.textContent = i18n.start || 'Start';
       indL.style.opacity = '0.3';
       indR.style.opacity = '0.3';
+      // Release the OS audio session while stopped.
+      ctx?.suspend();
     }
 
-    toggle.addEventListener('click', () => (running ? stop() : start()));
+    toggle.addEventListener('click', () => (timer.isRunning() ? stop() : start()));
     speed.addEventListener('input', () => (speedVal.textContent = parseFloat(speed.value).toFixed(1)));
     passes.addEventListener('input', () => {
       passesVal.textContent = passes.value;
-      if (!running) count.textContent = `0 / ${passes.value}`;
+      if (!timer.isRunning()) count.textContent = `0 / ${passes.value}`;
     });
     freq.addEventListener('input', () => (freqVal.textContent = freq.value));
     vol.addEventListener('input', () => (volVal.textContent = `${Math.round(parseFloat(vol.value) * 100)}%`));
