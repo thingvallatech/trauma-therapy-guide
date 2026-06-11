@@ -4,212 +4,116 @@
 
 ## Project Overview
 
-**Name:** Trauma Therapy Reference Guide (working title — domain TBD)
+**Name:** Trauma Therapy Guide — https://traumatherapy.guide
 
 **Purpose:** Free public resource site helping trauma therapists quickly reference evidence-based protocols, and helping families understand their child's treatment.
 
-**Status:** POC phase — EMDR content only
+**Status:** Live — EMDR protocol (8 phases + scripts), 13 interactive tools, resource libraries, full EN/ES localization. Family-facing TF-CBT guide exists; clinician TF-CBT/PCIT still planned.
 
 ## Tech Stack
 
 - **Framework:** Astro (static site generation)
-- **Styling:** Tailwind CSS
-- **Icons:** Lucide (via `astro-icon` or direct SVG)
-- **Content:** Markdown with Astro Content Collections
+- **Styling:** Tailwind CSS v4 (tokens in `src/styles/global.css`, not a tailwind config)
+- **3D (sandtray only):** three.js, models in `public/sandtray/models/`
+- **Content:** Markdown with Astro Content Collections (`emdr-phases`, `resources`, `tools`)
+- **i18n:** EN default + ES under `/es/` (dictionaries in `src/i18n/ui.ts`; per-tool-widget `t = {en, es}` objects)
 - **Deployment:** Digital Ocean App Platform (static)
+- **Analytics:** GoatCounter (no cookies)
 - **Package manager:** npm
 
-## File Structure
+## File Structure (key paths)
 
 ```
-/
-├── src/
-│   ├── components/
-│   │   ├── Header.astro
-│   │   ├── Footer.astro
-│   │   ├── Nav.astro
-│   │   ├── Card.astro
-│   │   ├── PhaseNav.astro        # Previous/Next navigation for phases
-│   │   └── Callout.astro         # Tip/warning/note boxes
-│   ├── layouts/
-│   │   ├── BaseLayout.astro      # HTML head, header, footer wrapper
-│   │   └── PhaseLayout.astro     # Template for individual phase pages
-│   ├── pages/
-│   │   ├── index.astro
-│   │   ├── about.astro
-│   │   ├── admin/
-│   │   │   └── upload.astro      # Resource upload form
-│   │   ├── clinicians/
-│   │   │   ├── index.astro
-│   │   │   ├── emdr/
-│   │   │   │   ├── index.astro   # EMDR overview + phase links
-│   │   │   │   └── [phase].astro # Dynamic route for phases
-│   │   │   └── resources/
-│   │   │       └── index.astro   # Clinician resource library
-│   │   └── families/
-│   │       ├── index.astro
-│   │       ├── emdr.astro
-│   │       └── resources/
-│   │           └── index.astro   # Family resource library
-│   ├── content/
-│   │   ├── config.ts             # Content collection definitions
-│   │   ├── emdr-phases/
-│   │   │   ├── phase-1.md
-│   │   │   ├── phase-2.md
-│   │   │   └── ... (8 total)
-│   │   └── resources/            # Resource library entries
-│   └── styles/
-│       └── global.css
-├── public/
-│   └── (static assets)
-├── functions/                    # Serverless functions (deployed via doctl)
-├── astro.config.mjs
-├── tailwind.config.mjs
-├── package.json
-└── CLAUDE.md
+src/
+├── components/
+│   ├── Header / Footer / SearchModal / CrisisStrip / CalmFrontDoor
+│   ├── Callout / Card / ResourceCard / ClinicalBanner / HelpContent
+│   └── tools/                  # 13 interactive tool widgets + ToolShell/ToolCard
+│       ├── BLS*.astro          # share src/scripts/bls-timer.ts (RAF timing)
+│       ├── Sandtray.astro      # three.js; figures data in src/data/
+│       └── BreathPacer, Grounding, SafePlace, Container, FeelingWheel, …
+├── layouts/                    # BaseLayout (head/meta/skip-link), PhaseLayout, FullscreenLayout
+├── pages/
+│   ├── index, about, help (crisis), 404, tools/ ([slug] + fullscreen)
+│   ├── admin/upload.astro      # resource upload UI (noindex; calls DO Functions w/ X-Admin-Token)
+│   ├── clinicians/             # hub, emdr/phase-N (static pages), phase-N-scripts, resources/
+│   ├── families/               # hub, emdr, tfcbt, resources/, emdr/tools
+│   └── es/                     # Spanish mirror (phases render from .es.md via [phase].astro)
+├── content/                    # config.ts + emdr-phases/ (+ .es.md), resources/, tools/ (+ .es.md)
+├── i18n/                       # ui.ts dictionaries, utils.ts (translatePath, locale switcher)
+└── styles/global.css           # design tokens, dark-zone, print styles
+functions/                      # DO Functions (resource/analyze + publish) — deploy via doctl
 ```
 
 ## Design System
 
-### Colors (Tailwind config)
+The site uses **dark chrome + light content zones** ("calm" overhaul, Apr 2026 — supersedes the all-dark plan in docs/plans):
 
-```js
-colors: {
-  forest: {
-    50: '#F0F5F1',
-    100: '#D9E6DC',
-    200: '#B3CDB9',
-    300: '#8DB496',
-    400: '#679B73',
-    500: '#2D5A3D',  // Primary
-    600: '#254A32',
-    700: '#1D3A27',
-    800: '#152A1C',
-    900: '#0D1A11',
-  },
-  wood: {
-    50: '#FAF7F2',
-    100: '#F5F1EB',
-    200: '#E8DFD3',
-    300: '#D4C4AD',
-    400: '#C4A77D',  // Secondary
-    500: '#A68B5B',
-    600: '#8A7049',
-    700: '#6E5538',
-    800: '#523A27',
-    900: '#362016',
-  },
-  cream: '#FDFBF7',       // Background
-  charcoal: '#2C2C2C',    // Text
-}
-```
-
-### Typography
-
-```js
-fontFamily: {
-  serif: ['Lora', 'Georgia', 'serif'],        // Headings
-  sans: ['Inter', 'system-ui', 'sans-serif'], // Body
-}
-```
-
-**Usage:**
-- `font-serif` for h1, h2, h3
-- `font-sans` for body, nav, buttons
-- Base size: 16px (1rem)
-- Line height: 1.6 for body text
-
-### Spacing & Layout
-
-- Max content width: `max-w-3xl` (48rem) for text-heavy pages
-- Max container width: `max-w-6xl` (72rem) for hub pages
-- Section padding: `py-16` desktop, `py-10` mobile
-- Card border radius: `rounded-lg` (0.5rem)
-- Button border radius: `rounded-md` (0.375rem)
-
-### Component Patterns
-
-**Cards:**
-- Background: `bg-white` with subtle shadow `shadow-sm`
-- Border: `border border-wood-200`
-- Padding: `p-6`
-- Hover: `hover:shadow-md hover:border-forest-300` with transition
-
-**Buttons:**
-- Primary: `bg-forest-500 text-white hover:bg-forest-600`
-- Secondary: `bg-wood-100 text-charcoal hover:bg-wood-200`
-- Padding: `px-4 py-2`
-
-**Callouts:**
-- Tip: `bg-forest-50 border-l-4 border-forest-500`
-- Warning: `bg-amber-50 border-l-4 border-amber-500`
-- Note: `bg-wood-50 border-l-4 border-wood-400`
+- **Chrome (header/footer) and tool pages:** dark forest with bronze accents — `forest-900` page base, `forest-800` cards, `forest-600` borders, `bronze-400/500` headings/links/primary buttons, body text `forest-100`, secondary `forest-300`. Tool pages wrap widgets in `.dark-zone` (see `ToolShell.astro`).
+- **Content zones (homepage, hubs, phase articles):** cream/linen editorial style using CSS custom props in global.css (`--color-ink`, `--color-copper`, etc. — see `CalmFrontDoor.astro` for the idiom).
+- **Typography:** `font-serif` (Lora/Georgia) headings, `font-sans` (Inter) body; base 16px.
+- **Layout:** `max-w-3xl` text pages, `max-w-6xl` hubs; `rounded-lg` cards, `rounded-md` buttons.
+- **Focus states:** `focus:outline-none focus:ring-2 focus:ring-bronze-500` on dark zones.
+- Amber is reserved for functional warnings only.
 
 ## Content Guidelines
 
 ### For Clinicians
-- Concise, scannable
-- Use headers to break up phases
-- Include "quick reference" boxes for key steps
-- Link to related phases where relevant
-- Assume reader has basic training, this is reinforcement not teaching
+- Concise, scannable; headers break up phases
+- "Quick reference" boxes for key steps; link related phases
+- Assume reader has basic training — reinforcement, not teaching
 
 ### For Families
-- Warm, reassuring tone
-- No jargon without explanation
+- Warm, reassuring tone; no jargon without explanation
 - Focus on "what to expect" and "how to support"
 - Shorter paragraphs than clinician content
 
-### Markdown Frontmatter (emdr-phases)
+### Spanish (ES)
+- Neutral Latin American register, tú forms addressing the parent
+- EMDR stays "EMDR"; "bilateral stimulation" → "estimulación bilateral"
+- Crisis text line keyword is HOLA (vs HELLO) to 741741
+- Every EN page needs an ES counterpart or an entry in `EN_ONLY_ROUTES` (src/i18n/utils.ts) so the locale switcher and hreflang degrade gracefully
 
-```yaml
----
-phase: 1
-title: "History and Treatment Planning"
-shortTitle: "History"
-description: "Gathering comprehensive client information and assessing readiness for EMDR treatment."
-goals:
-  - "Establish therapeutic alliance"
-  - "Gather relevant history"
-  - "Identify targets for processing"
----
-```
+### Trauma-informed UX rules (non-negotiable)
+- Nothing autoplays (motion or audio); every animation respects `prefers-reduced-motion`
+- Stop controls always reachable; destructive actions (e.g. sandtray clear) require confirm + undo
+- Epilepsy/supervision warnings render in fullscreen too
+- Crisis links: `sms:741741?&body=…` format (the `?` matters on Android)
+
+### Markdown Frontmatter
+
+`emdr-phases`: phase, title, shortTitle, description, goals[].
+`tools`: name, category (bls|preparation|assessment|regulation), audience[], useContext[], evidence, shortDescription, componentName, citations[], warnings[], locale.
+`resources`: title, type, audience, tags[], url/fileUrl, author, dateAdded, locale.
 
 ## Commands
 
 ```bash
-# Development
-npm run dev
-
-# Build
-npm run build
-
-# Preview production build
-npm run preview
+npm run dev        # Development
+npm run build      # Build (113 pages; must pass before commit)
+npm run preview    # Preview production build
 ```
 
 ## Deployment
 
 Digital Ocean App Platform auto-deploys from `main` branch.
+Build command: `npm run build` · Output directory: `dist`
 
-Build command: `npm run build`
-Output directory: `dist`
+DO Functions (resource analyze/publish) deploy separately:
+`cd functions && doctl serverless deploy .` — requires env vars from project.yml,
+including `ADMIN_TOKEN` (shared secret; the admin upload page sends it as `X-Admin-Token`).
 
-## Future Additions (not in POC)
+## Future Additions
 
-- TF-CBT section (`/clinicians/tfcbt/`)
+- Clinician TF-CBT section (`/clinicians/tfcbt/`) — family guide exists
 - PCIT section (`/clinicians/pcit/`)
 - Downloadable PDF resources
-- Search functionality
-- Dark mode (maybe)
 
 ## Notes
 
 - No JavaScript frameworks beyond Astro's islands (keep it simple)
-- No authentication
-- No database
-- No analytics for POC (add Plausible or Fathom later if needed)
-- Accessibility: semantic HTML, proper heading hierarchy, alt text, focus states
-- Resource library admin page at /admin/upload (not linked publicly)
+- No accounts, no database; GoatCounter analytics only (no cookies)
+- Accessibility: semantic HTML, heading hierarchy, skip link, focus states, keyboard-operable tools
+- Resource admin page at /admin/upload (noindex, not linked publicly; requires admin token)
 - Resources stored as markdown in src/content/resources/
-- Serverless functions in functions/ deploy separately via doctl
+- Search index lives in SearchModal.astro (static pages) + tools collection — add new pages there

@@ -15,6 +15,19 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <!-- Step 1: Input -->
       <div id="step-input">
         <form id="upload-form" class="space-y-6">
+          <!-- Admin token -->
+          <div>
+            <label for="admin-token" class="block text-sm font-medium text-charcoal mb-1">Admin token</label>
+            <input
+              type="password"
+              id="admin-token"
+              name="adminToken"
+              autocomplete="off"
+              placeholder="Required to analyze and publish"
+              class="w-full px-4 py-2 border border-wood-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-forest-500 focus:border-forest-500 bg-white"
+            />
+          </div>
+
           <!-- URL input -->
           <div>
             <label for="resource-url" class="block text-sm font-medium text-charcoal mb-1">URL</label>
@@ -174,6 +187,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     const ANALYZE_URL = 'https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-77c5b7ed-64f9-4354-a162-8c8b7fd25e24/resource/analyze';
     const PUBLISH_URL = 'https://faas-nyc1-2ef2e6cc.doserverless.co/api/v1/web/fn-77c5b7ed-64f9-4354-a162-8c8b7fd25e24/resource/publish';
 
+    function getAdminToken(): string {
+      return (document.getElementById('admin-token') as HTMLInputElement).value.trim();
+    }
+
     // DOM references
     const stepInput = document.getElementById('step-input')!;
     const stepReview = document.getElementById('step-review')!;
@@ -237,6 +254,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
         const res = await fetch(ANALYZE_URL, {
           method: 'POST',
+          headers: { 'X-Admin-Token': getAdminToken() },
           body: formData,
         });
 
@@ -316,7 +334,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
         const res = await fetch(PUBLISH_URL, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'X-Admin-Token': getAdminToken() },
           body: JSON.stringify(payload),
         });
 

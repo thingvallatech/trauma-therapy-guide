@@ -6,8 +6,19 @@ function slugify(text) {
     .substring(0, 60);
 }
 
+function checkAuth(args) {
+  const expected = process.env.ADMIN_TOKEN;
+  const provided = (args.__ow_headers || {})['x-admin-token'] || args.adminToken;
+  // Fail closed: reject unless ADMIN_TOKEN is configured AND matches
+  return Boolean(expected) && provided === expected;
+}
+
 async function main(args) {
   try {
+    if (!checkAuth(args)) {
+      return { statusCode: 401, body: JSON.stringify({ error: 'Unauthorized.' }) };
+    }
+
     const { title, author, description, type, audience, tags, url, fileUrl } = args;
 
     if (!title) {

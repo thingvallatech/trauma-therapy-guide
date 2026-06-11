@@ -51,8 +51,19 @@ function parseMultipart(args) {
   return parsed;
 }
 
+function checkAuth(args) {
+  const expected = process.env.ADMIN_TOKEN;
+  const provided = (args.__ow_headers || {})['x-admin-token'];
+  // Fail closed: reject unless ADMIN_TOKEN is configured AND matches
+  return Boolean(expected) && provided === expected;
+}
+
 async function main(args) {
   try {
+    if (!checkAuth(args)) {
+      return { statusCode: 401, body: JSON.stringify({ error: 'Unauthorized.' }) };
+    }
+
     const params = parseMultipart(args);
     const { url, file, fileName, fileContentType } = params;
 

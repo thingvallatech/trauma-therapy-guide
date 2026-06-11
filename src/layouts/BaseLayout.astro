@@ -26,9 +26,12 @@ const hasAlternate = hasAlternateLocale(Astro.url, lang);
 const alternateUrl = new URL(getAlternateLocaleUrl(Astro.url, lang), Astro.site || 'https://traumatherapy.guide');
 const alternateLang = lang === 'en' ? 'es' : 'en';
 
+const ogImage = new URL('/og-default.png', Astro.site || 'https://traumatherapy.guide');
+
+const isClinicalPage = /\/(clinicians|families|tools)(\/|$)/.test(Astro.url.pathname);
 const structuredData = {
   "@context": "https://schema.org",
-  "@type": "MedicalWebPage",
+  "@type": isClinicalPage ? "MedicalWebPage" : "WebPage",
   "name": fullTitle,
   "description": desc,
   "url": canonicalURL.href,
@@ -38,10 +41,12 @@ const structuredData = {
     "@type": "Organization",
     "name": "Trauma Therapy Guide"
   },
-  "about": {
-    "@type": "MedicalCondition",
-    "name": "Post-Traumatic Stress Disorder"
-  }
+  ...(isClinicalPage && {
+    "about": {
+      "@type": "MedicalCondition",
+      "name": "Post-Traumatic Stress Disorder"
+    }
+  })
 };
 ---
 
@@ -71,11 +76,16 @@ const structuredData = {
     <meta property="og:url" content={canonicalURL.href} />
     <meta property="og:site_name" content="Trauma Therapy Guide" />
     <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
+    <meta property="og:image" content={ogImage.href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={siteName} />
 
     <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={desc} />
+    <meta name="twitter:image" content={ogImage.href} />
 
     <!-- Structured Data -->
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />

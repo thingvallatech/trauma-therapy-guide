@@ -37,3 +37,11 @@ functions/packages/**/package-lock.json
 # jetbrains setting folder
 .idea/
 *.docx
+
+# ad-hoc screenshots in repo root (dev/testing artifacts)
+/*.png
+/*.jpeg
+/*.jpg
+
+# playwright MCP artifacts
+.playwright-mcp/
