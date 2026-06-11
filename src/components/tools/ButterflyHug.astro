@@ -80,13 +80,17 @@ const s = t[lang];
     const wingR = root.querySelector<SVGElement>('[data-wing="R"]')!;
     const speed = root.querySelector<HTMLInputElement>('[data-speed]')!;
     const toggle = root.querySelector<HTMLButtonElement>('[data-toggle]')!;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     let running = false;
     let side: 'L' | 'R' = 'L';
     let intervalId = 0;
 
     function tick() {
-      if (side === 'L') {
+      if (reduceMotion) {
+        wingL.setAttribute('opacity', side === 'L' ? '0.9' : '0.3');
+        wingR.setAttribute('opacity', side === 'R' ? '0.9' : '0.3');
+      } else if (side === 'L') {
         wingL.setAttribute('transform', 'scale(1.1 1.1) translate(-6 -6)');
         wingR.setAttribute('transform', '');
       } else {
@@ -109,6 +113,8 @@ const s = t[lang];
       clearInterval(intervalId);
       wingL.setAttribute('transform', '');
       wingR.setAttribute('transform', '');
+      wingL.setAttribute('opacity', '0.5');
+      wingR.setAttribute('opacity', '0.5');
       toggle.textContent = startText;
     }
 

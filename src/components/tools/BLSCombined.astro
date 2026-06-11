@@ -23,6 +23,7 @@ const t = {
     stop: 'Stop',
     audio: 'audio',
     motionNotice: "This tool uses motion by design. If that's uncomfortable, consider the audio-only or butterfly-hug tool instead.",
+    reducedMotionNotice: 'Your system is set to prefer reduced motion. The audio or tapping BLS tool may be a more comfortable alternative.',
   },
   es: {
     combinedWarning: '⚠ Se aplican advertencias de epilepsia fotosensible y audífonos. Usar solo en sesiones supervisadas por un clínico.',
@@ -34,6 +35,7 @@ const t = {
     stop: 'Detener',
     audio: 'audio',
     motionNotice: 'Esta herramienta usa movimiento por diseño. Si eso es incómodo, considera la herramienta solo de audio o el abrazo de mariposa.',
+    reducedMotionNotice: 'Tu sistema está configurado para preferir movimiento reducido. La herramienta de BLS de audio o de toques puede ser una alternativa más cómoda.',
   },
 };
 
@@ -41,11 +43,13 @@ const s = t[lang];
 ---
 
 <div class:list={[containerClass]} data-bls-combined-widget data-bls-i18n={JSON.stringify({ start: s.start, stop: s.stop })}>
-  {!fullscreen && (
-    <div class="mb-4 p-3 border border-amber-500/50 bg-amber-900/20 rounded-md text-amber-100 text-xs">
-      {s.combinedWarning}
-    </div>
-  )}
+  <div class:list={["border border-amber-500/50 bg-amber-900/20 rounded-md text-amber-100 text-xs", fullscreen ? "mb-2 p-2" : "mb-4 p-3"]}>
+    {s.combinedWarning}
+  </div>
+
+  <div data-bls-rm-notice class="hidden mb-4 p-3 border border-amber-500/50 bg-amber-900/20 rounded-md text-amber-100 text-xs">
+    {s.reducedMotionNotice}
+  </div>
 
   <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
     <label class="text-forest-200 text-xs">
@@ -85,7 +89,7 @@ const s = t[lang];
     >
       {s.start}
     </button>
-    <span data-count aria-live="polite" aria-atomic="true" class="text-forest-300 text-sm tabular-nums">0 / 24</span>
+    <span data-count class="text-forest-300 text-sm tabular-nums">0 / 24</span>
     <label class="text-forest-300 text-xs flex items-center gap-2">
       <input type="checkbox" data-audio-on checked class="accent-bronze-500 focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" /> {s.audio}
     </label>
@@ -110,6 +114,11 @@ const s = t[lang];
     const toggle = root.querySelector<HTMLButtonElement>('[data-toggle]')!;
     const count = root.querySelector<HTMLElement>('[data-count]')!;
     const audioOn = root.querySelector<HTMLInputElement>('[data-audio-on]')!;
+    const rmNotice = root.querySelector<HTMLElement>('[data-bls-rm-notice]');
+
+    if (rmNotice && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      rmNotice.classList.remove('hidden');
+    }
 
     let ctx: AudioContext | null = null;
     let running = false;

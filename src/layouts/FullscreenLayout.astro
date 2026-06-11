@@ -11,6 +11,10 @@ interface Props {
 const detectedLang = getLangFromUrl(Astro.url);
 const { title, lang = detectedLang, exitHref } = Astro.props;
 const t = useTranslations(lang);
+const groundingHref = lang === 'es' ? '/es/tools/grounding' : '/tools/grounding';
+const groundingText = lang === 'es'
+  ? '¿Te sientes abrumado/a? Ejercicio de anclaje →'
+  : 'Feeling overwhelmed? Grounding exercise →';
 ---
 
 <!DOCTYPE html>
@@ -23,7 +27,7 @@ const t = useTranslations(lang);
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <title>{title}</title>
   </head>
-  <body class="m-0 bg-black text-white min-h-screen overflow-hidden">
+  <body class="m-0 bg-black text-white min-h-dvh overflow-y-auto">
     <a
       href={exitHref}
       id="tool-exit"
@@ -34,9 +38,15 @@ const t = useTranslations(lang);
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
       </svg>
     </a>
-    <main class="w-full h-screen flex items-center justify-center">
+    <main class="w-full min-h-dvh flex items-center justify-center py-16">
       <slot />
     </main>
+    <a
+      href={groundingHref}
+      class="fixed bottom-3 left-1/2 -translate-x-1/2 z-50 text-xs text-white/60 hover:text-white underline transition-colors focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-black"
+    >
+      {groundingText}
+    </a>
     <script is:inline define:vars={{ exitHref }}>
       document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {

@@ -20,7 +20,7 @@ const t = {
     volume: 'Volume',
     start: 'Start',
     stop: 'Stop',
-    motionNotice: "This tool uses motion by design. If that's uncomfortable, consider the butterfly-hug or visual BLS tool instead.",
+    motionNotice: "This tool uses alternating left-right sound by design. If that's uncomfortable, consider the tapping or butterfly-hug tool instead.",
   },
   es: {
     headphonesWarning: '🎧 Se requieren audífonos — la separación estéreo es lo que hace esto bilateral.',
@@ -30,7 +30,7 @@ const t = {
     volume: 'Volumen',
     start: 'Comenzar',
     stop: 'Detener',
-    motionNotice: 'Esta herramienta usa movimiento por diseño. Si eso es incómodo, considera la herramienta solo de audio o el abrazo de mariposa.',
+    motionNotice: 'Esta herramienta usa sonido alternado izquierda-derecha por diseño. Si eso es incómodo, considera la herramienta de toques o el abrazo de mariposa.',
   },
 };
 
@@ -72,7 +72,7 @@ const s = t[lang];
     >
       {s.start}
     </button>
-    <span data-bls-count aria-live="polite" aria-atomic="true" class="text-forest-300 text-sm tabular-nums">0 / 24</span>
+    <span data-bls-count class="text-forest-300 text-sm tabular-nums">0 / 24</span>
     <div class="flex-1"></div>
     <div class="flex gap-4 text-forest-300 text-sm" aria-hidden="true">
       <span data-bls-indicator-l class="opacity-30">◀ L</span>

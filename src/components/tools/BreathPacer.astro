@@ -42,20 +42,20 @@ const s = t[lang];
   stop: s.stop,
 })}>
   <div class="mb-4 flex flex-wrap gap-2 justify-center">
-    <button data-breath-pattern="box" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
+    <button data-breath-pattern="box" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800 disabled:opacity-50 disabled:cursor-not-allowed">
       {s.patternBox}
     </button>
-    <button data-breath-pattern="478" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
+    <button data-breath-pattern="478" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800 disabled:opacity-50 disabled:cursor-not-allowed">
       {s.pattern478}
     </button>
-    <button data-breath-pattern="coherent" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
+    <button data-breath-pattern="coherent" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800 disabled:opacity-50 disabled:cursor-not-allowed">
       {s.patternCoherent}
     </button>
   </div>
 
   <div class="mb-4 flex gap-2 justify-center">
     {[1, 3, 5, 10].map((m) => (
-      <button data-breath-minutes={m} class="px-3 py-1 rounded-md bg-forest-700 border border-forest-600 text-forest-200 text-xs hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
+      <button data-breath-minutes={m} class="px-3 py-1 rounded-md bg-forest-700 border border-forest-600 text-forest-200 text-xs hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800 disabled:opacity-50 disabled:cursor-not-allowed">
         {m} min
       </button>
     ))}
@@ -70,7 +70,7 @@ const s = t[lang];
     <div data-breath-phase aria-live="polite" class="absolute font-serif text-xl text-forest-100">{s.ready}</div>
   </div>
 
-  <div data-breath-remaining aria-live="polite" class="text-forest-300 text-sm mb-4"></div>
+  <div data-breath-remaining class="text-forest-300 text-sm mb-4"></div>
 
   <button
     data-breath-toggle
@@ -106,6 +106,9 @@ const s = t[lang];
     const phaseLabel = root.querySelector<HTMLElement>('[data-breath-phase]')!;
     const remaining = root.querySelector<HTMLElement>('[data-breath-remaining]')!;
     const toggle = root.querySelector<HTMLButtonElement>('[data-breath-toggle]')!;
+    const optionBtns = root.querySelectorAll<HTMLButtonElement>('[data-breath-pattern], [data-breath-minutes]');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduceMotion) circle.style.transitionProperty = 'opacity';
 
     const i18n = JSON.parse(root.getAttribute('data-breath-i18n') || '{}');
     const phaseMap: Record<string, string> = i18n.phaseNames || {};
@@ -121,6 +124,7 @@ const s = t[lang];
     let totalElapsed = 0;
     let rafId = 0;
     let lastTs = 0;
+    let lastRemainingText = '';
 
     function highlight(group: string, value: string) {
       root.querySelectorAll(`[data-breath-${group}]`).forEach((b) => {
@@ -152,8 +156,13 @@ const s = t[lang];
     function enterPhase(i: number) {
       const p = currentPattern[i];
       phaseLabel.textContent = phaseMap[p.name] || p.name;
-      circle.style.transitionDuration = `${p.seconds}s`;
-      circle.style.transform = `scale(${p.scale})`;
+      if (reduceMotion) {
+        circle.style.transitionDuration = '500ms';
+        circle.style.opacity = p.scale > 1 ? '1' : '0.4';
+      } else {
+        circle.style.transitionDuration = `${p.seconds}s`;
+        circle.style.transform = `scale(${p.scale})`;
+      }
     }
 
     function tick(ts: number) {
@@ -169,7 +178,11 @@ const s = t[lang];
         enterPhase(phaseIdx);
       }
       const left = Math.max(0, totalSeconds - totalElapsed);
-      remaining.textContent = `${Math.floor(left / 60)}:${String(Math.floor(left % 60)).padStart(2, '0')}`;
+      const remainingText = `${Math.floor(left / 60)}:${String(Math.floor(left % 60)).padStart(2, '0')}`;
+      if (remainingText !== lastRemainingText) {
+        lastRemainingText = remainingText;
+        remaining.textContent = remainingText;
+      }
       if (totalElapsed >= totalSeconds) {
         stop();
         return;
@@ -180,10 +193,12 @@ const s = t[lang];
     function start() {
       running = true;
       toggle.textContent = stopText;
+      optionBtns.forEach((b) => (b.disabled = true));
       phaseIdx = 0;
       phaseElapsed = 0;
       totalElapsed = 0;
       lastTs = 0;
+      lastRemainingText = '';
       enterPhase(0);
       rafId = requestAnimationFrame(tick);
     }
@@ -192,10 +207,16 @@ const s = t[lang];
       running = false;
       cancelAnimationFrame(rafId);
       toggle.textContent = startText;
+      optionBtns.forEach((b) => (b.disabled = false));
       circle.style.transitionDuration = '500ms';
-      circle.style.transform = 'scale(1)';
+      if (reduceMotion) {
+        circle.style.opacity = '1';
+      } else {
+        circle.style.transform = 'scale(1)';
+      }
       phaseLabel.textContent = readyText;
       remaining.textContent = '';
+      lastRemainingText = '';
     }
 
     toggle.addEventListener('click', () => (running ? stop() : start()));
