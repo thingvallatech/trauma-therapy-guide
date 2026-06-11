@@ -22,6 +22,26 @@ const t = {
     saveImage: 'Save image',
     levelSand: 'Level the sand',
     clearTray: 'Clear tray',
+    confirmLevel: 'Level the sand?',
+    confirmClear: 'Clear everything?',
+    digMode: '⛏ Dig',
+    buildMode: '⛰ Build',
+    selected: 'Selected:',
+    done: 'Done',
+    sandLabel: 'Sand:',
+    skinLabel: 'Skin:',
+    makeSmaller: 'Make smaller',
+    makeBigger: 'Make bigger',
+    rotateLeft: 'Rotate left',
+    rotateRight: 'Rotate right',
+    removeFigure: 'Remove figure',
+    chooseSkin: 'Choose skin color',
+    deselect: 'Deselect',
+    sandTan: 'Tan sand',
+    sandBlue: 'Blue sand',
+    sandWhite: 'White sand',
+    sandDark: 'Dark sand',
+    sandGold: 'Gold sand',
   },
   es: {
     canvasAriaLabel: 'Lienzo de bandeja de arena',
@@ -31,6 +51,26 @@ const t = {
     saveImage: 'Guardar imagen',
     levelSand: 'Aplanar la arena',
     clearTray: 'Limpiar bandeja',
+    confirmLevel: '¿Aplanar la arena?',
+    confirmClear: '¿Limpiar todo?',
+    digMode: '⛏ Cavar',
+    buildMode: '⛰ Construir',
+    selected: 'Seleccionado:',
+    done: 'Listo',
+    sandLabel: 'Arena:',
+    skinLabel: 'Piel:',
+    makeSmaller: 'Reducir',
+    makeBigger: 'Agrandar',
+    rotateLeft: 'Girar a la izquierda',
+    rotateRight: 'Girar a la derecha',
+    removeFigure: 'Quitar figura',
+    chooseSkin: 'Elegir color de piel',
+    deselect: 'Deseleccionar',
+    sandTan: 'Arena tostada',
+    sandBlue: 'Arena azul',
+    sandWhite: 'Arena blanca',
+    sandDark: 'Arena oscura',
+    sandGold: 'Arena dorada',
   },
 };
 const s = t[lang];
@@ -39,7 +79,7 @@ const s = t[lang];
 <div
   class:list={[containerClass]}
   data-sandtray-widget
-  data-sandtray-i18n={JSON.stringify({ stepBack: s.stepBack, returnToTray: s.returnToTray })}
+  data-sandtray-i18n={JSON.stringify(s)}
 >
   <div data-sandtray-frame class="relative w-full" style="
     padding: 18px;
@@ -69,17 +109,17 @@ const s = t[lang];
 
     <!-- Controls bar: right below the sand, inside the wood frame -->
     <div class="mt-3 flex flex-wrap gap-2 items-center">
-      <button data-sandtray-mode class="px-3 py-1.5 rounded-md bg-wood-100 text-charcoal text-sm font-medium hover:bg-wood-200 border border-wood-300">{lang === 'es' ? '⛏ Cavar' : '⛏ Dig'}</button>
+      <button data-sandtray-mode class="px-3 py-1.5 rounded-md bg-wood-100 text-charcoal text-sm font-medium hover:bg-wood-200 border border-wood-300">{s.digMode}</button>
       <button data-sandtray-witness class="px-3 py-1.5 rounded-md bg-wood-100 text-charcoal text-sm font-medium hover:bg-wood-200 border border-wood-300">{s.stepBack}</button>
       <button data-sandtray-capture class="px-3 py-1.5 rounded-md bg-wood-100 text-charcoal text-sm font-medium hover:bg-wood-200 border border-wood-300">{s.saveImage}</button>
       <button data-sandtray-level class="px-3 py-1.5 rounded-md bg-wood-100 text-charcoal text-sm font-medium hover:bg-wood-200 border border-wood-300">{s.levelSand}</button>
       <button data-sandtray-clear class="px-3 py-1.5 rounded-md bg-wood-100 text-charcoal text-sm font-medium hover:bg-wood-200 border border-wood-300">{s.clearTray}</button>
-      <span class="text-xs text-wood-200 ml-auto mr-1">Sand:</span>
-      <button data-sand-color="0xe2ceb1" class="w-6 h-6 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #e2ceb1;" aria-label="Tan sand" title="Tan"></button>
-      <button data-sand-color="0x8fb4c9" class="w-6 h-6 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #8fb4c9;" aria-label="Blue sand" title="Blue"></button>
-      <button data-sand-color="0xf0ebe3" class="w-6 h-6 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #f0ebe3;" aria-label="White sand" title="White"></button>
-      <button data-sand-color="0x6b5b4f" class="w-6 h-6 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #6b5b4f;" aria-label="Dark sand" title="Dark"></button>
-      <button data-sand-color="0xc9a96e" class="w-6 h-6 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #c9a96e;" aria-label="Gold sand" title="Gold"></button>
+      <span class="text-xs text-wood-200 ml-auto mr-1">{s.sandLabel}</span>
+      <button data-sand-color="0xe2ceb1" class="w-10 h-10 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #e2ceb1;" aria-label={s.sandTan} title={s.sandTan}></button>
+      <button data-sand-color="0x8fb4c9" class="w-10 h-10 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #8fb4c9;" aria-label={s.sandBlue} title={s.sandBlue}></button>
+      <button data-sand-color="0xf0ebe3" class="w-10 h-10 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #f0ebe3;" aria-label={s.sandWhite} title={s.sandWhite}></button>
+      <button data-sand-color="0x6b5b4f" class="w-10 h-10 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #6b5b4f;" aria-label={s.sandDark} title={s.sandDark}></button>
+      <button data-sand-color="0xc9a96e" class="w-10 h-10 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #c9a96e;" aria-label={s.sandGold} title={s.sandGold}></button>
     </div>
   </div>
 
@@ -88,28 +128,28 @@ const s = t[lang];
     data-sandtray-figure-toolbar
     class="mt-2 hidden flex-wrap gap-1.5 items-center bg-wood-50 rounded-lg border border-wood-300 px-3 py-2"
   >
-    <span data-figure-toolbar-label class="text-sm text-charcoal mr-2 font-semibold">Selected:</span>
-    <button data-fig-scale-down class="w-9 h-9 rounded-md bg-white text-charcoal text-lg font-bold hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title="Smaller" aria-label="Make smaller">−</button>
-    <button data-fig-scale-up class="w-9 h-9 rounded-md bg-white text-charcoal text-lg font-bold hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title="Bigger" aria-label="Make bigger">+</button>
+    <span data-figure-toolbar-label class="text-sm text-charcoal mr-2 font-semibold">{s.selected}</span>
+    <button data-fig-scale-down class="w-9 h-9 rounded-md bg-white text-charcoal text-lg font-bold hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title={s.makeSmaller} aria-label={s.makeSmaller}>−</button>
+    <button data-fig-scale-up class="w-9 h-9 rounded-md bg-white text-charcoal text-lg font-bold hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title={s.makeBigger} aria-label={s.makeBigger}>+</button>
     <span class="text-wood-400 mx-0.5">|</span>
-    <button data-fig-rotate-left class="w-9 h-9 rounded-md bg-white text-charcoal text-lg hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title="Rotate left" aria-label="Rotate left">↺</button>
-    <button data-fig-rotate-right class="w-9 h-9 rounded-md bg-white text-charcoal text-lg hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title="Rotate right" aria-label="Rotate right">↻</button>
+    <button data-fig-rotate-left class="w-9 h-9 rounded-md bg-white text-charcoal text-lg hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title={s.rotateLeft} aria-label={s.rotateLeft}>↺</button>
+    <button data-fig-rotate-right class="w-9 h-9 rounded-md bg-white text-charcoal text-lg hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title={s.rotateRight} aria-label={s.rotateRight}>↻</button>
     <span class="text-wood-400 mx-0.5">|</span>
     <label class="text-xs text-charcoal mr-0.5 flex items-center gap-1">
-      Skin:
+      {s.skinLabel}
       <input
         data-fig-skin-picker
         type="color"
         value="#ffffff"
         class="w-8 h-8 rounded-full border-2 border-wood-300 cursor-pointer p-0 bg-transparent"
         style="-webkit-appearance: none; appearance: none;"
-        title="Choose skin color"
-        aria-label="Choose skin color"
+        title={s.chooseSkin}
+        aria-label={s.chooseSkin}
       />
     </label>
     <span class="text-wood-400 mx-0.5">|</span>
-    <button data-fig-remove class="w-9 h-9 rounded-md bg-red-50 text-red-600 text-lg font-bold hover:bg-red-100 border border-red-300 flex items-center justify-center" title="Remove" aria-label="Remove figure">✕</button>
-    <button data-fig-deselect class="ml-auto text-sm text-charcoal hover:text-forest-600 font-medium" aria-label="Deselect">Done</button>
+    <button data-fig-remove class="w-9 h-9 rounded-md bg-red-50 text-red-600 text-lg font-bold hover:bg-red-100 border border-red-300 flex items-center justify-center" title={s.removeFigure} aria-label={s.removeFigure}>✕</button>
+    <button data-fig-deselect class="ml-auto text-sm text-charcoal hover:text-forest-600 font-medium" aria-label={s.deselect}>{s.done}</button>
   </div>
 
   <!-- Palette -->
@@ -118,7 +158,7 @@ const s = t[lang];
       data-sandtray-search
       type="search"
       placeholder={lang === 'es' ? 'Buscar figuras...' : 'Search figures...'}
-      class="w-full mb-1 px-2 py-1.5 text-xs sm:text-sm bg-white text-charcoal rounded-md border border-wood-300 focus:outline-none focus:ring-2 focus:ring-forest-500"
+      class="w-full mb-1 px-2 py-1.5 text-base bg-white text-charcoal rounded-md border border-wood-300 focus:outline-none focus:ring-2 focus:ring-forest-500"
     />
     <div
       data-sandtray-palette
@@ -190,6 +230,7 @@ const s = t[lang];
     isStepped: boolean = false;
     baseFrustumSize: number = 12;
     steppedFrustumSize: number = 18;
+    reducedMotion: boolean = false;
 
     constructor(canvas: HTMLCanvasElement) {
       this.canvas = canvas;
@@ -245,8 +286,17 @@ const s = t[lang];
 
       this.buildSand();
 
-      // Start the render loop.
+      this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Start the render loop. Pause it entirely while the page is hidden.
       this.renderer.setAnimationLoop(() => this.render());
+      document.addEventListener('visibilitychange', () => {
+        if (document.hidden) {
+          this.renderer.setAnimationLoop(null);
+        } else {
+          this.renderer.setAnimationLoop(() => this.render());
+        }
+      });
     }
 
     initHeightMap(target?: Float32Array): Float32Array {
@@ -462,9 +512,11 @@ const s = t[lang];
     }
 
     render(): void {
-      // Update water shimmer animation time.
-      const mat = this.sand.material as THREE.ShaderMaterial;
-      mat.uniforms.uTime.value = performance.now() * 0.001;
+      // Update water shimmer animation time (frozen under prefers-reduced-motion).
+      if (!this.reducedMotion) {
+        const mat = this.sand.material as THREE.ShaderMaterial;
+        mat.uniforms.uTime.value = performance.now() * 0.001;
+      }
       this.renderer.render(this.scene, this.camera);
     }
 
@@ -625,6 +677,7 @@ const s = t[lang];
   widgets.forEach((root) => {
     const canvas = root.querySelector<HTMLCanvasElement>('[data-sandtray-canvas]');
     if (!canvas) return;
+    const i18n = JSON.parse(root.getAttribute('data-sandtray-i18n') || '{}');
     const renderer = new SandRenderer(canvas);
     renderer.resize();
 
@@ -640,8 +693,7 @@ const s = t[lang];
     modeBtn?.addEventListener('click', () => {
       buildMode = !buildMode;
       if (modeBtn) {
-        const digLabel = root.closest('[data-sandtray-widget]')?.querySelector('[lang]') ? '⛏ Cavar' : '⛏ Dig';
-        modeBtn.textContent = buildMode ? '⛰ Build' : '⛏ Dig';
+        modeBtn.textContent = buildMode ? i18n.buildMode : i18n.digMode;
         modeBtn.classList.toggle('bg-forest-200', buildMode);
         modeBtn.classList.toggle('bg-wood-100', !buildMode);
       }
@@ -665,6 +717,15 @@ const s = t[lang];
     // Pointer state for carving, two-finger twist, right-click orbit, figure drag, and pinch-to-scale.
     const activePointers = new Map<number, { x: number; y: number }>();
     let isCarving = false;
+    // Snapshot taken at pointerdown but only pushed to the undo stack when the
+    // gesture actually carves (not when it turns into an orbit/pinch).
+    let pendingCarveSnapshot: Float32Array | null = null;
+
+    function commitCarveSnapshot(): void {
+      if (!pendingCarveSnapshot) return;
+      pushUndo({ type: 'carve', snapshot: pendingCarveSnapshot });
+      pendingCarveSnapshot = null;
+    }
     let twistStartAngle: number | null = null;
     let twistStartYaw = 0;
     let draggingFigure: PlacedFigure | null = null;
@@ -772,12 +833,13 @@ const s = t[lang];
         return;
       }
       // Single finger down → start carving at the hit point (if any).
-      // Snapshot the height map for undo before first carve stroke.
-      pushUndo({ type: 'carve', snapshot: snapshotHeightMap() });
+      // Snapshot the height map now; it's only pushed to undo on the first carve.
+      pendingCarveSnapshot = snapshotHeightMap();
       isCarving = true;
       canvas.setPointerCapture(e.pointerId);
       queueMicrotask(() => {
         if (isCarving && activePointers.size === 1) {
+          commitCarveSnapshot();
           renderer.carve(w.x, w.z, 0.8, buildMode ? -0.12 : 0.12);
         }
       });
@@ -836,6 +898,7 @@ const s = t[lang];
       if (!isCarving) return;
       const w = canvasToWorld(e);
       if (!w) return;
+      commitCarveSnapshot();
       renderer.carve(w.x, w.z, 0.8, buildMode ? -0.08 : 0.08);
     });
 
@@ -847,6 +910,7 @@ const s = t[lang];
       rightDragFigure = null;
       draggingFigure = null;
       isCarving = false;
+      pendingCarveSnapshot = null;
     });
 
     canvas.addEventListener('pointercancel', (e: PointerEvent) => {
@@ -856,6 +920,7 @@ const s = t[lang];
       rightDragFigure = null;
       draggingFigure = null;
       isCarving = false;
+      pendingCarveSnapshot = null;
     });
 
     canvas.addEventListener('dblclick', (e: MouseEvent) => {
@@ -892,10 +957,22 @@ const s = t[lang];
               fig.group.rotation.y = action.rotationY;
             })
             .catch(() => {});
-        } else if (action.type === 'carve') {
-          // Undo a carve stroke → restore the height map snapshot.
+        } else if (action.type === 'carve' || action.type === 'level') {
+          // Undo a carve stroke or leveling → restore the height map snapshot.
           renderer.heightData.set(action.snapshot);
           renderer.heightTexture.needsUpdate = true;
+        } else if (action.type === 'clear') {
+          // Undo a full clear → restore the height map and re-place every figure.
+          renderer.heightData.set(action.snapshot);
+          renderer.heightTexture.needsUpdate = true;
+          for (const f of action.figures) {
+            figureManager.place(f.figureId, f.modelPath, f.x, f.z, f.scale)
+              .then((fig) => {
+                fig.rotationY = f.rotationY;
+                fig.group.rotation.y = f.rotationY;
+              })
+              .catch(() => {});
+          }
         }
       }
     });
@@ -929,10 +1006,13 @@ const s = t[lang];
     }, { passive: false });
 
     // ----- Undo stack -----
+    type UndoFigureState = { figureId: string; modelPath: string; x: number; z: number; rotationY: number; scale: number };
     type UndoAction =
       | { type: 'place'; instanceId: string }
-      | { type: 'remove'; figureId: string; modelPath: string; x: number; z: number; rotationY: number; scale: number }
-      | { type: 'carve'; snapshot: Float32Array };
+      | { type: 'remove' } & UndoFigureState
+      | { type: 'carve'; snapshot: Float32Array }
+      | { type: 'level'; snapshot: Float32Array }
+      | { type: 'clear'; snapshot: Float32Array; figures: UndoFigureState[] };
     const undoStack: UndoAction[] = [];
     const MAX_UNDO = 30;
 
@@ -987,7 +1067,6 @@ const s = t[lang];
     });
 
     // ----- Witness mode -----
-    const i18n = JSON.parse(root.getAttribute('data-sandtray-i18n') || '{}');
     const witnessBtn = root.querySelector<HTMLButtonElement>('[data-sandtray-witness]');
     witnessBtn?.addEventListener('click', () => {
       const stepped = renderer.toggleStep();
@@ -1005,14 +1084,58 @@ const s = t[lang];
       a.click();
     });
 
-    root.querySelector<HTMLButtonElement>('[data-sandtray-level]')?.addEventListener('click', () => {
-      renderer.level();
-    });
+    // Two-step confirm: first click arms the button with a confirm label; a
+    // second click within 3s runs the action, otherwise the button reverts.
+    function confirmable(btn: HTMLButtonElement | null, label: string, confirmLabel: string, action: () => void): void {
+      if (!btn) return;
+      let timer: number | null = null;
+      btn.addEventListener('click', () => {
+        if (timer !== null) {
+          window.clearTimeout(timer);
+          timer = null;
+          btn.textContent = label;
+          action();
+          return;
+        }
+        btn.textContent = confirmLabel;
+        timer = window.setTimeout(() => {
+          timer = null;
+          btn.textContent = label;
+        }, 3000);
+      });
+    }
 
-    root.querySelector<HTMLButtonElement>('[data-sandtray-clear]')?.addEventListener('click', () => {
-      figureManager.clearAll();
-      renderer.level();
-    });
+    confirmable(
+      root.querySelector<HTMLButtonElement>('[data-sandtray-level]'),
+      i18n.levelSand,
+      i18n.confirmLevel,
+      () => {
+        pushUndo({ type: 'level', snapshot: snapshotHeightMap() });
+        renderer.level();
+      },
+    );
+
+    confirmable(
+      root.querySelector<HTMLButtonElement>('[data-sandtray-clear]'),
+      i18n.clearTray,
+      i18n.confirmClear,
+      () => {
+        pushUndo({
+          type: 'clear',
+          snapshot: snapshotHeightMap(),
+          figures: figureManager.placed.map((f) => ({
+            figureId: f.figureId,
+            modelPath: f.group.userData.modelPath || '',
+            x: f.x,
+            z: f.z,
+            rotationY: f.rotationY,
+            scale: f.scale,
+          })),
+        });
+        figureManager.clearAll();
+        renderer.level();
+      },
+    );
 
     // ----- Sand color picker -----
     root.querySelectorAll<HTMLButtonElement>('[data-sand-color]').forEach((btn) => {
@@ -1050,8 +1173,9 @@ const s = t[lang];
       if (!toolbar) return;
       toolbar.classList.remove('hidden');
       toolbar.classList.add('flex');
-      const name = fig.figureId.replace(/^(q-|shelter-|earth-|skeleton-)/, '').replace(/-/g, ' ');
-      if (toolbarLabel) toolbarLabel.textContent = name.charAt(0).toUpperCase() + name.slice(1) + ':';
+      const paletteBtn = root.querySelector<HTMLButtonElement>(`[data-sandtray-palette-item="${fig.figureId}"]`);
+      const name = paletteBtn?.textContent?.trim() || fig.figureId;
+      if (toolbarLabel) toolbarLabel.textContent = name + ':';
     }
 
     function hideToolbar(): void {
@@ -1060,13 +1184,6 @@ const s = t[lang];
       toolbar.classList.add('hidden');
       toolbar.classList.remove('flex');
     }
-
-    // Show toolbar when a figure is clicked or dragged.
-    // Patch the existing pointerdown figure-hit path to also show toolbar.
-    const origPointerDown = canvas.onpointerdown; // can't patch addEventListener; instead we hook via selectedFigure
-    // We already set selectedFigure in the pointerdown handler when a figure is hit.
-    // Use a MutationObserver-like approach: poll selectedFigure changes via the render loop.
-    // Simpler: just react inside the existing handlers. We'll add explicit showToolbar calls.
 
     // Scale buttons
     root.querySelector('[data-fig-scale-up]')?.addEventListener('click', () => {
