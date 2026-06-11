@@ -11,6 +11,24 @@ const containerClass = fullscreen
   ? "w-full max-w-2xl mx-auto p-8"
   : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
 
+const envOptions = [
+  { id: 'forest', label: { en: 'A forest', es: 'Un bosque' } },
+  { id: 'beach', label: { en: 'A beach', es: 'Una playa' } },
+  { id: 'meadow', label: { en: 'A meadow', es: 'Un prado' } },
+  { id: 'mountain-top', label: { en: 'A mountain top', es: 'La cima de una montaña' } },
+  { id: 'room-i-know', label: { en: 'A room I know', es: 'Un cuarto que conozco' } },
+  { id: 'imagined', label: { en: 'Somewhere imagined', es: 'Un lugar imaginado' } },
+];
+
+const comfortOptions = [
+  { id: 'animal', label: { en: 'An animal', es: 'Un animal' } },
+  { id: 'soft-blanket', label: { en: 'A soft blanket', es: 'Una cobija suave' } },
+  { id: 'music', label: { en: 'Music', es: 'Música' } },
+  { id: 'safe-person', label: { en: 'A person who feels safe', es: 'Una persona que te hace sentir seguridad' } },
+  { id: 'warm-sun', label: { en: 'Warm sun', es: 'Sol cálido' } },
+  { id: 'cool-breeze', label: { en: 'Cool breeze', es: 'Brisa fresca' } },
+];
+
 const t = {
   en: {
     step1Heading: 'Step 1: Where is your calm place?',
@@ -28,25 +46,9 @@ const t = {
     ],
     stayButton: 'Stay here for a moment',
     doneHeading: 'This place is yours.',
-    doneSub: "Rest here as long as you need. When you're ready, you can open your eyes.",
+    doneSub: "Rest here as long as you need. When you're ready, gently bring your attention back to the room.",
     restart: 'Start over',
     withYouTemplate: ' With you: {comforts}.',
-    envOptions: [
-      { en: 'A forest', es: 'A forest' },
-      { en: 'A beach', es: 'A beach' },
-      { en: 'A meadow', es: 'A meadow' },
-      { en: 'A mountain top', es: 'A mountain top' },
-      { en: 'A room I know', es: 'A room I know' },
-      { en: 'Somewhere imagined', es: 'Somewhere imagined' },
-    ],
-    comfortOptions: [
-      { en: 'An animal', es: 'An animal' },
-      { en: 'A soft blanket', es: 'A soft blanket' },
-      { en: 'Music', es: 'Music' },
-      { en: 'A person who feels safe', es: 'A person who feels safe' },
-      { en: 'Warm sun', es: 'Warm sun' },
-      { en: 'Cool breeze', es: 'Cool breeze' },
-    ],
   },
   es: {
     step1Heading: 'Paso 1: ¿Dónde está tu lugar tranquilo?',
@@ -64,25 +66,9 @@ const t = {
     ],
     stayButton: 'Quédate aquí un momento',
     doneHeading: 'Este lugar es tuyo.',
-    doneSub: 'Descansa aquí el tiempo que necesites. Cuando estés listo, puedes abrir los ojos.',
+    doneSub: 'Descansa aquí el tiempo que necesites. Cuando estés listo/a, regresa suavemente tu atención a la habitación.',
     restart: 'Empezar de nuevo',
     withYouTemplate: ' Contigo: {comforts}.',
-    envOptions: [
-      { en: 'A forest', es: 'Un bosque' },
-      { en: 'A beach', es: 'Una playa' },
-      { en: 'A meadow', es: 'Un prado' },
-      { en: 'A mountain top', es: 'La cima de una montaña' },
-      { en: 'A room I know', es: 'Un cuarto que conozco' },
-      { en: 'Somewhere imagined', es: 'Un lugar imaginado' },
-    ],
-    comfortOptions: [
-      { en: 'An animal', es: 'Un animal' },
-      { en: 'A soft blanket', es: 'Una cobija suave' },
-      { en: 'Music', es: 'Música' },
-      { en: 'A person who feels safe', es: 'Una persona que se siente segura' },
-      { en: 'Warm sun', es: 'Sol cálido' },
-      { en: 'Cool breeze', es: 'Brisa fresca' },
-    ],
   },
 };
 
@@ -93,9 +79,9 @@ const s = t[lang];
   <div data-step="env" data-step-active>
     <h2 class="font-serif text-xl text-forest-100 mb-3">{s.step1Heading}</h2>
     <div class="grid grid-cols-2 gap-3">
-      {s.envOptions.map((e) => (
-        <button data-pick-env={e.en} data-label={e[lang]} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
-          {e[lang]}
+      {envOptions.map((e) => (
+        <button data-pick-env={e.id} data-label={e.label[lang]} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
+          {e.label[lang]}
         </button>
       ))}
     </div>
@@ -105,9 +91,9 @@ const s = t[lang];
     <h2 class="font-serif text-xl text-forest-100 mb-3">{s.step2Heading}</h2>
     <p class="text-forest-300 text-sm mb-4">{s.step2Sub}</p>
     <div class="grid grid-cols-2 gap-3 mb-4" data-comfort-options>
-      {s.comfortOptions.map((c) => (
-        <button data-pick-comfort={c.en} data-label={c[lang]} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
-          {c[lang]}
+      {comfortOptions.map((c) => (
+        <button data-pick-comfort={c.id} data-label={c.label[lang]} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
+          {c.label[lang]}
         </button>
       ))}
     </div>

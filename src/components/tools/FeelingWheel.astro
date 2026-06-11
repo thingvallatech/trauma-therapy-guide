@@ -112,14 +112,25 @@ const s = t[lang];
   <h2 class="font-serif text-xl text-forest-100 mb-4">{s.heading}</h2>
   <p class="text-forest-300 text-sm mb-6">{s.intro}</p>
 
-  <div class="grid grid-cols-2 gap-3 mb-6" data-core-grid></div>
+  <div class="grid grid-cols-2 gap-3 mb-6" data-core-grid>
+    {s.core.map((c, i) => (
+      <button
+        data-core-button={String(i)}
+        aria-pressed="false"
+        class="p-4 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
+        style={`background-color: ${c.color}`}
+      >
+        {c.name}
+      </button>
+    ))}
+  </div>
 
   <div data-secondary-wrap class="hidden mb-6">
     <h3 class="text-forest-200 text-sm mb-2" data-secondary-title></h3>
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2" data-secondary-grid></div>
   </div>
 
-  <div data-detail-wrap class="hidden p-4 border border-bronze-500/50 bg-forest-900 rounded-lg">
+  <div data-detail-wrap aria-live="polite" class="hidden p-4 border border-bronze-500/50 bg-forest-900 rounded-lg">
     <h3 data-detail-name class="font-serif text-lg text-bronze-400 mb-2"></h3>
     <p data-detail-desc class="text-forest-200 text-sm mb-3"></p>
     <p class="text-forest-300 text-xs">{s.bodyPrompt}</p>
@@ -137,7 +148,6 @@ const s = t[lang];
     }> = i18n.core || [];
     const moreSpecifically: string = i18n.moreSpecifically || 'More specifically, is it...';
 
-    const coreGrid = root.querySelector<HTMLElement>('[data-core-grid]')!;
     const secondaryWrap = root.querySelector<HTMLElement>('[data-secondary-wrap]')!;
     const secondaryTitle = root.querySelector<HTMLElement>('[data-secondary-title]')!;
     const secondaryGrid = root.querySelector<HTMLElement>('[data-secondary-grid]')!;
@@ -145,12 +155,12 @@ const s = t[lang];
     const detailName = root.querySelector<HTMLElement>('[data-detail-name]')!;
     const detailDesc = root.querySelector<HTMLElement>('[data-detail-desc]')!;
 
-    core.forEach((c) => {
-      const btn = document.createElement('button');
-      btn.textContent = c.name;
-      btn.className = 'p-4 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800';
-      btn.style.backgroundColor = c.color;
+    const coreButtons = root.querySelectorAll<HTMLButtonElement>('[data-core-button]');
+    coreButtons.forEach((btn) => {
+      const c = core[parseInt(btn.getAttribute('data-core-button')!, 10)];
+      if (!c) return;
       btn.addEventListener('click', () => {
+        coreButtons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
         secondaryTitle.textContent = moreSpecifically;
         secondaryGrid.innerHTML = '';
         c.secondary.forEach((s) => {
@@ -167,7 +177,6 @@ const s = t[lang];
         secondaryWrap.classList.remove('hidden');
         detailWrap.classList.add('hidden');
       });
-      coreGrid.appendChild(btn);
     });
   });
 </script>
