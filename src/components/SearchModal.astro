@@ -2,6 +2,7 @@
 // SearchModal.astro — Site-wide search overlay
 // Opens via Cmd/Ctrl+K or the search button in Header
 // Client-side filtering against a page index with locale-appropriate URLs
+import { getCollection } from 'astro:content';
 import { getLangFromUrl, useTranslations, useTranslatedPath, type Lang } from '../i18n';
 
 interface Props {
@@ -13,9 +14,20 @@ const { lang = detectedLang } = Astro.props;
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 
+const tools = await getCollection('tools', (tool) => tool.data.locale === lang);
+const toolPages = tools.map((tool) => ({
+  title: tool.data.name,
+  url: translatePath(`/tools/${tool.slug.replace(/es$/, '')}`),
+  description: tool.data.shortDescription,
+  section: t('search.sectionTools'),
+}));
+
 const pages = [
   { title: t('search.page.home'), url: translatePath('/'), description: t('search.page.homeDesc'), section: t('search.sectionGeneral') },
+  { title: t('search.page.help'), url: translatePath('/help'), description: t('search.page.helpDesc'), section: t('search.sectionGeneral') },
   { title: t('search.page.about'), url: translatePath('/about'), description: t('search.page.aboutDesc'), section: t('search.sectionGeneral') },
+  { title: t('search.page.toolsHub'), url: translatePath('/tools'), description: t('search.page.toolsHubDesc'), section: t('search.sectionTools') },
+  ...toolPages,
   { title: t('search.page.clinicians'), url: translatePath('/clinicians'), description: t('search.page.cliniciansDesc'), section: t('search.sectionClinicians') },
   { title: t('search.page.emdrOverview'), url: translatePath('/clinicians/emdr'), description: t('search.page.emdrOverviewDesc'), section: t('search.sectionClinicians') },
   { title: t('search.page.phase1'), url: translatePath('/clinicians/emdr/phase-1'), description: t('search.page.phase1Desc'), section: t('search.sectionClinicians') },
@@ -94,8 +106,10 @@ const sectionFamilies = t('search.sectionFamilies');
 
   let activeIndex = -1;
   let currentResults = [];
+  let lastFocused = null;
 
   function openSearch() {
+    lastFocused = document.activeElement;
     modal.classList.remove('hidden');
     input.value = '';
     activeIndex = -1;
@@ -110,7 +124,23 @@ const sectionFamilies = t('search.sectionFamilies');
   function closeSearch() {
     modal.classList.add('hidden');
     document.body.style.overflow = '';
+    if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
   }
+
+  modal.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    const focusables = modal.querySelectorAll('input, a[href]');
+    if (!focusables.length) return;
+    const first = focusables[0];
+    const last = focusables[focusables.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
 
   function sectionColor(section) {
     if (section === sectionClinicians) return 'bg-forest-50 text-bronze-600';

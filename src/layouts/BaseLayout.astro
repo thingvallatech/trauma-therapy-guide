@@ -3,17 +3,18 @@ import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import SearchModal from '../components/SearchModal.astro';
-import { getLangFromUrl, useTranslations, getAlternateLocaleUrl, type Lang } from '../i18n';
+import { getLangFromUrl, useTranslations, getAlternateLocaleUrl, hasAlternateLocale, type Lang } from '../i18n';
 
 interface Props {
   title: string;
   description?: string;
   lang?: Lang;
   noAnalytics?: boolean;
+  noIndex?: boolean;
 }
 
 const detectedLang = getLangFromUrl(Astro.url);
-const { title, description, lang = detectedLang, noAnalytics = false } = Astro.props;
+const { title, description, lang = detectedLang, noAnalytics = false, noIndex = false } = Astro.props;
 const t = useTranslations(lang);
 
 const defaultDescription = t('site.defaultDescription');
@@ -21,6 +22,7 @@ const desc = description || defaultDescription;
 const siteName = t('site.name');
 const fullTitle = `${title} | ${siteName}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site || 'https://traumatherapy.guide');
+const hasAlternate = hasAlternateLocale(Astro.url, lang);
 const alternateUrl = new URL(getAlternateLocaleUrl(Astro.url, lang), Astro.site || 'https://traumatherapy.guide');
 const alternateLang = lang === 'en' ? 'es' : 'en';
 
@@ -52,9 +54,14 @@ const structuredData = {
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="canonical" href={canonicalURL.href} />
-    <link rel="alternate" hreflang={lang} href={canonicalURL.href} />
-    <link rel="alternate" hreflang={alternateLang} href={alternateUrl.href} />
-    <link rel="alternate" hreflang="x-default" href={new URL(lang === 'en' ? Astro.url.pathname : getAlternateLocaleUrl(Astro.url, lang), Astro.site || 'https://traumatherapy.guide').href} />
+    {noIndex && <meta name="robots" content="noindex, nofollow" />}
+    {hasAlternate && (
+      <>
+        <link rel="alternate" hreflang={lang} href={canonicalURL.href} />
+        <link rel="alternate" hreflang={alternateLang} href={alternateUrl.href} />
+        <link rel="alternate" hreflang="x-default" href={new URL(lang === 'en' ? Astro.url.pathname : getAlternateLocaleUrl(Astro.url, lang), Astro.site || 'https://traumatherapy.guide').href} />
+      </>
+    )}
     <title>{fullTitle}</title>
 
     <!-- Open Graph -->
@@ -74,8 +81,14 @@ const structuredData = {
     <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
   </head>
   <body class="min-h-screen flex flex-col">
+    <a
+      href="#main-content"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[110] focus:px-4 focus:py-2 focus:bg-cream focus:text-forest-900 focus:rounded-md focus:shadow-lg"
+    >
+      {t('skipToContent')}
+    </a>
     <Header lang={lang} />
-    <main class="flex-1">
+    <main id="main-content" class="flex-1">
       <slot />
     </main>
     <Footer lang={lang} />

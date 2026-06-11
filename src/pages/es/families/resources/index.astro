@@ -9,7 +9,10 @@ const lang: Lang = 'es';
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 
-const allResources = await getCollection('resources');
+let allResources = await getCollection('resources', (r) => r.data.locale === 'es');
+if (allResources.length === 0) {
+  allResources = await getCollection('resources', (r) => r.data.locale !== 'es');
+}
 const resources = allResources
   .filter((r) => r.data.audience === 'family' || r.data.audience === 'both')
   .sort((a, b) => b.data.dateAdded.getTime() - a.data.dateAdded.getTime());

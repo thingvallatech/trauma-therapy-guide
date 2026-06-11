@@ -3,7 +3,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ResourceCard from '../../../components/ResourceCard.astro';
 import { getCollection } from 'astro:content';
 
-const allResources = await getCollection('resources');
+const allResources = await getCollection('resources', (r) => r.data.locale !== 'es');
 const resources = allResources
   .filter((r) => r.data.audience === 'family' || r.data.audience === 'both')
   .sort((a, b) => b.data.dateAdded.getTime() - a.data.dateAdded.getTime());

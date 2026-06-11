@@ -26,6 +26,7 @@ const navItems: NavItem[] = [
     label: t('nav.clinicians'),
     submenu: [
       { href: translatePath('/clinicians'), label: t('nav.overview') },
+      { href: translatePath('/clinicians/emdr'), label: t('footer.emdrProtocol') },
       { href: translatePath('/clinicians/emdr/tools'), label: t('nav.tools') },
       { href: translatePath('/clinicians/resources'), label: t('footer.resourceLibrary') },
     ],
@@ -60,7 +61,8 @@ function isParentActive(item: NavItem): boolean {
   <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center h-16 gap-4">
       <a href={translatePath('/')} class="group flex items-center gap-2 font-serif text-xl font-semibold transition-colors flex-shrink-0">
-        <img src="/logo.png" alt="Trauma Therapy Guide" class="w-9 h-9 rounded-full" />
+        <img src="/logo.png" alt="" class="w-9 h-9 rounded-full" />
+        <span class="sr-only sm:hidden">Trauma Therapy Guide</span>
         <span class="text-bronze-gradient hidden sm:inline">Trauma Therapy Guide</span>
       </a>
 
@@ -68,6 +70,8 @@ function isParentActive(item: NavItem): boolean {
         type="button"
         class="md:hidden p-2 rounded-md text-forest-100 hover:bg-forest-700 transition-colors"
         aria-label={t('nav.toggleMenu')}
+        aria-expanded="false"
+        aria-controls="mobile-menu"
         id="mobile-menu-button"
       >
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -265,7 +269,8 @@ function isParentActive(item: NavItem): boolean {
   const mobileBtn = document.getElementById('mobile-menu-button');
   const mobileMenu = document.getElementById('mobile-menu');
   mobileBtn?.addEventListener('click', () => {
-    mobileMenu?.classList.toggle('hidden');
+    const isOpen = mobileMenu?.classList.toggle('hidden') === false;
+    mobileBtn.setAttribute('aria-expanded', String(isOpen));
   });
 
   // Search triggers
@@ -315,10 +320,10 @@ function isParentActive(item: NavItem): boolean {
   });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
-      closeAllDropdowns();
       const openTrigger = dropdowns
         .map((d) => d.querySelector<HTMLElement>('[data-dropdown-trigger][aria-expanded="true"]'))
         .find(Boolean);
+      closeAllDropdowns();
       openTrigger?.focus();
     }
   });

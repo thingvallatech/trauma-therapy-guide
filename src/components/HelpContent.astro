@@ -40,7 +40,7 @@ const smsBody = lang === 'es' ? 'HOLA' : 'HELLO';
       <h3>{t('help.sectionTextTitle')}</h3>
       <p>{t('help.sectionTextBody')}</p>
       <div class="help-card-actions">
-        <a href={`sms:741741&body=${smsBody}`} class="help-btn primary">
+        <a href={`sms:741741?&body=${smsBody}`} class="help-btn primary">
           {t('help.textBtn')} {smsBody} → 741741
         </a>
       </div>

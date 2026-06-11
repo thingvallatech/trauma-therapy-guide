@@ -49,12 +49,13 @@ const typeIcons: Record<string, { key: TranslationKey; path: string }> = {
 
 const icon = typeIcons[type] || typeIcons.link;
 const label = t(icon.key);
+
+const Tag = href ? 'a' : 'div';
+const linkAttrs = href ? { href, target: '_blank', rel: 'noopener noreferrer' } : {};
 ---
 
-<a
-  href={href}
-  target="_blank"
-  rel="noopener noreferrer"
+<Tag
+  {...linkAttrs}
   class="block bg-forest-800 border border-forest-600 rounded-lg p-6 hover:border-forest-500 hover:bg-forest-700 transition-all duration-200 group"
   data-tags={JSON.stringify(tags)}
   data-type={type}
@@ -101,4 +102,4 @@ const label = t(icon.key);
       </div>
     </div>
   </div>
-</a>
+</Tag>

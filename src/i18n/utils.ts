@@ -21,12 +21,29 @@ export function useTranslatedPath(lang: Lang) {
   };
 }
 
+// English-only routes with no Spanish counterpart yet. The locale switcher
+// falls back to the Spanish homepage for these, and hreflang alternates are
+// suppressed so we never advertise URLs that 404.
+const EN_ONLY_ROUTES: RegExp[] = [
+  /^\/admin\//,
+  /^\/clinicians\/emdr\/intake-form\/?$/,
+  /^\/clinicians\/emdr\/print-package\/?$/,
+  /^\/clinicians\/emdr\/phase-\d+-scripts\/?$/,
+  /^\/clinicians\/emdr\/phase-2-resource-/,
+];
+
+export function hasAlternateLocale(url: URL, currentLang: Lang): boolean {
+  if (currentLang !== defaultLang) return true;
+  return !EN_ONLY_ROUTES.some((re) => re.test(url.pathname));
+}
+
 export function getAlternateLocaleUrl(url: URL, currentLang: Lang): string {
   const pathname = url.pathname;
   if (currentLang === defaultLang) {
     // Currently English, switch to Spanish: prefix with /es
+    if (!hasAlternateLocale(url, currentLang)) return '/es/';
     return `/es${pathname}`;
   }
   // Currently Spanish, switch to English: remove /es prefix
-  return pathname.replace(/^\/es/, '') || '/';
+  return pathname.replace(/^\/es(\/|$)/, '/') || '/';
 }

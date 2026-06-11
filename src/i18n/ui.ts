@@ -54,7 +54,12 @@ export const ui = {
     'search.sectionGeneral': 'General',
     'search.sectionClinicians': 'Clinicians',
     'search.sectionFamilies': 'Families',
+    'search.sectionTools': 'Tools',
     // Search page entries
+    'search.page.help': 'Crisis Help & Support',
+    'search.page.helpDesc': 'Crisis lines available now: 988, Crisis Text Line 741741, RAINN',
+    'search.page.toolsHub': 'Interactive EMDR Tools',
+    'search.page.toolsHubDesc': 'Bilateral stimulation, assessment scales, and regulation exercises',
     'search.page.home': 'Home',
     'search.page.homeDesc': 'Free resource for trauma therapists and families',
     'search.page.about': 'About',
@@ -170,6 +175,7 @@ export const ui = {
 
     // Back to top
     'backToTop': 'Back to top',
+    'skipToContent': 'Skip to content',
 
     // Homepage — Calm Front Door
     'home.kicker': 'A free guide · for clinicians & families',
@@ -184,6 +190,7 @@ export const ui = {
     'home.famTitle': 'What is EMDR therapy?',
     'home.famDo': 'What to expect, how to help.',
     'home.newHeading': 'Recently added',
+    'home.newViewAll': 'View the resource library',
     'home.printNotice': 'Open the EMDR section to print clinical materials.',
     'home.printNoticeLink': 'Browse EMDR phases',
     'home.tag.book': 'Book',
@@ -204,6 +211,9 @@ export const ui = {
     'crisis.printFooter': 'If in crisis: 988 · Text 741741 · Call 911',
     'crisis.mobileTitle': 'In crisis right now?',
     'crisis.mobileNeedHelp': 'Need help right now?',
+    'crisis.ariaCall988': 'Call 988',
+    'crisis.ariaText741741': 'Text HELLO to 741741',
+    'crisis.ariaCall911': 'Call 911',
 
     // Homepage — legacy keys kept for back-compat
     'home.badge': 'Free & Evidence-Based',
@@ -378,7 +388,12 @@ export const ui = {
     'search.sectionGeneral': 'General',
     'search.sectionClinicians': 'Profesionales',
     'search.sectionFamilies': 'Familias',
+    'search.sectionTools': 'Herramientas',
     // Search page entries
+    'search.page.help': 'Ayuda en crisis',
+    'search.page.helpDesc': 'Líneas de crisis disponibles ahora: 988, línea de texto 741741, RAINN',
+    'search.page.toolsHub': 'Herramientas Interactivas de EMDR',
+    'search.page.toolsHubDesc': 'Estimulación bilateral, escalas de evaluación y ejercicios de regulación',
     'search.page.home': 'Inicio',
     'search.page.homeDesc': 'Recurso gratuito para terapeutas de trauma y familias',
     'search.page.about': 'Acerca de',
@@ -494,6 +509,7 @@ export const ui = {
 
     // Back to top
     'backToTop': 'Volver arriba',
+    'skipToContent': 'Saltar al contenido',
 
     // Homepage — Calm Front Door
     'home.kicker': 'Una guía gratuita · para profesionales y familias',
@@ -508,6 +524,7 @@ export const ui = {
     'home.famTitle': '¿Qué es la terapia EMDR?',
     'home.famDo': 'Qué esperar, cómo apoyar.',
     'home.newHeading': 'Recientemente añadido',
+    'home.newViewAll': 'Ver la biblioteca de recursos',
     'home.printNotice': 'Abre la sección EMDR para imprimir materiales clínicos.',
     'home.printNoticeLink': 'Ver fases EMDR',
     'home.tag.book': 'Libro',
@@ -528,6 +545,9 @@ export const ui = {
     'crisis.printFooter': 'En crisis: 988 · Envía 741741 · Llama 911',
     'crisis.mobileTitle': '¿En crisis ahora?',
     'crisis.mobileNeedHelp': '¿Necesitas ayuda ahora?',
+    'crisis.ariaCall988': 'Llamar al 988',
+    'crisis.ariaText741741': 'Enviar HOLA al 741741',
+    'crisis.ariaCall911': 'Llamar al 911',
 
     // Homepage — legacy keys kept for back-compat
     'home.badge': 'Gratuito y Basado en Evidencia',

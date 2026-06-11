@@ -9,13 +9,13 @@ const { lang } = Astro.props;
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 const smsBody = lang === 'es' ? 'HOLA' : 'HELLO';
-const smsHref = `sms:741741&body=${smsBody}`;
-const aboutHref = translatePath('/about');
+const smsHref = `sms:741741?&body=${smsBody}`;
+const helpHref = translatePath('/help');
 ---
 
 <section
   class="crisis-strip"
-  id="crisis-resources"
+  id="crisis-strip"
   role="region"
   aria-label={t('crisis.regionLabel')}
 >
@@ -29,21 +29,21 @@ const aboutHref = translatePath('/about');
       <b>{t('crisis.inline')}</b>
       <span>{t('crisis.numbers')}</span>
     </div>
-    <a class="crisis-strip-cta" href={aboutHref}>{t('crisis.cta')} ›</a>
+    <a class="crisis-strip-cta" href={helpHref}>{t('crisis.cta')} ›</a>
   </div>
 
   <div class="crisis-strip-mobile">
     <p class="crisis-strip-mobile-title"><b>{t('crisis.mobileTitle')}</b></p>
     <div class="crisis-strip-mobile-row">
-      <a href="tel:988" aria-label="Call 988">
+      <a href="tel:988" aria-label={t('crisis.ariaCall988')}>
         <span aria-hidden="true">📞</span>
         <span>988</span>
       </a>
-      <a href={smsHref} aria-label={`Text ${smsBody} to 741741`}>
+      <a href={smsHref} aria-label={t('crisis.ariaText741741')}>
         <span aria-hidden="true">💬</span>
         <span>741741</span>
       </a>
-      <a href="tel:911" aria-label="Call 911">
+      <a href="tel:911" aria-label={t('crisis.ariaCall911')}>
         <span aria-hidden="true">🚨</span>
         <span>911</span>
       </a>

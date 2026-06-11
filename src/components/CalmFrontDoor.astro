@@ -70,16 +70,24 @@ const tagKeyFor = (type: CollectionEntry<'resources'>['data']['type']) =>
     <section class="cfd-new" aria-labelledby="cfd-new-h">
       <h2 id="cfd-new-h" class="cfd-new-heading">{t('home.newHeading')}</h2>
       <ol class="cfd-new-list">
-        {recentlyAdded.map((r) => (
-          <li class="cfd-new-row">
-            <time datetime={r.data.dateAdded.toISOString().slice(0, 10)}>
-              {fmtDate(r.data.dateAdded)}
-            </time>
-            <div class="cfd-new-title">{r.data.title}</div>
-            <span class="cfd-new-tag">{t(tagKeyFor(r.data.type))}</span>
-          </li>
-        ))}
+        {recentlyAdded.map((r) => {
+          const external = r.data.fileUrl || r.data.url;
+          const libraryHref = translatePath(r.data.audience === 'family' ? '/families/resources' : '/clinicians/resources');
+          const href = external || libraryHref;
+          return (
+            <li class="cfd-new-row">
+              <time datetime={r.data.dateAdded.toISOString().slice(0, 10)}>
+                {fmtDate(r.data.dateAdded)}
+              </time>
+              <div class="cfd-new-title">
+                <a href={href} {...(external ? { target: '_blank', rel: 'noopener' } : {})}>{r.data.title}</a>
+              </div>
+              <span class="cfd-new-tag">{t(tagKeyFor(r.data.type))}</span>
+            </li>
+          );
+        })}
       </ol>
+      <a class="cfd-new-all" href={translatePath('/clinicians/resources')}>{t('home.newViewAll')} →</a>
     </section>
   )}
 
@@ -232,6 +240,26 @@ const tagKeyFor = (type: CollectionEntry<'resources'>['data']['type']) =>
   }
   .cfd-new-title {
     color: var(--color-ink);
+  }
+  .cfd-new-title a {
+    color: inherit;
+    text-decoration: none;
+  }
+  .cfd-new-title a:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .cfd-new-all {
+    display: inline-block;
+    margin-top: 14px;
+    font: 500 12px/1 var(--font-mono);
+    letter-spacing: 0.04em;
+    color: var(--color-copper);
+    text-decoration: none;
+  }
+  .cfd-new-all:hover {
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
   .cfd-new-tag {
     color: var(--color-copper);
