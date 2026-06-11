@@ -42,6 +42,7 @@ const t = {
     sandWhite: 'White sand',
     sandDark: 'Dark sand',
     sandGold: 'Gold sand',
+    keyboardHelp: 'Keyboard controls: focus the canvas, then press Enter or Space to place a figure chosen from the palette at the center of the tray. With a figure selected, use the arrow keys to move it (hold Shift for larger steps), plus and minus to resize it, the square bracket keys to rotate it, Delete or Backspace to remove it, and Escape to deselect.',
   },
   es: {
     canvasAriaLabel: 'Lienzo de bandeja de arena',
@@ -71,6 +72,7 @@ const t = {
     sandWhite: 'Arena blanca',
     sandDark: 'Arena oscura',
     sandGold: 'Arena dorada',
+    keyboardHelp: 'Controles de teclado: enfoca el lienzo y pulsa Enter o Espacio para colocar la figura elegida de la paleta en el centro de la bandeja. Con una figura seleccionada, usa las flechas para moverla (mantén Mayús para pasos más grandes), más y menos para cambiar su tamaño, las teclas de corchetes para girarla, Suprimir o Retroceso para quitarla y Escape para deseleccionar.',
   },
 };
 const s = t[lang];
@@ -96,69 +98,66 @@ const s = t[lang];
     <div data-sandtray-stage class="relative w-full" style="height: clamp(16rem, 50vw, 28rem);">
       <canvas
         data-sandtray-canvas
-        class="absolute inset-0 block w-full h-full rounded-md touch-none select-none"
-        style="
-          box-shadow:
-            0 0 0 2px #3a2611 inset,
-            0 6px 14px rgba(0,0,0,0.35) inset,
-            0 -2px 6px rgba(255,235,200,0.18) inset;
-        "
+        tabindex="0"
+        class="absolute inset-0 block w-full h-full rounded-md touch-none select-none shadow-[0_0_0_2px_#3a2611_inset,0_6px_14px_rgba(0,0,0,0.35)_inset,0_-2px_6px_rgba(255,235,200,0.18)_inset] focus:outline-none focus:ring-2 focus:ring-bronze-500"
         aria-label={s.canvasAriaLabel}
+        aria-describedby="sandtray-kbd-help"
       ></canvas>
     </div>
+    <p id="sandtray-kbd-help" class="sr-only">{s.keyboardHelp}</p>
 
     <!-- Controls bar: right below the sand, inside the wood frame -->
     <div class="mt-3 flex flex-wrap gap-2 items-center">
-      <button data-sandtray-mode class="px-3 py-1.5 rounded-md bg-wood-100 text-charcoal text-sm font-medium hover:bg-wood-200 border border-wood-300">{s.digMode}</button>
-      <button data-sandtray-witness class="px-3 py-1.5 rounded-md bg-wood-100 text-charcoal text-sm font-medium hover:bg-wood-200 border border-wood-300">{s.stepBack}</button>
-      <button data-sandtray-capture class="px-3 py-1.5 rounded-md bg-wood-100 text-charcoal text-sm font-medium hover:bg-wood-200 border border-wood-300">{s.saveImage}</button>
-      <button data-sandtray-level class="px-3 py-1.5 rounded-md bg-wood-100 text-charcoal text-sm font-medium hover:bg-wood-200 border border-wood-300">{s.levelSand}</button>
-      <button data-sandtray-clear class="px-3 py-1.5 rounded-md bg-wood-100 text-charcoal text-sm font-medium hover:bg-wood-200 border border-wood-300">{s.clearTray}</button>
-      <span class="text-xs text-wood-200 ml-auto mr-1">{s.sandLabel}</span>
-      <button data-sand-color="0xe2ceb1" class="w-10 h-10 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #e2ceb1;" aria-label={s.sandTan} title={s.sandTan}></button>
-      <button data-sand-color="0x8fb4c9" class="w-10 h-10 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #8fb4c9;" aria-label={s.sandBlue} title={s.sandBlue}></button>
-      <button data-sand-color="0xf0ebe3" class="w-10 h-10 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #f0ebe3;" aria-label={s.sandWhite} title={s.sandWhite}></button>
-      <button data-sand-color="0x6b5b4f" class="w-10 h-10 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #6b5b4f;" aria-label={s.sandDark} title={s.sandDark}></button>
-      <button data-sand-color="0xc9a96e" class="w-10 h-10 rounded-full border-2 border-wood-300 ring-2 ring-transparent hover:ring-wood-100" style="background: #c9a96e;" aria-label={s.sandGold} title={s.sandGold}></button>
+      <button data-sandtray-mode class="px-3 py-1.5 rounded-md bg-forest-700 text-forest-100 text-sm font-medium hover:bg-forest-600 border border-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.digMode}</button>
+      <button data-sandtray-witness class="px-3 py-1.5 rounded-md bg-forest-700 text-forest-100 text-sm font-medium hover:bg-forest-600 border border-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.stepBack}</button>
+      <button data-sandtray-capture class="px-3 py-1.5 rounded-md bg-forest-700 text-forest-100 text-sm font-medium hover:bg-forest-600 border border-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.saveImage}</button>
+      <button data-sandtray-level class="px-3 py-1.5 rounded-md bg-forest-700 text-forest-100 text-sm font-medium hover:bg-forest-600 border border-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.levelSand}</button>
+      <button data-sandtray-clear class="px-3 py-1.5 rounded-md bg-forest-700 text-forest-100 text-sm font-medium hover:bg-forest-600 border border-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.clearTray}</button>
+      <span class="text-xs text-forest-100 ml-auto mr-1">{s.sandLabel}</span>
+      <button data-sand-color="0xe2ceb1" class="w-10 h-10 rounded-full border-2 border-forest-600 ring-2 ring-transparent hover:ring-bronze-400 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background: #e2ceb1;" aria-label={s.sandTan} title={s.sandTan}></button>
+      <button data-sand-color="0x8fb4c9" class="w-10 h-10 rounded-full border-2 border-forest-600 ring-2 ring-transparent hover:ring-bronze-400 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background: #8fb4c9;" aria-label={s.sandBlue} title={s.sandBlue}></button>
+      <button data-sand-color="0xf0ebe3" class="w-10 h-10 rounded-full border-2 border-forest-600 ring-2 ring-transparent hover:ring-bronze-400 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background: #f0ebe3;" aria-label={s.sandWhite} title={s.sandWhite}></button>
+      <button data-sand-color="0x6b5b4f" class="w-10 h-10 rounded-full border-2 border-forest-600 ring-2 ring-transparent hover:ring-bronze-400 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background: #6b5b4f;" aria-label={s.sandDark} title={s.sandDark}></button>
+      <button data-sand-color="0xc9a96e" class="w-10 h-10 rounded-full border-2 border-forest-600 ring-2 ring-transparent hover:ring-bronze-400 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background: #c9a96e;" aria-label={s.sandGold} title={s.sandGold}></button>
     </div>
   </div>
 
   <!-- Figure toolbar: appears when a figure is selected -->
   <div
     data-sandtray-figure-toolbar
-    class="mt-2 hidden flex-wrap gap-1.5 items-center bg-wood-50 rounded-lg border border-wood-300 px-3 py-2"
+    class="mt-2 hidden flex-wrap gap-1.5 items-center bg-forest-800 rounded-lg border border-forest-600 px-3 py-2"
   >
-    <span data-figure-toolbar-label class="text-sm text-charcoal mr-2 font-semibold">{s.selected}</span>
-    <button data-fig-scale-down class="w-9 h-9 rounded-md bg-white text-charcoal text-lg font-bold hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title={s.makeSmaller} aria-label={s.makeSmaller}>−</button>
-    <button data-fig-scale-up class="w-9 h-9 rounded-md bg-white text-charcoal text-lg font-bold hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title={s.makeBigger} aria-label={s.makeBigger}>+</button>
-    <span class="text-wood-400 mx-0.5">|</span>
-    <button data-fig-rotate-left class="w-9 h-9 rounded-md bg-white text-charcoal text-lg hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title={s.rotateLeft} aria-label={s.rotateLeft}>↺</button>
-    <button data-fig-rotate-right class="w-9 h-9 rounded-md bg-white text-charcoal text-lg hover:bg-wood-100 border border-wood-300 flex items-center justify-center" title={s.rotateRight} aria-label={s.rotateRight}>↻</button>
-    <span class="text-wood-400 mx-0.5">|</span>
-    <label class="text-xs text-charcoal mr-0.5 flex items-center gap-1">
+    <span data-figure-toolbar-label class="text-sm text-forest-100 mr-2 font-semibold">{s.selected}</span>
+    <button data-fig-scale-down class="w-9 h-9 rounded-md bg-forest-700 text-forest-100 text-lg font-bold hover:bg-forest-600 border border-forest-600 transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" title={s.makeSmaller} aria-label={s.makeSmaller}>−</button>
+    <button data-fig-scale-up class="w-9 h-9 rounded-md bg-forest-700 text-forest-100 text-lg font-bold hover:bg-forest-600 border border-forest-600 transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" title={s.makeBigger} aria-label={s.makeBigger}>+</button>
+    <span class="text-forest-500 mx-0.5">|</span>
+    <button data-fig-rotate-left class="w-9 h-9 rounded-md bg-forest-700 text-forest-100 text-lg hover:bg-forest-600 border border-forest-600 transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" title={s.rotateLeft} aria-label={s.rotateLeft}>↺</button>
+    <button data-fig-rotate-right class="w-9 h-9 rounded-md bg-forest-700 text-forest-100 text-lg hover:bg-forest-600 border border-forest-600 transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" title={s.rotateRight} aria-label={s.rotateRight}>↻</button>
+    <span class="text-forest-500 mx-0.5">|</span>
+    <label class="text-xs text-forest-200 mr-0.5 flex items-center gap-1">
       {s.skinLabel}
       <input
         data-fig-skin-picker
         type="color"
         value="#ffffff"
-        class="w-8 h-8 rounded-full border-2 border-wood-300 cursor-pointer p-0 bg-transparent"
+        class="w-8 h-8 rounded-full border-2 border-forest-600 cursor-pointer p-0 bg-transparent focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
         style="-webkit-appearance: none; appearance: none;"
         title={s.chooseSkin}
         aria-label={s.chooseSkin}
       />
     </label>
-    <span class="text-wood-400 mx-0.5">|</span>
-    <button data-fig-remove class="w-9 h-9 rounded-md bg-red-50 text-red-600 text-lg font-bold hover:bg-red-100 border border-red-300 flex items-center justify-center" title={s.removeFigure} aria-label={s.removeFigure}>✕</button>
-    <button data-fig-deselect class="ml-auto text-sm text-charcoal hover:text-forest-600 font-medium" aria-label={s.deselect}>{s.done}</button>
+    <span class="text-forest-500 mx-0.5">|</span>
+    <button data-fig-remove class="w-9 h-9 rounded-md bg-red-900/30 text-red-300 text-lg font-bold hover:bg-red-900/50 border border-red-500/50 transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" title={s.removeFigure} aria-label={s.removeFigure}>✕</button>
+    <button data-fig-deselect class="ml-auto text-sm text-forest-300 hover:text-forest-100 font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" aria-label={s.deselect}>{s.done}</button>
   </div>
 
   <!-- Palette -->
-  <div class="mt-3 flex flex-col gap-2 p-3 bg-cream rounded-lg border border-wood-200">
+  <div class="mt-3 flex flex-col gap-2 p-3 bg-forest-800 rounded-lg border border-forest-600">
     <input
       data-sandtray-search
       type="search"
       placeholder={lang === 'es' ? 'Buscar figuras...' : 'Search figures...'}
-      class="w-full mb-1 px-2 py-1.5 text-base bg-white text-charcoal rounded-md border border-wood-300 focus:outline-none focus:ring-2 focus:ring-forest-500"
+      class="w-full mb-1 px-2 py-1.5 text-base bg-forest-700 text-forest-100 placeholder:text-forest-400 rounded-md border border-forest-600 focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
     />
     <div
       data-sandtray-palette
@@ -171,7 +170,7 @@ const s = t[lang];
         if (figs.length === 0) return null;
         return (
           <div class="mb-2">
-            <div class="text-xs font-semibold text-charcoal uppercase tracking-wide">
+            <div class="text-xs font-semibold text-forest-300 uppercase tracking-wide">
               {cat.label[lang]}
             </div>
             <div class="flex gap-1.5 mt-1 flex-wrap">
@@ -181,7 +180,7 @@ const s = t[lang];
                   data-sandtray-palette-item={f.id}
                   data-model-path={f.modelPath}
                   data-default-scale={f.defaultScale}
-                  class="px-2 py-1 sm:px-2.5 sm:py-1.5 bg-white text-charcoal rounded-md border border-wood-300 text-xs sm:text-sm font-medium hover:bg-wood-100 hover:border-wood-400"
+                  class="px-2 py-1 sm:px-2.5 sm:py-1.5 bg-forest-700 text-forest-100 rounded-md border border-forest-600 text-xs sm:text-sm font-medium hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
                   aria-label={f.alt[lang]}
                   aria-pressed="false"
                 >
@@ -694,8 +693,10 @@ const s = t[lang];
       buildMode = !buildMode;
       if (modeBtn) {
         modeBtn.textContent = buildMode ? i18n.buildMode : i18n.digMode;
-        modeBtn.classList.toggle('bg-forest-200', buildMode);
-        modeBtn.classList.toggle('bg-wood-100', !buildMode);
+        modeBtn.classList.toggle('bg-bronze-500', buildMode);
+        modeBtn.classList.toggle('text-forest-900', buildMode);
+        modeBtn.classList.toggle('bg-forest-700', !buildMode);
+        modeBtn.classList.toggle('text-forest-100', !buildMode);
       }
     });
 
@@ -1035,7 +1036,8 @@ const s = t[lang];
     function setPendingFigure(el: HTMLButtonElement | null): void {
       root.querySelectorAll<HTMLButtonElement>('[data-sandtray-palette-item]').forEach((b) => {
         b.setAttribute('aria-pressed', 'false');
-        b.classList.remove('bg-forest-500', 'text-white');
+        b.classList.remove('bg-bronze-500', 'text-forest-900');
+        b.classList.add('bg-forest-700', 'text-forest-100');
       });
       if (el) {
         const figureId = el.dataset.sandtrayPaletteItem;
@@ -1047,7 +1049,8 @@ const s = t[lang];
           return;
         }
         el.setAttribute('aria-pressed', 'true');
-        el.classList.add('bg-forest-500', 'text-white');
+        el.classList.remove('bg-forest-700', 'text-forest-100');
+        el.classList.add('bg-bronze-500', 'text-forest-900');
         pendingFigure = {
           figureId,
           modelPath,
@@ -1144,7 +1147,7 @@ const s = t[lang];
         renderer.setSandColor(hex);
         // Highlight selected swatch.
         root.querySelectorAll<HTMLButtonElement>('[data-sand-color]').forEach((b) => {
-          b.classList.toggle('ring-forest-400', b === btn);
+          b.classList.toggle('ring-bronze-500', b === btn);
           b.classList.toggle('ring-transparent', b !== btn);
         });
       });
@@ -1211,8 +1214,9 @@ const s = t[lang];
       selectedFigure.group.rotation.y = selectedFigure.rotationY;
     });
 
-    // Remove button
-    root.querySelector('[data-fig-remove]')?.addEventListener('click', () => {
+    // Remove the selected figure through the undo stack. Shared by the
+    // toolbar remove button and the Delete/Backspace keyboard shortcut.
+    function removeSelectedFigure(): void {
       if (!selectedFigure) return;
       pushUndo({
         type: 'remove',
@@ -1225,7 +1229,10 @@ const s = t[lang];
       });
       figureManager.remove(selectedFigure.instanceId);
       hideToolbar();
-    });
+    }
+
+    // Remove button
+    root.querySelector('[data-fig-remove]')?.addEventListener('click', removeSelectedFigure);
 
     // Color picker — smart skin tinting:
     // Quaternius models have named materials (Skin, Face, Hair, Shirt, etc.)
@@ -1303,6 +1310,96 @@ const s = t[lang];
           hideToolbar();
         }
       });
+    });
+
+    // ----- Keyboard operability (canvas has tabindex="0") -----
+    // Enter/Space place a pending palette figure at the tray centre.
+    // With a placed figure selected: arrows nudge, +/- scale, [/] rotate,
+    // Delete/Backspace removes (via the undo-aware path), Escape deselects.
+    function nudgeSelectedFigure(dx: number, dz: number): void {
+      if (!selectedFigure) return;
+      const halfW = SandRenderer.TRAY_W / 2;
+      const halfH = SandRenderer.TRAY_H / 2;
+      selectedFigure.x = Math.max(-halfW, Math.min(halfW, selectedFigure.x + dx));
+      selectedFigure.z = Math.max(-halfH, Math.min(halfH, selectedFigure.z + dz));
+      const sandY = renderer.sampleHeight(selectedFigure.x, selectedFigure.z);
+      selectedFigure.group.position.set(selectedFigure.x, sandY, selectedFigure.z);
+    }
+
+    canvas.addEventListener('keydown', (e: KeyboardEvent) => {
+      // Leave browser/global shortcuts (e.g. Cmd/Ctrl+Z undo) untouched.
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+      // Place the pending palette figure at the centre of the tray.
+      if ((e.key === 'Enter' || e.key === ' ') && pendingFigure) {
+        e.preventDefault();
+        const pf = pendingFigure;
+        figureManager.place(pf.figureId, pf.modelPath, 0, 0, pf.scale)
+          .then((fig) => {
+            pushUndo({ type: 'place', instanceId: fig.instanceId });
+            selectedFigure = fig;
+            showToolbar(fig);
+          })
+          .catch((err) => console.error('[sandtray] place failed:', err));
+        setPendingFigure(null);
+        return;
+      }
+
+      if (e.key === 'Escape') {
+        if (pendingFigure) {
+          e.preventDefault();
+          setPendingFigure(null);
+          return;
+        }
+        if (selectedFigure) {
+          e.preventDefault();
+          hideToolbar();
+        }
+        return;
+      }
+
+      if (!selectedFigure) return;
+      const fig = selectedFigure;
+      // ~0.05 of the tray's short dimension per press; Shift for larger steps.
+      const step = (e.shiftKey ? 0.15 : 0.05) * SandRenderer.TRAY_H;
+
+      switch (e.key) {
+        case 'ArrowLeft':  e.preventDefault(); nudgeSelectedFigure(-step, 0); break;
+        case 'ArrowRight': e.preventDefault(); nudgeSelectedFigure(step, 0); break;
+        case 'ArrowUp':    e.preventDefault(); nudgeSelectedFigure(0, -step); break;
+        case 'ArrowDown':  e.preventDefault(); nudgeSelectedFigure(0, step); break;
+        case '+':
+        case '=': {
+          e.preventDefault();
+          const s = Math.min(5.0, fig.scale + 0.15);
+          fig.scale = s;
+          fig.group.scale.setScalar(s);
+          break;
+        }
+        case '-':
+        case '_': {
+          e.preventDefault();
+          const s = Math.max(0.2, fig.scale - 0.15);
+          fig.scale = s;
+          fig.group.scale.setScalar(s);
+          break;
+        }
+        case '[':
+          e.preventDefault();
+          fig.rotationY -= Math.PI / 8;
+          fig.group.rotation.y = fig.rotationY;
+          break;
+        case ']':
+          e.preventDefault();
+          fig.rotationY += Math.PI / 8;
+          fig.group.rotation.y = fig.rotationY;
+          break;
+        case 'Delete':
+        case 'Backspace':
+          e.preventDefault();
+          removeSelectedFigure();
+          break;
+      }
     });
   });
 </script>

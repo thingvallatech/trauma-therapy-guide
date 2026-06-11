@@ -9,7 +9,7 @@
  * add an entry below, run `npm run build` to validate.
  */
 
-export type SandtrayCategory = 'people' | 'animals' | 'plants' | 'earth' | 'shelter';
+export type SandtrayCategory = 'people' | 'animals' | 'plants' | 'earth' | 'home' | 'shelter';
 
 export interface SandtrayFigure {
   /** Stable id used as data key. Kebab-case. */
@@ -34,7 +34,8 @@ export const sandtrayCategories: SandtrayCategoryDef[] = [
   { key: 'people',  label: { en: 'People',            es: 'Personas' } },
   { key: 'animals', label: { en: 'Animals',           es: 'Animales' } },
   { key: 'plants',  label: { en: 'Trees & Plants',    es: 'Árboles y plantas' } },
-  { key: 'earth',   label: { en: 'Earth & Water',     es: 'Tierra y agua' } },
+  { key: 'earth',   label: { en: 'Objects',           es: 'Objetos' } },
+  { key: 'home',    label: { en: 'Home',              es: 'Hogar' } },
   { key: 'shelter', label: { en: 'Shelter & Symbols', es: 'Refugio y símbolos' } },
 ];
 
@@ -101,7 +102,7 @@ export const sandtrayFigures: SandtrayFigure[] = [
     id: 'shelter-doorway',
     modelPath: '/sandtray/models/wall_doorway.glb',
     alt: { en: 'Doorway', es: 'Puerta' },
-    category: 'shelter',
+    category: 'home',
     defaultScale: 1.0,
     source: 'KayKit by Kay Lousberg (CC0)',
   },
@@ -167,7 +168,7 @@ export const sandtrayFigures: SandtrayFigure[] = [
     id: 'shelter-bed',
     modelPath: '/sandtray/models/bed_decorated.gltf.glb',
     alt: { en: 'Bed', es: 'Cama' },
-    category: 'shelter',
+    category: 'home',
     defaultScale: 1.0,
     source: 'KayKit by Kay Lousberg (CC0)',
   },
@@ -175,7 +176,7 @@ export const sandtrayFigures: SandtrayFigure[] = [
     id: 'shelter-chair',
     modelPath: '/sandtray/models/chair.gltf.glb',
     alt: { en: 'Chair', es: 'Silla' },
-    category: 'shelter',
+    category: 'home',
     defaultScale: 1.0,
     source: 'KayKit by Kay Lousberg (CC0)',
   },
@@ -183,7 +184,7 @@ export const sandtrayFigures: SandtrayFigure[] = [
     id: 'shelter-table',
     modelPath: '/sandtray/models/table_long.gltf.glb',
     alt: { en: 'Table', es: 'Mesa' },
-    category: 'shelter',
+    category: 'home',
     defaultScale: 1.0,
     source: 'KayKit by Kay Lousberg (CC0)',
   },
@@ -272,13 +273,13 @@ export const sandtrayFigures: SandtrayFigure[] = [
   { id: 'q-casual-f',   modelPath: '/sandtray/models/quat-Casual_Female.gltf',       alt: { en: 'Girl',      es: 'Chica' },       category: 'people', defaultScale: 1.0, source: 'Quaternius (CC0)' },
   { id: 'q-casual-m',   modelPath: '/sandtray/models/quat-Casual_Male.gltf',         alt: { en: 'Boy',       es: 'Chico' },       category: 'people', defaultScale: 1.0, source: 'Quaternius (CC0)' },
   { id: 'q-casual2-f',  modelPath: '/sandtray/models/quat-Casual2_Female.gltf',      alt: { en: 'Woman',     es: 'Mujer' },       category: 'people', defaultScale: 1.0, source: 'Quaternius (CC0)' },
-  { id: 'q-doctor-f',   modelPath: '/sandtray/models/quat-Doctor_Female_Young.gltf',  alt: { en: 'Doctor',    es: 'Doctora' },     category: 'people', defaultScale: 1.0, source: 'Quaternius (CC0)' },
-  { id: 'q-doctor-m',   modelPath: '/sandtray/models/quat-Doctor_Male_Young.gltf',    alt: { en: 'Doctor',    es: 'Doctor' },      category: 'people', defaultScale: 1.0, source: 'Quaternius (CC0)' },
+  { id: 'q-doctor-f',   modelPath: '/sandtray/models/quat-Doctor_Female_Young.gltf',  alt: { en: 'Doctor (woman)', es: 'Doctora' }, category: 'people', defaultScale: 1.0, source: 'Quaternius (CC0)' },
+  { id: 'q-doctor-m',   modelPath: '/sandtray/models/quat-Doctor_Male_Young.gltf',    alt: { en: 'Doctor (man)',   es: 'Doctor' },  category: 'people', defaultScale: 1.0, source: 'Quaternius (CC0)' },
   { id: 'q-worker-f',   modelPath: '/sandtray/models/quat-Worker_Female.gltf',       alt: { en: 'Worker',    es: 'Trabajadora' }, category: 'people', defaultScale: 1.0, source: 'Quaternius (CC0)' },
   { id: 'q-worker-m',   modelPath: '/sandtray/models/quat-Worker_Male.gltf',         alt: { en: 'Builder',   es: 'Constructor' }, category: 'people', defaultScale: 1.0, source: 'Quaternius (CC0)' },
   { id: 'q-chef',       modelPath: '/sandtray/models/quat-Chef_Female.gltf',         alt: { en: 'Chef',      es: 'Chef' },        category: 'people', defaultScale: 1.0, source: 'Quaternius (CC0)' },
-  { id: 'q-elder-f',    modelPath: '/sandtray/models/quat-OldClassy_Female.gltf',    alt: { en: 'Elder',     es: 'Anciana' },     category: 'people', defaultScale: 1.0, source: 'Quaternius (CC0)' },
-  { id: 'q-elder-m',    modelPath: '/sandtray/models/quat-OldClassy_Male.gltf',      alt: { en: 'Elder',     es: 'Anciano' },     category: 'people', defaultScale: 1.0, source: 'Quaternius (CC0)' },
+  { id: 'q-elder-f',    modelPath: '/sandtray/models/quat-OldClassy_Female.gltf',    alt: { en: 'Grandmother', es: 'Abuela' },    category: 'people', defaultScale: 1.0, source: 'Quaternius (CC0)' },
+  { id: 'q-elder-m',    modelPath: '/sandtray/models/quat-OldClassy_Male.gltf',      alt: { en: 'Grandfather', es: 'Abuelo' },    category: 'people', defaultScale: 1.0, source: 'Quaternius (CC0)' },
   // Quaternius — fantasy/adventure characters
   { id: 'q-wizard',     modelPath: '/sandtray/models/quat-Wizard.gltf',              alt: { en: 'Wizard',    es: 'Mago' },        category: 'people', defaultScale: 1.0, source: 'Quaternius (CC0)' },
   { id: 'q-witch',      modelPath: '/sandtray/models/quat-Witch.gltf',               alt: { en: 'Witch',     es: 'Bruja' },       category: 'people', defaultScale: 1.0, source: 'Quaternius (CC0)' },
@@ -302,6 +303,7 @@ export const sandtrayFigures: SandtrayFigure[] = [
   { id: 'q-bull',       modelPath: '/sandtray/models/quat-Bull.gltf',                alt: { en: 'Bull',      es: 'Toro' },        category: 'animals', defaultScale: 1.0, source: 'Quaternius (CC0)' },
   { id: 'q-donkey',     modelPath: '/sandtray/models/quat-Donkey.gltf',              alt: { en: 'Donkey',    es: 'Burro' },       category: 'animals', defaultScale: 1.0, source: 'Quaternius (CC0)' },
   { id: 'q-alpaca',     modelPath: '/sandtray/models/quat-Alpaca.gltf',              alt: { en: 'Alpaca',    es: 'Alpaca' },      category: 'animals', defaultScale: 1.0, source: 'Quaternius (CC0)' },
+  { id: 'q-cow-friend', modelPath: '/sandtray/models/quat-CowChar.gltf',             alt: { en: 'Cow friend', es: 'Vaca amiga' }, category: 'animals', defaultScale: 1.0, source: 'Quaternius (CC0)' },
 ];
 
 /** Dev-time invariant check. Throws if data is malformed. */
