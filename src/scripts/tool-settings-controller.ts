@@ -14,6 +14,7 @@
 
 import {
   loadPrefs, savePrefs, clearPrefs, loadGlobalPrefs, saveGlobalPrefs,
+  loadUserPresets, saveUserPreset, deleteUserPreset, type UserPreset,
 } from './tool-prefs';
 import { contrastRatio } from './visual-engine';
 import { PALETTES, BLS_PRESETS } from '../data/tool-presets';
@@ -73,6 +74,26 @@ export function createSettingsController<T extends Record<string, unknown>>(
   const settingsPanel = panel;
   const contrastWarning = settingsPanel.querySelector<HTMLElement>('[data-contrast-warning]');
   const resetButton = settingsPanel.querySelector<HTMLElement>('[data-settings-reset]');
+
+  // Saved-preset controls only exist for tier A tools (the panel renders the
+  // section conditionally), so every lookup below is optional and every
+  // handler bails quietly when its element is absent — same defensive style
+  // as the rest of this controller.
+  const userPresetGroup = settingsPanel.querySelector<HTMLOptGroupElement>('[data-user-preset-group]');
+  const presetNameInput = settingsPanel.querySelector<HTMLInputElement>('[data-preset-name]');
+  const presetSaveButton = settingsPanel.querySelector<HTMLElement>('[data-preset-save]');
+  const presetDeleteButton = settingsPanel.querySelector<HTMLElement>('[data-preset-delete]');
+  const presetStatusEl = settingsPanel.querySelector<HTMLElement>('[data-preset-status]');
+  const presetSection = settingsPanel.querySelector<HTMLElement>('[data-preset-section]');
+  const presetI18n: Record<string, string> = (() => {
+    if (!presetSection) return {};
+    try {
+      const parsed: unknown = JSON.parse(presetSection.getAttribute('data-preset-i18n') || '{}');
+      return typeof parsed === 'object' && parsed !== null ? (parsed as Record<string, string>) : {};
+    } catch {
+      return {};
+    }
+  })();
 
   const control = (name: string) =>
     settingsPanel.querySelector<HTMLInputElement | HTMLSelectElement>(`[data-setting="${name}"]`);
@@ -147,6 +168,57 @@ export function createSettingsController<T extends Record<string, unknown>>(
   }
 
   /**
+   * A clinician's own saved presets live in `localStorage`, not at build
+   * time, so the `<optgroup>` for them is populated here rather than by
+   * `ToolSettings.astro`. Called on hydrate and after every save/delete so
+   * the list, and its visibility, stay in sync with storage.
+   */
+  function refreshUserPresetOptions(): UserPreset[] {
+    const presets = loadUserPresets(toolId);
+    if (userPresetGroup) {
+      userPresetGroup.innerHTML = '';
+      presets.forEach((p) => {
+        const opt = document.createElement('option');
+        opt.value = `user:${p.name}`;
+        opt.textContent = p.name;
+        userPresetGroup.appendChild(opt);
+      });
+      userPresetGroup.hidden = presets.length === 0;
+    }
+    return presets;
+  }
+
+  /**
+   * Applies every field of a saved preset that the tool still has a setting
+   * for. A preset saved before a settings change may carry a key that no
+   * longer exists — silently dropping it (rather than writing it into
+   * `prefs` anyway) keeps a stale key from resurrecting itself or reaching
+   * an engine that no longer expects it.
+   */
+  function applyUserPreset(name: string): void {
+    const preset = loadUserPresets(toolId).find((p) => p.name === name);
+    if (!preset) return;
+    const patch: Record<string, unknown> = {};
+    Object.entries(preset.values).forEach(([key, value]) => {
+      if (!(key in defaults)) return;
+      patch[key] = value;
+    });
+    setPrefs(patch);
+    Object.keys(patch).forEach((key) => setControl(key, prefs[key]));
+    syncBinauralVisibility();
+    checkContrast();
+  }
+
+  function setPresetStatus(message: string): void {
+    if (presetStatusEl) presetStatusEl.textContent = message;
+  }
+
+  function updatePresetDeleteVisibility(): void {
+    if (!presetDeleteButton) return;
+    presetDeleteButton.hidden = !(typeof prefs.preset === 'string' && prefs.preset.startsWith('user:'));
+  }
+
+  /**
    * Populates the panel from `prefs`. Deliberately does not `emit()` — it runs
    * during construction, before the widget has built its engines or subscribed,
    * so there would be nobody to hear it and no engine to receive it. Widgets
@@ -154,10 +226,23 @@ export function createSettingsController<T extends Record<string, unknown>>(
    * construction.
    */
   function hydrate(): void {
+    // Populate the saved-preset options — and validate the stored selection
+    // against them — before the loop below writes `prefs.preset` into the
+    // `<select>`. Otherwise a `user:` value with no matching `<option>` (the
+    // preset was deleted, e.g. from another tab) would silently fail to
+    // select anything, leaving the panel showing "Custom" while `prefs`
+    // still thinks a deleted preset is active.
+    const userPresets = refreshUserPresetOptions();
+    if (typeof prefs.preset === 'string' && prefs.preset.startsWith('user:')) {
+      const name = prefs.preset.slice('user:'.length);
+      if (!userPresets.some((p) => p.name === name)) prefs = { ...prefs, preset: 'custom' } as T;
+    }
+
     Object.entries(prefs).forEach(([key, value]) => setControl(key, value));
     if (typeof prefs.palette === 'string') applyPalette(prefs.palette, false);
     syncBinauralVisibility();
     checkContrast();
+    updatePresetDeleteVisibility();
   }
 
   function emit(key: string): void {
@@ -180,13 +265,22 @@ export function createSettingsController<T extends Record<string, unknown>>(
     // value it already had.
     if (prefs[key] === value) return;
 
+    // Any settings change makes a lingering "Preset saved"/"Preset deleted"
+    // message stale, including switching the preset select itself.
+    setPresetStatus('');
     setPrefs({ [key]: value });
 
     if (key === 'palette') applyPalette(String(value), true);
-    if (key === 'preset' && value !== 'custom') applyPreset(String(value));
+    if (key === 'preset') {
+      const strValue = String(value);
+      if (strValue.startsWith('builtin:')) applyPreset(strValue.slice('builtin:'.length));
+      else if (strValue.startsWith('user:')) applyUserPreset(strValue.slice('user:'.length));
+      updatePresetDeleteVisibility();
+    }
     if ((PRESET_FIELDS as readonly string[]).includes(key)) {
       setPrefs({ preset: 'custom' });
       setControl('preset', 'custom');
+      updatePresetDeleteVisibility();
     }
     if (key === 'ambient') syncBinauralVisibility();
     if (key === 'color' || key === 'background' || key === 'palette') checkContrast();
@@ -197,11 +291,46 @@ export function createSettingsController<T extends Record<string, unknown>>(
   };
 
   const onReset = () => {
-    clearPrefs(toolId);
+    clearPrefs(toolId); // per-tool settings only — saved presets live under their own key
     prefs = { ...defaults, ...GLOBAL_DEFAULTS } as T;
     persist();
+    setPresetStatus('');
     hydrate();
     emit('reset');
+  };
+
+  const onPresetSave = () => {
+    const name = presetNameInput?.value.trim() ?? '';
+    if (!name) {
+      setPresetStatus(presetI18n.nameNeeded ?? '');
+      return;
+    }
+    const existedBefore = loadUserPresets(toolId).some(
+      (p) => p.name.trim().toLowerCase() === name.toLowerCase(),
+    );
+    // A preset must not record which preset was selected when it was saved —
+    // that would be self-referential the moment it is applied.
+    const { preset: _preset, ...snapshot } = prefs;
+    saveUserPreset(toolId, name, snapshot);
+    refreshUserPresetOptions();
+    setPrefs({ preset: `user:${name}` });
+    setControl('preset', prefs.preset);
+    updatePresetDeleteVisibility();
+    if (presetNameInput) presetNameInput.value = '';
+    setPresetStatus(existedBefore ? (presetI18n.overwritten ?? '') : (presetI18n.saved ?? ''));
+    persist();
+  };
+
+  const onPresetDelete = () => {
+    if (typeof prefs.preset !== 'string' || !prefs.preset.startsWith('user:')) return;
+    const name = prefs.preset.slice('user:'.length);
+    deleteUserPreset(toolId, name);
+    refreshUserPresetOptions();
+    setPrefs({ preset: 'custom' });
+    setControl('preset', 'custom');
+    updatePresetDeleteVisibility();
+    setPresetStatus(presetI18n.deleted ?? '');
+    persist();
   };
 
   // `<select>` and checkbox elements fire `input` in modern browsers, but
@@ -210,6 +339,8 @@ export function createSettingsController<T extends Record<string, unknown>>(
   settingsPanel.addEventListener('input', onInput);
   settingsPanel.addEventListener('change', onInput);
   resetButton?.addEventListener('click', onReset);
+  presetSaveButton?.addEventListener('click', onPresetSave);
+  presetDeleteButton?.addEventListener('click', onPresetDelete);
   hydrate();
 
   return {
@@ -219,6 +350,8 @@ export function createSettingsController<T extends Record<string, unknown>>(
       settingsPanel.removeEventListener('input', onInput);
       settingsPanel.removeEventListener('change', onInput);
       resetButton?.removeEventListener('click', onReset);
+      presetSaveButton?.removeEventListener('click', onPresetSave);
+      presetDeleteButton?.removeEventListener('click', onPresetDelete);
       listeners.length = 0;
     },
   };

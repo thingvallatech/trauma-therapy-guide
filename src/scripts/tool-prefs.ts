@@ -88,3 +88,81 @@ export function loadGlobalPrefs<T extends ToolPrefs>(defaults: T): T {
 export function saveGlobalPrefs(prefs: ToolPrefs): void {
   savePrefs(GLOBAL_ID, prefs);
 }
+
+/**
+ * A clinician's own saved settings for a specific client, kept separate from
+ * `ttg:prefs:*` so that resetting settings and deleting saved presets stay
+ * different intents — "Reset to defaults" must never silently destroy this.
+ */
+export interface UserPreset {
+  name: string;
+  values: Record<string, unknown>;
+}
+
+/** Bounded so a long-lived browser profile cannot grow this without limit. */
+export const MAX_USER_PRESETS = 20;
+
+function presetKeyFor(toolId: string): string {
+  return `ttg:presets:v${PREFS_VERSION}:${toolId}`;
+}
+
+export function loadUserPresets(toolId: string): UserPreset[] {
+  const store = storage();
+  if (!store) return [];
+  let raw: string | null;
+  try {
+    raw = store.getItem(presetKeyFor(toolId));
+  } catch {
+    return [];
+  }
+  if (!raw) return [];
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(
+      (p): p is UserPreset =>
+        typeof p === 'object' && p !== null &&
+        typeof (p as UserPreset).name === 'string' &&
+        typeof (p as UserPreset).values === 'object' && (p as UserPreset).values !== null,
+    );
+  } catch {
+    return [];
+  }
+}
+
+function writeUserPresets(toolId: string, presets: UserPreset[]): UserPreset[] {
+  const store = storage();
+  if (store) {
+    try {
+      store.setItem(presetKeyFor(toolId), JSON.stringify(presets));
+    } catch {
+      // Storage unavailable — the preset simply does not persist.
+    }
+  }
+  return presets;
+}
+
+/** Saves under `name`, replacing any existing preset with the same name. */
+export function saveUserPreset(
+  toolId: string,
+  name: string,
+  values: Record<string, unknown>,
+): UserPreset[] {
+  const trimmed = name.trim();
+  if (!trimmed) return loadUserPresets(toolId);
+
+  const existing = loadUserPresets(toolId);
+  const match = trimmed.toLowerCase();
+  const without = existing.filter((p) => p.name.trim().toLowerCase() !== match);
+  const next = [...without, { name: trimmed, values: { ...values } }];
+  // Oldest first, so slicing from the end keeps the most recently saved.
+  return writeUserPresets(toolId, next.slice(-MAX_USER_PRESETS));
+}
+
+export function deleteUserPreset(toolId: string, name: string): UserPreset[] {
+  const match = name.trim().toLowerCase();
+  const next = loadUserPresets(toolId).filter(
+    (p) => p.name.trim().toLowerCase() !== match,
+  );
+  return writeUserPresets(toolId, next);
+}

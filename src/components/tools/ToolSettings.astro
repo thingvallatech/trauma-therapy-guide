@@ -61,17 +61,57 @@ const select =
 
   <div class="p-4 pt-2 space-y-5">
     {showPreset && (
-      <section>
+      <section
+        data-preset-section
+        data-preset-i18n={JSON.stringify({
+          saved: t('tools.settings.presetSaved'),
+          deleted: t('tools.settings.presetDeleted'),
+          nameNeeded: t('tools.settings.presetNameNeeded'),
+          overwritten: t('tools.settings.presetOverwritten'),
+        })}
+      >
         <h3 class="text-forest-300 text-xs uppercase tracking-wide mb-2">{t('tools.settings.section.preset')}</h3>
         <label class={field}>
           <span class="sr-only">{t('tools.settings.section.preset')}</span>
           <select data-setting="preset" class={select}>
             <option value="custom">{t('tools.settings.preset.custom')}</option>
-            {BLS_PRESETS.map((p) => (
-              <option value={p.id}>{tk(`tools.settings.preset.${p.id}`)}</option>
-            ))}
+            <optgroup label={t('tools.settings.presetGroupBuiltIn')}>
+              {BLS_PRESETS.map((p) => (
+                <option value={`builtin:${p.id}`}>{tk(`tools.settings.preset.${p.id}`)}</option>
+              ))}
+            </optgroup>
+            <optgroup data-user-preset-group label={t('tools.settings.presetGroupSaved')} hidden></optgroup>
           </select>
         </label>
+
+        <div class="mt-3 flex flex-wrap items-end gap-2">
+          <label class={`${field} flex-1 min-w-[12rem]`}>
+            {t('tools.settings.presetName')}
+            <input
+              data-preset-name
+              type="text"
+              maxlength="40"
+              placeholder={t('tools.settings.presetNamePlaceholder')}
+              class={`w-full mt-1 bg-forest-700 border border-forest-600 text-forest-100 rounded-md text-xs px-2 py-1 ${focusRing}`}
+            />
+          </label>
+          <button
+            type="button"
+            data-preset-save
+            class={`px-3 py-1.5 rounded-md bg-bronze-500 text-forest-900 text-xs font-semibold hover:bg-bronze-400 transition-colors ${focusRing}`}
+          >
+            {t('tools.settings.savePreset')}
+          </button>
+          <button
+            type="button"
+            data-preset-delete
+            hidden
+            class={`px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-xs hover:bg-forest-600 transition-colors ${focusRing}`}
+          >
+            {t('tools.settings.deletePreset')}
+          </button>
+        </div>
+        <p data-preset-status class="text-forest-400 text-xs mt-1" role="status" aria-live="polite"></p>
       </section>
     )}
 
