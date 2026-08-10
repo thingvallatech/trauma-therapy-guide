@@ -67,18 +67,21 @@ const s = t[lang];
     {s.instructions}
   </p>
 
-  <div class="relative w-64 h-40 mb-6">
+  <div
+    class="relative w-64 h-40 mb-6 rounded-lg overflow-hidden"
+    style="background: var(--tool-field-bg, #000000);"
+  >
     <svg viewBox="0 0 200 120" class="w-full h-full" aria-hidden="true">
       <ellipse
         data-wing="L"
         cx="70" cy="60" rx="45" ry="35"
-        fill="var(--tool-target, #C4A77D)" opacity="0.5"
+        fill="var(--tool-color, #C4A77D)" opacity="0.5"
         class="origin-right transition-transform duration-150 ease-out"
       />
       <ellipse
         data-wing="R"
         cx="130" cy="60" rx="45" ry="35"
-        fill="var(--tool-target, #C4A77D)" opacity="0.5"
+        fill="var(--tool-color, #C4A77D)" opacity="0.5"
         class="origin-left transition-transform duration-150 ease-out"
       />
       <ellipse cx="100" cy="60" rx="5" ry="30" fill="var(--tool-accent, #8A7049)" />
@@ -173,6 +176,18 @@ const s = t[lang];
       wingR.setAttribute('transform', '');
       wingL.setAttribute('opacity', '0.5');
       wingR.setAttribute('opacity', '0.5');
+    }
+
+    // The wings' and field's own colors, not the theme palette's — these come
+    // straight from the "Target color" / "Background" pickers so an explicit
+    // choice there actually shows up. `prefs.color`/`prefs.background`
+    // already track the selected palette until a user overrides them by
+    // hand, same as BLSVisual's canvas reads them directly in JS. The body
+    // spine keeps reading `--tool-accent` (palette-only, set by the settings
+    // controller) — only the two picker-backed fields move to this.
+    function applyColors(): void {
+      root.style.setProperty('--tool-color', prefs.color);
+      root.style.setProperty('--tool-field-bg', prefs.background);
     }
 
     const audio = createAudioEngine();
@@ -380,11 +395,13 @@ const s = t[lang];
       }
 
       pushToEngines();
+      applyColors();
     });
 
     // The panel is hydrated by now, so this is the one push that carries stored
     // preferences into the engines.
     pushToEngines();
+    applyColors();
   });
 
   // Spacebar toggles the first butterfly-hug widget on the page, unless a control has focus.

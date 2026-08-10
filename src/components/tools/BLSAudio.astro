@@ -71,7 +71,7 @@ const s = t[lang];
     </button>
     <span data-bls-count class="text-forest-300 text-sm tabular-nums">0 / 24</span>
     <div class="flex-1"></div>
-    <div class="flex gap-4 text-forest-300 text-sm" aria-hidden="true">
+    <div class="flex gap-4 text-[var(--tool-color,#81C784)] text-sm" aria-hidden="true">
       <span data-bls-indicator-l class="opacity-30">◀ L</span>
       <span data-bls-indicator-r class="opacity-30">R ▶</span>
     </div>
@@ -139,6 +139,17 @@ const s = t[lang];
     let prefs = settings.get();
 
     const audio = createAudioEngine();
+
+    // The indicators' own color, not the theme palette's — comes straight
+    // from the "Target color" picker so an explicit choice there actually
+    // shows up. `prefs.color` already tracks the selected palette until a
+    // user overrides it by hand, same as BLSVisual's canvas reads it
+    // directly in JS. There is no background field here — this tool has no
+    // visual field to paint, just text on the card — so only color moves;
+    // the "Background" picker is hidden for this tool in ToolSettings.astro.
+    function applyColors(): void {
+      root.style.setProperty('--tool-color', prefs.color);
+    }
 
     let lastAmbient: AmbientOptions | null = null;
 
@@ -396,6 +407,7 @@ const s = t[lang];
       }
 
       pushToEngines();
+      applyColors();
       if (!running) {
         count.textContent = `${clock.getBeat()} / ${prefs.continuous ? '∞' : prefs.passes}`;
       }
@@ -404,6 +416,7 @@ const s = t[lang];
     // The panel is hydrated by now, so this is the one push that carries stored
     // preferences into the engines.
     pushToEngines();
+    applyColors();
     count.textContent = `${clock.getBeat()} / ${prefs.continuous ? '∞' : prefs.passes}`;
   });
 

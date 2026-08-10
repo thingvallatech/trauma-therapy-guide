@@ -68,13 +68,13 @@ const s = t[lang];
   <div class:list={['grid grid-cols-2 gap-3', panelHeight]}>
     <div
       data-side="L"
-      class="rounded-lg border-2 border-forest-600 bg-forest-900 text-forest-500 flex items-center justify-center text-5xl font-bold transition-colors duration-100"
+      class="rounded-lg border-2 border-forest-600 bg-[var(--tool-field-bg,#0A1F0A)] text-forest-500 flex items-center justify-center text-5xl font-bold transition-colors duration-100"
     >
       L
     </div>
     <div
       data-side="R"
-      class="rounded-lg border-2 border-forest-600 bg-forest-900 text-forest-500 flex items-center justify-center text-5xl font-bold transition-colors duration-100"
+      class="rounded-lg border-2 border-forest-600 bg-[var(--tool-field-bg,#0A1F0A)] text-forest-500 flex items-center justify-center text-5xl font-bold transition-colors duration-100"
     >
       R
     </div>
@@ -153,18 +153,34 @@ const s = t[lang];
 
     const audio = createAudioEngine();
 
+    const FIELD_BG_CLASS = 'bg-[var(--tool-field-bg,#0A1F0A)]';
+    const ACTIVE_CLASS = 'bg-[var(--tool-color,#FFC107)]';
+
+    // The panel's own field/target colors, not the theme palette's — these
+    // come straight from the "Target color" / "Background" pickers so an
+    // explicit choice there actually shows up somewhere. `applyPalette`
+    // (inside the settings controller) still seeds `--tool-target`/
+    // `--tool-accent` from the palette at hydrate, but nothing here reads
+    // those: `prefs.color`/`prefs.background` already track the selected
+    // palette's colors until a user overrides them by hand, same as
+    // BLSVisual's canvas does directly in JS.
+    function applyColors(): void {
+      root.style.setProperty('--tool-color', prefs.color);
+      root.style.setProperty('--tool-field-bg', prefs.background);
+    }
+
     function clearHighlights(): void {
       [panelL, panelR].forEach((p) => {
-        p.classList.remove('bg-[var(--tool-accent)]', 'text-forest-900', 'border-bronze-300');
-        p.classList.add('bg-forest-900', 'text-forest-500', 'border-forest-600');
+        p.classList.remove(ACTIVE_CLASS, 'text-forest-900', 'border-bronze-300');
+        p.classList.add(FIELD_BG_CLASS, 'text-forest-500', 'border-forest-600');
       });
     }
 
     function highlight(side: BlsSide): void {
       clearHighlights();
       const active = side === 'L' ? panelL : panelR;
-      active.classList.remove('bg-forest-900', 'text-forest-500', 'border-forest-600');
-      active.classList.add('bg-[var(--tool-accent)]', 'text-forest-900', 'border-bronze-300');
+      active.classList.remove(FIELD_BG_CLASS, 'text-forest-500', 'border-forest-600');
+      active.classList.add(ACTIVE_CLASS, 'text-forest-900', 'border-bronze-300');
     }
 
     let lastAmbient: AmbientOptions | null = null;
@@ -423,12 +439,14 @@ const s = t[lang];
       }
 
       pushToEngines();
+      applyColors();
       if (!running) updateCount();
     });
 
     // The panel is hydrated by now, so this is the one push that carries stored
     // preferences into the engines.
     pushToEngines();
+    applyColors();
     updateCount();
   });
 
