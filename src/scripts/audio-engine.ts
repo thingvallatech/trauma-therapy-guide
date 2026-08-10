@@ -34,6 +34,27 @@ export const DEFAULT_AUDIO_OPTIONS: AudioOptions = {
   panMode: 'discrete',
 };
 
+export type AmbientKind = 'none' | 'white' | 'pink' | 'brown' | 'drone' | 'binaural';
+
+export const AMBIENT_KINDS = ['none', 'white', 'pink', 'brown', 'drone', 'binaural'] as const;
+
+export interface AmbientOptions {
+  kind: AmbientKind;
+  /** 0..1 */
+  volume: number;
+  /** Hz carrier */
+  binauralBase: number;
+  /** 0.5..12 Hz offset between ears */
+  binauralBeat: number;
+}
+
+export const DEFAULT_AMBIENT_OPTIONS: AmbientOptions = {
+  kind: 'none',
+  volume: 0.2,
+  binauralBase: 200,
+  binauralBeat: 4,
+};
+
 /** Gain ramp time constant. Every level change uses this; nothing steps. */
 const RAMP = 0.02;
 
@@ -48,7 +69,44 @@ export interface AudioEngine {
   setPan(pan: number, when?: number): void;
   playCue(kind: 'tick' | 'advance' | 'complete'): void;
   setOptions(next: Partial<AudioOptions>): void;
+  /** Independent background layer — noise, drone, or binaural. Defaults to off. */
+  setAmbient(next: Partial<AmbientOptions>): void;
   destroy(): void;
+}
+
+/**
+ * Generates a looping noise buffer with a genuine spectral slope — pink at
+ * -3dB/octave via Paul Kellett's filter, brown at -6dB/octave via a leaky
+ * integrator. Baked into the buffer once so there is no runtime filter cost.
+ */
+function makeNoiseBuffer(ctx: AudioContext, color: 'white' | 'pink' | 'brown'): AudioBuffer {
+  const length = ctx.sampleRate * 4;
+  const buffer = ctx.createBuffer(1, length, ctx.sampleRate);
+  const out = buffer.getChannelData(0);
+
+  let b0 = 0, b1 = 0, b2 = 0, b3 = 0, b4 = 0, b5 = 0, b6 = 0;
+  let last = 0;
+
+  for (let i = 0; i < length; i++) {
+    const white = Math.random() * 2 - 1;
+
+    if (color === 'white') {
+      out[i] = white * 0.5;
+    } else if (color === 'pink') {
+      b0 = 0.99886 * b0 + white * 0.0555179;
+      b1 = 0.99332 * b1 + white * 0.0750759;
+      b2 = 0.96900 * b2 + white * 0.1538520;
+      b3 = 0.86650 * b3 + white * 0.3104856;
+      b4 = 0.55000 * b4 + white * 0.5329522;
+      b5 = -0.7616 * b5 - white * 0.0168980;
+      out[i] = (b0 + b1 + b2 + b3 + b4 + b5 + b6 + white * 0.5362) * 0.11;
+      b6 = white * 0.115926;
+    } else {
+      last = (last + 0.02 * white) / 1.02;
+      out[i] = last * 3.5;
+    }
+  }
+  return buffer;
 }
 
 export function createAudioEngine(): AudioEngine {
@@ -60,6 +118,16 @@ export function createAudioEngine(): AudioEngine {
   let sweepGain: GainNode | null = null;
   let opts = { ...DEFAULT_AUDIO_OPTIONS };
   let scheduled: Array<{ stop: () => void }> = [];
+
+  let ambient = { ...DEFAULT_AMBIENT_OPTIONS };
+  let ambientGain: GainNode | null = null;
+  let ambientNodes: AudioNode[] = [];
+  // Bumped on every teardown so a rebuild timer scheduled before a *newer*
+  // teardown can recognize it's stale and skip — otherwise a second quick
+  // selector flip would let two ambient layers build concurrently, and the
+  // first would be orphaned (its ambientGain reference overwritten) while
+  // still playing. See teardownAmbient / setAmbient below.
+  let ambientEpoch = 0;
 
   function build(): void {
     if (ctx) return;
@@ -230,6 +298,79 @@ export function createAudioEngine(): AudioEngine {
     scheduled = [];
   }
 
+  function teardownAmbient(): void {
+    ambientEpoch += 1;
+    const dying = ambientNodes;
+    ambientNodes = [];
+    if (ctx && ambientGain) {
+      ambientGain.gain.setTargetAtTime(0, ctx.currentTime, RAMP);
+    }
+    const gain = ambientGain;
+    ambientGain = null;
+    window.setTimeout(() => {
+      dying.forEach((n) => {
+        try { (n as OscillatorNode | AudioBufferSourceNode).stop?.(); } catch { /* not started */ }
+        n.disconnect();
+      });
+      gain?.disconnect();
+    }, RAMP * 1000 * 6);
+  }
+
+  function buildAmbient(): void {
+    if (!ctx || !limiter || ambient.kind === 'none') return;
+
+    ambientGain = ctx.createGain();
+    ambientGain.gain.setValueAtTime(0, ctx.currentTime);
+    ambientGain.connect(limiter);
+
+    if (ambient.kind === 'white' || ambient.kind === 'pink' || ambient.kind === 'brown') {
+      const src = ctx.createBufferSource();
+      src.buffer = makeNoiseBuffer(ctx, ambient.kind);
+      src.loop = true;
+      src.connect(ambientGain);
+      src.start();
+      ambientNodes.push(src);
+    } else if (ambient.kind === 'drone') {
+      // Two slightly detuned saws through a low-pass — soft, non-directional.
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(400, ctx.currentTime);
+      filter.connect(ambientGain);
+      ambientNodes.push(filter);
+      for (const detune of [-7, 7]) {
+        const o = ctx.createOscillator();
+        const g = ctx.createGain();
+        o.type = 'sawtooth';
+        o.frequency.setValueAtTime(110, ctx.currentTime);
+        o.detune.setValueAtTime(detune, ctx.currentTime);
+        g.gain.setValueAtTime(0.3, ctx.currentTime);
+        o.connect(g).connect(filter);
+        o.start();
+        ambientNodes.push(o, g);
+      }
+    } else {
+      // Binaural: one oscillator per ear through a channel merger, which gives
+      // true channel isolation rather than a pan approximation.
+      const merger = ctx.createChannelMerger(2);
+      merger.connect(ambientGain);
+      ambientNodes.push(merger);
+      const freqs = [ambient.binauralBase, ambient.binauralBase + ambient.binauralBeat];
+      freqs.forEach((freq, channel) => {
+        const o = ctx!.createOscillator();
+        const g = ctx!.createGain();
+        o.type = 'sine';
+        o.frequency.setValueAtTime(freq, ctx!.currentTime);
+        g.gain.setValueAtTime(0.5, ctx!.currentTime);
+        o.connect(g);
+        g.connect(merger, 0, channel);
+        o.start();
+        ambientNodes.push(o, g);
+      });
+    }
+
+    ambientGain.gain.setTargetAtTime(ambient.volume, ctx.currentTime, RAMP * 8);
+  }
+
   return {
     async ensureStarted() {
       build();
@@ -240,6 +381,7 @@ export function createAudioEngine(): AudioEngine {
     suspend() {
       teardownSweep();
       stopScheduled();
+      teardownAmbient();
       ctx?.suspend();
     },
 
@@ -290,9 +432,37 @@ export function createAudioEngine(): AudioEngine {
       }
     },
 
+    setAmbient(next) {
+      const prevKind = ambient.kind;
+      ambient = { ...ambient, ...next };
+      if (!ctx) return;
+
+      const structureChanged =
+        ambient.kind !== prevKind ||
+        next.binauralBase !== undefined ||
+        next.binauralBeat !== undefined;
+
+      if (structureChanged) {
+        // teardownAmbient() bumps ambientEpoch; capture it *after* so a
+        // rebuild scheduled by an earlier call (still in flight) sees a
+        // mismatch and no-ops instead of building a second, orphaned layer.
+        teardownAmbient();
+        const epoch = ambientEpoch;
+        if (ambient.kind !== 'none') {
+          // Wait out the fade so the old layer never clicks against the new one.
+          window.setTimeout(() => {
+            if (epoch === ambientEpoch) buildAmbient();
+          }, RAMP * 1000 * 7);
+        }
+      } else if (ambientGain && next.volume !== undefined) {
+        ambientGain.gain.setTargetAtTime(ambient.volume, ctx.currentTime, RAMP * 4);
+      }
+    },
+
     destroy() {
       teardownSweep();
       stopScheduled();
+      teardownAmbient();
       ctx?.close();
       ctx = null;
     },
