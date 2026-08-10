@@ -248,7 +248,6 @@ const s = t[lang];
   import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js';
   import { onReducedMotion } from '../../scripts/motion-pref';
   import { createSettingsController } from '../../scripts/tool-settings-controller';
-  import { DEFAULT_VISUAL_OPTIONS } from '../../scripts/visual-engine';
   import {
     createAudioEngine, DEFAULT_AUDIO_OPTIONS, DEFAULT_AMBIENT_OPTIONS,
     type AmbientOptions,
@@ -258,13 +257,16 @@ const s = t[lang];
   const TOOL_ID = 'Sandtray';
 
   const DEFAULTS = {
+    // The tray is a WebGL scene, not a themed 2D surface: Color and
+    // Background are gated off in ToolSettings.astro (see `showColor`/
+    // `showBackground` there), since the sand/water/rock swatches below are
+    // this tool's real, wired color controls and a generic freeform pair
+    // alongside them would be redundant. Palette is the only Appearance
+    // field the panel renders here — the controller sets `--tool-*` custom
+    // properties on the widget root regardless of tool, though nothing in
+    // this widget's own markup currently reads them (same gap Task 16 found
+    // on five of its six Tier C tools before their color wiring landed).
     palette: 'default',
-    // No CSS-paintable field here (the tray is a WebGL canvas, not a themed
-    // 2D surface) — the panel still renders palette/color/background, and
-    // carrying their defaults is what makes those controls persist
-    // correctly even though this widget never reads them back out. The sand/
-    // water/rock swatches below are the tool's real, wired color controls.
-    ...DEFAULT_VISUAL_OPTIONS,
     soundOn: false, // ambient bed is opt-in.
     ...DEFAULT_AUDIO_OPTIONS,
     ambient: DEFAULT_AMBIENT_OPTIONS.kind,

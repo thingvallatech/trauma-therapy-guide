@@ -76,16 +76,23 @@ const showEndCue = (tier === 'A' || tier === 'B') && hasSets;
 const showAmbient = true;
 
 /**
- * "Background" is a real color choice everywhere except BLSAudio, which has
- * no visual field at all — just text indicators with nothing behind them to
- * paint. This is the one control gated by exclusion rather than an
- * allowlist: unlike Motion/Sound, the Appearance section (including
- * "Background") renders for every tier, not just bilateral tools — an
- * allowlist here would silently hide it for Tier C/D tools this task never
- * touched. BLSAudio is the only tool known today to lack a field to color,
- * so it is named directly.
+ * "Color" and "Background" are real choices everywhere except tools with no
+ * field for them to land on. Both are gated by exclusion rather than an
+ * allowlist: unlike Motion/Sound, the Appearance section renders for every
+ * tier, not just bilateral tools — an allowlist here would silently hide
+ * them for Tier C/D tools this task never touched.
+ *
+ * BLSAudio has no visual field at all — just text indicators — but it still
+ * consumes `color` for one of them (see BLSAudio.astro), so only Background
+ * is excluded there.
+ *
+ * Sandtray is a WebGL scene, not a themed 2D surface, so neither picker has
+ * anywhere to paint — and it already has its own tool-specific sand/water/
+ * rock color swatches, so a generic "Target color"/"Background" pair sitting
+ * alongside those would be redundant even in principle. Both are excluded.
  */
-const showBackground = componentName !== 'BLSAudio';
+const showColor = componentName !== 'Sandtray';
+const showBackground = componentName !== 'BLSAudio' && componentName !== 'Sandtray';
 
 const field = 'text-forest-200 text-xs block';
 const focusRing =
@@ -246,10 +253,12 @@ const select =
             </label>
           </>
         )}
-        <label class={field}>
-          {t('tools.settings.color')}
-          <input data-setting="color" type="color" value="#FFF8E7" class={colorInput} />
-        </label>
+        {showColor && (
+          <label class={field}>
+            {t('tools.settings.color')}
+            <input data-setting="color" type="color" value="#FFF8E7" class={colorInput} />
+          </label>
+        )}
         {showBackground && (
           <label class={field}>
             {t('tools.settings.background')}
