@@ -1,6 +1,7 @@
 # CLAUDE.md
 
-> Project context for Claude Code. Read this file at the start of every session.
+> Canonical project context for coding agents (Claude Code, Codex, and others).
+> `AGENTS.md` points here. Read this file at the start of every session.
 
 ## Project Overview
 
@@ -8,7 +9,7 @@
 
 **Purpose:** Free public resource site helping trauma therapists quickly reference evidence-based protocols, and helping families understand their child's treatment.
 
-**Status:** Live — EMDR protocol (8 phases + scripts), 13 interactive tools, resource libraries, full EN/ES localization. Family-facing TF-CBT guide exists; clinician TF-CBT/PCIT still planned.
+**Status:** Live — EMDR protocol (8 phases + scripts), 14 interactive tools, resource libraries, full EN/ES localization. Family-facing TF-CBT guide exists; clinician TF-CBT/PCIT still planned.
 
 ## Tech Stack
 
@@ -28,7 +29,7 @@ src/
 ├── components/
 │   ├── Header / Footer / SearchModal / CrisisStrip / CalmFrontDoor
 │   ├── Callout / Card / ResourceCard / ClinicalBanner / HelpContent
-│   └── tools/                  # 13 interactive tool widgets + ToolShell/ToolCard
+│   └── tools/                  # 14 interactive tool widgets + ToolShell/ToolCard
 │       ├── BLS*.astro          # share src/scripts/bls-timer.ts (RAF timing)
 │       ├── Sandtray.astro      # three.js; figures data in src/data/
 │       └── BreathPacer, Grounding, SafePlace, Container, FeelingWheel, …
@@ -92,7 +93,12 @@ The site uses **dark chrome + light content zones** ("calm" overhaul, Apr 2026 �
 npm run dev        # Development
 npm run build      # Build (113 pages; must pass before commit)
 npm run preview    # Preview production build
+npm run verify     # Full check chain (lint/test if present, then build)
 ```
+
+## Verification
+
+Run `npm run verify` after any change. It must be green before committing.
 
 ## Deployment
 
