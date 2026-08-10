@@ -2,20 +2,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ToolShell from '../../../components/tools/ToolShell.astro';
-import SUDScale from '../../../components/tools/SUDScale.astro';
-import VOCScale from '../../../components/tools/VOCScale.astro';
-import BreathPacer from '../../../components/tools/BreathPacer.astro';
-import Grounding from '../../../components/tools/Grounding.astro';
-import BLSVisual from '../../../components/tools/BLSVisual.astro';
-import BLSAudio from '../../../components/tools/BLSAudio.astro';
-import BLSCombined from '../../../components/tools/BLSCombined.astro';
-import BLSTapping from '../../../components/tools/BLSTapping.astro';
-import Container from '../../../components/tools/Container.astro';
-import SafePlace from '../../../components/tools/SafePlace.astro';
-import Lightstream from '../../../components/tools/Lightstream.astro';
-import ButterflyHug from '../../../components/tools/ButterflyHug.astro';
-import FeelingWheel from '../../../components/tools/FeelingWheel.astro';
-import Sandtray from '../../../components/tools/Sandtray.astro';
+import { widgetFor } from '../../../lib/tool-widgets';
 import type { Lang } from '../../../i18n';
 import { useTranslations } from '../../../i18n';
 
@@ -37,19 +24,12 @@ interface Props {
 const { tool } = Astro.props;
 const { Content } = await tool.render();
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const widgets: Record<string, any> = {
-  SUDScale, VOCScale, BreathPacer, Grounding,
-  BLSVisual, BLSAudio, BLSCombined, BLSTapping,
-  Container, SafePlace, Lightstream, ButterflyHug, FeelingWheel, Sandtray,
-};
-
-const Widget = widgets[tool.data.componentName] ?? null;
+const Widget = widgetFor(tool.data.componentName);
 ---
 
 <BaseLayout title={tool.data.name} description={tool.data.shortDescription} noAnalytics={true} lang={lang}>
   <ToolShell tool={tool} lang={lang}>
-    {Widget ? <Widget lang={lang} /> : (
+    {Widget ? <Widget lang={lang} warnings={tool.data.warnings} /> : (
       <div class="p-6 border border-dashed border-forest-600 rounded-lg text-forest-300 text-sm">
         {t('tools.widgetNotImplemented')} <code>{tool.data.componentName}</code>.
       </div>
