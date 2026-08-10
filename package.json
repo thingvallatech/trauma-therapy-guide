@@ -8,7 +8,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "test": "vitest run",
-    "verify": "npm run lint --if-present && npm run test --if-present && npm run build"
+    "verify": "npm run lint --if-present && npm run typecheck --if-present && npm run test --if-present && npm run build",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",

@@ -93,12 +93,18 @@ The site uses **dark chrome + light content zones** ("calm" overhaul, Apr 2026 �
 npm run dev        # Development
 npm run build      # Build (113 pages; must pass before commit)
 npm run preview    # Preview production build
-npm run verify     # Full check chain (lint/test if present, then build)
+npm run test       # Vitest (logic modules in src/scripts/ only)
+npm run typecheck  # tsc --noEmit
+npm run verify     # Full chain: lint → typecheck → test → build
 ```
 
 ## Verification
 
 Run `npm run verify` after any change. It must be green before committing.
+
+`typecheck` is in the chain because `astro build` transpiles without typechecking — a
+module under `src/scripts/` that no page imports yet would otherwise never be typechecked
+at all.
 
 ## Deployment
 
