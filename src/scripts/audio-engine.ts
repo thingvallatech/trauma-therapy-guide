@@ -91,7 +91,13 @@ function makeNoiseBuffer(ctx: AudioContext, color: 'white' | 'pink' | 'brown'): 
     const white = Math.random() * 2 - 1;
 
     if (color === 'white') {
-      out[i] = white * 0.5;
+      // 0.34 (not the naive 0.5) so white's RMS lands within ~0.3dB of pink
+      // and brown's measured RMS — otherwise switching colors at a fixed
+      // volume produces an audible jump. Brought white *down* to match,
+      // rather than raising pink/brown up: a surprise volume increase is
+      // the wrong direction for a trauma-informed tool, and brown already
+      // has the least headroom (~14dB crest factor, peaks near full scale).
+      out[i] = white * 0.34;
     } else if (color === 'pink') {
       b0 = 0.99886 * b0 + white * 0.0555179;
       b1 = 0.99332 * b1 + white * 0.0750759;
@@ -392,11 +398,41 @@ export function createAudioEngine(): AudioEngine {
     ambientGain.gain.setTargetAtTime(ambient.volume, ctx.currentTime, RAMP * 8);
   }
 
+  /**
+   * Starts the ambient layer if one is selected but not yet built — the case
+   * where `setAmbient` was called before the context existed (e.g. a stored
+   * preference applied at page init, before any user gesture). `setAmbient`
+   * itself no-ops in that situation since it bails out on `!ctx` before it
+   * ever touches `ambientEpoch` or schedules a rebuild, so nothing here would
+   * otherwise start the layer once the context finally shows up.
+   *
+   * `ambientEpoch === 0` means no teardown has ever run on this engine
+   * instance, so there is no lingering layer that could still be fading out
+   * — safe to build immediately. Once it's non-zero, a teardown could still
+   * be mid-flight (e.g. `suspend()` then `ensureStarted()` again quickly), so
+   * this defers the same way `setAmbient`'s structural-change path does,
+   * through the same epoch check, so a stale call here can never race a
+   * newer one and build a second, orphaned layer.
+   */
+  function maybeStartAmbient(): void {
+    if (!ctx || ambient.kind === 'none' || ambientGain) return;
+    if (ambientEpoch === 0) {
+      buildAmbient();
+      return;
+    }
+    ambientEpoch += 1;
+    const epoch = ambientEpoch;
+    window.setTimeout(() => {
+      if (epoch === ambientEpoch) buildAmbient();
+    }, RAMP * 1000 * 7);
+  }
+
   return {
     async ensureStarted() {
       build();
       if (ctx!.state === 'suspended') await ctx!.resume();
       if (opts.panMode === 'sweep') ensureSweep();
+      maybeStartAmbient();
     },
 
     suspend() {
