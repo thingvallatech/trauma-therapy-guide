@@ -19,8 +19,12 @@ import {
 import { contrastRatio } from './visual-engine';
 import { PALETTES, BLS_PRESETS } from '../data/tool-presets';
 
-/** Fields a preset owns; changing any of them by hand demotes the preset to "custom". */
-const PRESET_FIELDS = ['speed', 'passes', 'voice', 'path', 'panDepth'] as const;
+/**
+ * Fields a built-in preset owns; changing one by hand demotes the select to
+ * "Custom". The BLS default — the only preset table that exists today, but
+ * passed in rather than assumed so a non-BLS tool can bring its own.
+ */
+const BLS_PRESET_FIELDS = ['speed', 'passes', 'voice', 'path', 'panDepth'] as const;
 
 /**
  * Settings a clinician expects to set once for the whole site, not per tool.
@@ -28,8 +32,6 @@ const PRESET_FIELDS = ['speed', 'passes', 'voice', 'path', 'panDepth'] as const;
  * tool applies everywhere; everything else stays scoped to its own tool.
  */
 const GLOBAL_FIELDS = ['palette', 'volume'] as const;
-
-const GLOBAL_DEFAULTS: Record<string, unknown> = { palette: 'default', volume: 0.3 };
 
 /** Readouts that read as a percentage rather than a raw 0..1 value. */
 const PERCENT_READOUTS = ['panDepth', 'volume', 'ambientVolume'];
@@ -45,14 +47,42 @@ export interface SettingsController<T extends Record<string, unknown>> {
   destroy(): void;
 }
 
+/**
+ * A built-in preset is `{ id }` plus whatever fields it sets. Only `id` is
+ * structural here; the fields are read through `presetFields`, which is what
+ * lets a tool with a different set of preset-owned settings reuse this.
+ */
+export interface PresetDefinition {
+  id: string;
+}
+
+export interface SettingsControllerOptions {
+  /** Built-in preset table offered by the panel. Defaults to the BLS presets. */
+  presets?: readonly PresetDefinition[];
+  /** Fields those presets own. Must line up with `presets`. */
+  presetFields?: readonly string[];
+}
+
 export function createSettingsController<T extends Record<string, unknown>>(
   root: HTMLElement,
   toolId: string,
   defaults: T,
+  options: SettingsControllerOptions = {},
 ): SettingsController<T> {
+  const presets = options.presets ?? BLS_PRESETS;
+  const presetFields: readonly string[] = options.presetFields ?? BLS_PRESET_FIELDS;
+
+  /**
+   * The shared bucket's defaults come from this widget's own `defaults`, not
+   * from a module constant. A hardcoded pair would let one widget push a value
+   * it never declared into the bucket every other tool reads.
+   */
+  const globalFields = GLOBAL_FIELDS.filter((k) => k in defaults);
+  const globalDefaults = Object.fromEntries(globalFields.map((k) => [k, defaults[k]] as const));
+
   const panel = root.querySelector<HTMLElement>('[data-tool-settings]');
   // Per-tool prefs first, then let the shared bucket win for the global fields.
-  let prefs = { ...loadPrefs(toolId, defaults), ...loadGlobalPrefs(GLOBAL_DEFAULTS) } as T;
+  let prefs = { ...loadPrefs(toolId, defaults), ...loadGlobalPrefs(globalDefaults) } as T;
   const listeners: Array<(prefs: T, key: string) => void> = [];
 
   function setPrefs(patch: Record<string, unknown>): void {
@@ -61,7 +91,7 @@ export function createSettingsController<T extends Record<string, unknown>>(
 
   function persist(): void {
     savePrefs(toolId, prefs);
-    saveGlobalPrefs(Object.fromEntries(GLOBAL_FIELDS.map((k) => [k, prefs[k]] as const)));
+    saveGlobalPrefs(Object.fromEntries(globalFields.map((k) => [k, prefs[k]] as const)));
   }
 
   // A widget may render without the panel (a fullscreen variant that hides it,
@@ -158,13 +188,32 @@ export function createSettingsController<T extends Record<string, unknown>>(
   }
 
   function applyPreset(id: string): void {
-    const preset = BLS_PRESETS.find((p) => p.id === id);
+    const preset = presets.find((p) => p.id === id);
     if (!preset) return;
-    setPrefs({
-      speed: preset.speed, passes: preset.passes,
-      voice: preset.voice, path: preset.path, panDepth: preset.panDepth,
+    // Read through `presetFields` rather than named properties, so the table
+    // and the field list are the only things a different tool has to supply.
+    const source = preset as unknown as Record<string, unknown>;
+    const patch: Record<string, unknown> = {};
+    presetFields.forEach((k) => {
+      if (k in source) patch[k] = source[k];
     });
-    PRESET_FIELDS.forEach((k) => setControl(k, prefs[k]));
+    setPrefs(patch);
+    Object.keys(patch).forEach((k) => setControl(k, prefs[k]));
+  }
+
+  /**
+   * Whether editing `key` by hand should demote the select to "Custom".
+   *
+   * A built-in preset only claims the fields it sets, so changing an unrelated
+   * one leaves its name honest. A *saved* preset snapshots every setting, so
+   * any edit makes the name a lie — and, worse, re-saving under that name would
+   * capture something different from what the panel is showing.
+   */
+  function demotesPreset(key: string): boolean {
+    const active = prefs.preset;
+    if (typeof active !== 'string' || active === 'custom') return false;
+    if (active.startsWith('user:')) return true;
+    return presetFields.includes(key);
   }
 
   /**
@@ -277,7 +326,7 @@ export function createSettingsController<T extends Record<string, unknown>>(
       else if (strValue.startsWith('user:')) applyUserPreset(strValue.slice('user:'.length));
       updatePresetDeleteVisibility();
     }
-    if ((PRESET_FIELDS as readonly string[]).includes(key)) {
+    if (key !== 'preset' && demotesPreset(key)) {
       setPrefs({ preset: 'custom' });
       setControl('preset', 'custom');
       updatePresetDeleteVisibility();
@@ -292,7 +341,9 @@ export function createSettingsController<T extends Record<string, unknown>>(
 
   const onReset = () => {
     clearPrefs(toolId); // per-tool settings only — saved presets live under their own key
-    prefs = { ...defaults, ...GLOBAL_DEFAULTS } as T;
+    // The global fields are drawn from `defaults` too, so this restores them
+    // as well; `persist()` below writes them back to the shared bucket.
+    prefs = { ...defaults };
     persist();
     setPresetStatus('');
     hydrate();

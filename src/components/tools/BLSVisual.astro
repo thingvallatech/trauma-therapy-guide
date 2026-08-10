@@ -208,7 +208,12 @@ const s = t[lang];
 
     let usingAudioClock = false;
     let timeOffset = 0;
+    /** The audio clock is trustworthy: schedule against it and read time from it. */
     let audioReady = false;
+    /** A context exists and may be making sound. Silencing keys off this, not
+     *  `audioReady` — after a stall fallback the clock is untrusted but any
+     *  ambient layer is still audible, and Stop has to stop that too. */
+    let audioLive = false;
 
     const rawNow = () => (usingAudioClock ? audio.now() : performance.now() / 1000);
     const nowSeconds = () => rawNow() + timeOffset;
@@ -255,6 +260,7 @@ const s = t[lang];
       try {
         await audio.ensureStarted();
         audioReady = true;
+        audioLive = true;
         useAudioClock(true);
         healthWall = 0; // re-baseline; a fresh context needs a moment to spin up
       } catch {
@@ -327,7 +333,7 @@ const s = t[lang];
      */
     function suspendAudio(delayMs: number): void {
       window.clearTimeout(suspendTimer);
-      if (!audioReady) return;
+      if (!audioLive) return;
       if (delayMs <= 0) {
         audio.suspend();
         return;
@@ -338,6 +344,10 @@ const s = t[lang];
     function start(): void {
       if (clock.isRunning()) return;
       window.clearTimeout(suspendTimer);
+      // Synchronously, before the first frame: on a Stop→Start with sound
+      // already on, a baseline left over from the previous run spans the
+      // suspended gap and reads as a stall for a frame or two.
+      healthWall = 0;
       pushToEngines();
       scheduledThrough = 0;
       toggle.textContent = i18n.stop || 'Stop';
@@ -381,9 +391,17 @@ const s = t[lang];
 
     // --- settings wiring ---------------------------------------------------
 
-    settings.onChange((next, key) => {
+    settings.onChange((next) => {
       const speedChanged = next.speed !== prefs.speed;
       const running = clock.isRunning();
+      // Track the *transition*, not which control caused it. Reset emits
+      // key 'reset' and can also turn sound off, and a saved preset can carry
+      // soundOn — keying the teardown off the control name left tones queued
+      // on the AudioContext timeline still firing after the user asked for
+      // silence, and left the clock reading a timebase that was about to be
+      // suspended out from under it.
+      const soundCameOn = Boolean(next.soundOn) && !prefs.soundOn;
+      const soundWentOff = !next.soundOn && Boolean(prefs.soundOn);
 
       // Re-anchor *before* adopting the new speed, so the sliver since the last
       // tick is closed out at the speed that was actually in effect for it
@@ -396,21 +414,19 @@ const s = t[lang];
         scheduledThrough = clock.getBeat();
       }
 
-      if (key === 'soundOn') {
-        if (prefs.soundOn) {
-          // A settings change is itself a user gesture, so the context may be
-          // created here — which is also the only moment the clock's timebase
-          // is allowed to move.
-          void startAudio().then(() => {
-            scheduledThrough = clock.getBeat();
-            pushToEngines();
-          });
-        } else {
-          audio.cancelScheduled();
-          suspendAudio(0);
-          useAudioClock(false);
+      if (soundCameOn) {
+        // A settings change is itself a user gesture, so the context may be
+        // created here — which is also the only moment the clock's timebase
+        // is allowed to move.
+        void startAudio().then(() => {
           scheduledThrough = clock.getBeat();
-        }
+          pushToEngines();
+        });
+      } else if (soundWentOff) {
+        audio.cancelScheduled();
+        suspendAudio(0);
+        useAudioClock(false);
+        scheduledThrough = clock.getBeat();
       }
 
       pushToEngines();
