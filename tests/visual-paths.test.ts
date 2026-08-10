@@ -94,3 +94,33 @@ describe('applyEasing', () => {
     expect(midStep).toBeGreaterThan(edgeStep);
   });
 });
+
+import { contrastRatio } from '../src/scripts/visual-engine';
+
+describe('contrastRatio', () => {
+  it('gives the maximum ratio for black on white', () => {
+    expect(contrastRatio('#000000', '#ffffff')).toBeCloseTo(21, 1);
+  });
+
+  it('gives 1 for identical colors', () => {
+    expect(contrastRatio('#3a7d44', '#3a7d44')).toBeCloseTo(1, 5);
+  });
+
+  it('is symmetric', () => {
+    expect(contrastRatio('#FFF8E7', '#0A1F0A')).toBeCloseTo(
+      contrastRatio('#0A1F0A', '#FFF8E7'), 5,
+    );
+  });
+
+  it('accepts 3-digit hex', () => {
+    expect(contrastRatio('#fff', '#000')).toBeCloseTo(21, 1);
+  });
+
+  it('flags the default warm-white-on-black pairing as high contrast', () => {
+    expect(contrastRatio('#FFF8E7', '#000000')).toBeGreaterThan(3);
+  });
+
+  it('flags a low-contrast pairing', () => {
+    expect(contrastRatio('#333333', '#3a3a3a')).toBeLessThan(3);
+  });
+});
