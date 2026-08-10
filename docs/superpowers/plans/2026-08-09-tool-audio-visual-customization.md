@@ -244,8 +244,17 @@ Create `src/scripts/bls-clock.ts`:
 
 export type BlsSide = 'L' | 'R';
 
-/** Max per-tick delta in seconds; guards against catch-up bursts after rAF pauses. */
+/** Progress let through once a catch-up is detected, in seconds. */
 export const MAX_FRAME_DELTA = 0.25;
+
+/**
+ * Deltas above this are treated as a backgrounded/throttled tab rather than one
+ * slow-but-legitimate tick, and are clamped down to MAX_FRAME_DELTA of progress.
+ * Kept separate from MAX_FRAME_DELTA: a caller driving this clock from discrete
+ * events rather than every rAF frame can produce sub-second deltas that should
+ * still count in full instead of being mistaken for a pause.
+ */
+const CATCHUP_TRIGGER = 1;
 
 export interface BlsClock {
   start(now: number): void;
@@ -306,7 +315,7 @@ export function createBlsClock(opts: BlsClockOptions): BlsClock {
       // the anchor forward by the excess so the clamp also holds for
       // beatTimeFor, rather than only for the phase we happen to read here.
       const delta = now - lastNow;
-      if (delta > MAX_FRAME_DELTA) tBase += delta - MAX_FRAME_DELTA;
+      if (delta > CATCHUP_TRIGGER) tBase += delta - MAX_FRAME_DELTA;
       lastNow = now;
 
       const emitted: BlsSide[] = [];
@@ -321,6 +330,14 @@ export function createBlsClock(opts: BlsClockOptions): BlsClock {
           break;
         }
       }
+
+      // Close the books at `now` using the speed in effect for this tick.
+      // Anchoring here (not only in `rebase`) means a later speed change
+      // applies only from this point forward; re-anchoring against a stale
+      // `tBase` would apply the new speed retroactively and jump the phase.
+      cyclesAtBase = cyclesAt(now);
+      tBase = now;
+
       return emitted;
     },
 
