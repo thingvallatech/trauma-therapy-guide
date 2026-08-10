@@ -9,7 +9,7 @@
 
 **Purpose:** Free public resource site helping trauma therapists quickly reference evidence-based protocols, and helping families understand their child's treatment.
 
-**Status:** Live — EMDR protocol (8 phases + scripts), 14 interactive tools, resource libraries, full EN/ES localization. Family-facing TF-CBT guide exists; clinician TF-CBT/PCIT still planned.
+**Status:** Live — EMDR protocol (8 phases + scripts), 14 interactive tools, resource libraries, full EN/ES localization. Family-facing TF-CBT guide exists; clinician TF-CBT/PCIT still planned. The 12 non-scale tools run on a shared audio/visual customization engine (clock, Web Audio graph, canvas renderer, preferences/presets) — see below.
 
 ## Tech Stack
 
@@ -30,9 +30,20 @@ src/
 │   ├── Header / Footer / SearchModal / CrisisStrip / CalmFrontDoor
 │   ├── Callout / Card / ResourceCard / ClinicalBanner / HelpContent
 │   └── tools/                  # 14 interactive tool widgets + ToolShell/ToolCard
-│       ├── BLS*.astro          # share src/scripts/bls-timer.ts (RAF timing)
-│       ├── Sandtray.astro      # three.js; figures data in src/data/
+│       ├── BLS*.astro          # bilateral-stim tools; run on the shared engine (src/scripts/)
+│       ├── ToolSettings.astro  # shared settings panel (motion/appearance/sound), gated per tool tier
+│       ├── Sandtray.astro      # three.js; figures data in src/data/; ambient sound only, no ToolSettings appearance section
 │       └── BreathPacer, Grounding, SafePlace, Container, FeelingWheel, …
+├── scripts/                    # tool engine modules (logic only, unit-tested — see Commands)
+│   ├── bls-clock.ts            # shared bilateral-stim clock (replaces the old per-tool RAF timer)
+│   ├── audio-engine.ts         # Web Audio graph: voices, adjustable pan depth, ambient noise/drone/binaural
+│   ├── visual-engine.ts        # canvas renderer: motion paths, trails, glow, crossfade
+│   ├── tool-prefs.ts           # localStorage-backed per-tool preferences (no accounts, no server)
+│   ├── motion-pref.ts          # live `prefers-reduced-motion` observer (reacts without a reload)
+│   ├── tool-settings-controller.ts  # binds ToolSettings.astro to tool-prefs.ts + the engines above
+│   └── confirmable.ts          # two-step arm/confirm for destructive buttons
+├── lib/tool-widgets.ts         # single componentName → Astro widget map, consumed by all four tool routes
+├── data/tool-presets.ts        # tool tiers, color palettes, built-in BLS presets
 ├── layouts/                    # BaseLayout (head/meta/skip-link), PhaseLayout, FullscreenLayout
 ├── pages/
 │   ├── index, about, help (crisis), 404, tools/ ([slug] + fullscreen)
@@ -45,6 +56,10 @@ src/
 └── styles/global.css           # design tokens, dark-zone, print styles
 functions/                      # DO Functions (resource/analyze + publish) — deploy via doctl
 ```
+
+Tool preferences (speed, colors, voice, ambient sound, etc.) and user-saved presets persist
+in `localStorage` only — no accounts, no server, consistent with the project's no-database
+stance. They degrade to defaults if storage is disabled or unavailable.
 
 ## Design System
 

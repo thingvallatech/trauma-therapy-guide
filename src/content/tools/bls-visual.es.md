@@ -33,5 +33,8 @@ La guía publicada de Shapiro describe la velocidad como "tan rápido como el co
 
 - **Velocidad:** 1,0 Hz (un ciclo completo izquierda-derecha por segundo)
 - **Duración de la serie:** 24 pases
-- **Tamaño del punto:** 48 px
-- **Color del punto:** blanco cálido sobre fondo oscuro
+- **Trayectoria:** horizontal (también están disponibles las trayectorias de infinito, arco, diagonal y onda)
+- **Suavizado:** coseno (desacelera al entrar y salir de cada borde; también están disponibles lineal y smootherstep)
+- **Forma del objetivo:** círculo (también están disponibles anillo, brillo suave, estrella y mariposa), 48 px, con resplandor y estela ajustables
+- **Color:** objetivo blanco cálido sobre fondo negro, además de cinco paletas predefinidas (predeterminada, alto contraste, baja estimulación, cálida, fría)
+- **Fundido cruzado:** desactivado — cuando se activa, el objetivo se funde entre los dos extremos en lugar de trasladarse, para el uso con movimiento reducido
