@@ -251,7 +251,17 @@ export function createAudioEngine(): AudioEngine {
     });
 
     const last = oscillators[oscillators.length - 1];
-    const cleanup = () => nodes.forEach((n) => { try { n.disconnect(); } catch { /* already gone */ } });
+    // Disconnects nodes and drops this voice's entry from `scheduled`. Can
+    // run twice for the same voice — e.g. `entry.stop()` stops the
+    // oscillators and cleans up immediately, but that also makes them fire
+    // their own (now-redundant) `onended` a moment later. Both the
+    // disconnect (try/catch) and the removal (indexOf guard) below tolerate
+    // that: the second run just finds nothing left to do.
+    const cleanup = () => {
+      nodes.forEach((n) => { try { n.disconnect(); } catch { /* already gone */ } });
+      const idx = scheduled.indexOf(entry);
+      if (idx !== -1) scheduled.splice(idx, 1);
+    };
     if (last) last.onended = cleanup;
     else window.setTimeout(cleanup, duration * 1000 + 50);
 
@@ -261,9 +271,11 @@ export function createAudioEngine(): AudioEngine {
         cleanup();
       },
     };
+    // Self-removing via `cleanup` above (on natural end or on `stop()`) is
+    // what keeps this bounded over a long session — not a length cap, which
+    // would silently drop the *oldest* still-pending entries from
+    // `cancelScheduled`'s reach while they were still going to fire.
     scheduled.push(entry);
-    // Keep the queue from growing without bound over a long session.
-    if (scheduled.length > 32) scheduled = scheduled.slice(-32);
   }
 
   function ensureSweep(): void {
@@ -286,16 +298,25 @@ export function createAudioEngine(): AudioEngine {
     sweepOsc = null;
     sweepGain = null;
     window.setTimeout(() => {
+      // `destroy()` calls `ctx.close()` right after this teardown, so by the
+      // time this fires the context may already be closed — guard every
+      // call, not just `stop()`.
       try { osc.stop(); } catch { /* already stopped */ }
-      osc.disconnect();
-      gain?.disconnect();
+      try { osc.disconnect(); } catch { /* context closed */ }
+      try { gain?.disconnect(); } catch { /* context closed */ }
     }, RAMP * 1000 * 5);
   }
 
   /** Drop queued-but-unplayed events. Shared by `cancelScheduled` and `suspend`/`destroy`. */
   function stopScheduled(): void {
-    scheduled.forEach((s) => s.stop());
+    // Clear before stopping, and iterate the saved copy rather than the live
+    // array: each `stop()` call runs `cleanup()`, which splices its own
+    // entry out of `scheduled` — mutating the very array a plain
+    // `scheduled.forEach` would still be walking, which skips whatever
+    // lands on the index that just shifted down.
+    const pending = scheduled;
     scheduled = [];
+    pending.forEach((s) => s.stop());
   }
 
   function teardownAmbient(): void {
