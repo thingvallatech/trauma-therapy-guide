@@ -50,7 +50,8 @@ export function pathPoint(path: PathName, phase: number, easing: EasingName = 'c
     case 'infinity':
       return { x, y: -Math.sin(2 * t) * INFINITY_DEPTH };
 
-    // Shallow smile: highest at the edges, lowest in the middle.
+    // Domed arc: flat (y=0) at the edges, bulging toward the top (y<0) in
+    // the middle — not a smile, since -1 is top in the Point.y convention.
     case 'arc':
       return { x, y: ARC_DEPTH * (x * x - 1) };
 

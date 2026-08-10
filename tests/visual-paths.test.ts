@@ -43,6 +43,37 @@ describe('pathPoint', () => {
     expect(Math.sign(early)).toBe(-Math.sign(late));
     expect(Math.abs(early)).toBeGreaterThan(0.1);
   });
+
+  it('pins arc to a mid-pass bulge toward the top, flat at the edges', () => {
+    // y = ARC_DEPTH*(x^2 - 1): zero at both edges (x = +-1) and most
+    // negative — i.e. toward the top, since -1 is top — where x = 0, which
+    // cosine easing puts at the mid-pass phases 0.25 and 0.75. A parabola
+    // opening the wrong way (negated ARC_DEPTH) would flip these signs.
+    expect(pathPoint('arc', 0).y).toBeCloseTo(0, 5);
+    expect(pathPoint('arc', 0.5).y).toBeCloseTo(0, 5);
+    expect(pathPoint('arc', 0.25).y).toBeCloseTo(-0.35, 5);
+    expect(pathPoint('arc', 0.75).y).toBeCloseTo(-0.35, 5);
+  });
+
+  it('pins diagonal y proportional to x with the correct sign', () => {
+    // y = x * DIAGONAL_SLOPE. Under cosine easing, phase 1/6 and 1/3 land
+    // exactly on x = -0.5 and x = +0.5. A negated slope would flip both
+    // signs; a rescaled slope would miss these exact magnitudes.
+    expect(pathPoint('diagonal', 1 / 6).y).toBeCloseTo(-0.25, 5);
+    expect(pathPoint('diagonal', 1 / 3).y).toBeCloseTo(0.25, 5);
+  });
+
+  it('pins wave to two full oscillations per cycle', () => {
+    // y = sin(4*pi*phase) * WAVE_AMPLITUDE: peaks at phase 0.125 and 0.625,
+    // troughs at 0.375 and 0.875, zero at the quarter points. A halved
+    // frequency would peak at 0.25 instead of 0.125; a doubled frequency
+    // would already be back at zero by 0.125.
+    expect(pathPoint('wave', 0.125).y).toBeCloseTo(0.3, 5);
+    expect(pathPoint('wave', 0.375).y).toBeCloseTo(-0.3, 5);
+    expect(pathPoint('wave', 0.625).y).toBeCloseTo(0.3, 5);
+    expect(pathPoint('wave', 0.875).y).toBeCloseTo(-0.3, 5);
+    expect(pathPoint('wave', 0.25).y).toBeCloseTo(0, 5);
+  });
 });
 
 describe('pathPoint easing', () => {
