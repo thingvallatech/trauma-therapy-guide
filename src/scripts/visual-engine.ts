@@ -162,12 +162,18 @@ export function createVisualRenderer(
   let opts = { ...initial };
   let width = 0;
   let height = 0;
+  let lastDpr = 0;
 
   function resize(): void {
     const dpr = window.devicePixelRatio || 1;
     const rect = canvas.getBoundingClientRect();
+    // Reallocating the backing store clears the canvas, so skip the work when
+    // nothing that affects it has actually changed. `lastDpr` starts at 0, so
+    // the construction-time call always goes through.
+    if (rect.width === width && rect.height === height && dpr === lastDpr) return;
     width = rect.width;
     height = rect.height;
+    lastDpr = dpr;
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -177,6 +183,15 @@ export function createVisualRenderer(
   }
 
   const onResize = () => resize();
+  // The window event alone is not enough: a canvas laid out at zero size when
+  // this runs (a collapsed panel, a flex parent that has not settled) would
+  // never re-scale, and neither would one resized by layout rather than by the
+  // viewport. Observing the element itself covers both. The window listener
+  // stays for the one case the observer misses — device pixel ratio changing
+  // while the CSS box does not, e.g. dragging the window to another display.
+  const observer =
+    typeof ResizeObserver === 'function' ? new ResizeObserver(() => resize()) : null;
+  observer?.observe(canvas);
   window.addEventListener('resize', onResize);
   resize();
 
@@ -305,6 +320,7 @@ export function createVisualRenderer(
       }
     },
     destroy() {
+      observer?.disconnect();
       window.removeEventListener('resize', onResize);
     },
   };
