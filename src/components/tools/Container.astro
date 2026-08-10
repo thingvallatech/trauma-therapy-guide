@@ -72,11 +72,19 @@ const t = {
 };
 
 const s = t[lang];
+
+// Wired regardless of fullscreen: fullscreen is precisely when a clinician is
+// running a session, and a chosen calming background matters most there. The
+// fallback tracks each context's own pre-JS look (forest-800's card outside
+// fullscreen, FullscreenLayout's own black inside it) so there's no color
+// flash before the settings controller hydrates — this only recolors the
+// widget's own card, never `FullscreenLayout` itself.
+const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#000000' : '#122E12'});`;
 ---
 
 <div
   class:list={[containerClass]}
-  style={!fullscreen ? 'background-color: var(--tool-field-bg, #122E12);' : undefined}
+  style={fieldBgStyle}
   data-container-widget
   data-container-i18n={JSON.stringify({ summaryTemplate: s.summaryTemplate })}
 >
