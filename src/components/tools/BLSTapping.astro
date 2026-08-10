@@ -176,6 +176,10 @@ const s = t[lang];
       });
     }
 
+    // No `onReducedMotion` wiring here, deliberately: the only "animation" is
+    // this colour swap between two static panels, which is itself the standard
+    // reduced-motion *remediation*, not something to remediate. Revisit if
+    // either panel ever gains a transform, transition, or translation.
     function highlight(side: BlsSide): void {
       clearHighlights();
       const active = side === 'L' ? panelL : panelR;

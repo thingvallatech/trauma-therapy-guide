@@ -254,6 +254,15 @@ export function createSettingsController<T extends Record<string, unknown>>(
     });
     setPrefs(patch);
     Object.keys(patch).forEach((key) => setControl(key, prefs[key]));
+    // A saved preset snapshots every setting, `palette` included, so applying
+    // one has to push the palette through to the `--tool-*` custom properties
+    // as well — otherwise `persist()` writes the new palette to the shared
+    // bucket (every *other* tool adopts it) while the tool in front of the
+    // user keeps the previous palette's colours until reload.
+    //
+    // `adoptColors` is false for the same reason it is on hydrate: the
+    // snapshot carries its own `color`/`background`, already applied above.
+    if (typeof patch.palette === 'string') applyPalette(patch.palette, false);
     syncBinauralVisibility();
     checkContrast();
   }

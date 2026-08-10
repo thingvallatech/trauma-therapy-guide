@@ -1,5 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { pathPoint, applyEasing, PATH_NAMES, EASING_NAMES } from '../src/scripts/visual-engine';
+import {
+  pathPoint, applyEasing, PATH_NAMES, EASING_NAMES,
+  type PathName, type EasingName,
+} from '../src/scripts/visual-engine';
 
 describe('pathPoint', () => {
   it.each(PATH_NAMES)('%s starts at the left edge', (path) => {
@@ -123,6 +126,29 @@ describe('applyEasing', () => {
     const edgeStep = applyEasing('cosine', 0.05) - applyEasing('cosine', 0);
     const midStep = applyEasing('cosine', 0.55) - applyEasing('cosine', 0.5);
     expect(midStep).toBeGreaterThan(edgeStep);
+  });
+});
+
+// A stored preference or a saved preset can name a path/easing that no longer
+// exists — renaming one without bumping PREFS_VERSION is the realistic route,
+// and a saved preset carrying the old value survives even a settings reset.
+// Returning `undefined` here would throw inside the rAF callback and kill the
+// render loop mid-set, with a frozen target and nothing surfaced to the user.
+describe('unknown enum values', () => {
+  it('falls back to horizontal geometry for an unrecognised path', () => {
+    const point = pathPoint('sinusoid' as PathName, 0.3);
+    expect(point).toBeDefined();
+    expect(point.y).toBe(0);
+    expect(point.x).toBeCloseTo(pathPoint('horizontal', 0.3).x, 10);
+  });
+
+  it('falls back to identity for an unrecognised easing', () => {
+    expect(applyEasing('bounce' as EasingName, 0.37)).toBeCloseTo(0.37, 6);
+  });
+
+  it('still pins the edges under an unrecognised path and easing', () => {
+    expect(pathPoint('sinusoid' as PathName, 0, 'bounce' as EasingName).x).toBeCloseTo(-1, 5);
+    expect(pathPoint('sinusoid' as PathName, 0.5, 'bounce' as EasingName).x).toBeCloseTo(1, 5);
   });
 });
 

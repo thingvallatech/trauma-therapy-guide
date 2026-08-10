@@ -61,6 +61,14 @@ export function pathPoint(path: PathName, phase: number, easing: EasingName = 'c
     // Two vertical oscillations per horizontal pass.
     case 'wave':
       return { x, y: Math.sin(2 * t) * WAVE_AMPLITUDE };
+
+    // A stored preference or a saved preset can outlive the value it names —
+    // renaming a path without bumping PREFS_VERSION would otherwise return
+    // `undefined` here and throw inside the rAF callback, killing the render
+    // loop mid-set with a frozen target and nothing surfaced to the user.
+    // Add new paths as their own `case` above; this is a floor, not a home.
+    default:
+      return { x, y: 0 };
   }
 }
 
@@ -74,6 +82,11 @@ export function applyEasing(easing: EasingName, phase: number): number {
       return 0.5 - 0.5 * Math.cos(phase * Math.PI);
     case 'smootherstep':
       return phase * phase * phase * (phase * (phase * 6 - 15) + 10);
+
+    // Same reasoning as `pathPoint`'s default: an unknown stored easing must
+    // degrade to identity, not to `undefined` propagating into the renderer.
+    default:
+      return phase;
   }
 }
 
@@ -130,6 +143,18 @@ function relativeLuminance(color: string): number {
     return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
   });
   return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+}
+
+/**
+ * The same colour at zero alpha, for the outer stop of a glow gradient.
+ * The CSS keyword `transparent` is `rgba(0, 0, 0, 0)`, so fading to it fades
+ * through black — invisible against the dark built-in palettes, but a grey
+ * halo darkening outward for anyone who picks a light background, which is
+ * the inverse of a glow and a common high-contrast preference.
+ */
+function fadeOut(color: string): string {
+  const [r, g, b] = parseHex(color);
+  return `rgba(${r}, ${g}, ${b}, 0)`;
 }
 
 /**
@@ -196,7 +221,15 @@ export function createVisualRenderer(
   resize();
 
   function clearFrame(): void {
-    if (opts.trail <= 0) {
+    // Crossfade forces the hard clear regardless of `trail`. Both targets are
+    // drawn at fixed positions every frame, so a fading clear never takes the
+    // "off" one down — it is re-composited before the fade can bite, and the
+    // alternation contrast collapses. (At trail=1, 1Hz, the off target is
+    // still ~55% lit at the far end of a half-pass.) Crossfade is forced on by
+    // `prefers-reduced-motion` whatever the stored trail is, so a reduced-
+    // motion user who once picked a trail would silently lose the bilateral
+    // signal. A comet trail is meaningless when nothing translates anyway.
+    if (opts.trail <= 0 || opts.crossfade) {
       ctx.fillStyle = opts.background;
       ctx.fillRect(0, 0, width, height);
       return;
@@ -218,7 +251,7 @@ export function createVisualRenderer(
       const glowR = r * (1 + opts.glow * 2.5);
       const grad = ctx.createRadialGradient(cx, cy, r * 0.2, cx, cy, glowR);
       grad.addColorStop(0, opts.color);
-      grad.addColorStop(1, 'transparent');
+      grad.addColorStop(1, fadeOut(opts.color));
       ctx.globalAlpha = alpha * opts.glow;
       ctx.fillStyle = grad;
       ctx.beginPath();
@@ -247,7 +280,7 @@ export function createVisualRenderer(
       case 'glow': {
         const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, r);
         grad.addColorStop(0, opts.color);
-        grad.addColorStop(1, 'transparent');
+        grad.addColorStop(1, fadeOut(opts.color));
         ctx.fillStyle = grad;
         ctx.beginPath();
         ctx.arc(cx, cy, r, 0, TAU);

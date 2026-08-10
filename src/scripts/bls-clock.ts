@@ -18,14 +18,24 @@ export type BlsSide = 'L' | 'R';
 export const MAX_FRAME_DELTA = 0.25;
 
 /**
- * Deltas above this are treated as a backgrounded/throttled tab rather than a
- * single slow-but-legitimate tick, and get clamped down to MAX_FRAME_DELTA of
- * progress. Kept separate from MAX_FRAME_DELTA (the amount of progress let
- * through once clamped): callers that drive this clock from discrete events
- * rather than every rAF frame can easily produce sub-second deltas that
- * should still count in full, not be mistaken for a pause.
+ * Deltas above this get clamped down to MAX_FRAME_DELTA of progress.
+ *
+ * Equal to MAX_FRAME_DELTA, which makes the clamp continuous: a delta of
+ * 0.26s advances by 0.25s, the same as 0.25s does, so there is no step in
+ * behaviour on either side of the threshold. A looser trigger opened a band
+ * where deltas passed through *in full* — and that band is exactly where a
+ * real main-thread stall lands (GC, a heavy paint, a video call
+ * renegotiating). At the top of the speed range a 0.99s delta emitted five
+ * half-passes in a single tick: counted against the set and consuming the
+ * `passes` budget, but never seen (the target teleports) and never heard
+ * (`scheduleAhead` resumes past them), so a 24-pass set could end after the
+ * client had tracked 19.
+ *
+ * All five consumers drive this from inside a requestAnimationFrame callback.
+ * If one ever drives it from discrete events instead, that caller wants its
+ * own timebase, not a wider hole here.
  */
-const CATCHUP_TRIGGER = 1;
+const CATCHUP_TRIGGER = MAX_FRAME_DELTA;
 
 export interface BlsClock {
   start(now: number): void;

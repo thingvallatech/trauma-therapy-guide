@@ -85,8 +85,33 @@ export function loadGlobalPrefs<T extends ToolPrefs>(defaults: T): T {
   return loadPrefs(GLOBAL_ID, defaults);
 }
 
+/**
+ * Read-merge-write, unlike `savePrefs`, which is legitimately whole-object
+ * because a tool owns its own bucket outright.
+ *
+ * The global bucket is shared, and each tool declares only the global fields
+ * it actually has — Sandtray carries `volume` but deliberately not `palette`.
+ * A whole-object write from there would erase a site-wide palette choice the
+ * clinician made in another tool, which no plausible reading of "change my
+ * ambient volume" asks for.
+ */
 export function saveGlobalPrefs(prefs: ToolPrefs): void {
-  savePrefs(GLOBAL_ID, prefs);
+  const store = storage();
+  if (!store) return;
+
+  let existing: ToolPrefs = {};
+  try {
+    const raw = store.getItem(keyFor(GLOBAL_ID));
+    if (raw) {
+      const parsed: unknown = JSON.parse(raw);
+      if (typeof parsed === 'object' && parsed !== null) existing = parsed as ToolPrefs;
+    }
+  } catch {
+    // Unreadable or corrupt — fall back to writing just the caller's fields,
+    // which is no worse than the whole-object write this replaces.
+  }
+
+  savePrefs(GLOBAL_ID, { ...existing, ...prefs });
 }
 
 /**

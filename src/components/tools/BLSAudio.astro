@@ -285,6 +285,11 @@ const s = t[lang];
       const beats = clock.tick(nowSeconds());
       if (beats.length) {
         const side = beats[beats.length - 1];
+        // No `onReducedMotion` wiring in this tool, deliberately: the only
+        // "animation" is this opacity swap between two static indicators,
+        // which is itself the standard reduced-motion *remediation*, not
+        // something to remediate. Revisit if either indicator ever gains a
+        // transform, transition, or translation.
         indL.style.opacity = side === 'L' ? '1' : '0.3';
         indR.style.opacity = side === 'R' ? '1' : '0.3';
         count.textContent = `${clock.getBeat()} / ${prefs.continuous ? '∞' : prefs.passes}`;

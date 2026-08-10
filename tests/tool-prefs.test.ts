@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import {
   loadPrefs, savePrefs, clearPrefs, PREFS_VERSION,
+  loadGlobalPrefs, saveGlobalPrefs,
   loadUserPresets, saveUserPreset, deleteUserPreset, MAX_USER_PRESETS,
 } from '../src/scripts/tool-prefs';
 
@@ -94,6 +95,46 @@ describe('tool-prefs', () => {
     savePrefs('bls-visual', { ...DEFAULTS, speed: 1.6 });
     clearPrefs('bls-visual');
     expect(loadPrefs('bls-visual', DEFAULTS)).toEqual(DEFAULTS);
+  });
+});
+
+describe('global prefs bucket', () => {
+  it('round-trips a global value', () => {
+    stubStorage();
+    saveGlobalPrefs({ palette: 'high-contrast', volume: 0.5 });
+    expect(loadGlobalPrefs({ palette: 'default', volume: 0.3 })).toEqual({
+      palette: 'high-contrast', volume: 0.5,
+    });
+  });
+
+  it('shares one key across all tools', () => {
+    const data = stubStorage();
+    saveGlobalPrefs({ palette: 'high-contrast' });
+    expect([...data.keys()]).toEqual([`ttg:prefs:v${PREFS_VERSION}:global`]);
+  });
+
+  // The bug this pins: Sandtray declares `volume` but deliberately not
+  // `palette`, so a whole-object write from there erased a site-wide palette
+  // choice made in BLSVisual.
+  it('merges rather than replacing, so a tool writing a subset keeps other keys', () => {
+    stubStorage();
+    saveGlobalPrefs({ palette: 'high-contrast', volume: 0.3 });
+    saveGlobalPrefs({ volume: 0.8 }); // a tool that has no palette setting
+    expect(loadGlobalPrefs({ palette: 'default', volume: 0.3 })).toEqual({
+      palette: 'high-contrast', volume: 0.8,
+    });
+  });
+
+  it('still writes the caller fields when the stored bucket is corrupt', () => {
+    const data = stubStorage();
+    data.set(`ttg:prefs:v${PREFS_VERSION}:global`, '{ not json');
+    saveGlobalPrefs({ volume: 0.8 });
+    expect(loadGlobalPrefs({ volume: 0.3 }).volume).toBe(0.8);
+  });
+
+  it('does not throw when storage is blocked', () => {
+    stubStorage({ setItem: () => { throw new Error('QuotaExceededError'); } });
+    expect(() => saveGlobalPrefs({ volume: 0.8 })).not.toThrow();
   });
 });
 

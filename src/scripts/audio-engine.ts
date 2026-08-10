@@ -64,7 +64,11 @@ export interface AudioEngine {
   /** Current audio-clock time in seconds, or 0 before the context exists. */
   now(): number;
   scheduleBeat(side: 'L' | 'R', when: number): void;
-  /** Drop queued-but-unplayed events. Called when speed changes. */
+  /**
+   * Silence every voice this engine owns — queued, and already sounding.
+   * Called when speed changes, so anything queued at the old tempo is dropped;
+   * sounding voices are faded out rather than cut.
+   */
   cancelScheduled(): void;
   setPan(pan: number, when?: number): void;
   playCue(kind: 'tick' | 'advance' | 'complete'): void;
@@ -134,6 +138,14 @@ export function createAudioEngine(): AudioEngine {
   // first would be orphaned (its ambientGain reference overwritten) while
   // still playing. See teardownAmbient / setAmbient below.
   let ambientEpoch = 0;
+
+  // Bumped by both `suspend()` and `ensureStarted()`. A suspended context stops
+  // advancing `currentTime`, which stops executing scheduled automation — so
+  // `ctx.suspend()` has to wait out the teardown fades or it cuts the ambient
+  // bed and sweep oscillator at full amplitude. Deferring it needs this guard:
+  // a rapid Stop → Start must not let the earlier timer silence a freshly
+  // resumed context.
+  let suspendGeneration = 0;
 
   function build(): void {
     if (ctx) return;
@@ -272,9 +284,39 @@ export function createAudioEngine(): AudioEngine {
     else window.setTimeout(cleanup, duration * 1000 + 50);
 
     const entry = {
+      // Fades before stopping. `cancelScheduled` runs on every `input` event
+      // from the speed slider, and at 1Hz a bell (1.1s decay) or chime (0.6s)
+      // is essentially always sounding — cutting the sources dead would put a
+      // click in the client's headphones on each of the ~20 events a single
+      // slider drag produces.
       stop: () => {
-        [...oscillators, ...extraSources].forEach((o) => { try { o.stop(); } catch { /* not started */ } });
-        cleanup();
+        const sources: AudioScheduledSourceNode[] = [...oscillators, ...extraSources];
+        if (!ctx) {
+          sources.forEach((o) => { try { o.stop(); } catch { /* not started */ } });
+          cleanup();
+          return;
+        }
+        const t0 = ctx.currentTime;
+        const end = t0 + RAMP;
+        try {
+          // Read the level *before* cancelling: cancelScheduledValues drops
+          // the in-flight envelope ramp whole, which would otherwise snap the
+          // gain back to the ramp's starting value (0) — the very click this
+          // is here to avoid.
+          const level = out.gain.value;
+          out.gain.cancelScheduledValues(t0);
+          out.gain.setValueAtTime(level, t0);
+          out.gain.linearRampToValueAtTime(0, end);
+        } catch { /* context closed */ }
+        // A voice queued but not yet started has `end` before its start time,
+        // which per spec means it simply never sounds — exactly what dropping
+        // a queued event should do. `stop()` may be called more than once on a
+        // source; the last call wins.
+        sources.forEach((o) => { try { o.stop(end); } catch { /* already gone */ } });
+        // `last.onended` also runs `cleanup`, but only if the source ever
+        // sounded; this backstop covers the never-started case. Both are
+        // idempotent.
+        window.setTimeout(cleanup, RAMP * 1000 + 20);
       },
     };
     // Self-removing via `cleanup` above (on natural end or on `stop()`) is
@@ -313,7 +355,11 @@ export function createAudioEngine(): AudioEngine {
     }, RAMP * 1000 * 5);
   }
 
-  /** Drop queued-but-unplayed events. Shared by `cancelScheduled` and `suspend`/`destroy`. */
+  /**
+   * Silence every voice — queued and sounding alike. Shared by
+   * `cancelScheduled` and `suspend`/`destroy`. Sounding voices fade out over
+   * `RAMP`; see `entry.stop` above.
+   */
   function stopScheduled(): void {
     // Clear before stopping, and iterate the saved copy rather than the live
     // array: each `stop()` call runs `cleanup()`, which splices its own
@@ -429,6 +475,7 @@ export function createAudioEngine(): AudioEngine {
 
   return {
     async ensureStarted() {
+      suspendGeneration += 1; // invalidate any suspend still waiting on its fade
       build();
       if (ctx!.state === 'suspended') await ctx!.resume();
       if (opts.panMode === 'sweep') ensureSweep();
@@ -439,7 +486,15 @@ export function createAudioEngine(): AudioEngine {
       teardownSweep();
       stopScheduled();
       teardownAmbient();
-      ctx?.suspend();
+      // ~120ms later, once the fades above have actually run. Imperceptible as
+      // a delay, and far less startling than the pop a hard cut produces in
+      // headphones. See `suspendGeneration`.
+      suspendGeneration += 1;
+      const generation = suspendGeneration;
+      window.setTimeout(() => {
+        if (generation !== suspendGeneration) return;
+        ctx?.suspend();
+      }, RAMP * 1000 * 6);
     },
 
     now: () => ctx?.currentTime ?? 0,
