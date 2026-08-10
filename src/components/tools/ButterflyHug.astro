@@ -1,37 +1,68 @@
 ---
 import type { Lang } from '../../i18n';
+import ToolSettings from './ToolSettings.astro';
 
 interface Props {
   fullscreen?: boolean;
   lang?: Lang;
+  warnings?: string[];
 }
 
-const { fullscreen = false, lang = 'en' } = Astro.props;
+const { fullscreen = false, lang = 'en', warnings = [] } = Astro.props;
 const containerClass = fullscreen
-  ? "w-full max-w-2xl mx-auto p-8 flex flex-col items-center"
-  : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600 flex flex-col items-center";
+  ? 'w-full max-w-2xl mx-auto p-8 flex flex-col items-center'
+  : 'w-full p-6 bg-forest-800 rounded-lg border border-forest-600 flex flex-col items-center';
 
+/**
+ * Only strings specific to this tool live here — everything the settings panel
+ * shows comes from `tools.settings.*` in ui.ts. The warnings are passed in from
+ * the tool's frontmatter rather than hardcoded, so editing the markdown is
+ * enough to change them.
+ */
 const t = {
   en: {
     instructions: 'Cross your arms over your chest, place your fingertips on your upper arms, and tap gently left-right in time with the wings.',
-    speedLabel: 'Speed',
-    wingSpeedAriaLabel: 'Wing speed',
     start: 'Start',
     stop: 'Stop',
+    running: 'Running',
+    stopped: 'Stopped',
   },
   es: {
     instructions: 'Cruza los brazos sobre el pecho, coloca las yemas de los dedos sobre los brazos superiores, y toca suavemente izquierda-derecha al ritmo de las alas.',
-    speedLabel: 'Velocidad',
-    wingSpeedAriaLabel: 'Velocidad de las alas',
     start: 'Comenzar',
     stop: 'Detener',
+    running: 'En marcha',
+    stopped: 'Detenido',
   },
 };
 
 const s = t[lang];
 ---
 
-<div class:list={[containerClass]} data-butterfly-widget data-butterfly-i18n={JSON.stringify({ start: s.start, stop: s.stop })}>
+<div
+  class:list={[containerClass]}
+  data-butterfly-widget
+  data-butterfly-i18n={JSON.stringify({
+    start: s.start, stop: s.stop, running: s.running, stopped: s.stopped,
+  })}
+>
+  {/*
+    The standard tool page renders these above the widget via ToolShell, but the
+    fullscreen route renders the widget alone — so the warnings have to travel
+    with it or they would vanish exactly where the tool is used in session.
+  */}
+  {fullscreen && warnings.length > 0 && (
+    <div class="mb-2 p-2 border border-amber-500/50 bg-amber-900/20 rounded-md text-amber-100 text-xs w-full max-w-md">
+      <ul class="list-disc list-inside space-y-1">
+        {warnings.map((w) => <li>{w}</li>)}
+      </ul>
+    </div>
+  )}
+
+  <div class="w-full max-w-md">
+    <ToolSettings componentName="ButterflyHug" lang={lang} startOpen={!fullscreen} />
+  </div>
+
   <p class="text-forest-200 text-sm mb-6 max-w-md text-center">
     {s.instructions}
   </p>
@@ -41,24 +72,17 @@ const s = t[lang];
       <ellipse
         data-wing="L"
         cx="70" cy="60" rx="45" ry="35"
-        fill="#C4A77D" opacity="0.5"
+        fill="var(--tool-target, #C4A77D)" opacity="0.5"
         class="origin-right transition-transform duration-150 ease-out"
       />
       <ellipse
         data-wing="R"
         cx="130" cy="60" rx="45" ry="35"
-        fill="#C4A77D" opacity="0.5"
+        fill="var(--tool-target, #C4A77D)" opacity="0.5"
         class="origin-left transition-transform duration-150 ease-out"
       />
-      <ellipse cx="100" cy="60" rx="5" ry="30" fill="#8A7049" />
+      <ellipse cx="100" cy="60" rx="5" ry="30" fill="var(--tool-accent, #8A7049)" />
     </svg>
-  </div>
-
-  <div class="mb-4">
-    <label class="text-forest-200 text-xs">
-      {s.speedLabel}
-      <input data-speed type="range" min="0.4" max="1.5" step="0.1" value="0.8" aria-label={s.wingSpeedAriaLabel} class="w-48 accent-bronze-500" />
-    </label>
   </div>
 
   <button
@@ -67,58 +91,312 @@ const s = t[lang];
   >
     {s.start}
   </button>
+
+  {/* Beats are frequent; only the transitions worth hearing are announced. */}
+  <p data-status class="sr-only" role="status" aria-live="polite"></p>
 </div>
 
 <script>
-  import { createBlsTimer, type BlsSide } from '../../scripts/bls-timer';
+  import { createBlsClock, type BlsSide } from '../../scripts/bls-clock';
+  import { onReducedMotion } from '../../scripts/motion-pref';
+  import { createSettingsController } from '../../scripts/tool-settings-controller';
+  import { DEFAULT_VISUAL_OPTIONS } from '../../scripts/visual-engine';
+  import {
+    createAudioEngine, DEFAULT_AUDIO_OPTIONS, DEFAULT_AMBIENT_OPTIONS,
+    type AmbientOptions,
+  } from '../../scripts/audio-engine';
 
-  const widgets = document.querySelectorAll('[data-butterfly-widget]');
-  widgets.forEach((root) => {
-    const i18n = JSON.parse(root.getAttribute('data-butterfly-i18n') || '{}');
-    const startText: string = i18n.start || 'Start';
-    const stopText: string = i18n.stop || 'Stop';
+  const TOOL_ID = 'ButterflyHug';
 
+  /** How far ahead of the audio clock beats are queued, in seconds. */
+  const LOOKAHEAD = 0.1;
+
+  const DEFAULTS = {
+    speed: 0.8,
+    passes: 24,
+    continuous: false,
+    preset: 'custom',
+    palette: 'default',
+    // No canvas here, but the shared panel still renders palette/color/
+    // background — carrying their defaults is what makes those controls
+    // persist correctly even though this widget reads the palette straight
+    // from `--tool-target` / `--tool-accent` instead.
+    ...DEFAULT_VISUAL_OPTIONS,
+    soundOn: false, // this tool is a visual/tactile anchor by default; the tap tone is opt-in.
+    endCue: true,
+    ...DEFAULT_AUDIO_OPTIONS,
+    ambient: DEFAULT_AMBIENT_OPTIONS.kind,
+    ambientVolume: DEFAULT_AMBIENT_OPTIONS.volume,
+    binauralBase: DEFAULT_AMBIENT_OPTIONS.binauralBase,
+    binauralBeat: DEFAULT_AMBIENT_OPTIONS.binauralBeat,
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-butterfly-widget]').forEach((root) => {
+    const i18n = JSON.parse(root.getAttribute('data-butterfly-i18n') || '{}') as Record<string, string>;
     const wingL = root.querySelector<SVGElement>('[data-wing="L"]')!;
     const wingR = root.querySelector<SVGElement>('[data-wing="R"]')!;
-    const speed = root.querySelector<HTMLInputElement>('[data-speed]')!;
     const toggle = root.querySelector<HTMLButtonElement>('[data-toggle]')!;
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const status = root.querySelector<HTMLElement>('[data-status]');
 
-    function flap(side: BlsSide) {
-      if (reduceMotion) {
+    // The controller owns the settings panel entirely: hydration, readouts,
+    // palettes, presets, persistence, and reset. It hydrates during
+    // construction, so `get()` already reflects stored prefs.
+    const settings = createSettingsController(root, TOOL_ID, DEFAULTS);
+    let prefs = settings.get();
+
+    // Read live rather than once at init, so an OS-level reduced-motion
+    // change takes effect on the very next beat instead of needing a reload.
+    let reducedMotion = false;
+    onReducedMotion((reduced) => { reducedMotion = reduced; });
+
+    function flap(side: BlsSide): void {
+      if (reducedMotion) {
+        wingL.setAttribute('transform', '');
+        wingR.setAttribute('transform', '');
         wingL.setAttribute('opacity', side === 'L' ? '0.9' : '0.3');
         wingR.setAttribute('opacity', side === 'R' ? '0.9' : '0.3');
       } else if (side === 'L') {
+        wingL.setAttribute('opacity', '0.5');
+        wingR.setAttribute('opacity', '0.5');
         wingL.setAttribute('transform', 'scale(1.1 1.1) translate(-6 -6)');
         wingR.setAttribute('transform', '');
       } else {
+        wingL.setAttribute('opacity', '0.5');
+        wingR.setAttribute('opacity', '0.5');
         wingR.setAttribute('transform', 'scale(1.1 1.1) translate(-6 -6)');
         wingL.setAttribute('transform', '');
       }
     }
 
-    const timer = createBlsTimer({
-      getSpeed: () => parseFloat(speed.value),
-      onBeat(side) {
-        flap(side);
-      },
-    });
-
-    function start() {
-      toggle.textContent = stopText;
-      timer.start();
-      flap('L');
-    }
-
-    function stop() {
-      timer.stop();
+    function rest(): void {
       wingL.setAttribute('transform', '');
       wingR.setAttribute('transform', '');
       wingL.setAttribute('opacity', '0.5');
       wingR.setAttribute('opacity', '0.5');
-      toggle.textContent = startText;
     }
 
-    toggle.addEventListener('click', () => (timer.isRunning() ? stop() : start()));
+    const audio = createAudioEngine();
+
+    let lastAmbient: AmbientOptions | null = null;
+
+    function pushAmbient(): void {
+      const next: AmbientOptions = {
+        kind: prefs.soundOn ? prefs.ambient : 'none',
+        volume: prefs.ambientVolume,
+        binauralBase: prefs.binauralBase,
+        binauralBeat: prefs.binauralBeat,
+      };
+      const patch: Partial<AmbientOptions> = {};
+      if (!lastAmbient || lastAmbient.kind !== next.kind) patch.kind = next.kind;
+      if (!lastAmbient || lastAmbient.volume !== next.volume) patch.volume = next.volume;
+      if (!lastAmbient || lastAmbient.binauralBase !== next.binauralBase) {
+        patch.binauralBase = next.binauralBase;
+      }
+      if (!lastAmbient || lastAmbient.binauralBeat !== next.binauralBeat) {
+        patch.binauralBeat = next.binauralBeat;
+      }
+      lastAmbient = next;
+      if (Object.keys(patch).length > 0) audio.setAmbient(patch);
+    }
+
+    function pushToEngines(): void {
+      audio.setOptions({
+        voice: prefs.voice, pitch: prefs.pitch,
+        volume: prefs.soundOn ? prefs.volume : 0,
+        panDepth: prefs.panDepth, panMode: prefs.panMode,
+      });
+      pushAmbient();
+    }
+
+    // --- timebase (see BLSVisual for the full rationale) -------------------
+
+    let usingAudioClock = false;
+    let timeOffset = 0;
+    let audioReady = false;
+    let audioLive = false;
+
+    const rawNow = () => (usingAudioClock ? audio.now() : performance.now() / 1000);
+    const nowSeconds = () => rawNow() + timeOffset;
+    const toAudioTime = (t: number) => t - timeOffset;
+
+    function useAudioClock(on: boolean): void {
+      if (on === usingAudioClock) return;
+      const before = nowSeconds();
+      usingAudioClock = on;
+      timeOffset = before - rawNow();
+    }
+
+    let healthWall = 0;
+    let healthAudio = 0;
+
+    function checkAudioClockHealth(): void {
+      if (!usingAudioClock) return;
+      const wall = performance.now() / 1000;
+      const heard = audio.now();
+      if (healthWall === 0) {
+        healthWall = wall;
+        healthAudio = heard;
+        return;
+      }
+      const elapsed = wall - healthWall;
+      if (elapsed < 0.5) return;
+      const stalled = heard - healthAudio < elapsed * 0.5;
+      healthWall = wall;
+      healthAudio = heard;
+      if (!stalled) return;
+      audio.cancelScheduled();
+      audioReady = false;
+      useAudioClock(false); // recomputes the offset, so the wings do not jump
+    }
+
+    async function startAudio(): Promise<void> {
+      try {
+        await audio.ensureStarted();
+        audioReady = true;
+        audioLive = true;
+        useAudioClock(true);
+        healthWall = 0;
+      } catch {
+        audioReady = false;
+      }
+    }
+
+    // --- clock, scheduling, and the render loop ----------------------------
+    //
+    // Continuous by design: the butterfly hug has no set to finish, so beats
+    // never reach a total and `clock.isRunning()` only ever goes false from
+    // the explicit Stop below — the "did the set end on its own" branch that
+    // BLSVisual/BLSAudio need is unreachable here and is left out rather than
+    // kept as dead code.
+
+    const clock = createBlsClock({
+      getSpeed: () => prefs.speed,
+      getTotalBeats: () => Infinity,
+    });
+
+    let rafId = 0;
+    let scheduledThrough = 0;
+    let suspendTimer = 0;
+
+    function announce(message: string): void {
+      if (status) status.textContent = message;
+    }
+
+    function scheduleAhead(): void {
+      if (!prefs.soundOn || !audioReady) return;
+      const horizon = nowSeconds() + LOOKAHEAD;
+      let k = Math.max(scheduledThrough, clock.getBeat()) + 1;
+      while (k <= Infinity) {
+        const when = clock.beatTimeFor(k);
+        if (!Number.isFinite(when) || when > horizon) break;
+        audio.scheduleBeat(k % 2 === 1 ? 'R' : 'L', toAudioTime(when));
+        scheduledThrough = k;
+        k += 1;
+      }
+    }
+
+    function frame(): void {
+      checkAudioClockHealth();
+      const beats = clock.tick(nowSeconds());
+      if (beats.length) flap(beats[beats.length - 1]);
+
+      if (prefs.soundOn && audioReady && prefs.panMode === 'sweep') {
+        audio.setPan(-Math.cos(clock.getPhase() * Math.PI * 2));
+      }
+      scheduleAhead();
+      rafId = requestAnimationFrame(frame);
+    }
+
+    function suspendAudio(delayMs: number): void {
+      window.clearTimeout(suspendTimer);
+      if (!audioLive) return;
+      if (delayMs <= 0) {
+        audio.suspend();
+        return;
+      }
+      suspendTimer = window.setTimeout(() => audio.suspend(), delayMs);
+    }
+
+    function start(): void {
+      if (clock.isRunning()) return;
+      window.clearTimeout(suspendTimer);
+      healthWall = 0;
+      pushToEngines();
+      scheduledThrough = 0;
+      toggle.textContent = i18n.stop || 'Stop';
+      clock.start(nowSeconds());
+      announce(i18n.running || 'Running');
+      // The opening left-side action belongs to the component; the clock's
+      // first beat is the right side, half a cycle later.
+      flap('L');
+      rafId = requestAnimationFrame(frame);
+
+      if (prefs.soundOn) {
+        void startAudio().then(() => {
+          if (!audioReady || !clock.isRunning()) return;
+          scheduledThrough = clock.getBeat();
+          if (clock.getBeat() === 0) audio.scheduleBeat('L', toAudioTime(nowSeconds()) + 0.02);
+        });
+      }
+    }
+
+    function stop(): void {
+      clock.stop();
+      cancelAnimationFrame(rafId);
+      rafId = 0;
+      toggle.textContent = i18n.start || 'Start';
+      suspendAudio(0);
+      rest();
+      announce(i18n.stopped || 'Stopped');
+    }
+
+    toggle.addEventListener('click', () => (clock.isRunning() ? stop() : start()));
+
+    // --- settings wiring -----------------------------------------------
+
+    settings.onChange((next) => {
+      const speedChanged = next.speed !== prefs.speed;
+      const running = clock.isRunning();
+      const soundCameOn = Boolean(next.soundOn) && !prefs.soundOn;
+      const soundWentOff = !next.soundOn && Boolean(prefs.soundOn);
+
+      if (speedChanged && running) clock.rebase(nowSeconds());
+      prefs = next;
+      if (speedChanged && running) {
+        audio.cancelScheduled();
+        scheduledThrough = clock.getBeat();
+      }
+
+      if (soundCameOn) {
+        void startAudio().then(() => {
+          scheduledThrough = clock.getBeat();
+          pushToEngines();
+        });
+      } else if (soundWentOff) {
+        audio.cancelScheduled();
+        suspendAudio(0);
+        useAudioClock(false);
+        scheduledThrough = clock.getBeat();
+      }
+
+      pushToEngines();
+    });
+
+    // The panel is hydrated by now, so this is the one push that carries stored
+    // preferences into the engines.
+    pushToEngines();
   });
+
+  // Spacebar toggles the first butterfly-hug widget on the page, unless a control has focus.
+  if (document.querySelector('[data-butterfly-widget]')) {
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== ' ') return;
+      if (e.target instanceof Element
+        && e.target.closest('button, input, a, select, textarea, summary, [contenteditable]')) return;
+      const toggle = document.querySelector<HTMLButtonElement>('[data-butterfly-widget] [data-toggle]');
+      if (!toggle) return;
+      e.preventDefault();
+      toggle.click();
+    });
+  }
 </script>
