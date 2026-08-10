@@ -1,12 +1,14 @@
 ---
 import type { Lang } from '../../i18n';
+import ToolSettings from './ToolSettings.astro';
 
 interface Props {
   fullscreen?: boolean;
   lang?: Lang;
+  warnings?: string[];
 }
 
-const { fullscreen = false, lang = 'en' } = Astro.props;
+const { fullscreen = false, lang = 'en', warnings = [] } = Astro.props;
 const containerClass = fullscreen
   ? "w-full max-w-2xl mx-auto p-8"
   : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
@@ -55,9 +57,37 @@ const t = {
 };
 
 const s = t[lang];
+
+// Wired regardless of fullscreen: fullscreen is precisely when a clinician is
+// running a session, and a chosen calming background matters most there. The
+// fallback tracks each context's own pre-JS look (forest-800's card outside
+// fullscreen, FullscreenLayout's own black inside it) so there's no color
+// flash before the settings controller hydrates — this only recolors the
+// widget's own card, never `FullscreenLayout` itself.
+const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#000000' : '#122E12'});`;
 ---
 
-<div class:list={[containerClass]} data-voc-widget data-voc-i18n={JSON.stringify({ labels: s.labels })}>
+<div
+  class:list={[containerClass]}
+  style={fieldBgStyle}
+  data-voc-widget
+  data-voc-i18n={JSON.stringify({ labels: s.labels })}
+>
+  {/*
+    The standard tool page renders these above the widget via ToolShell, but the
+    fullscreen route renders the widget alone — so the warnings have to travel
+    with it or they would vanish exactly where the tool is used in session.
+  */}
+  {fullscreen && warnings.length > 0 && (
+    <div class="mb-2 p-2 border border-amber-500/50 bg-amber-900/20 rounded-md text-amber-100 text-xs w-full max-w-md">
+      <ul class="list-disc list-inside space-y-1">
+        {warnings.map((w) => <li>{w}</li>)}
+      </ul>
+    </div>
+  )}
+
+  <ToolSettings componentName="VOCScale" lang={lang} startOpen={!fullscreen} />
+
   <h2 class="text-forest-100 font-semibold mb-4">{s.heading}</h2>
 
   <label class="block text-sm text-forest-300 mb-2">{s.pcLabel}</label>
@@ -69,7 +99,13 @@ const s = t[lang];
   />
 
   <div class="text-center mb-6">
-    <div data-voc-display aria-live="polite" aria-atomic="true" class="font-serif text-7xl font-semibold text-bronze-400 mb-2 tabular-nums">4</div>
+    <div
+      data-voc-display
+      aria-live="polite"
+      aria-atomic="true"
+      class="font-serif text-7xl font-semibold mb-2 tabular-nums"
+      style="color: var(--tool-color, #FFCA28);"
+    >4</div>
     <div data-voc-label aria-live="polite" class="text-forest-300 text-sm">{s.initialDisplay}</div>
   </div>
 
@@ -95,7 +131,21 @@ const s = t[lang];
 </div>
 
 <script>
-  const widgets = document.querySelectorAll('[data-voc-widget]');
+  import { createSettingsController } from '../../scripts/tool-settings-controller';
+  import { createAudioEngine, type AmbientOptions } from '../../scripts/audio-engine';
+
+  const TOOL_ID = 'VOCScale';
+  const DEFAULTS = {
+    soundOn: false, volume: 0.3, palette: 'default',
+    // No canvas or target here, but the shared panel still renders palette/
+    // color/background — carrying their defaults is what makes those
+    // controls persist correctly across a reload even though this widget
+    // never reads them back out.
+    color: '#FFF8E7', background: '#000000',
+    ambient: 'none', ambientVolume: 0.2, binauralBase: 200, binauralBeat: 4,
+  };
+
+  const widgets = document.querySelectorAll<HTMLElement>('[data-voc-widget]');
   widgets.forEach((root) => {
     const slider = root.querySelector<HTMLInputElement>('[data-voc-slider]')!;
     const display = root.querySelector<HTMLElement>('[data-voc-display]')!;
@@ -104,12 +154,99 @@ const s = t[lang];
     const i18n = JSON.parse(root.getAttribute('data-voc-i18n') || '{}');
     const labels: string[] = i18n.labels || [];
 
+    // The controller owns the settings panel entirely: hydration, readouts,
+    // palette, and persistence. It hydrates during construction, so `get()`
+    // already reflects stored prefs.
+    const settings = createSettingsController(root, TOOL_ID, DEFAULTS);
+    let prefs = settings.get();
+    const audio = createAudioEngine();
+
+    // `color` is the foreground accent on `background`'s surface — see the
+    // note in Grounding.astro for why buttons are deliberately left off this.
+    function applyColors(): void {
+      root.style.setProperty('--tool-color', prefs.color);
+      root.style.setProperty('--tool-field-bg', prefs.background);
+    }
+
+    // Diffs against the ambient layer's own last-applied state before calling
+    // `setAmbient` — see the note in Grounding.astro for why this avoids an
+    // audible click on every unrelated settings change.
+    let lastAmbient: AmbientOptions | null = null;
+    function pushAmbient(): void {
+      const next: AmbientOptions = {
+        kind: prefs.soundOn ? (prefs.ambient as AmbientOptions['kind']) : 'none',
+        volume: prefs.ambientVolume,
+        binauralBase: prefs.binauralBase,
+        binauralBeat: prefs.binauralBeat,
+      };
+      const patch: Partial<AmbientOptions> = {};
+      if (!lastAmbient || lastAmbient.kind !== next.kind) patch.kind = next.kind;
+      if (!lastAmbient || lastAmbient.volume !== next.volume) patch.volume = next.volume;
+      if (!lastAmbient || lastAmbient.binauralBase !== next.binauralBase) {
+        patch.binauralBase = next.binauralBase;
+      }
+      if (!lastAmbient || lastAmbient.binauralBeat !== next.binauralBeat) {
+        patch.binauralBeat = next.binauralBeat;
+      }
+      lastAmbient = next;
+      if (Object.keys(patch).length > 0) audio.setAmbient(patch);
+    }
+
+    function pushToEngines(): void {
+      audio.setOptions({ volume: prefs.soundOn ? prefs.volume : 0 });
+      pushAmbient();
+    }
+
+    let audioLive = false;
+
+    async function startAudio(): Promise<void> {
+      try {
+        await audio.ensureStarted();
+        audioLive = true;
+      } catch {
+        // Autoplay policy or an unavailable AudioContext — the tool still
+        // works silently.
+      }
+    }
+
+    function suspendAudio(): void {
+      if (!audioLive) return;
+      audio.cancelScheduled();
+      audio.suspend();
+    }
+
+    // No cue sounds on this tool — see `update()` below. This only makes
+    // sure the ambient bed actually gets a user gesture to start on, since a
+    // "sound on" preference restored from a previous visit still needs a
+    // fresh gesture on this page load before the browser allows audio.
+    function ensureAudioLive(): void {
+      if (prefs.soundOn && !audioLive) void startAudio().then(() => pushToEngines());
+    }
+
+    settings.onChange((next) => {
+      const soundCameOn = Boolean(next.soundOn) && !prefs.soundOn;
+      const soundWentOff = !next.soundOn && Boolean(prefs.soundOn);
+      prefs = next;
+
+      if (soundCameOn) void startAudio().then(() => pushToEngines());
+      else if (soundWentOff) suspendAudio();
+
+      pushToEngines();
+      applyColors();
+    });
+
+    pushToEngines();
+    applyColors();
+
     function update() {
       const v = parseInt(slider.value, 10);
       display.textContent = String(v);
       label.textContent = labels[v] || '';
     }
-    slider.addEventListener('input', update);
+    // Deliberately no per-increment tick here, even with sound enabled — a
+    // noise on every step while someone rates how true a belief feels is the
+    // wrong instinct for this tool. Only the ambient bed and palette apply.
+    slider.addEventListener('input', () => { update(); ensureAudioLive(); });
     update();
   });
 </script>

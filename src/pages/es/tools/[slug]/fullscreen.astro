@@ -1,20 +1,7 @@
 ---
 import { getCollection, type CollectionEntry } from 'astro:content';
 import FullscreenLayout from '../../../../layouts/FullscreenLayout.astro';
-import SUDScale from '../../../../components/tools/SUDScale.astro';
-import VOCScale from '../../../../components/tools/VOCScale.astro';
-import BreathPacer from '../../../../components/tools/BreathPacer.astro';
-import Grounding from '../../../../components/tools/Grounding.astro';
-import BLSVisual from '../../../../components/tools/BLSVisual.astro';
-import BLSAudio from '../../../../components/tools/BLSAudio.astro';
-import BLSCombined from '../../../../components/tools/BLSCombined.astro';
-import BLSTapping from '../../../../components/tools/BLSTapping.astro';
-import Container from '../../../../components/tools/Container.astro';
-import SafePlace from '../../../../components/tools/SafePlace.astro';
-import Lightstream from '../../../../components/tools/Lightstream.astro';
-import ButterflyHug from '../../../../components/tools/ButterflyHug.astro';
-import FeelingWheel from '../../../../components/tools/FeelingWheel.astro';
-import Sandtray from '../../../../components/tools/Sandtray.astro';
+import { widgetFor } from '../../../../lib/tool-widgets';
 import type { Lang } from '../../../../i18n';
 
 const lang: Lang = 'es';
@@ -33,19 +20,12 @@ interface Props {
 
 const { tool } = Astro.props;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const widgets: Record<string, any> = {
-  SUDScale, VOCScale, BreathPacer, Grounding,
-  BLSVisual, BLSAudio, BLSCombined, BLSTapping,
-  Container, SafePlace, Lightstream, ButterflyHug, FeelingWheel, Sandtray,
-};
-
-const Widget = widgets[tool.data.componentName] ?? null;
+const Widget = widgetFor(tool.data.componentName);
 const exitHref = `/es/tools/${tool.slug.replace(/es$/, '')}`;
 ---
 
 <FullscreenLayout title={`${tool.data.name} — Pantalla completa`} exitHref={exitHref} lang={lang}>
-  {Widget ? <Widget lang={lang} fullscreen={true} /> : (
+  {Widget ? <Widget lang={lang} fullscreen={true} warnings={tool.data.warnings} /> : (
     <div class="text-forest-300 text-sm">Widget no disponible.</div>
   )}
 </FullscreenLayout>

@@ -1,0 +1,375 @@
+---
+import { useTranslations, type Lang, type TranslationKey } from '../../i18n';
+import { PALETTES, BLS_PRESETS, TOOL_TIERS, type ToolTier } from '../../data/tool-presets';
+import { PATH_NAMES, EASING_NAMES, TARGET_SHAPES } from '../../scripts/visual-engine';
+import { VOICE_NAMES, AMBIENT_KINDS } from '../../scripts/audio-engine';
+
+interface Props {
+  componentName: string;
+  lang?: Lang;
+  /** Collapsed by default in fullscreen so it does not compete with the tool. */
+  startOpen?: boolean;
+}
+
+const { componentName, lang = 'en', startOpen = false } = Astro.props;
+const t = useTranslations(lang);
+const tier: ToolTier = TOOL_TIERS[componentName] ?? 'C';
+
+/**
+ * Only the bilateral tools run on the shared BLS clock — BreathPacer and
+ * Lightstream are step-driven, so "speed / passes / continuous" controls
+ * there would be controls that do nothing. This gates timing and the
+ * bilateral-tone sound controls (see `showBlsSound`), both of which apply
+ * whether or not the tool actually renders a moving target.
+ */
+const isBilateral = componentName.startsWith('BLS') || componentName === 'ButterflyHug';
+
+/**
+ * Only BLSVisual and BLSCombined draw a target on a canvas. Every other
+ * bilateral tool — BLSAudio (no canvas at all), BLSTapping (L/R panels),
+ * ButterflyHug (fixed SVG wings) — has no use for a movement path, easing,
+ * target shape/size/glow/trail, or the crossfade toggle: those controls
+ * would move a slider that nothing on screen ever reads. Kept as an explicit
+ * allowlist rather than "not BLSAudio/BLSTapping/..." so a new bilateral
+ * tool defaults to *not* showing dead controls until it actually earns them.
+ */
+const hasVisualTarget = componentName === 'BLSVisual' || componentName === 'BLSCombined';
+
+/**
+ * Whether the tool runs a finite thing it can count and complete — a set of
+ * BLS passes, but also a breathing session's duration or a lightstream run's
+ * fixed sequence of body areas. ButterflyHug is continuous by design — its
+ * clock never reaches a total, so "Passes", "Continuous", and "Chime at the
+ * end of a set" would be controls a clinician could set mid-session that do
+ * nothing, which is worse than no control at all. Kept as an explicit
+ * allowlist, same style as `hasVisualTarget`, so a future continuous-only
+ * tool defaults to *not* showing these until it actually earns them.
+ */
+const hasSets = componentName === 'BLSVisual' || componentName === 'BLSCombined'
+  || componentName === 'BLSAudio' || componentName === 'BLSTapping'
+  || componentName === 'BreathPacer' || componentName === 'Lightstream';
+
+/**
+ * The option ids in tool-presets.ts and the engine enums are the suffix of a
+ * real key in ui.ts, but TypeScript cannot see that through a template
+ * literal — so narrow once here rather than casting at every call site.
+ */
+const tk = (key: string): string => t(key as TranslationKey);
+
+const showPreset = tier === 'A';
+const showMotion = tier === 'A' || tier === 'B';
+/** Speed — every bilateral tool's clock runs at some cadence, even a continuous one. */
+const showTiming = showMotion && isBilateral;
+/** Passes / continuous — only meaningful for a tool that can finish a set. */
+const showSetControls = showTiming && hasSets;
+/** Path / easing / crossfade (Motion) and shape / size / glow / trail (Appearance) — only meaningful for a rendered target. */
+const showPathControls = showMotion && hasVisualTarget;
+const showBlsSound = (tier === 'A' || tier === 'B') && isBilateral;
+/**
+ * "Chime at the end of a set" — only meaningful for a tool that has an end.
+ * Deliberately independent of `showBlsSound`/`isBilateral`: BreathPacer and
+ * Lightstream are step-driven, not bilateral, but they still run a
+ * completable session and still earn a completion chime — only the
+ * bilateral-tone controls (voice/pitch/pan) are gated on `isBilateral`.
+ */
+const showEndCue = (tier === 'A' || tier === 'B') && hasSets;
+const showAmbient = true;
+
+/**
+ * "Background" is a real color choice everywhere except BLSAudio, which has
+ * no visual field at all — just text indicators with nothing behind them to
+ * paint. This is the one control gated by exclusion rather than an
+ * allowlist: unlike Motion/Sound, the Appearance section (including
+ * "Background") renders for every tier, not just bilateral tools — an
+ * allowlist here would silently hide it for Tier C/D tools this task never
+ * touched. BLSAudio is the only tool known today to lack a field to color,
+ * so it is named directly. (Sandtray also has no field for Color/Background
+ * to land on, but that's handled one level up by `showAppearance` below,
+ * which excludes the whole section rather than just these two fields.)
+ */
+const showBackground = componentName !== 'BLSAudio';
+
+/**
+ * Sandtray's whole aesthetic is a wooden tray with a sand surface — theming
+ * that from a generic palette (a "high contrast" or "cool" wooden tray isn't
+ * a thing anyone wants) would undermine the design rather than serve it. It
+ * also already has its own richer, more meaningful color controls: sand,
+ * water, and rock swatches on the canvas itself. So Sandtray gets no
+ * Appearance section at all — Tier D means exactly "the ambient sound bed"
+ * for this tool, not "palette plus sound." Gating the section as a whole
+ * (rather than field-by-field, the way Color/Background are gated above)
+ * also avoids shipping an empty bordered block with an orphan heading.
+ */
+const showAppearance = componentName !== 'Sandtray';
+
+const field = 'text-forest-200 text-xs block';
+const focusRing =
+  'focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800';
+const input = `w-full accent-bronze-500 mt-1 ${focusRing}`;
+const checkbox = `accent-bronze-500 ${focusRing}`;
+const colorInput = `w-full h-7 mt-1 rounded ${focusRing}`;
+const select =
+  `w-full mt-1 bg-forest-700 border border-forest-600 text-forest-100 rounded-md text-xs px-2 py-1 ${focusRing}`;
+---
+
+<details
+  class="mb-4 border border-forest-600 rounded-lg bg-forest-800/60"
+  data-tool-settings
+  data-tool-id={componentName}
+  data-tier={tier}
+  open={startOpen}
+>
+  <summary
+    class="cursor-pointer select-none px-4 py-2 text-forest-100 text-sm font-medium rounded-lg
+           focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
+  >
+    {t('tools.settings.title')}
+  </summary>
+
+  <div class="p-4 pt-2 space-y-5">
+    {showPreset && (
+      <section
+        data-preset-section
+        data-preset-i18n={JSON.stringify({
+          saved: t('tools.settings.presetSaved'),
+          deleted: t('tools.settings.presetDeleted'),
+          nameNeeded: t('tools.settings.presetNameNeeded'),
+          overwritten: t('tools.settings.presetOverwritten'),
+        })}
+      >
+        <h3 class="text-forest-300 text-xs uppercase tracking-wide mb-2">{t('tools.settings.section.preset')}</h3>
+        <label class={field}>
+          <span class="sr-only">{t('tools.settings.section.preset')}</span>
+          <select data-setting="preset" class={select}>
+            <option value="custom">{t('tools.settings.preset.custom')}</option>
+            <optgroup label={t('tools.settings.presetGroupBuiltIn')}>
+              {BLS_PRESETS.map((p) => (
+                <option value={`builtin:${p.id}`}>{tk(`tools.settings.preset.${p.id}`)}</option>
+              ))}
+            </optgroup>
+            <optgroup data-user-preset-group label={t('tools.settings.presetGroupSaved')} hidden></optgroup>
+          </select>
+        </label>
+
+        <div class="mt-3 flex flex-wrap items-end gap-2">
+          <label class={`${field} flex-1 min-w-[12rem]`}>
+            {t('tools.settings.presetName')}
+            <input
+              data-preset-name
+              type="text"
+              maxlength="40"
+              placeholder={t('tools.settings.presetNamePlaceholder')}
+              class={`w-full mt-1 bg-forest-700 border border-forest-600 text-forest-100 rounded-md text-xs px-2 py-1 ${focusRing}`}
+            />
+          </label>
+          <button
+            type="button"
+            data-preset-save
+            class={`px-3 py-1.5 rounded-md bg-bronze-500 text-forest-900 text-xs font-semibold hover:bg-bronze-400 transition-colors ${focusRing}`}
+          >
+            {t('tools.settings.savePreset')}
+          </button>
+          <button
+            type="button"
+            data-preset-delete
+            hidden
+            class={`px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-xs hover:bg-forest-600 transition-colors ${focusRing}`}
+          >
+            {t('tools.settings.deletePreset')}
+          </button>
+        </div>
+        <p data-preset-status class="text-forest-400 text-xs mt-1" role="status" aria-live="polite"></p>
+      </section>
+    )}
+
+    {showTiming && (
+      <section>
+        <h3 class="text-forest-300 text-xs uppercase tracking-wide mb-2">{t('tools.settings.section.motion')}</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <label class={field}>
+            {t('tools.settings.speed')}
+            <input data-setting="speed" type="range" min="0.2" max="2.5" step="0.1" value="1.0" class={input} />
+            <span data-value-for="speed" class="block text-center text-forest-100 tabular-nums">1.0</span>
+          </label>
+          {showSetControls && (
+            <>
+              <label class={field}>
+                {t('tools.settings.passes')}
+                <input data-setting="passes" type="range" min="4" max="60" step="2" value="24" class={input} />
+                <span data-value-for="passes" class="block text-center text-forest-100 tabular-nums">24</span>
+              </label>
+              <label class="text-forest-200 text-xs flex items-center gap-2 self-end">
+                <input data-setting="continuous" type="checkbox" class={checkbox} />
+                {t('tools.settings.continuous')}
+              </label>
+            </>
+          )}
+          {showPathControls && (
+            <>
+              <label class={field}>
+                {t('tools.settings.path')}
+                <select data-setting="path" class={select}>
+                  {PATH_NAMES.map((p) => <option value={p}>{tk(`tools.settings.path.${p}`)}</option>)}
+                </select>
+              </label>
+              <label class={field}>
+                {t('tools.settings.easing')}
+                <select data-setting="easing" class={select}>
+                  {EASING_NAMES.map((e) => <option value={e}>{tk(`tools.settings.easing.${e}`)}</option>)}
+                </select>
+              </label>
+              <label class="text-forest-200 text-xs flex items-center gap-2 self-end">
+                <input data-setting="crossfade" type="checkbox" class={checkbox} />
+                {t('tools.settings.crossfade')}
+              </label>
+            </>
+          )}
+        </div>
+        {showPathControls && <p class="text-forest-400 text-xs mt-2">{t('tools.settings.crossfadeHint')}</p>}
+      </section>
+    )}
+
+    {showAppearance && (
+      <section>
+        <h3 class="text-forest-300 text-xs uppercase tracking-wide mb-2">{t('tools.settings.section.appearance')}</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <label class={field}>
+            {t('tools.settings.palette')}
+            <select data-setting="palette" class={select}>
+              {PALETTES.map((p) => <option value={p.id}>{tk(`tools.settings.palette.${p.id}`)}</option>)}
+            </select>
+          </label>
+          {showPathControls && (
+            <>
+              <label class={field}>
+                {t('tools.settings.shape')}
+                <select data-setting="shape" class={select}>
+                  {TARGET_SHAPES.map((s) => <option value={s}>{tk(`tools.settings.shape.${s}`)}</option>)}
+                </select>
+              </label>
+              <label class={field}>
+                {t('tools.settings.size')}
+                <input data-setting="size" type="range" min="16" max="140" step="4" value="48" class={input} />
+                <span data-value-for="size" class="block text-center text-forest-100 tabular-nums">48</span>
+              </label>
+              <label class={field}>
+                {t('tools.settings.glow')}
+                <input data-setting="glow" type="range" min="0" max="1" step="0.05" value="0.35" class={input} />
+              </label>
+              <label class={field}>
+                {t('tools.settings.trail')}
+                <input data-setting="trail" type="range" min="0" max="1" step="0.05" value="0" class={input} />
+              </label>
+            </>
+          )}
+          <label class={field}>
+            {t('tools.settings.color')}
+            <input data-setting="color" type="color" value="#FFF8E7" class={colorInput} />
+          </label>
+          {showBackground && (
+            <label class={field}>
+              {t('tools.settings.background')}
+              <input data-setting="background" type="color" value="#000000" class={colorInput} />
+            </label>
+          )}
+        </div>
+        <p
+          data-contrast-warning
+          class="hidden mt-2 p-2 border border-amber-500/50 bg-amber-900/20 rounded-md text-amber-100 text-xs"
+          role="status"
+        >
+          {t('tools.settings.contrastWarning')}
+        </p>
+      </section>
+    )}
+
+    <section>
+      <h3 class="text-forest-300 text-xs uppercase tracking-wide mb-2">{t('tools.settings.section.sound')}</h3>
+      <label class="text-forest-200 text-xs flex items-center gap-2 mb-3">
+        <input data-setting="soundOn" type="checkbox" class={checkbox} />
+        {t('tools.settings.soundOn')}
+      </label>
+
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+        {showBlsSound && (
+          <>
+            <label class={field}>
+              {t('tools.settings.voice')}
+              <select data-setting="voice" class={select}>
+                {VOICE_NAMES.map((v) => <option value={v}>{tk(`tools.settings.voice.${v}`)}</option>)}
+              </select>
+            </label>
+            <label class={field}>
+              {t('tools.settings.pitch')}
+              <input data-setting="pitch" type="range" min="110" max="1200" step="10" value="440" class={input} />
+              <span data-value-for="pitch" class="block text-center text-forest-100 tabular-nums">440</span>
+            </label>
+            <label class={field}>
+              {t('tools.settings.panDepth')}
+              <input data-setting="panDepth" type="range" min="0" max="1" step="0.05" value="0.85" class={input} />
+              <span data-value-for="panDepth" class="block text-center text-forest-100 tabular-nums">85%</span>
+            </label>
+            <label class={field}>
+              {t('tools.settings.panMode')}
+              <select data-setting="panMode" class={select}>
+                <option value="discrete">{t('tools.settings.panMode.discrete')}</option>
+                <option value="sweep">{t('tools.settings.panMode.sweep')}</option>
+              </select>
+            </label>
+          </>
+        )}
+        <label class={field}>
+          {t('tools.settings.volume')}
+          <input data-setting="volume" type="range" min="0" max="1" step="0.05" value="0.3" class={input} />
+          <span data-value-for="volume" class="block text-center text-forest-100 tabular-nums">30%</span>
+        </label>
+        {showEndCue && (
+          <label class="text-forest-200 text-xs flex items-center gap-2 self-end">
+            <input data-setting="endCue" type="checkbox" checked class={checkbox} />
+            {t('tools.settings.endCue')}
+          </label>
+        )}
+      </div>
+
+      {showAmbient && (
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-3 pt-3 border-t border-forest-700">
+          <label class={field}>
+            {t('tools.settings.ambient')}
+            <select data-setting="ambient" class={select}>
+              {AMBIENT_KINDS.map((k) => <option value={k}>{tk(`tools.settings.ambient.${k}`)}</option>)}
+            </select>
+          </label>
+          <label class={field}>
+            {t('tools.settings.ambientVolume')}
+            <input data-setting="ambientVolume" type="range" min="0" max="1" step="0.05" value="0.2" class={input} />
+          </label>
+          <label class={field} data-binaural-only>
+            {t('tools.settings.binauralBase')}
+            <input data-setting="binauralBase" type="range" min="80" max="500" step="10" value="200" class={input} />
+            <span data-value-for="binauralBase" class="block text-center text-forest-100 tabular-nums">200</span>
+          </label>
+          <label class={field} data-binaural-only>
+            {t('tools.settings.binauralBeat')}
+            <input data-setting="binauralBeat" type="range" min="0.5" max="12" step="0.5" value="4" class={input} />
+            <span data-value-for="binauralBeat" class="block text-center text-forest-100 tabular-nums">4.0</span>
+          </label>
+        </div>
+      )}
+
+      <p class="text-forest-400 text-xs mt-2">{t('tools.settings.headphones')}</p>
+    </section>
+
+    <div class="flex items-center gap-3 pt-2 border-t border-forest-700">
+      <button
+        type="button"
+        data-settings-reset
+        class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-xs
+               hover:bg-forest-600 transition-colors
+               focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
+      >
+        {t('tools.settings.reset')}
+      </button>
+      <span class="text-forest-400 text-xs">{t('tools.settings.saved')}</span>
+    </div>
+  </div>
+</details>

@@ -1,13 +1,15 @@
 ---
 import type { Lang } from '../../i18n';
 import { sandtrayCategories, sandtrayFigures } from '../../data/sandtrayFigures';
+import ToolSettings from './ToolSettings.astro';
 
 interface Props {
   fullscreen?: boolean;
   lang?: Lang;
+  warnings?: string[];
 }
 
-const { fullscreen = false, lang = 'en' } = Astro.props;
+const { fullscreen = false, lang = 'en', warnings = [] } = Astro.props;
 
 const containerClass = fullscreen
   ? "w-full max-w-5xl mx-auto p-4 flex flex-col"
@@ -42,6 +44,14 @@ const t = {
     sandWhite: 'White sand',
     sandDark: 'Dark sand',
     sandGold: 'Gold sand',
+    waterLabel: 'Water:',
+    waterBlue: 'Blue water',
+    waterTeal: 'Teal water',
+    waterDeep: 'Deep water',
+    rockLabel: 'Rock:',
+    rockGreyBrown: 'Grey-brown rock',
+    rockGrey: 'Grey rock',
+    rockDark: 'Dark rock',
     keyboardHelp: 'Keyboard controls: focus the canvas, then press Enter or Space to place a figure chosen from the palette at the center of the tray. With a figure selected, use the arrow keys to move it (hold Shift for larger steps), plus and minus to resize it, the square bracket keys to rotate it, Delete or Backspace to remove it, and Escape to deselect.',
   },
   es: {
@@ -72,6 +82,14 @@ const t = {
     sandWhite: 'Arena blanca',
     sandDark: 'Arena oscura',
     sandGold: 'Arena dorada',
+    waterLabel: 'Agua:',
+    waterBlue: 'Agua azul',
+    waterTeal: 'Agua verde azulado',
+    waterDeep: 'Agua profunda',
+    rockLabel: 'Roca:',
+    rockGreyBrown: 'Roca gris parduzca',
+    rockGrey: 'Roca gris',
+    rockDark: 'Roca oscura',
     keyboardHelp: 'Controles de teclado: enfoca el lienzo y pulsa Enter o Espacio para colocar la figura elegida de la paleta en el centro de la bandeja. Con una figura seleccionada, usa las flechas para moverla (mantén Mayús para pasos más grandes), más y menos para cambiar su tamaño, las teclas de corchetes para girarla, Suprimir o Retroceso para quitarla y Escape para deseleccionar.',
   },
 };
@@ -83,6 +101,21 @@ const s = t[lang];
   data-sandtray-widget
   data-sandtray-i18n={JSON.stringify(s)}
 >
+  {/*
+    The standard tool page renders these above the widget via ToolShell, but the
+    fullscreen route renders the widget alone — so the warnings have to travel
+    with it or they would vanish exactly where the tool is used in session.
+  */}
+  {fullscreen && warnings.length > 0 && (
+    <div class="mb-2 p-2 border border-amber-500/50 bg-amber-900/20 rounded-md text-amber-100 text-xs w-full max-w-md">
+      <ul class="list-disc list-inside space-y-1">
+        {warnings.map((w) => <li>{w}</li>)}
+      </ul>
+    </div>
+  )}
+
+  <ToolSettings componentName="Sandtray" lang={lang} startOpen={!fullscreen} />
+
   <div data-sandtray-frame class="relative w-full" style="
     padding: 18px;
     border-radius: 14px;
@@ -119,6 +152,20 @@ const s = t[lang];
       <button data-sand-color="0xf0ebe3" class="w-10 h-10 rounded-full border-2 border-forest-600 ring-2 ring-transparent hover:ring-bronze-400 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background: #f0ebe3;" aria-label={s.sandWhite} title={s.sandWhite}></button>
       <button data-sand-color="0x6b5b4f" class="w-10 h-10 rounded-full border-2 border-forest-600 ring-2 ring-transparent hover:ring-bronze-400 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background: #6b5b4f;" aria-label={s.sandDark} title={s.sandDark}></button>
       <button data-sand-color="0xc9a96e" class="w-10 h-10 rounded-full border-2 border-forest-600 ring-2 ring-transparent hover:ring-bronze-400 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background: #c9a96e;" aria-label={s.sandGold} title={s.sandGold}></button>
+    </div>
+
+    <div class="mt-2 flex flex-wrap gap-2 items-center">
+      <span class="text-xs text-forest-100 ml-auto mr-1">{s.waterLabel}</span>
+      <button data-water-color="0x3b7ea1" class="w-8 h-8 rounded-full border-2 border-forest-600 ring-2 ring-transparent hover:ring-bronze-400 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background: #3b7ea1;" aria-label={s.waterBlue} title={s.waterBlue}></button>
+      <button data-water-color="0x3f9ba0" class="w-8 h-8 rounded-full border-2 border-forest-600 ring-2 ring-transparent hover:ring-bronze-400 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background: #3f9ba0;" aria-label={s.waterTeal} title={s.waterTeal}></button>
+      <button data-water-color="0x1f4e5f" class="w-8 h-8 rounded-full border-2 border-forest-600 ring-2 ring-transparent hover:ring-bronze-400 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background: #1f4e5f;" aria-label={s.waterDeep} title={s.waterDeep}></button>
+    </div>
+
+    <div class="mt-2 flex flex-wrap gap-2 items-center">
+      <span class="text-xs text-forest-100 ml-auto mr-1">{s.rockLabel}</span>
+      <button data-rock-color="0x7a7265" class="w-8 h-8 rounded-full border-2 border-forest-600 ring-2 ring-transparent hover:ring-bronze-400 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background: #7a7265;" aria-label={s.rockGreyBrown} title={s.rockGreyBrown}></button>
+      <button data-rock-color="0x8a8a8a" class="w-8 h-8 rounded-full border-2 border-forest-600 ring-2 ring-transparent hover:ring-bronze-400 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background: #8a8a8a;" aria-label={s.rockGrey} title={s.rockGrey}></button>
+      <button data-rock-color="0x4a453f" class="w-8 h-8 rounded-full border-2 border-forest-600 ring-2 ring-transparent hover:ring-bronze-400 focus:outline-none focus:ring-2 focus:ring-bronze-500" style="background: #4a453f;" aria-label={s.rockDark} title={s.rockDark}></button>
     </div>
   </div>
 
@@ -199,6 +246,30 @@ const s = t[lang];
   import * as THREE from 'three';
   import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
   import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js';
+  import { onReducedMotion } from '../../scripts/motion-pref';
+  import { createSettingsController } from '../../scripts/tool-settings-controller';
+  import {
+    createAudioEngine, DEFAULT_AUDIO_OPTIONS, DEFAULT_AMBIENT_OPTIONS,
+    type AmbientOptions,
+  } from '../../scripts/audio-engine';
+  import { confirmable } from '../../scripts/confirmable';
+
+  const TOOL_ID = 'Sandtray';
+
+  const DEFAULTS = {
+    // Sandtray's whole Appearance section (palette, color, background) is
+    // gated off in ToolSettings.astro (`showAppearance`) — the tray is a
+    // wooden-and-sand aesthetic, not a themed 2D surface, and its own sand/
+    // water/rock swatches below are the tool's real color controls. Tier D
+    // for Sandtray therefore means exactly "the ambient sound bed": nothing
+    // here carries a value for a control that no longer renders.
+    soundOn: false, // ambient bed is opt-in.
+    ...DEFAULT_AUDIO_OPTIONS,
+    ambient: DEFAULT_AMBIENT_OPTIONS.kind,
+    ambientVolume: DEFAULT_AMBIENT_OPTIONS.volume,
+    binauralBase: DEFAULT_AMBIENT_OPTIONS.binauralBase,
+    binauralBeat: DEFAULT_AMBIENT_OPTIONS.binauralBeat,
+  };
 
   // ----- SandRenderer -----
   // Three.js scene: subdivided plane whose vertices are displaced from a
@@ -285,7 +356,12 @@ const s = t[lang];
 
       this.buildSand();
 
-      this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      // Read live rather than once, so an OS-level reduced-motion change
+      // freezes/unfreezes the water shimmer on the very next frame instead
+      // of needing a reload.
+      onReducedMotion((reduced) => {
+        this.reducedMotion = reduced;
+      });
 
       // Start the render loop. Pause it entirely while the page is hidden.
       this.renderer.setAnimationLoop(() => this.render());
@@ -576,6 +652,18 @@ const s = t[lang];
       (mat.uniforms.uSandColor.value as THREE.Color).set(hex);
     }
 
+    /** Change the water zone color at runtime. */
+    setWaterColor(hex: number): void {
+      const mat = this.sand.material as THREE.ShaderMaterial;
+      (mat.uniforms.uWaterColor.value as THREE.Color).set(hex);
+    }
+
+    /** Change the rock/mountain zone color at runtime. */
+    setRockColor(hex: number): void {
+      const mat = this.sand.material as THREE.ShaderMaterial;
+      (mat.uniforms.uRockColor.value as THREE.Color).set(hex);
+    }
+
     level(): void {
       // Refill this.heightData (which is the same buffer the DataTexture wraps)
       // in place, so the GPU sees the refreshed noise and subsequent carve()
@@ -686,6 +774,83 @@ const s = t[lang];
       resizeTimer = window.setTimeout(() => renderer.resize(), 150);
     });
 
+    // ----- Ambient sound bed -----
+    // The controller owns the settings panel entirely: hydration, readouts,
+    // and persistence. (No palette here — Sandtray's Appearance section is
+    // gated off entirely; see the DEFAULTS comment above.) It hydrates
+    // during construction, so `get()` already reflects stored prefs.
+    const settings = createSettingsController(root, TOOL_ID, DEFAULTS);
+    let prefs = settings.get();
+    const audio = createAudioEngine();
+
+    // Diffs against the ambient layer's own last-applied state before calling
+    // setAmbient — see the note in Grounding.astro for why this avoids an
+    // audible click on every unrelated settings change.
+    let lastAmbient: AmbientOptions | null = null;
+    function pushAmbient(): void {
+      const next: AmbientOptions = {
+        kind: prefs.soundOn ? (prefs.ambient as AmbientOptions['kind']) : 'none',
+        volume: prefs.ambientVolume,
+        binauralBase: prefs.binauralBase,
+        binauralBeat: prefs.binauralBeat,
+      };
+      const patch: Partial<AmbientOptions> = {};
+      if (!lastAmbient || lastAmbient.kind !== next.kind) patch.kind = next.kind;
+      if (!lastAmbient || lastAmbient.volume !== next.volume) patch.volume = next.volume;
+      if (!lastAmbient || lastAmbient.binauralBase !== next.binauralBase) {
+        patch.binauralBase = next.binauralBase;
+      }
+      if (!lastAmbient || lastAmbient.binauralBeat !== next.binauralBeat) {
+        patch.binauralBeat = next.binauralBeat;
+      }
+      lastAmbient = next;
+      if (Object.keys(patch).length > 0) audio.setAmbient(patch);
+    }
+
+    function pushToEngines(): void {
+      audio.setOptions({ volume: prefs.soundOn ? (prefs.volume as number) : 0 });
+      pushAmbient();
+    }
+
+    let audioLive = false;
+
+    async function startAudio(): Promise<void> {
+      try {
+        await audio.ensureStarted();
+        audioLive = true;
+      } catch {
+        // Autoplay policy or an unavailable AudioContext — the tray still
+        // works silently.
+      }
+    }
+
+    function suspendAudio(): void {
+      if (!audioLive) return;
+      audio.cancelScheduled();
+      audio.suspend();
+    }
+
+    // Sandtray has no dedicated "start" gesture — carving, dragging, and
+    // placing figures all begin with a canvas pointerdown, so that is the
+    // one place to lazily start the audio context on the very first
+    // interaction if a stored preference already has sound on.
+    function ensureAudioLive(): void {
+      if (prefs.soundOn && !audioLive) void startAudio().then(() => pushToEngines());
+    }
+
+    settings.onChange((next) => {
+      const soundCameOn = Boolean(next.soundOn) && !prefs.soundOn;
+      const soundWentOff = !next.soundOn && Boolean(prefs.soundOn);
+      prefs = next;
+
+      if (soundCameOn) void startAudio().then(() => pushToEngines());
+      else if (soundWentOff) suspendAudio();
+
+      pushToEngines();
+    });
+
+    pushToEngines();
+
     // ----- Dig / Build mode toggle -----
     let buildMode = false; // false = dig down, true = build up
     const modeBtn = root.querySelector<HTMLButtonElement>('[data-sandtray-mode]');
@@ -774,6 +939,7 @@ const s = t[lang];
     canvas.addEventListener('contextmenu', (e) => e.preventDefault());
 
     canvas.addEventListener('pointerdown', (e: PointerEvent) => {
+      ensureAudioLive();
       activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       // Two fingers down → check if first finger was on a figure (pinch-to-scale)
       // or on empty sand (two-finger orbit). Must run BEFORE the single-finger
@@ -1087,27 +1253,6 @@ const s = t[lang];
       a.click();
     });
 
-    // Two-step confirm: first click arms the button with a confirm label; a
-    // second click within 3s runs the action, otherwise the button reverts.
-    function confirmable(btn: HTMLButtonElement | null, label: string, confirmLabel: string, action: () => void): void {
-      if (!btn) return;
-      let timer: number | null = null;
-      btn.addEventListener('click', () => {
-        if (timer !== null) {
-          window.clearTimeout(timer);
-          timer = null;
-          btn.textContent = label;
-          action();
-          return;
-        }
-        btn.textContent = confirmLabel;
-        timer = window.setTimeout(() => {
-          timer = null;
-          btn.textContent = label;
-        }, 3000);
-      });
-    }
-
     confirmable(
       root.querySelector<HTMLButtonElement>('[data-sandtray-level]'),
       i18n.levelSand,
@@ -1147,6 +1292,30 @@ const s = t[lang];
         renderer.setSandColor(hex);
         // Highlight selected swatch.
         root.querySelectorAll<HTMLButtonElement>('[data-sand-color]').forEach((b) => {
+          b.classList.toggle('ring-bronze-500', b === btn);
+          b.classList.toggle('ring-transparent', b !== btn);
+        });
+      });
+    });
+
+    // ----- Water color picker -----
+    root.querySelectorAll<HTMLButtonElement>('[data-water-color]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const hex = parseInt(btn.dataset.waterColor || '0x3b7ea1');
+        renderer.setWaterColor(hex);
+        root.querySelectorAll<HTMLButtonElement>('[data-water-color]').forEach((b) => {
+          b.classList.toggle('ring-bronze-500', b === btn);
+          b.classList.toggle('ring-transparent', b !== btn);
+        });
+      });
+    });
+
+    // ----- Rock color picker -----
+    root.querySelectorAll<HTMLButtonElement>('[data-rock-color]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const hex = parseInt(btn.dataset.rockColor || '0x7a7265');
+        renderer.setRockColor(hex);
+        root.querySelectorAll<HTMLButtonElement>('[data-rock-color]').forEach((b) => {
           b.classList.toggle('ring-bronze-500', b === btn);
           b.classList.toggle('ring-transparent', b !== btn);
         });

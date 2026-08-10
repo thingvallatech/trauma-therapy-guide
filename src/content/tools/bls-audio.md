@@ -24,4 +24,4 @@ Alternating left/right stereo tones delivered via the Web Audio API. Used when e
 
 ## Clinical notes
 
-Uses hard-panned stereo (full left/full right) for clear bilateral separation. Default frequency 440 Hz. Starting the tool requires a user gesture due to browser autoplay policy — clients will see a "Start" button that must be tapped before sound plays.
+Stereo pan depth is adjustable rather than fixed — it defaults to 85% left/right separation (not fully hard-panned), since some clients find full left/full right fatiguing over a long session. Voice (tone, chime, woodblock, marimba, bell, pluck), pitch, and volume are also adjustable; default frequency is 440 Hz. An optional ambient bed (noise, drone, or a binaural layer) can play underneath the bilateral tone. Starting the tool requires a user gesture due to browser autoplay policy — clients will see a "Start" button that must be tapped before sound plays.

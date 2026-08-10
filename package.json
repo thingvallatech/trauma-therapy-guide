@@ -6,7 +6,10 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "test": "vitest run",
+    "verify": "npm run lint --if-present && npm run typecheck --if-present && npm run test --if-present && npm run build",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.0",
@@ -15,5 +18,8 @@
     "astro": "^5.16.4",
     "tailwindcss": "^4.1.17",
     "three": "^0.183.2"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.7"
   }
 }

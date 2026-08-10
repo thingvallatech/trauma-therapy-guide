@@ -32,5 +32,8 @@ Shapiro's published guidance describes speed as "as fast as the client can comfo
 
 - **Speed:** 1.0 Hz (one full left-right cycle per second)
 - **Set length:** 24 passes
-- **Dot size:** 48 px
-- **Dot color:** warm white on dark background
+- **Path:** horizontal (infinity, arc, diagonal, and wave paths are also available)
+- **Easing:** cosine (eases in/out at each edge; linear and smootherstep are also available)
+- **Target shape:** circle (ring, soft glow, star, and butterfly shapes are also available), 48 px, with adjustable glow and trail length
+- **Color:** warm white target on a black background, plus five built-in palettes (default, high contrast, low-stimulation, warm, cool)
+- **Crossfade:** off — when enabled, the target cross-fades between the two extremes instead of translating, for reduced-motion use
