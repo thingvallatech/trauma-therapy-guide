@@ -2663,12 +2663,23 @@ readouts, applying palettes and presets, showing the contrast warning, persistin
 and resetting. It knows nothing about audio or canvas; widgets subscribe via `onChange`.
 
 ```ts
-import { loadPrefs, savePrefs, clearPrefs } from './tool-prefs';
+import {
+  loadPrefs, savePrefs, clearPrefs, loadGlobalPrefs, saveGlobalPrefs,
+} from './tool-prefs';
 import { contrastRatio } from './visual-engine';
 import { PALETTES, BLS_PRESETS } from '../data/tool-presets';
 
 /** Fields a preset owns; changing any of them by hand demotes the preset to "custom". */
 const PRESET_FIELDS = ['speed', 'passes', 'voice', 'path', 'panDepth'] as const;
+
+/**
+ * Settings a clinician expects to set once for the whole site, not per tool.
+ * These live in the shared `global` bucket so picking "high contrast" in one
+ * tool applies everywhere; everything else stays scoped to its own tool.
+ */
+const GLOBAL_FIELDS = ['palette', 'volume'] as const;
+
+const GLOBAL_DEFAULTS = { palette: 'default', volume: 0.3 };
 
 export interface SettingsController<T extends Record<string, unknown>> {
   get(): T;
@@ -2682,8 +2693,14 @@ export function createSettingsController<T extends Record<string, unknown>>(
   defaults: T,
 ): SettingsController<T> {
   const panel = root.querySelector<HTMLElement>('[data-tool-settings]');
-  let prefs = loadPrefs(toolId, defaults);
+  // Per-tool prefs first, then let the shared bucket win for the global fields.
+  let prefs = { ...loadPrefs(toolId, defaults), ...loadGlobalPrefs(GLOBAL_DEFAULTS) } as T;
   const listeners: Array<(prefs: T, key: string) => void> = [];
+
+  function persist(): void {
+    savePrefs(toolId, prefs);
+    saveGlobalPrefs(Object.fromEntries(GLOBAL_FIELDS.map((k) => [k, prefs[k]])));
+  }
 
   // A widget may render without the panel (fullscreen variants that hide it);
   // the controller still serves stored prefs so behaviour stays consistent.
@@ -2788,13 +2805,14 @@ export function createSettingsController<T extends Record<string, unknown>>(
     if (key === 'color' || key === 'background' || key === 'palette') checkContrast();
 
     readout(key, value);
-    savePrefs(toolId, prefs);
+    persist();
     emit(key);
   };
 
   const onReset = () => {
     clearPrefs(toolId);
-    prefs = { ...defaults };
+    prefs = { ...defaults, ...GLOBAL_DEFAULTS } as T;
+    persist();
     hydrate();
     emit('reset');
   };
