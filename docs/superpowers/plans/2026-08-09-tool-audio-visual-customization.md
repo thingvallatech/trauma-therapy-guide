@@ -10,7 +10,8 @@
 
 ## Global Constraints
 
-- **Nothing autoplays.** `AudioContext` is constructed lazily on first user gesture and suspended on stop. Sound defaults to **off** in every tool, including tools gaining audio for the first time.
+- **Nothing autoplays.** `AudioContext` is constructed lazily on first user gesture and suspended on stop.
+- **Sound defaults to off** in every tool, including tools gaining audio for the first time — with exactly two deliberate exceptions, `BLSAudio` and `BLSCombined`, where sound *is* the tool and silence would mean it is broken. Both remain gated behind the Start gesture, so the no-autoplay rule still holds. This exception is intentional; it is not a defect to report.
 - **No tick sound on SUDScale or VOCScale** unless the user explicitly enables it.
 - **Binaural beats ship with no evidence copy and no therapeutic claims**, and get no entry in the tools content collection. The functional headphones note stays.
 - **Every animation respects reduced motion**, and responds to the setting changing at runtime.
@@ -34,6 +35,7 @@
 - `src/scripts/tool-prefs.ts` — versioned localStorage, safe access
 - `src/scripts/audio-engine.ts` — graph, lookahead scheduler, voices, ambient bed
 - `src/scripts/visual-engine.ts` — path functions + canvas renderer
+- `src/scripts/tool-settings-controller.ts` — binds the settings panel to prefs (shared by 9 widgets)
 - `src/data/tool-presets.ts` — built-in presets, per-tool tier map, palettes
 - `src/lib/tool-widgets.ts` — single `componentName → Component` map
 - `src/components/tools/ToolSettings.astro` — shared collapsible settings panel
@@ -2607,16 +2609,200 @@ hand-copying the strings into its own i18n object."
 
 ---
 
-## Task 12: BLSVisual — first Tier A adoption
+## Task 12: Settings controller + BLSVisual
 
 **Files:**
+- Create: `src/scripts/tool-settings-controller.ts`
 - Modify: `src/components/tools/BLSVisual.astro`
 
 **Interfaces:**
-- Consumes: `createBlsClock` (T1), `onReducedMotion` (T2), `loadPrefs`/`savePrefs`/`clearPrefs` (T3), `createVisualRenderer`/`DEFAULT_VISUAL_OPTIONS`/`contrastRatio` (T4/T5), `createAudioEngine` (T6/T7), `ToolSettings.astro` (T10), `PALETTES`/`BLS_PRESETS` (T8)
-- Produces: the wiring pattern every later widget follows
+- Consumes: `onReducedMotion` (T2), `loadPrefs`/`savePrefs`/`clearPrefs` (T3), `contrastRatio` (T5), `PALETTES`/`BLS_PRESETS` (T8), `ToolSettings.astro` (T10)
+- Produces:
+```ts
+export interface SettingsController<T extends Record<string, unknown>> {
+  get(): T;
+  onChange(cb: (prefs: T, changedKey: string) => void): void;
+  destroy(): void;
+}
+export function createSettingsController<T extends Record<string, unknown>>(
+  root: HTMLElement,
+  toolId: string,
+  defaults: T,
+): SettingsController<T>;
+```
 
-This is the reference implementation. Get it right — Tasks 13–17 copy its structure.
+Nine widgets need the same hydrate → readout → palette → preset → persist wiring. Copying
+~150 lines into each would be roughly a thousand lines of duplication, so the controller owns
+it and each widget wires only what is specific to it: its engines and its render loop.
+
+BLSVisual is the reference consumer — Tasks 13–17 use the same controller, not a copy of this
+file's script.
+
+- [ ] **Step 0: Build the controller first**
+
+Create `src/scripts/tool-settings-controller.ts`. It owns every interaction with the
+`ToolSettings.astro` markup — reading `[data-setting]` controls, writing `[data-value-for]`
+readouts, applying palettes and presets, showing the contrast warning, persisting on change,
+and resetting. It knows nothing about audio or canvas; widgets subscribe via `onChange`.
+
+```ts
+import { loadPrefs, savePrefs, clearPrefs } from './tool-prefs';
+import { contrastRatio } from './visual-engine';
+import { PALETTES, BLS_PRESETS } from '../data/tool-presets';
+
+/** Fields a preset owns; changing any of them by hand demotes the preset to "custom". */
+const PRESET_FIELDS = ['speed', 'passes', 'voice', 'path', 'panDepth'] as const;
+
+export interface SettingsController<T extends Record<string, unknown>> {
+  get(): T;
+  onChange(cb: (prefs: T, changedKey: string) => void): void;
+  destroy(): void;
+}
+
+export function createSettingsController<T extends Record<string, unknown>>(
+  root: HTMLElement,
+  toolId: string,
+  defaults: T,
+): SettingsController<T> {
+  const panel = root.querySelector<HTMLElement>('[data-tool-settings]');
+  let prefs = loadPrefs(toolId, defaults);
+  const listeners: Array<(prefs: T, key: string) => void> = [];
+
+  // A widget may render without the panel (fullscreen variants that hide it);
+  // the controller still serves stored prefs so behaviour stays consistent.
+  if (!panel) {
+    return { get: () => prefs, onChange: (cb) => listeners.push(cb), destroy: () => {} };
+  }
+
+  const contrastWarning = panel.querySelector<HTMLElement>('[data-contrast-warning]');
+  const control = (name: string) =>
+    panel.querySelector<HTMLInputElement | HTMLSelectElement>(`[data-setting="${name}"]`);
+
+  function readout(key: string, value: unknown): void {
+    const out = panel!.querySelector<HTMLElement>(`[data-value-for="${key}"]`);
+    if (!out) return;
+    if (key === 'panDepth' || key === 'volume' || key === 'ambientVolume') {
+      out.textContent = `${Math.round(Number(value) * 100)}%`;
+    } else if (key === 'speed' || key === 'binauralBeat') {
+      out.textContent = Number(value).toFixed(1);
+    } else {
+      out.textContent = String(value);
+    }
+  }
+
+  function setControl(key: string, value: unknown): void {
+    const el = control(key);
+    if (!el) return;
+    if (el instanceof HTMLInputElement && el.type === 'checkbox') el.checked = Boolean(value);
+    else el.value = String(value);
+    readout(key, value);
+  }
+
+  function syncBinauralVisibility(): void {
+    const isBinaural = prefs.ambient === 'binaural';
+    panel!.querySelectorAll<HTMLElement>('[data-binaural-only]').forEach((el) => {
+      el.style.display = isBinaural ? '' : 'none';
+    });
+  }
+
+  function checkContrast(): void {
+    if (!contrastWarning) return;
+    const fg = prefs.color as string | undefined;
+    const bg = prefs.background as string | undefined;
+    if (!fg || !bg) return;
+    contrastWarning.classList.toggle('hidden', contrastRatio(fg, bg) >= 3);
+  }
+
+  /** Palettes drive CSS custom properties so tools without a canvas theme too. */
+  function applyPalette(id: string): void {
+    const palette = PALETTES.find((p) => p.id === id);
+    if (!palette) return;
+    prefs = { ...prefs, background: palette.bg, color: palette.target };
+    root.style.setProperty('--tool-bg', palette.bg);
+    root.style.setProperty('--tool-surface', palette.surface);
+    root.style.setProperty('--tool-accent', palette.accent);
+    root.style.setProperty('--tool-target', palette.target);
+    root.style.setProperty('--tool-text', palette.text);
+    setControl('background', palette.bg);
+    setControl('color', palette.target);
+  }
+
+  function applyPreset(id: string): void {
+    const preset = BLS_PRESETS.find((p) => p.id === id);
+    if (!preset) return;
+    prefs = {
+      ...prefs,
+      speed: preset.speed, passes: preset.passes,
+      voice: preset.voice, path: preset.path, panDepth: preset.panDepth,
+    };
+    PRESET_FIELDS.forEach((k) => setControl(k, prefs[k]));
+  }
+
+  function hydrate(): void {
+    Object.entries(prefs).forEach(([key, value]) => setControl(key, value));
+    if (typeof prefs.palette === 'string') applyPalette(prefs.palette);
+    syncBinauralVisibility();
+    checkContrast();
+  }
+
+  function emit(key: string): void {
+    listeners.forEach((cb) => cb(prefs, key));
+  }
+
+  const onInput = (e: Event) => {
+    const el = e.target as HTMLInputElement | HTMLSelectElement;
+    const key = el.getAttribute('data-setting');
+    if (!key) return;
+
+    const value =
+      el instanceof HTMLInputElement && el.type === 'checkbox' ? el.checked
+      : el instanceof HTMLInputElement && el.type === 'range' ? parseFloat(el.value)
+      : el.value;
+
+    prefs = { ...prefs, [key]: value };
+
+    if (key === 'palette') applyPalette(String(value));
+    if (key === 'preset' && value !== 'custom') applyPreset(String(value));
+    if ((PRESET_FIELDS as readonly string[]).includes(key)) {
+      prefs = { ...prefs, preset: 'custom' };
+      setControl('preset', 'custom');
+    }
+    if (key === 'ambient') syncBinauralVisibility();
+    if (key === 'color' || key === 'background' || key === 'palette') checkContrast();
+
+    readout(key, value);
+    savePrefs(toolId, prefs);
+    emit(key);
+  };
+
+  const onReset = () => {
+    clearPrefs(toolId);
+    prefs = { ...defaults };
+    hydrate();
+    emit('reset');
+  };
+
+  panel.addEventListener('input', onInput);
+  panel.addEventListener('change', onInput);
+  panel.querySelector('[data-settings-reset]')?.addEventListener('click', onReset);
+  hydrate();
+
+  return {
+    get: () => prefs,
+    onChange: (cb) => listeners.push(cb),
+    destroy() {
+      panel.removeEventListener('input', onInput);
+      panel.removeEventListener('change', onInput);
+    },
+  };
+}
+```
+
+Note the `change` listener alongside `input`: `<select>` and checkbox elements fire `input` in
+modern browsers, but registering both keeps the panel responsive if a control is ever swapped
+for one that only fires `change`. The handler is idempotent, so a double fire is harmless.
+
+Then wire BLSVisual against it, as below.
 
 - [ ] **Step 1: Replace the markup**
 
@@ -2690,10 +2876,9 @@ const s = t[lang];
 <script>
   import { createBlsClock } from '../../scripts/bls-clock';
   import { onReducedMotion } from '../../scripts/motion-pref';
-  import { loadPrefs, savePrefs, clearPrefs } from '../../scripts/tool-prefs';
-  import { createVisualRenderer, DEFAULT_VISUAL_OPTIONS, contrastRatio } from '../../scripts/visual-engine';
+  import { createSettingsController } from '../../scripts/tool-settings-controller';
+  import { createVisualRenderer, DEFAULT_VISUAL_OPTIONS } from '../../scripts/visual-engine';
   import { createAudioEngine, DEFAULT_AUDIO_OPTIONS, DEFAULT_AMBIENT_OPTIONS } from '../../scripts/audio-engine';
-  import { BLS_PRESETS, PALETTES } from '../../data/tool-presets';
 
   const TOOL_ID = 'BLSVisual';
 
@@ -2714,15 +2899,16 @@ const s = t[lang];
     binauralBeat: DEFAULT_AMBIENT_OPTIONS.binauralBeat,
   };
 
-  document.querySelectorAll('[data-bls-visual-widget]').forEach((root) => {
+  document.querySelectorAll<HTMLElement>('[data-bls-visual-widget]').forEach((root) => {
     const i18n = JSON.parse(root.getAttribute('data-bls-i18n') || '{}');
     const canvas = root.querySelector<HTMLCanvasElement>('[data-bls-canvas]')!;
     const toggle = root.querySelector<HTMLButtonElement>('[data-bls-toggle]')!;
     const count = root.querySelector<HTMLElement>('[data-bls-count]')!;
-    const panel = root.querySelector<HTMLElement>('[data-tool-settings]')!;
-    const contrastWarning = panel.querySelector<HTMLElement>('[data-contrast-warning]');
 
-    let prefs = loadPrefs(TOOL_ID, DEFAULTS);
+    // The controller owns the settings panel entirely: hydration, readouts,
+    // palettes, presets, the contrast warning, persistence, and reset.
+    const settings = createSettingsController(root, TOOL_ID, DEFAULTS);
+    let prefs = settings.get();
     let systemReducedMotion = false;
 
     const audio = createAudioEngine();
@@ -2732,64 +2918,6 @@ const s = t[lang];
       glow: prefs.glow, trail: prefs.trail,
       crossfade: prefs.crossfade || systemReducedMotion,
     });
-
-    const control = <T extends HTMLElement>(name: string) =>
-      panel.querySelector<T>(`[data-setting="${name}"]`);
-
-    /** Push stored prefs into the panel's controls on load. */
-    function hydrateControls(): void {
-      for (const [key, value] of Object.entries(prefs)) {
-        const el = control<HTMLInputElement | HTMLSelectElement>(key);
-        if (!el) continue;
-        if (el instanceof HTMLInputElement && el.type === 'checkbox') el.checked = Boolean(value);
-        else el.value = String(value);
-        updateReadout(key, value);
-      }
-      syncBinauralVisibility();
-      checkContrast();
-    }
-
-    function updateReadout(key: string, value: unknown): void {
-      const out = panel.querySelector<HTMLElement>(`[data-value-for="${key}"]`);
-      if (!out) return;
-      if (key === 'panDepth' || key === 'volume') out.textContent = `${Math.round(Number(value) * 100)}%`;
-      else if (key === 'speed' || key === 'binauralBeat') out.textContent = Number(value).toFixed(1);
-      else out.textContent = String(value);
-    }
-
-    function syncBinauralVisibility(): void {
-      const isBinaural = prefs.ambient === 'binaural';
-      panel.querySelectorAll<HTMLElement>('[data-binaural-only]').forEach((el) => {
-        el.style.display = isBinaural ? '' : 'none';
-      });
-    }
-
-    function checkContrast(): void {
-      if (!contrastWarning) return;
-      const ok = contrastRatio(prefs.color, prefs.background) >= 3;
-      contrastWarning.classList.toggle('hidden', ok);
-    }
-
-    function applyPalette(id: string): void {
-      const palette = PALETTES.find((p) => p.id === id);
-      if (!palette) return;
-      prefs = { ...prefs, background: palette.bg, color: palette.target };
-      const bg = control<HTMLInputElement>('background');
-      const fg = control<HTMLInputElement>('color');
-      if (bg) bg.value = palette.bg;
-      if (fg) fg.value = palette.target;
-    }
-
-    function applyPreset(id: string): void {
-      const preset = BLS_PRESETS.find((p) => p.id === id);
-      if (!preset) return;
-      prefs = { ...prefs, speed: preset.speed, passes: preset.passes, voice: preset.voice, path: preset.path, panDepth: preset.panDepth };
-      (['speed', 'passes', 'voice', 'path', 'panDepth'] as const).forEach((k) => {
-        const el = control<HTMLInputElement | HTMLSelectElement>(k);
-        if (el) el.value = String(prefs[k]);
-        updateReadout(k, prefs[k]);
-      });
-    }
 
     function pushToEngines(): void {
       renderer.setOptions({
@@ -2882,47 +3010,19 @@ const s = t[lang];
 
     // --- settings wiring --------------------------------------------------
 
-    panel.addEventListener('input', (e) => {
-      const el = e.target as HTMLInputElement | HTMLSelectElement;
-      const name = el.getAttribute('data-setting');
-      if (!name) return;
+    settings.onChange((next, key) => {
+      prefs = next;
 
-      const value =
-        el instanceof HTMLInputElement && el.type === 'checkbox' ? el.checked
-        : el instanceof HTMLInputElement && el.type === 'range' ? parseFloat(el.value)
-        : el.value;
-
-      prefs = { ...prefs, [name]: value };
-
-      if (name === 'palette') applyPalette(String(value));
-      if (name === 'preset' && value !== 'custom') applyPreset(String(value));
-      // Any manual change to a preset-controlled field means it is no longer that preset.
-      if (['speed', 'passes', 'voice', 'path', 'panDepth'].includes(name)) {
-        const presetEl = control<HTMLSelectElement>('preset');
-        if (presetEl) presetEl.value = 'custom';
-        prefs = { ...prefs, preset: 'custom' };
-      }
-      if (name === 'ambient') syncBinauralVisibility();
-      if (name === 'color' || name === 'background' || name === 'palette') checkContrast();
-
-      // Speed changes must rebase the clock or phase jumps, and any audio
+      // A speed change must rebase the clock or the phase jumps, and any audio
       // already queued at the old rate has to be dropped and re-derived.
-      if (name === 'speed' && clock.isRunning()) {
+      if (key === 'speed' && clock.isRunning()) {
         clock.rebase(nowSeconds());
         audio.cancelScheduled();
         scheduledThrough = clock.getBeat();
       }
 
-      updateReadout(name, value);
       pushToEngines();
-      savePrefs(TOOL_ID, prefs);
-    });
-
-    panel.querySelector('[data-settings-reset]')?.addEventListener('click', () => {
-      clearPrefs(TOOL_ID);
-      prefs = { ...DEFAULTS };
-      hydrateControls();
-      pushToEngines();
+      if (!clock.isRunning()) renderer.render(0);
     });
 
     onReducedMotion((reduced) => {
@@ -2931,7 +3031,6 @@ const s = t[lang];
       if (!clock.isRunning()) renderer.render(0);
     });
 
-    hydrateControls();
     pushToEngines();
     renderer.render(0);
   });
@@ -2971,8 +3070,8 @@ Run: `npm run dev`, open `/tools/bls-visual`, and confirm each of:
 - [ ] **Step 5: Commit**
 
 ```bash
-git add src/components/tools/BLSVisual.astro
-git commit -m "feat(bls-visual): adopt shared audio/visual engine
+git add src/scripts/tool-settings-controller.ts src/components/tools/BLSVisual.astro
+git commit -m "feat(bls-visual): add settings controller and adopt shared engine
 
 Canvas rendering with five motion paths, trails, glow, and theming;
 audio scheduled on the Web Audio clock rather than fired from rAF; and
@@ -2988,14 +3087,19 @@ redirecting the user elsewhere. Settings persist per device."
 - Modify: `src/components/tools/BLSAudio.astro`, `src/components/tools/BLSCombined.astro`
 
 **Interfaces:**
-- Consumes: everything Task 12 consumes; follows the identical wiring structure
+- Consumes: `createSettingsController` (T12) plus the same engines BLSVisual uses
 - Produces: nothing new
 
 `BLSCombined` currently lacks dot size, dot color, continuous mode, and the spacebar shortcut that `BLSVisual` has. Adopting the shared panel closes that gap by construction.
 
+**Do not copy BLSVisual's script.** Both widgets use `createSettingsController` for all panel
+wiring, exactly as BLSVisual does. What each widget owns is only its engines, its render loop,
+and its own DOM — roughly 40 lines, not 150. If you find yourself duplicating the controller's
+hydrate/readout/palette/preset logic, stop: that logic belongs to the controller.
+
 - [ ] **Step 1: Rewrite `BLSAudio.astro`**
 
-Use Task 12's script verbatim with these changes:
+Follow BLSVisual's structure — controller, engines, clock, rAF loop — with these changes:
 - `const TOOL_ID = 'BLSAudio';` and `componentName="BLSAudio"` on `<ToolSettings>`.
 - `DEFAULTS.soundOn` is `true` — an audio tool with sound off is broken. This is the single exception to the sound-off-by-default constraint, and it is still gated behind the Start gesture, so nothing autoplays.
 - No canvas and no renderer. Delete every `renderer` reference and the `createVisualRenderer` import.
@@ -3012,7 +3116,7 @@ Use Task 12's script verbatim with these changes:
 
 - [ ] **Step 2: Rewrite `BLSCombined.astro`**
 
-Use Task 12's script verbatim with:
+Same structure as BLSVisual — `createSettingsController` for the panel, engines and render loop owned locally — with:
 - `const TOOL_ID = 'BLSCombined';` and `componentName="BLSCombined"`.
 - `DEFAULTS.soundOn` is `true` (same reasoning — audio is the point of the combined tool).
 - Keep both the canvas and the audio path exactly as Task 12 has them.
@@ -3060,7 +3164,7 @@ These two are the last consumers of the old `bls-timer.ts`, so it is deleted her
 
 - Add `warnings?: string[]` to `Props` and render the banner as in Task 12.
 - Add `<ToolSettings componentName="BLSTapping" lang={lang} startOpen={!fullscreen} />`, and delete the bespoke speed and passes sliders.
-- Replace `createBlsTimer` with `createBlsClock` plus the rAF loop, `scheduleAhead`, and settings wiring from Task 12, minus the renderer.
+- Replace `createBlsTimer` with `createBlsClock` plus the rAF loop and `scheduleAhead` from BLSVisual, minus the renderer. Panel wiring comes from `createSettingsController` — do not reimplement it.
 - Keep `highlight(side)` for the L/R panels, driven from the beats `clock.tick()` returns.
 - Panel highlight colors read from the palette via CSS custom properties on the widget root: set `root.style.setProperty('--tool-accent', palette.accent)` in `applyPalette`, and change the highlight classes to use `bg-[var(--tool-accent)]`.
 
@@ -3174,15 +3278,40 @@ These have no motion. They get optional cue sounds and the palette — nothing e
 For each file, add `<ToolSettings componentName="<Name>" lang={lang} />` after the intro copy, and this script preamble:
 
 ```ts
-  import { loadPrefs, savePrefs, clearPrefs } from '../../scripts/tool-prefs';
+  import { createSettingsController } from '../../scripts/tool-settings-controller';
   import { createAudioEngine } from '../../scripts/audio-engine';
-  import { PALETTES } from '../../data/tool-presets';
 
   const TOOL_ID = '<Name>';
-  const DEFAULTS = { soundOn: false, volume: 0.3, palette: 'default', ambient: 'none', ambientVolume: 0.2, binauralBase: 200, binauralBeat: 4 };
+  const DEFAULTS = {
+    soundOn: false, volume: 0.3, palette: 'default',
+    ambient: 'none', ambientVolume: 0.2, binauralBase: 200, binauralBeat: 4,
+  };
 ```
 
-Wire the panel with the same `input` listener and `applyPalette` helper from Task 12 (minus the renderer, clock, preset, and BLS-voice branches).
+Then, inside each widget's existing `querySelectorAll` loop:
+
+```ts
+    const settings = createSettingsController(root, TOOL_ID, DEFAULTS);
+    let prefs = settings.get();
+    const audio = createAudioEngine();
+
+    function pushToEngines(): void {
+      audio.setOptions({ volume: prefs.soundOn ? prefs.volume : 0 });
+      audio.setAmbient({
+        kind: prefs.soundOn ? prefs.ambient : 'none',
+        volume: prefs.ambientVolume,
+        binauralBase: prefs.binauralBase,
+        binauralBeat: prefs.binauralBeat,
+      });
+    }
+
+    settings.onChange((next) => { prefs = next; pushToEngines(); });
+    pushToEngines();
+```
+
+These tools have no clock, no renderer, and no preset — the controller handles the palette and
+persistence, so each widget adds roughly fifteen lines plus its cue calls. Note the widget root
+must be an `HTMLElement` for `createSettingsController`; use `querySelectorAll<HTMLElement>`.
 
 Cue placement per tool, all gated on `prefs.soundOn` and all requiring `await audio.ensureStarted()` on the first interaction:
 
