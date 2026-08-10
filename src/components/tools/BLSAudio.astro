@@ -1,69 +1,66 @@
 ---
 import type { Lang } from '../../i18n';
+import ToolSettings from './ToolSettings.astro';
 
 interface Props {
   fullscreen?: boolean;
   lang?: Lang;
+  warnings?: string[];
 }
 
-const { fullscreen = false, lang = 'en' } = Astro.props;
+const { fullscreen = false, lang = 'en', warnings = [] } = Astro.props;
 const containerClass = fullscreen
-  ? "w-full max-w-2xl mx-auto p-8"
-  : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
+  ? 'w-full max-w-2xl mx-auto p-8'
+  : 'w-full p-6 bg-forest-800 rounded-lg border border-forest-600';
 
+/**
+ * Only strings specific to this tool live here — everything the settings panel
+ * shows (including the headphones note) comes from `tools.settings.*` in
+ * ui.ts, and the warnings below come from the tool's frontmatter rather than
+ * being hardcoded, so editing the markdown is enough to change them.
+ */
 const t = {
   en: {
-    headphonesWarning: '🎧 Headphones required — stereo separation is what makes this bilateral.',
-    speed: 'Speed (Hz)',
-    passes: 'Passes / set',
-    tone: 'Tone (Hz)',
-    volume: 'Volume',
     start: 'Start',
     stop: 'Stop',
+    running: 'Running',
+    stopped: 'Stopped',
+    complete: 'Set complete',
     motionNotice: "This tool uses alternating left-right sound by design. If that's uncomfortable, consider the tapping or butterfly-hug tool instead.",
   },
   es: {
-    headphonesWarning: '🎧 Se requieren audífonos — la separación estéreo es lo que hace esto bilateral.',
-    speed: 'Velocidad (Hz)',
-    passes: 'Pases / set',
-    tone: 'Tono (Hz)',
-    volume: 'Volumen',
     start: 'Comenzar',
     stop: 'Detener',
+    running: 'En marcha',
+    stopped: 'Detenido',
+    complete: 'Serie completada',
     motionNotice: 'Esta herramienta usa sonido alternado izquierda-derecha por diseño. Si eso es incómodo, considera la herramienta de toques o el abrazo de mariposa.',
   },
 };
-
 const s = t[lang];
 ---
 
-<div class:list={[containerClass]} data-bls-audio-widget data-bls-i18n={JSON.stringify({ start: s.start, stop: s.stop })}>
-  <div class="mb-4 p-3 border border-amber-500/50 bg-amber-900/20 rounded-md text-amber-100 text-xs">
-    {s.headphonesWarning}
-  </div>
+<div
+  class:list={[containerClass]}
+  data-bls-audio-widget
+  data-bls-i18n={JSON.stringify({
+    start: s.start, stop: s.stop, running: s.running, stopped: s.stopped, complete: s.complete,
+  })}
+>
+  {/*
+    The standard tool page renders these above the widget via ToolShell, but the
+    fullscreen route renders the widget alone — so the warnings have to travel
+    with it or they would vanish exactly where the tool is used in session.
+  */}
+  {fullscreen && warnings.length > 0 && (
+    <div class="mb-2 p-2 border border-amber-500/50 bg-amber-900/20 rounded-md text-amber-100 text-xs">
+      <ul class="list-disc list-inside space-y-1">
+        {warnings.map((w) => <li>{w}</li>)}
+      </ul>
+    </div>
+  )}
 
-  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-    <label class="text-forest-200 text-xs">
-      {s.speed}
-      <input data-bls-speed type="range" min="0.3" max="2" step="0.1" value="1.0" class="w-full accent-bronze-500" />
-      <span data-bls-speed-value class="block text-center text-forest-100 tabular-nums">1.0</span>
-    </label>
-    <label class="text-forest-200 text-xs">
-      {s.passes}
-      <input data-bls-passes type="range" min="6" max="48" step="2" value="24" class="w-full accent-bronze-500" />
-      <span data-bls-passes-value class="block text-center text-forest-100 tabular-nums">24</span>
-    </label>
-    <label class="text-forest-200 text-xs">
-      {s.tone}
-      <input data-bls-freq type="range" min="220" max="880" step="10" value="440" class="w-full accent-bronze-500" />
-      <span data-bls-freq-value class="block text-center text-forest-100 tabular-nums">440</span>
-    </label>
-    <label class="text-forest-200 text-xs">
-      {s.volume}
-      <input data-bls-volume type="range" min="0" max="1" step="0.05" value="0.3" class="w-full accent-bronze-500" />
-      <span data-bls-volume-value class="block text-center text-forest-100 tabular-nums">30%</span>
-    </label>
-  </div>
+  <ToolSettings componentName="BLSAudio" lang={lang} startOpen={!fullscreen} />
 
   <div class="flex items-center gap-4">
     <button
@@ -79,73 +76,347 @@ const s = t[lang];
       <span data-bls-indicator-r class="opacity-30">R ▶</span>
     </div>
   </div>
+
+  {/*
+    The pass counter changes up to five times a second, which a live region
+    would turn into unusable chatter. It stays plain text; only the transitions
+    worth hearing — started, stopped, finished — are announced here.
+  */}
+  <p data-bls-status class="sr-only" role="status" aria-live="polite"></p>
+
   <p class="text-forest-400 text-xs mt-2">{s.motionNotice}</p>
 </div>
 
 <script>
-  import { createBlsTimer, playBlsPulse, type BlsSide } from '../../scripts/bls-timer';
+  import { createBlsClock } from '../../scripts/bls-clock';
+  import { createSettingsController } from '../../scripts/tool-settings-controller';
+  import { DEFAULT_VISUAL_OPTIONS } from '../../scripts/visual-engine';
+  import {
+    createAudioEngine, DEFAULT_AUDIO_OPTIONS, DEFAULT_AMBIENT_OPTIONS,
+    type AmbientOptions,
+  } from '../../scripts/audio-engine';
 
-  const widgets = document.querySelectorAll('[data-bls-audio-widget]');
-  widgets.forEach((root) => {
-    const i18n = JSON.parse(root.getAttribute('data-bls-i18n') || '{}');
-    const speed = root.querySelector<HTMLInputElement>('[data-bls-speed]')!;
-    const speedVal = root.querySelector<HTMLElement>('[data-bls-speed-value]')!;
-    const passes = root.querySelector<HTMLInputElement>('[data-bls-passes]')!;
-    const passesVal = root.querySelector<HTMLElement>('[data-bls-passes-value]')!;
-    const freq = root.querySelector<HTMLInputElement>('[data-bls-freq]')!;
-    const freqVal = root.querySelector<HTMLElement>('[data-bls-freq-value]')!;
-    const vol = root.querySelector<HTMLInputElement>('[data-bls-volume]')!;
-    const volVal = root.querySelector<HTMLElement>('[data-bls-volume-value]')!;
+  const TOOL_ID = 'BLSAudio';
+
+  /** How far ahead of the audio clock beats are queued, in seconds. */
+  const LOOKAHEAD = 0.1;
+  /** Time to let `playCue('complete')`'s two chimes ring before suspending. */
+  const END_CUE_TAIL_MS = 1200;
+
+  const DEFAULTS = {
+    speed: 1.0,
+    passes: 24,
+    continuous: false,
+    preset: 'custom',
+    palette: 'default',
+    // This tool has no canvas, but it is tier A and BLS-family, so the shared
+    // panel still renders the motion/appearance controls (path, shape, size,
+    // color, etc.) — the same surface BLSVisual gets. Carrying their defaults
+    // here is what makes those controls persist correctly even though nothing
+    // here reads them.
+    ...DEFAULT_VISUAL_OPTIONS,
+    soundOn: true, // an audio tool with sound off is broken; still gated behind Start.
+    endCue: true,
+    ...DEFAULT_AUDIO_OPTIONS,
+    ambient: DEFAULT_AMBIENT_OPTIONS.kind,
+    ambientVolume: DEFAULT_AMBIENT_OPTIONS.volume,
+    binauralBase: DEFAULT_AMBIENT_OPTIONS.binauralBase,
+    binauralBeat: DEFAULT_AMBIENT_OPTIONS.binauralBeat,
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-bls-audio-widget]').forEach((root) => {
+    const i18n = JSON.parse(root.getAttribute('data-bls-i18n') || '{}') as Record<string, string>;
     const toggle = root.querySelector<HTMLButtonElement>('[data-bls-toggle]')!;
     const count = root.querySelector<HTMLElement>('[data-bls-count]')!;
+    const status = root.querySelector<HTMLElement>('[data-bls-status]');
     const indL = root.querySelector<HTMLElement>('[data-bls-indicator-l]')!;
     const indR = root.querySelector<HTMLElement>('[data-bls-indicator-r]')!;
 
-    let ctx: AudioContext | null = null;
+    // The controller owns the settings panel entirely: hydration, readouts,
+    // palettes, presets, persistence, and reset. It hydrates during
+    // construction, so `get()` already reflects stored prefs.
+    const settings = createSettingsController(root, TOOL_ID, DEFAULTS);
+    let prefs = settings.get();
 
-    function pulse(side: BlsSide) {
-      if (ctx) playBlsPulse(ctx, side === 'L' ? -1 : 1, parseFloat(freq.value), parseFloat(vol.value));
-      indL.style.opacity = side === 'L' ? '1' : '0.3';
-      indR.style.opacity = side === 'R' ? '1' : '0.3';
+    const audio = createAudioEngine();
+
+    let lastAmbient: AmbientOptions | null = null;
+
+    function pushAmbient(): void {
+      const next: AmbientOptions = {
+        kind: prefs.soundOn ? prefs.ambient : 'none',
+        volume: prefs.ambientVolume,
+        binauralBase: prefs.binauralBase,
+        binauralBeat: prefs.binauralBeat,
+      };
+      // `setAmbient` treats any mention of binauralBase/binauralBeat as a
+      // structural change and rebuilds the whole layer, so send only the fields
+      // that actually moved. Passing the full object every time would make the
+      // background bed drop out and fade back in on every unrelated slider nudge.
+      const patch: Partial<AmbientOptions> = {};
+      if (!lastAmbient || lastAmbient.kind !== next.kind) patch.kind = next.kind;
+      if (!lastAmbient || lastAmbient.volume !== next.volume) patch.volume = next.volume;
+      if (!lastAmbient || lastAmbient.binauralBase !== next.binauralBase) {
+        patch.binauralBase = next.binauralBase;
+      }
+      if (!lastAmbient || lastAmbient.binauralBeat !== next.binauralBeat) {
+        patch.binauralBeat = next.binauralBeat;
+      }
+      lastAmbient = next;
+      if (Object.keys(patch).length > 0) audio.setAmbient(patch);
     }
 
-    const timer = createBlsTimer({
-      getSpeed: () => parseFloat(speed.value),
-      onBeat(side, beat) {
-        pulse(side);
-        count.textContent = `${beat} / ${passes.value}`;
-      },
-      getTotalBeats: () => parseInt(passes.value, 10),
-      onSetComplete: () => stop(),
+    function pushToEngines(): void {
+      audio.setOptions({
+        voice: prefs.voice, pitch: prefs.pitch,
+        volume: prefs.soundOn ? prefs.volume : 0,
+        panDepth: prefs.panDepth, panMode: prefs.panMode,
+      });
+      pushAmbient();
+    }
+
+    // --- timebase (see BLSVisual for the full rationale) -------------------
+
+    let usingAudioClock = false;
+    let timeOffset = 0;
+    /** The audio clock is trustworthy: schedule against it and read time from it. */
+    let audioReady = false;
+    /** A context exists and may be making sound. Silencing keys off this, not
+     *  `audioReady` — after a stall fallback the clock is untrusted but any
+     *  ambient layer is still audible, and Stop has to stop that too. */
+    let audioLive = false;
+
+    const rawNow = () => (usingAudioClock ? audio.now() : performance.now() / 1000);
+    const nowSeconds = () => rawNow() + timeOffset;
+    const toAudioTime = (t: number) => t - timeOffset;
+
+    function useAudioClock(on: boolean): void {
+      if (on === usingAudioClock) return;
+      const before = nowSeconds();
+      usingAudioClock = on;
+      timeOffset = before - rawNow();
+    }
+
+    let healthWall = 0;
+    let healthAudio = 0;
+
+    /**
+     * An AudioContext whose clock stops advancing would otherwise freeze the
+     * beat schedule along with it, since scheduling reads the same timebase.
+     * Fall back to the wall clock and drop audio rather than let the whole
+     * tool stall silently.
+     */
+    function checkAudioClockHealth(): void {
+      if (!usingAudioClock) return;
+      const wall = performance.now() / 1000;
+      const heard = audio.now();
+      if (healthWall === 0) {
+        healthWall = wall;
+        healthAudio = heard;
+        return;
+      }
+      const elapsed = wall - healthWall;
+      if (elapsed < 0.5) return;
+      const stalled = heard - healthAudio < elapsed * 0.5;
+      healthWall = wall;
+      healthAudio = heard;
+      if (!stalled) return;
+      audio.cancelScheduled();
+      audioReady = false;
+      useAudioClock(false); // recomputes the offset, so beats do not jump
+    }
+
+    async function startAudio(): Promise<void> {
+      try {
+        await audio.ensureStarted();
+        audioReady = true;
+        audioLive = true;
+        useAudioClock(true);
+        healthWall = 0; // re-baseline; a fresh context needs a moment to spin up
+      } catch {
+        // Autoplay policy or an unavailable AudioContext. Degrade to a silent
+        // running clock rather than fail the whole start.
+        audioReady = false;
+      }
+    }
+
+    // --- clock, scheduling, and the render loop ----------------------------
+
+    const clock = createBlsClock({
+      getSpeed: () => prefs.speed,
+      getTotalBeats: () => (prefs.continuous ? Infinity : prefs.passes),
     });
 
-    function start() {
-      // Lazily create the AudioContext on first start (never autoplay).
-      ctx = ctx ?? new (window.AudioContext || (window as any).webkitAudioContext)();
-      if (ctx.state === 'suspended') ctx.resume();
-      count.textContent = `0 / ${passes.value}`;
-      toggle.textContent = i18n.stop || 'Stop';
-      timer.start();
-      pulse('L');
+    let rafId = 0;
+    let scheduledThrough = 0;
+    let suspendTimer = 0;
+
+    function announce(message: string): void {
+      if (status) status.textContent = message;
     }
 
-    // Stop keeps the current count visible; a fresh Start resets it to 0.
-    function stop() {
-      timer.stop();
+    function scheduleAhead(): void {
+      if (!prefs.soundOn || !audioReady) return;
+      const horizon = nowSeconds() + LOOKAHEAD;
+      const total = prefs.continuous ? Infinity : prefs.passes;
+      let k = Math.max(scheduledThrough, clock.getBeat()) + 1;
+      while (k <= total) {
+        const when = clock.beatTimeFor(k);
+        if (!Number.isFinite(when) || when > horizon) break;
+        audio.scheduleBeat(k % 2 === 1 ? 'R' : 'L', toAudioTime(when));
+        scheduledThrough = k;
+        k += 1;
+      }
+    }
+
+    function frame(): void {
+      checkAudioClockHealth();
+      const beats = clock.tick(nowSeconds());
+      if (beats.length) {
+        const side = beats[beats.length - 1];
+        indL.style.opacity = side === 'L' ? '1' : '0.3';
+        indR.style.opacity = side === 'R' ? '1' : '0.3';
+        count.textContent = `${clock.getBeat()} / ${prefs.continuous ? '∞' : prefs.passes}`;
+      }
+
+      if (prefs.soundOn && audioReady && prefs.panMode === 'sweep') {
+        // Phase 0 is the left edge, 0.5 the right.
+        audio.setPan(-Math.cos(clock.getPhase() * Math.PI * 2));
+      }
+      scheduleAhead();
+
+      if (!clock.isRunning()) {
+        const cue = prefs.soundOn && audioReady && prefs.endCue;
+        if (cue) audio.playCue('complete');
+        stop(i18n.complete || 'Set complete', cue ? END_CUE_TAIL_MS : 0);
+        return;
+      }
+      rafId = requestAnimationFrame(frame);
+    }
+
+    /**
+     * `suspend()` stops every scheduled voice, so suspending the instant a set
+     * ends would swallow the completion chime that was just queued. A manual
+     * stop still silences everything immediately.
+     */
+    function suspendAudio(delayMs: number): void {
+      window.clearTimeout(suspendTimer);
+      if (!audioLive) return;
+      if (delayMs <= 0) {
+        audio.suspend();
+        return;
+      }
+      suspendTimer = window.setTimeout(() => audio.suspend(), delayMs);
+    }
+
+    function start(): void {
+      if (clock.isRunning()) return;
+      window.clearTimeout(suspendTimer);
+      // Synchronously, before the first frame: on a Stop→Start with sound
+      // already on, a baseline left over from the previous run spans the
+      // suspended gap and reads as a stall for a frame or two.
+      healthWall = 0;
+      pushToEngines();
+      scheduledThrough = 0;
+      toggle.textContent = i18n.stop || 'Stop';
+      clock.start(nowSeconds());
+      count.textContent = `${clock.getBeat()} / ${prefs.continuous ? '∞' : prefs.passes}`;
+      announce(i18n.running || 'Running');
+      rafId = requestAnimationFrame(frame);
+
+      if (prefs.soundOn) {
+        void startAudio().then(() => {
+          if (!audioReady || !clock.isRunning()) return;
+          scheduledThrough = clock.getBeat();
+          // The opening left-side action belongs to the component; the clock's
+          // first beat is the right side, half a cycle later. Skip it if the
+          // context took so long that the first pass is already over.
+          if (clock.getBeat() === 0) audio.scheduleBeat('L', toAudioTime(nowSeconds()) + 0.02);
+        });
+      }
+    }
+
+    /** Stop keeps the current count visible; a fresh Start resets it to 0. */
+    function stop(message: string, audioTailMs = 0): void {
+      clock.stop();
+      cancelAnimationFrame(rafId);
+      rafId = 0;
       toggle.textContent = i18n.start || 'Start';
+      suspendAudio(audioTailMs);
       indL.style.opacity = '0.3';
       indR.style.opacity = '0.3';
-      // Release the OS audio session while stopped.
-      ctx?.suspend();
+      announce(`${message}. ${count.textContent ?? ''}`.trim());
     }
 
-    toggle.addEventListener('click', () => (timer.isRunning() ? stop() : start()));
-    speed.addEventListener('input', () => (speedVal.textContent = parseFloat(speed.value).toFixed(1)));
-    passes.addEventListener('input', () => {
-      passesVal.textContent = passes.value;
-      if (!timer.isRunning()) count.textContent = `0 / ${passes.value}`;
+    toggle.addEventListener('click', () => {
+      if (clock.isRunning()) stop(i18n.stopped || 'Stopped');
+      else start();
     });
-    freq.addEventListener('input', () => (freqVal.textContent = freq.value));
-    vol.addEventListener('input', () => (volVal.textContent = `${Math.round(parseFloat(vol.value) * 100)}%`));
+
+    // --- settings wiring -----------------------------------------------
+
+    settings.onChange((next) => {
+      const speedChanged = next.speed !== prefs.speed;
+      const running = clock.isRunning();
+      // Track the *transition*, not which control caused it. Reset emits key
+      // 'reset' and can also turn sound off, and a saved preset can carry
+      // soundOn — keying the teardown off the control name left tones queued
+      // on the AudioContext timeline still firing after the user asked for
+      // silence, and left the clock reading a timebase that was about to be
+      // suspended out from under it.
+      const soundCameOn = Boolean(next.soundOn) && !prefs.soundOn;
+      const soundWentOff = !next.soundOn && Boolean(prefs.soundOn);
+
+      // Re-anchor *before* adopting the new speed, so the sliver since the last
+      // tick is closed out at the speed that was actually in effect for it
+      // rather than being retimed retroactively.
+      if (speedChanged && running) clock.rebase(nowSeconds());
+      prefs = next;
+      if (speedChanged && running) {
+        // Anything already queued was queued at the old tempo.
+        audio.cancelScheduled();
+        scheduledThrough = clock.getBeat();
+      }
+
+      if (soundCameOn) {
+        // A settings change is itself a user gesture, so the context may be
+        // created here — which is also the only moment the clock's timebase
+        // is allowed to move.
+        void startAudio().then(() => {
+          scheduledThrough = clock.getBeat();
+          pushToEngines();
+        });
+      } else if (soundWentOff) {
+        audio.cancelScheduled();
+        suspendAudio(0);
+        useAudioClock(false);
+        scheduledThrough = clock.getBeat();
+        indL.style.opacity = '0.3';
+        indR.style.opacity = '0.3';
+      }
+
+      pushToEngines();
+      if (!running) {
+        count.textContent = `${clock.getBeat()} / ${prefs.continuous ? '∞' : prefs.passes}`;
+      }
+    });
+
+    // The panel is hydrated by now, so this is the one push that carries stored
+    // preferences into the engines.
+    pushToEngines();
+    count.textContent = `${clock.getBeat()} / ${prefs.continuous ? '∞' : prefs.passes}`;
   });
+
+  // Spacebar toggles the first audio widget on the page, unless a control has focus.
+  if (document.querySelector('[data-bls-audio-widget]')) {
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== ' ') return;
+      if (e.target instanceof Element
+        && e.target.closest('button, input, a, select, textarea, summary, [contenteditable]')) return;
+      const toggle = document.querySelector<HTMLButtonElement>('[data-bls-audio-widget] [data-bls-toggle]');
+      if (!toggle) return;
+      e.preventDefault();
+      toggle.click();
+    });
+  }
 </script>

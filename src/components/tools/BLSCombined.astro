@@ -1,176 +1,467 @@
 ---
 import type { Lang } from '../../i18n';
+import ToolSettings from './ToolSettings.astro';
 
 interface Props {
   fullscreen?: boolean;
   lang?: Lang;
+  warnings?: string[];
 }
 
-const { fullscreen = false, lang = 'en' } = Astro.props;
+const { fullscreen = false, lang = 'en', warnings = [] } = Astro.props;
 const containerClass = fullscreen
-  ? "w-full max-w-5xl mx-auto p-4 flex flex-col"
-  : "w-full p-6 bg-forest-800 rounded-lg border border-forest-600";
-const trackHeight = fullscreen ? "h-96" : "h-64";
+  ? 'w-full max-w-5xl mx-auto p-4 flex flex-col'
+  : 'w-full p-6 bg-forest-800 rounded-lg border border-forest-600';
+const trackHeight = fullscreen ? 'h-96' : 'h-64';
 
+/**
+ * Only strings specific to this tool live here — everything the settings panel
+ * shows (including the headphones note and the sound-on toggle) comes from
+ * `tools.settings.*` in ui.ts. The warnings are passed in from the tool's
+ * frontmatter rather than hardcoded, so editing the markdown is enough to
+ * change them.
+ */
 const t = {
   en: {
-    combinedWarning: '⚠ Photosensitive epilepsy and headphone warnings apply. Use in clinician-supervised sessions only.',
-    speed: 'Speed (Hz)',
-    passes: 'Passes / set',
-    tone: 'Tone (Hz)',
-    volume: 'Volume',
     start: 'Start',
     stop: 'Stop',
-    audio: 'audio',
-    motionNotice: "This tool uses motion by design. If that's uncomfortable, consider the audio-only or butterfly-hug tool instead.",
-    reducedMotionNotice: 'Your system is set to prefer reduced motion. The audio or tapping BLS tool may be a more comfortable alternative.',
+    running: 'Running',
+    stopped: 'Stopped',
+    complete: 'Set complete',
+    motionNotice: "This tool uses motion by design. The settings panel can switch it to a side-to-side fade instead.",
   },
   es: {
-    combinedWarning: '⚠ Se aplican advertencias de epilepsia fotosensible y audífonos. Usar solo en sesiones supervisadas por un clínico.',
-    speed: 'Velocidad (Hz)',
-    passes: 'Pases / set',
-    tone: 'Tono (Hz)',
-    volume: 'Volumen',
     start: 'Comenzar',
     stop: 'Detener',
-    audio: 'audio',
-    motionNotice: 'Esta herramienta usa movimiento por diseño. Si eso es incómodo, considera la herramienta solo de audio o el abrazo de mariposa.',
-    reducedMotionNotice: 'Tu sistema está configurado para preferir movimiento reducido. La herramienta de BLS de audio o de toques puede ser una alternativa más cómoda.',
+    running: 'En marcha',
+    stopped: 'Detenido',
+    complete: 'Serie completada',
+    motionNotice: 'Esta herramienta usa movimiento por diseño. En los ajustes puedes cambiarlo por un desvanecido de lado a lado.',
   },
 };
-
 const s = t[lang];
 ---
 
-<div class:list={[containerClass]} data-bls-combined-widget data-bls-i18n={JSON.stringify({ start: s.start, stop: s.stop })}>
-  <div class:list={["border border-amber-500/50 bg-amber-900/20 rounded-md text-amber-100 text-xs", fullscreen ? "mb-2 p-2" : "mb-4 p-3"]}>
-    {s.combinedWarning}
+<div
+  class:list={[containerClass]}
+  data-bls-combined-widget
+  data-bls-i18n={JSON.stringify({
+    start: s.start, stop: s.stop, running: s.running, stopped: s.stopped, complete: s.complete,
+  })}
+>
+  {/*
+    The standard tool page renders these above the widget via ToolShell, but the
+    fullscreen route renders the widget alone — so the warnings have to travel
+    with it or they would vanish exactly where the tool is used in session.
+  */}
+  {fullscreen && warnings.length > 0 && (
+    <div class="mb-2 p-2 border border-amber-500/50 bg-amber-900/20 rounded-md text-amber-100 text-xs">
+      <ul class="list-disc list-inside space-y-1">
+        {warnings.map((w) => <li>{w}</li>)}
+      </ul>
+    </div>
+  )}
+
+  <ToolSettings componentName="BLSCombined" lang={lang} startOpen={!fullscreen} />
+
+  <div
+    class:list={['relative w-full rounded-lg overflow-hidden', trackHeight]}
+    style="background: var(--tool-bg, #000000);"
+    data-bls-track
+  >
+    {/* Decorative: the target's position carries no information the count and
+        status region below do not already convey in text. */}
+    <canvas data-bls-canvas class="block w-full h-full" aria-hidden="true"></canvas>
   </div>
 
-  <div data-bls-rm-notice class="hidden mb-4 p-3 border border-amber-500/50 bg-amber-900/20 rounded-md text-amber-100 text-xs">
-    {s.reducedMotionNotice}
-  </div>
-
-  <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
-    <label class="text-forest-200 text-xs">
-      {s.speed}
-      <input data-speed type="range" min="0.3" max="2" step="0.1" value="1.0" class="w-full accent-bronze-500" />
-      <span data-speed-value class="block text-center text-forest-100 tabular-nums">1.0</span>
-    </label>
-    <label class="text-forest-200 text-xs">
-      {s.passes}
-      <input data-passes type="range" min="6" max="48" step="2" value="24" class="w-full accent-bronze-500" />
-      <span data-passes-value class="block text-center text-forest-100 tabular-nums">24</span>
-    </label>
-    <label class="text-forest-200 text-xs">
-      {s.tone}
-      <input data-freq type="range" min="220" max="880" step="10" value="440" class="w-full accent-bronze-500" />
-      <span data-freq-value class="block text-center text-forest-100 tabular-nums">440</span>
-    </label>
-    <label class="text-forest-200 text-xs">
-      {s.volume}
-      <input data-volume type="range" min="0" max="1" step="0.05" value="0.3" class="w-full accent-bronze-500" />
-      <span data-volume-value class="block text-center text-forest-100 tabular-nums">30%</span>
-    </label>
-  </div>
-
-  <div class:list={["relative w-full bg-black rounded-lg overflow-hidden", trackHeight]} data-track>
-    <div
-      data-dot
-      class="absolute top-1/2 rounded-full"
-      style="width: 48px; height: 48px; background: #FFF8E7; transform: translate(0, -50%);"
-    ></div>
-  </div>
-
-  <div class="mt-4 flex items-center gap-4 flex-wrap">
+  <div class="mt-4 flex items-center gap-3">
     <button
-      data-toggle
+      data-bls-toggle
       class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
     >
       {s.start}
     </button>
-    <span data-count class="text-forest-300 text-sm tabular-nums">0 / 24</span>
-    <label class="text-forest-300 text-xs flex items-center gap-2">
-      <input type="checkbox" data-audio-on checked class="accent-bronze-500 focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" /> {s.audio}
-    </label>
+    <span data-bls-count class="text-forest-300 text-sm tabular-nums">0 / 24</span>
   </div>
+
+  {/*
+    The pass counter changes up to five times a second, which a live region
+    would turn into unusable chatter. It stays plain text; only the transitions
+    worth hearing — started, stopped, finished — are announced here.
+  */}
+  <p data-bls-status class="sr-only" role="status" aria-live="polite"></p>
+
   <p class="text-forest-400 text-xs mt-2">{s.motionNotice}</p>
 </div>
 
 <script>
-  import { createBlsTimer, playBlsPulse, type BlsSide } from '../../scripts/bls-timer';
+  import { createBlsClock } from '../../scripts/bls-clock';
+  import { onReducedMotion } from '../../scripts/motion-pref';
+  import { createSettingsController } from '../../scripts/tool-settings-controller';
+  import { createVisualRenderer, DEFAULT_VISUAL_OPTIONS } from '../../scripts/visual-engine';
+  import {
+    createAudioEngine, DEFAULT_AUDIO_OPTIONS, DEFAULT_AMBIENT_OPTIONS,
+    type AmbientOptions,
+  } from '../../scripts/audio-engine';
 
-  const widgets = document.querySelectorAll('[data-bls-combined-widget]');
-  widgets.forEach((root) => {
-    const i18n = JSON.parse(root.getAttribute('data-bls-i18n') || '{}');
-    const track = root.querySelector<HTMLElement>('[data-track]')!;
-    const dot = root.querySelector<HTMLElement>('[data-dot]')!;
-    const speed = root.querySelector<HTMLInputElement>('[data-speed]')!;
-    const speedVal = root.querySelector<HTMLElement>('[data-speed-value]')!;
-    const passes = root.querySelector<HTMLInputElement>('[data-passes]')!;
-    const passesVal = root.querySelector<HTMLElement>('[data-passes-value]')!;
-    const freq = root.querySelector<HTMLInputElement>('[data-freq]')!;
-    const freqVal = root.querySelector<HTMLElement>('[data-freq-value]')!;
-    const vol = root.querySelector<HTMLInputElement>('[data-volume]')!;
-    const volVal = root.querySelector<HTMLElement>('[data-volume-value]')!;
-    const toggle = root.querySelector<HTMLButtonElement>('[data-toggle]')!;
-    const count = root.querySelector<HTMLElement>('[data-count]')!;
-    const audioOn = root.querySelector<HTMLInputElement>('[data-audio-on]')!;
-    const rmNotice = root.querySelector<HTMLElement>('[data-bls-rm-notice]');
+  const TOOL_ID = 'BLSCombined';
 
-    if (rmNotice && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      rmNotice.classList.remove('hidden');
+  /** How far ahead of the audio clock beats are queued, in seconds. */
+  const LOOKAHEAD = 0.1;
+  /** Time to let `playCue('complete')`'s two chimes ring before suspending. */
+  const END_CUE_TAIL_MS = 1200;
+
+  const DEFAULTS = {
+    speed: 1.0,
+    passes: 24,
+    continuous: false,
+    preset: 'custom',
+    palette: 'default',
+    ...DEFAULT_VISUAL_OPTIONS,
+    soundOn: true, // the combined tool's whole point is audio+visual together.
+    endCue: true,
+    ...DEFAULT_AUDIO_OPTIONS,
+    ambient: DEFAULT_AMBIENT_OPTIONS.kind,
+    ambientVolume: DEFAULT_AMBIENT_OPTIONS.volume,
+    binauralBase: DEFAULT_AMBIENT_OPTIONS.binauralBase,
+    binauralBeat: DEFAULT_AMBIENT_OPTIONS.binauralBeat,
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-bls-combined-widget]').forEach((root) => {
+    const i18n = JSON.parse(root.getAttribute('data-bls-i18n') || '{}') as Record<string, string>;
+    const canvas = root.querySelector<HTMLCanvasElement>('[data-bls-canvas]')!;
+    const toggle = root.querySelector<HTMLButtonElement>('[data-bls-toggle]')!;
+    const count = root.querySelector<HTMLElement>('[data-bls-count]')!;
+    const status = root.querySelector<HTMLElement>('[data-bls-status]');
+
+    // The controller owns the settings panel entirely: hydration, readouts,
+    // palettes, presets, the contrast warning, persistence, and reset. It
+    // hydrates during construction, so `get()` already reflects stored prefs.
+    const settings = createSettingsController(root, TOOL_ID, DEFAULTS);
+    let prefs = settings.get();
+    let systemReducedMotion = false;
+
+    const audio = createAudioEngine();
+
+    function visualOptions() {
+      return {
+        path: prefs.path, easing: prefs.easing, shape: prefs.shape,
+        size: prefs.size, color: prefs.color, background: prefs.background,
+        glow: prefs.glow, trail: prefs.trail,
+        // Either the user's own choice or the OS preference puts the tool in
+        // crossfade — bilateral alternation with nothing translating.
+        crossfade: prefs.crossfade || systemReducedMotion,
+      };
     }
 
-    let ctx: AudioContext | null = null;
+    const renderer = createVisualRenderer(canvas, visualOptions());
 
-    function pulse(side: BlsSide) {
-      if (!ctx || !audioOn.checked) return;
-      playBlsPulse(ctx, side === 'L' ? -1 : 1, parseFloat(freq.value), parseFloat(vol.value));
+    let lastAmbient: AmbientOptions | null = null;
+
+    function pushAmbient(): void {
+      const next: AmbientOptions = {
+        kind: prefs.soundOn ? prefs.ambient : 'none',
+        volume: prefs.ambientVolume,
+        binauralBase: prefs.binauralBase,
+        binauralBeat: prefs.binauralBeat,
+      };
+      // `setAmbient` treats any mention of binauralBase/binauralBeat as a
+      // structural change and rebuilds the whole layer, so send only the fields
+      // that actually moved. Passing the full object every time would make the
+      // background bed drop out and fade back in on every unrelated slider nudge.
+      const patch: Partial<AmbientOptions> = {};
+      if (!lastAmbient || lastAmbient.kind !== next.kind) patch.kind = next.kind;
+      if (!lastAmbient || lastAmbient.volume !== next.volume) patch.volume = next.volume;
+      if (!lastAmbient || lastAmbient.binauralBase !== next.binauralBase) {
+        patch.binauralBase = next.binauralBase;
+      }
+      if (!lastAmbient || lastAmbient.binauralBeat !== next.binauralBeat) {
+        patch.binauralBeat = next.binauralBeat;
+      }
+      lastAmbient = next;
+      if (Object.keys(patch).length > 0) audio.setAmbient(patch);
     }
 
-    const timer = createBlsTimer({
-      getSpeed: () => parseFloat(speed.value),
-      onFrame(phase) {
-        const trackWidth = track.clientWidth - dot.clientWidth;
-        const x = trackWidth * (0.5 - 0.5 * Math.cos(phase * 2 * Math.PI));
-        dot.style.transform = `translate(${x}px, -50%)`;
-      },
-      onBeat(side, beat) {
-        // Each beat is the dot arriving at an edge: pulse on that side.
-        pulse(side);
-        count.textContent = `${beat} / ${passes.value}`;
-      },
-      getTotalBeats: () => parseInt(passes.value, 10),
-      onSetComplete: () => stop(),
+    function pushToEngines(): void {
+      renderer.setOptions(visualOptions());
+      audio.setOptions({
+        voice: prefs.voice, pitch: prefs.pitch,
+        volume: prefs.soundOn ? prefs.volume : 0,
+        panDepth: prefs.panDepth, panMode: prefs.panMode,
+      });
+      pushAmbient();
+    }
+
+    // --- timebase ---------------------------------------------------------
+    //
+    // Visuals run on requestAnimationFrame; audio is scheduled against
+    // `ctx.currentTime`. If each kept its own notion of phase they would drift
+    // and the tone would stop landing when the target reaches the edge, which
+    // is the whole point of the tool. So the clock reads the audio clock
+    // whenever one exists and `performance.now()` otherwise.
+    //
+    // Those two are unrelated epochs, though: switching between them raw would
+    // hand the clock a time hundreds of seconds away from the last one and
+    // wreck the phase. `timeOffset` absorbs the gap so `nowSeconds()` stays
+    // continuous across the switch, and `toAudioTime` converts back for
+    // scheduling. While sound is on the offset is constant, so scheduled beats
+    // land on exact audio-clock times with no accumulated drift.
+
+    let usingAudioClock = false;
+    let timeOffset = 0;
+    /** The audio clock is trustworthy: schedule against it and read time from it. */
+    let audioReady = false;
+    /** A context exists and may be making sound. Silencing keys off this, not
+     *  `audioReady` — after a stall fallback the clock is untrusted but any
+     *  ambient layer is still audible, and Stop has to stop that too. */
+    let audioLive = false;
+
+    const rawNow = () => (usingAudioClock ? audio.now() : performance.now() / 1000);
+    const nowSeconds = () => rawNow() + timeOffset;
+    const toAudioTime = (t: number) => t - timeOffset;
+
+    function useAudioClock(on: boolean): void {
+      if (on === usingAudioClock) return;
+      const before = nowSeconds();
+      usingAudioClock = on;
+      timeOffset = before - rawNow();
+    }
+
+    let healthWall = 0;
+    let healthAudio = 0;
+
+    /**
+     * An AudioContext whose clock stops advancing — no output device, a
+     * headset disconnecting mid-session, a virtual sink — would otherwise
+     * freeze the visual along with it, because the renderer reads the same
+     * timebase. Losing sound is survivable in session; losing the moving
+     * target is not, so fall back to the wall clock and drop audio instead.
+     */
+    function checkAudioClockHealth(): void {
+      if (!usingAudioClock) return;
+      const wall = performance.now() / 1000;
+      const heard = audio.now();
+      if (healthWall === 0) {
+        healthWall = wall;
+        healthAudio = heard;
+        return;
+      }
+      const elapsed = wall - healthWall;
+      if (elapsed < 0.5) return;
+      const stalled = heard - healthAudio < elapsed * 0.5;
+      healthWall = wall;
+      healthAudio = heard;
+      if (!stalled) return;
+      audio.cancelScheduled();
+      audioReady = false;
+      useAudioClock(false); // recomputes the offset, so the target does not jump
+    }
+
+    async function startAudio(): Promise<void> {
+      try {
+        await audio.ensureStarted();
+        audioReady = true;
+        audioLive = true;
+        useAudioClock(true);
+        healthWall = 0; // re-baseline; a fresh context needs a moment to spin up
+      } catch {
+        // Autoplay policy or an unavailable AudioContext. The visual half of
+        // the tool still works, so degrade rather than fail the whole start.
+        audioReady = false;
+      }
+    }
+
+    // --- clock, scheduling, and the render loop ----------------------------
+
+    const clock = createBlsClock({
+      getSpeed: () => prefs.speed,
+      getTotalBeats: () => (prefs.continuous ? Infinity : prefs.passes),
     });
 
-    function start() {
-      // Lazily create the AudioContext on first start (never autoplay).
-      ctx = ctx ?? new (window.AudioContext || (window as any).webkitAudioContext)();
-      if (ctx.state === 'suspended') ctx.resume();
-      count.textContent = `0 / ${passes.value}`;
+    let rafId = 0;
+    let scheduledThrough = 0;
+    let suspendTimer = 0;
+
+    function updateCount(): void {
+      count.textContent = `${clock.getBeat()} / ${prefs.continuous ? '∞' : prefs.passes}`;
+    }
+
+    function announce(message: string): void {
+      if (status) status.textContent = message;
+    }
+
+    function scheduleAhead(): void {
+      if (!prefs.soundOn || !audioReady) return;
+      const horizon = nowSeconds() + LOOKAHEAD;
+      const total = prefs.continuous ? Infinity : prefs.passes;
+      let k = Math.max(scheduledThrough, clock.getBeat()) + 1;
+      while (k <= total) {
+        const when = clock.beatTimeFor(k);
+        if (!Number.isFinite(when) || when > horizon) break;
+        audio.scheduleBeat(k % 2 === 1 ? 'R' : 'L', toAudioTime(when));
+        scheduledThrough = k;
+        k += 1;
+      }
+    }
+
+    function frame(): void {
+      checkAudioClockHealth();
+      const beats = clock.tick(nowSeconds());
+      if (beats.length) updateCount();
+
+      if (prefs.soundOn && audioReady && prefs.panMode === 'sweep') {
+        // Phase 0 is the left edge, 0.5 the right — same convention the
+        // renderer draws to, so the pan tracks the target exactly.
+        audio.setPan(-Math.cos(clock.getPhase() * Math.PI * 2));
+      }
+      scheduleAhead();
+      renderer.render(clock.getPhase());
+
+      if (!clock.isRunning()) {
+        const cue = prefs.soundOn && audioReady && prefs.endCue;
+        if (cue) audio.playCue('complete');
+        stop(i18n.complete || 'Set complete', cue ? END_CUE_TAIL_MS : 0);
+        return;
+      }
+      rafId = requestAnimationFrame(frame);
+    }
+
+    /**
+     * `suspend()` stops every scheduled voice, so suspending the instant a set
+     * ends would swallow the completion chime that was just queued. A manual
+     * stop still silences everything immediately — a stop control that does not
+     * stop is not acceptable here.
+     */
+    function suspendAudio(delayMs: number): void {
+      window.clearTimeout(suspendTimer);
+      if (!audioLive) return;
+      if (delayMs <= 0) {
+        audio.suspend();
+        return;
+      }
+      suspendTimer = window.setTimeout(() => audio.suspend(), delayMs);
+    }
+
+    function start(): void {
+      if (clock.isRunning()) return;
+      window.clearTimeout(suspendTimer);
+      // Synchronously, before the first frame: on a Stop→Start with sound
+      // already on, a baseline left over from the previous run spans the
+      // suspended gap and reads as a stall for a frame or two.
+      healthWall = 0;
+      pushToEngines();
+      scheduledThrough = 0;
       toggle.textContent = i18n.stop || 'Stop';
-      timer.start();
-      pulse('L'); // dot starts at the left edge
+      clock.start(nowSeconds());
+      updateCount();
+      announce(i18n.running || 'Running');
+      rafId = requestAnimationFrame(frame);
+
+      // Audio joins once its context is ready; the visual never waits on it.
+      // A context that cannot resume — autoplay policy, an untrusted gesture —
+      // leaves `ensureStarted` pending indefinitely in some browsers, and a
+      // tool that silently refuses to start is far worse than one that starts
+      // silent. `useAudioClock` absorbs the timebase change when it does land.
+      if (prefs.soundOn) {
+        void startAudio().then(() => {
+          if (!audioReady || !clock.isRunning()) return;
+          scheduledThrough = clock.getBeat();
+          // The opening left-side action belongs to the component; the clock's
+          // first beat is the right side, half a cycle later. Skip it if the
+          // context took so long that the first pass is already over.
+          if (clock.getBeat() === 0) audio.scheduleBeat('L', toAudioTime(nowSeconds()) + 0.02);
+        });
+      }
     }
 
-    // Stop keeps the current count visible; a fresh Start resets it to 0.
-    function stop() {
-      timer.stop();
+    /** Stop keeps the current count visible; a fresh Start resets it to 0. */
+    function stop(message: string, audioTailMs = 0): void {
+      clock.stop();
+      cancelAnimationFrame(rafId);
+      rafId = 0;
       toggle.textContent = i18n.start || 'Start';
-      dot.style.transform = 'translate(0, -50%)';
-      // Release the OS audio session while stopped.
-      ctx?.suspend();
+      suspendAudio(audioTailMs);
+      renderer.render(0);
+      announce(`${message}. ${count.textContent ?? ''}`.trim());
     }
 
-    toggle.addEventListener('click', () => (timer.isRunning() ? stop() : start()));
-    speed.addEventListener('input', () => (speedVal.textContent = parseFloat(speed.value).toFixed(1)));
-    passes.addEventListener('input', () => {
-      passesVal.textContent = passes.value;
-      if (!timer.isRunning()) count.textContent = `0 / ${passes.value}`;
+    toggle.addEventListener('click', () => {
+      if (clock.isRunning()) stop(i18n.stopped || 'Stopped');
+      else start();
     });
-    freq.addEventListener('input', () => (freqVal.textContent = freq.value));
-    vol.addEventListener('input', () => (volVal.textContent = `${Math.round(parseFloat(vol.value) * 100)}%`));
+
+    // --- settings wiring -----------------------------------------------
+
+    settings.onChange((next) => {
+      const speedChanged = next.speed !== prefs.speed;
+      const running = clock.isRunning();
+      // Track the *transition*, not which control caused it. Reset emits
+      // key 'reset' and can also turn sound off, and a saved preset can carry
+      // soundOn — keying the teardown off the control name left tones queued
+      // on the AudioContext timeline still firing after the user asked for
+      // silence, and left the clock reading a timebase that was about to be
+      // suspended out from under it.
+      const soundCameOn = Boolean(next.soundOn) && !prefs.soundOn;
+      const soundWentOff = !next.soundOn && Boolean(prefs.soundOn);
+
+      // Re-anchor *before* adopting the new speed, so the sliver since the last
+      // tick is closed out at the speed that was actually in effect for it
+      // rather than being retimed retroactively.
+      if (speedChanged && running) clock.rebase(nowSeconds());
+      prefs = next;
+      if (speedChanged && running) {
+        // Anything already queued was queued at the old tempo.
+        audio.cancelScheduled();
+        scheduledThrough = clock.getBeat();
+      }
+
+      if (soundCameOn) {
+        // A settings change is itself a user gesture, so the context may be
+        // created here — which is also the only moment the clock's timebase
+        // is allowed to move.
+        void startAudio().then(() => {
+          scheduledThrough = clock.getBeat();
+          pushToEngines();
+        });
+      } else if (soundWentOff) {
+        audio.cancelScheduled();
+        suspendAudio(0);
+        useAudioClock(false);
+        scheduledThrough = clock.getBeat();
+      }
+
+      pushToEngines();
+      // Repainting mid-set would drop a stray frame at the left edge on top of
+      // the running animation; the loop repaints on its own anyway.
+      if (!running) {
+        updateCount();
+        renderer.render(0);
+      }
+    });
+
+    onReducedMotion((reduced) => {
+      systemReducedMotion = reduced;
+      renderer.setOptions({ crossfade: prefs.crossfade || reduced });
+      if (!clock.isRunning()) renderer.render(0);
+    });
+
+    // The panel is hydrated by now, so this is the one push that carries stored
+    // preferences into the engines.
+    pushToEngines();
+    updateCount();
+    renderer.render(0);
   });
+
+  // Spacebar toggles the first combined widget on the page, unless a control has focus.
+  if (document.querySelector('[data-bls-combined-widget]')) {
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== ' ') return;
+      if (e.target instanceof Element
+        && e.target.closest('button, input, a, select, textarea, summary, [contenteditable]')) return;
+      const toggle = document.querySelector<HTMLButtonElement>('[data-bls-combined-widget] [data-bls-toggle]');
+      if (!toggle) return;
+      e.preventDefault();
+      toggle.click();
+    });
+  }
 </script>
