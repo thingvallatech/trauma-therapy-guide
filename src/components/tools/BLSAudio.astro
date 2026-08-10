@@ -285,11 +285,16 @@ const s = t[lang];
       const beats = clock.tick(nowSeconds());
       if (beats.length) {
         const side = beats[beats.length - 1];
-        // No `onReducedMotion` wiring in this tool, deliberately: the only
-        // "animation" is this opacity swap between two static indicators,
-        // which is itself the standard reduced-motion *remediation*, not
-        // something to remediate. Revisit if either indicator ever gains a
-        // transform, transition, or translation.
+        // prefers-reduced-motion: this widget deliberately does NOT wire
+        // `onReducedMotion`, unlike its six siblings. Its only animation is
+        // the opacity swap on the next two lines, between indicators that
+        // never move — which is itself the canonical *remediation* for
+        // reduced motion, not a trigger for it. Wiring the hook here would
+        // mean switching from a crossfade to a crossfade. This was settled in
+        // review; please do not re-open it.
+        //
+        // If either indicator ever gains a transform, translation, scale, or
+        // a travelling highlight, the hook MUST be wired.
         indL.style.opacity = side === 'L' ? '1' : '0.3';
         indR.style.opacity = side === 'R' ? '1' : '0.3';
         count.textContent = `${clock.getBeat()} / ${prefs.continuous ? '∞' : prefs.passes}`;

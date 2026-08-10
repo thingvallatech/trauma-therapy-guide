@@ -176,10 +176,15 @@ const s = t[lang];
       });
     }
 
-    // No `onReducedMotion` wiring here, deliberately: the only "animation" is
-    // this colour swap between two static panels, which is itself the standard
-    // reduced-motion *remediation*, not something to remediate. Revisit if
-    // either panel ever gains a transform, transition, or translation.
+    // prefers-reduced-motion: this widget deliberately does NOT wire
+    // `onReducedMotion`, unlike its six siblings. Its only animation is the
+    // colour swap below between two panels that never move — which is itself
+    // the canonical *remediation* for reduced motion, not a trigger for it.
+    // Wiring the hook here would mean switching from a crossfade to a
+    // crossfade. This was settled in review; please do not re-open it.
+    //
+    // If this widget ever gains a transform, translation, scale, or a
+    // travelling highlight, the hook MUST be wired.
     function highlight(side: BlsSide): void {
       clearHighlights();
       const active = side === 'L' ? panelL : panelR;
