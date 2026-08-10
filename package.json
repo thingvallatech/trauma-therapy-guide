@@ -7,6 +7,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "test": "vitest run",
     "verify": "npm run lint --if-present && npm run test --if-present && npm run build"
   },
   "dependencies": {
@@ -16,5 +17,8 @@
     "astro": "^5.16.4",
     "tailwindcss": "^4.1.17",
     "three": "^0.183.2"
+  },
+  "devDependencies": {
+    "vitest": "^3.2.7"
   }
 }
