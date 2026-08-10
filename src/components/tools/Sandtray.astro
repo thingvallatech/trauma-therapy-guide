@@ -257,16 +257,12 @@ const s = t[lang];
   const TOOL_ID = 'Sandtray';
 
   const DEFAULTS = {
-    // The tray is a WebGL scene, not a themed 2D surface: Color and
-    // Background are gated off in ToolSettings.astro (see `showColor`/
-    // `showBackground` there), since the sand/water/rock swatches below are
-    // this tool's real, wired color controls and a generic freeform pair
-    // alongside them would be redundant. Palette is the only Appearance
-    // field the panel renders here — the controller sets `--tool-*` custom
-    // properties on the widget root regardless of tool, though nothing in
-    // this widget's own markup currently reads them (same gap Task 16 found
-    // on five of its six Tier C tools before their color wiring landed).
-    palette: 'default',
+    // Sandtray's whole Appearance section (palette, color, background) is
+    // gated off in ToolSettings.astro (`showAppearance`) — the tray is a
+    // wooden-and-sand aesthetic, not a themed 2D surface, and its own sand/
+    // water/rock swatches below are the tool's real color controls. Tier D
+    // for Sandtray therefore means exactly "the ambient sound bed": nothing
+    // here carries a value for a control that no longer renders.
     soundOn: false, // ambient bed is opt-in.
     ...DEFAULT_AUDIO_OPTIONS,
     ambient: DEFAULT_AMBIENT_OPTIONS.kind,
@@ -780,8 +776,9 @@ const s = t[lang];
 
     // ----- Ambient sound bed -----
     // The controller owns the settings panel entirely: hydration, readouts,
-    // palette, and persistence. It hydrates during construction, so `get()`
-    // already reflects stored prefs.
+    // and persistence. (No palette here — Sandtray's Appearance section is
+    // gated off entirely; see the DEFAULTS comment above.) It hydrates
+    // during construction, so `get()` already reflects stored prefs.
     const settings = createSettingsController(root, TOOL_ID, DEFAULTS);
     let prefs = settings.get();
     const audio = createAudioEngine();

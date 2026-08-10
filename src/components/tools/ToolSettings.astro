@@ -76,23 +76,31 @@ const showEndCue = (tier === 'A' || tier === 'B') && hasSets;
 const showAmbient = true;
 
 /**
- * "Color" and "Background" are real choices everywhere except tools with no
- * field for them to land on. Both are gated by exclusion rather than an
- * allowlist: unlike Motion/Sound, the Appearance section renders for every
- * tier, not just bilateral tools — an allowlist here would silently hide
- * them for Tier C/D tools this task never touched.
- *
- * BLSAudio has no visual field at all — just text indicators — but it still
- * consumes `color` for one of them (see BLSAudio.astro), so only Background
- * is excluded there.
- *
- * Sandtray is a WebGL scene, not a themed 2D surface, so neither picker has
- * anywhere to paint — and it already has its own tool-specific sand/water/
- * rock color swatches, so a generic "Target color"/"Background" pair sitting
- * alongside those would be redundant even in principle. Both are excluded.
+ * "Background" is a real color choice everywhere except BLSAudio, which has
+ * no visual field at all — just text indicators with nothing behind them to
+ * paint. This is the one control gated by exclusion rather than an
+ * allowlist: unlike Motion/Sound, the Appearance section (including
+ * "Background") renders for every tier, not just bilateral tools — an
+ * allowlist here would silently hide it for Tier C/D tools this task never
+ * touched. BLSAudio is the only tool known today to lack a field to color,
+ * so it is named directly. (Sandtray also has no field for Color/Background
+ * to land on, but that's handled one level up by `showAppearance` below,
+ * which excludes the whole section rather than just these two fields.)
  */
-const showColor = componentName !== 'Sandtray';
-const showBackground = componentName !== 'BLSAudio' && componentName !== 'Sandtray';
+const showBackground = componentName !== 'BLSAudio';
+
+/**
+ * Sandtray's whole aesthetic is a wooden tray with a sand surface — theming
+ * that from a generic palette (a "high contrast" or "cool" wooden tray isn't
+ * a thing anyone wants) would undermine the design rather than serve it. It
+ * also already has its own richer, more meaningful color controls: sand,
+ * water, and rock swatches on the canvas itself. So Sandtray gets no
+ * Appearance section at all — Tier D means exactly "the ambient sound bed"
+ * for this tool, not "palette plus sound." Gating the section as a whole
+ * (rather than field-by-field, the way Color/Background are gated above)
+ * also avoids shipping an empty bordered block with an orphan heading.
+ */
+const showAppearance = componentName !== 'Sandtray';
 
 const field = 'text-forest-200 text-xs block';
 const focusRing =
@@ -221,59 +229,59 @@ const select =
       </section>
     )}
 
-    <section>
-      <h3 class="text-forest-300 text-xs uppercase tracking-wide mb-2">{t('tools.settings.section.appearance')}</h3>
-      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
-        <label class={field}>
-          {t('tools.settings.palette')}
-          <select data-setting="palette" class={select}>
-            {PALETTES.map((p) => <option value={p.id}>{tk(`tools.settings.palette.${p.id}`)}</option>)}
-          </select>
-        </label>
-        {showPathControls && (
-          <>
-            <label class={field}>
-              {t('tools.settings.shape')}
-              <select data-setting="shape" class={select}>
-                {TARGET_SHAPES.map((s) => <option value={s}>{tk(`tools.settings.shape.${s}`)}</option>)}
-              </select>
-            </label>
-            <label class={field}>
-              {t('tools.settings.size')}
-              <input data-setting="size" type="range" min="16" max="140" step="4" value="48" class={input} />
-              <span data-value-for="size" class="block text-center text-forest-100 tabular-nums">48</span>
-            </label>
-            <label class={field}>
-              {t('tools.settings.glow')}
-              <input data-setting="glow" type="range" min="0" max="1" step="0.05" value="0.35" class={input} />
-            </label>
-            <label class={field}>
-              {t('tools.settings.trail')}
-              <input data-setting="trail" type="range" min="0" max="1" step="0.05" value="0" class={input} />
-            </label>
-          </>
-        )}
-        {showColor && (
+    {showAppearance && (
+      <section>
+        <h3 class="text-forest-300 text-xs uppercase tracking-wide mb-2">{t('tools.settings.section.appearance')}</h3>
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+          <label class={field}>
+            {t('tools.settings.palette')}
+            <select data-setting="palette" class={select}>
+              {PALETTES.map((p) => <option value={p.id}>{tk(`tools.settings.palette.${p.id}`)}</option>)}
+            </select>
+          </label>
+          {showPathControls && (
+            <>
+              <label class={field}>
+                {t('tools.settings.shape')}
+                <select data-setting="shape" class={select}>
+                  {TARGET_SHAPES.map((s) => <option value={s}>{tk(`tools.settings.shape.${s}`)}</option>)}
+                </select>
+              </label>
+              <label class={field}>
+                {t('tools.settings.size')}
+                <input data-setting="size" type="range" min="16" max="140" step="4" value="48" class={input} />
+                <span data-value-for="size" class="block text-center text-forest-100 tabular-nums">48</span>
+              </label>
+              <label class={field}>
+                {t('tools.settings.glow')}
+                <input data-setting="glow" type="range" min="0" max="1" step="0.05" value="0.35" class={input} />
+              </label>
+              <label class={field}>
+                {t('tools.settings.trail')}
+                <input data-setting="trail" type="range" min="0" max="1" step="0.05" value="0" class={input} />
+              </label>
+            </>
+          )}
           <label class={field}>
             {t('tools.settings.color')}
             <input data-setting="color" type="color" value="#FFF8E7" class={colorInput} />
           </label>
-        )}
-        {showBackground && (
-          <label class={field}>
-            {t('tools.settings.background')}
-            <input data-setting="background" type="color" value="#000000" class={colorInput} />
-          </label>
-        )}
-      </div>
-      <p
-        data-contrast-warning
-        class="hidden mt-2 p-2 border border-amber-500/50 bg-amber-900/20 rounded-md text-amber-100 text-xs"
-        role="status"
-      >
-        {t('tools.settings.contrastWarning')}
-      </p>
-    </section>
+          {showBackground && (
+            <label class={field}>
+              {t('tools.settings.background')}
+              <input data-setting="background" type="color" value="#000000" class={colorInput} />
+            </label>
+          )}
+        </div>
+        <p
+          data-contrast-warning
+          class="hidden mt-2 p-2 border border-amber-500/50 bg-amber-900/20 rounded-md text-amber-100 text-xs"
+          role="status"
+        >
+          {t('tools.settings.contrastWarning')}
+        </p>
+      </section>
+    )}
 
     <section>
       <h3 class="text-forest-300 text-xs uppercase tracking-wide mb-2">{t('tools.settings.section.sound')}</h3>
