@@ -77,7 +77,12 @@ const t = {
 const s = t[lang];
 ---
 
-<div class:list={[containerClass]} data-safeplace-widget data-safeplace-i18n={JSON.stringify({ withYouTemplate: s.withYouTemplate })}>
+<div
+  class:list={[containerClass]}
+  style={!fullscreen ? 'background-color: var(--tool-field-bg, #122E12);' : undefined}
+  data-safeplace-widget
+  data-safeplace-i18n={JSON.stringify({ withYouTemplate: s.withYouTemplate })}
+>
   {/*
     The standard tool page renders these above the widget via ToolShell, but the
     fullscreen route renders the widget alone — so the warnings have to travel
@@ -94,7 +99,7 @@ const s = t[lang];
   <ToolSettings componentName="SafePlace" lang={lang} startOpen={!fullscreen} />
 
   <div data-step="env" data-step-active>
-    <h2 class="font-serif text-xl text-forest-100 mb-3">{s.step1Heading}</h2>
+    <h2 class="font-serif text-xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.step1Heading}</h2>
     <div class="grid grid-cols-2 gap-3">
       {envOptions.map((e) => (
         <button data-pick-env={e.id} data-label={e.label[lang]} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
@@ -105,7 +110,7 @@ const s = t[lang];
   </div>
 
   <div data-step="comfort" class="hidden">
-    <h2 class="font-serif text-xl text-forest-100 mb-3">{s.step2Heading}</h2>
+    <h2 class="font-serif text-xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.step2Heading}</h2>
     <p class="text-forest-300 text-sm mb-4">{s.step2Sub}</p>
     <div class="grid grid-cols-2 gap-3 mb-4" data-comfort-options>
       {comfortOptions.map((c) => (
@@ -120,7 +125,7 @@ const s = t[lang];
   </div>
 
   <div data-step="senses" class="hidden">
-    <h2 class="font-serif text-xl text-forest-100 mb-3">{s.step3Heading}</h2>
+    <h2 class="font-serif text-xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.step3Heading}</h2>
     <p class="text-forest-300 text-sm mb-4">{s.step3Sub}</p>
     <ol class="space-y-3 text-forest-200 text-sm mb-6 list-decimal list-inside">
       {s.senses.map((sense) => (
@@ -133,7 +138,7 @@ const s = t[lang];
   </div>
 
   <div data-step="done" class="hidden text-center">
-    <h2 class="font-serif text-2xl text-forest-100 mb-3">{s.doneHeading}</h2>
+    <h2 class="font-serif text-2xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.doneHeading}</h2>
     <p data-safe-summary class="text-forest-300 mb-4"></p>
     <p class="text-forest-300 text-sm mb-6">{s.doneSub}</p>
     <button data-restart class="px-4 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.restart}</button>
@@ -170,6 +175,13 @@ const s = t[lang];
     const settings = createSettingsController(root, TOOL_ID, DEFAULTS);
     let prefs = settings.get();
     const audio = createAudioEngine();
+
+    // `color` is the foreground accent on `background`'s surface — see the
+    // note in Grounding.astro for why buttons are deliberately left off this.
+    function applyColors(): void {
+      root.style.setProperty('--tool-color', prefs.color);
+      root.style.setProperty('--tool-field-bg', prefs.background);
+    }
 
     // Diffs against the ambient layer's own last-applied state before calling
     // `setAmbient` — see the note in Grounding.astro for why this avoids an
@@ -233,9 +245,11 @@ const s = t[lang];
       else if (soundWentOff) suspendAudio();
 
       pushToEngines();
+      applyColors();
     });
 
     pushToEngines();
+    applyColors();
 
     let state = { env: '', comforts: [] as string[] };
 

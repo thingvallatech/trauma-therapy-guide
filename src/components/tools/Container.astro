@@ -74,7 +74,12 @@ const t = {
 const s = t[lang];
 ---
 
-<div class:list={[containerClass]} data-container-widget data-container-i18n={JSON.stringify({ summaryTemplate: s.summaryTemplate })}>
+<div
+  class:list={[containerClass]}
+  style={!fullscreen ? 'background-color: var(--tool-field-bg, #122E12);' : undefined}
+  data-container-widget
+  data-container-i18n={JSON.stringify({ summaryTemplate: s.summaryTemplate })}
+>
   {/*
     The standard tool page renders these above the widget via ToolShell, but the
     fullscreen route renders the widget alone — so the warnings have to travel
@@ -92,7 +97,7 @@ const s = t[lang];
 
   <!-- Step 1: choose container -->
   <div data-step="1" data-step-active>
-    <h2 class="font-serif text-xl text-forest-100 mb-3">{s.step1Heading}</h2>
+    <h2 class="font-serif text-xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.step1Heading}</h2>
     <p class="text-forest-300 text-sm mb-4">{s.step1Sub}</p>
     <div class="grid grid-cols-2 gap-3">
       {containers.map((c) => (
@@ -105,7 +110,7 @@ const s = t[lang];
 
   <!-- Step 2: add worries -->
   <div data-step="2" class="hidden">
-    <h2 class="font-serif text-xl text-forest-100 mb-3">{s.step2Heading}</h2>
+    <h2 class="font-serif text-xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.step2Heading}</h2>
     <p class="text-forest-300 text-sm mb-4">{s.step2Sub}</p>
     <div class="flex gap-2 mb-4">
       <input type="text" data-worry-input aria-label="Something to set aside" placeholder={s.inputPlaceholder} class="flex-1 px-3 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 placeholder:text-forest-400 focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" />
@@ -119,7 +124,7 @@ const s = t[lang];
 
   <!-- Step 3: lock -->
   <div data-step="3" class="hidden">
-    <h2 class="font-serif text-xl text-forest-100 mb-3">{s.step3Heading}</h2>
+    <h2 class="font-serif text-xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.step3Heading}</h2>
     <p class="text-forest-300 text-sm mb-4">{s.step3Sub}</p>
     <div class="grid grid-cols-2 gap-3 mb-4">
       {locks.map((l) => (
@@ -130,7 +135,7 @@ const s = t[lang];
 
   <!-- Step 4: place -->
   <div data-step="4" class="hidden">
-    <h2 class="font-serif text-xl text-forest-100 mb-3">{s.step4Heading}</h2>
+    <h2 class="font-serif text-xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.step4Heading}</h2>
     <p class="text-forest-300 text-sm mb-4">{s.step4Sub}</p>
     <div class="grid grid-cols-2 gap-3 mb-4">
       {places.map((p) => (
@@ -141,7 +146,7 @@ const s = t[lang];
 
   <!-- Step 5: done -->
   <div data-step="5" class="hidden text-center">
-    <h2 class="font-serif text-2xl text-forest-100 mb-3">{s.step5Heading}</h2>
+    <h2 class="font-serif text-2xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.step5Heading}</h2>
     <p data-summary class="text-forest-300 mb-6"></p>
     <p class="text-forest-300 text-sm mb-6">{s.step5Sub}</p>
     <button data-restart class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.restart}</button>
@@ -178,6 +183,13 @@ const s = t[lang];
     const settings = createSettingsController(root, TOOL_ID, DEFAULTS);
     let prefs = settings.get();
     const audio = createAudioEngine();
+
+    // `color` is the foreground accent on `background`'s surface — see the
+    // note in Grounding.astro for why buttons are deliberately left off this.
+    function applyColors(): void {
+      root.style.setProperty('--tool-color', prefs.color);
+      root.style.setProperty('--tool-field-bg', prefs.background);
+    }
 
     // Diffs against the ambient layer's own last-applied state before calling
     // `setAmbient` — see the note in Grounding.astro for why this avoids an
@@ -241,9 +253,11 @@ const s = t[lang];
       else if (soundWentOff) suspendAudio();
 
       pushToEngines();
+      applyColors();
     });
 
     pushToEngines();
+    applyColors();
 
     let state = { container: '', lock: '', place: '', worries: [] as string[] };
 

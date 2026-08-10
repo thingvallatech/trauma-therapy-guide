@@ -91,7 +91,11 @@ const t = {
 const s = t[lang];
 ---
 
-<div class:list={[containerClass]} data-sud-widget data-sud-i18n={JSON.stringify({
+<div
+  class:list={[containerClass]}
+  style={!fullscreen ? 'background-color: var(--tool-field-bg, #122E12);' : undefined}
+  data-sud-widget
+  data-sud-i18n={JSON.stringify({
   adultLabels: s.adultLabels,
   kidLabels: s.kidLabels,
   adultWording: s.adultWording,
@@ -127,7 +131,8 @@ const s = t[lang];
       data-sud-display
       aria-live="polite"
       aria-atomic="true"
-      class="font-serif text-7xl font-semibold text-bronze-400 mb-2 tabular-nums"
+      class="font-serif text-7xl font-semibold mb-2 tabular-nums"
+      style="color: var(--tool-color, #FFCA28);"
     >
       5
     </div>
@@ -196,6 +201,13 @@ const s = t[lang];
     let prefs = settings.get();
     const audio = createAudioEngine();
 
+    // `color` is the foreground accent on `background`'s surface — see the
+    // note in Grounding.astro for why buttons are deliberately left off this.
+    function applyColors(): void {
+      root.style.setProperty('--tool-color', prefs.color);
+      root.style.setProperty('--tool-field-bg', prefs.background);
+    }
+
     // Diffs against the ambient layer's own last-applied state before calling
     // `setAmbient` — see the note in Grounding.astro for why this avoids an
     // audible click on every unrelated settings change.
@@ -260,9 +272,11 @@ const s = t[lang];
       else if (soundWentOff) suspendAudio();
 
       pushToEngines();
+      applyColors();
     });
 
     pushToEngines();
+    applyColors();
 
     function update() {
       const val = parseInt(slider.value, 10);

@@ -126,7 +126,7 @@ const s = t[lang];
 
   <ToolSettings componentName="FeelingWheel" lang={lang} startOpen={!fullscreen} />
 
-  <h2 class="font-serif text-xl text-forest-100 mb-4">{s.heading}</h2>
+  <h2 class="font-serif text-xl mb-4" style="color: var(--tool-color, #C8E6C9);">{s.heading}</h2>
   <p class="text-forest-300 text-sm mb-6">{s.intro}</p>
 
   <div class="grid grid-cols-2 gap-3 mb-6" data-core-grid>
@@ -151,9 +151,9 @@ const s = t[lang];
     data-detail-wrap
     aria-live="polite"
     class="hidden p-4 border rounded-lg"
-    style="background-color: var(--tool-surface, #0A1F0A); border-color: var(--tool-accent, #FFC107);"
+    style="background-color: var(--tool-field-bg, #0A1F0A); border-color: var(--tool-color, #FFC107);"
   >
-    <h3 data-detail-name class="font-serif text-lg text-bronze-400 mb-2"></h3>
+    <h3 data-detail-name class="font-serif text-lg mb-2" style="color: var(--tool-color, #FFCA28);"></h3>
     <p data-detail-desc class="text-forest-200 text-sm mb-3"></p>
     <p class="text-forest-300 text-xs">{s.bodyPrompt}</p>
   </div>
@@ -166,11 +166,9 @@ const s = t[lang];
   const TOOL_ID = 'FeelingWheel';
   const DEFAULTS = {
     soundOn: false, volume: 0.3, palette: 'default',
-    // No canvas or target here, but the shared panel still renders palette/
-    // color/background — carrying their defaults is what makes those
-    // controls persist correctly across a reload even though this widget
-    // never reads them back out. (Its own chrome takes its colors from the
-    // palette's `--tool-surface` / `--tool-accent`, not from these.)
+    // The main heading and the detail box (background, border, and its own
+    // heading) all read `color`/`background` — carrying their defaults is
+    // what makes those controls persist correctly across a reload.
     color: '#FFF8E7', background: '#000000',
     ambient: 'none', ambientVolume: 0.2, binauralBase: 200, binauralBeat: 4,
   };
@@ -191,6 +189,15 @@ const s = t[lang];
     const settings = createSettingsController(root, TOOL_ID, DEFAULTS);
     let prefs = settings.get();
     const audio = createAudioEngine();
+
+    // `color` is the foreground accent on `background`'s surface — see the
+    // note in Grounding.astro for why buttons (including the six core-emotion
+    // buttons, which keep their own meaningful colors regardless) are
+    // deliberately left off this.
+    function applyColors(): void {
+      root.style.setProperty('--tool-color', prefs.color);
+      root.style.setProperty('--tool-field-bg', prefs.background);
+    }
 
     // Diffs against the ambient layer's own last-applied state before calling
     // `setAmbient` — see the note in Grounding.astro for why this avoids an
@@ -254,9 +261,11 @@ const s = t[lang];
       else if (soundWentOff) suspendAudio();
 
       pushToEngines();
+      applyColors();
     });
 
     pushToEngines();
+    applyColors();
 
     const secondaryWrap = root.querySelector<HTMLElement>('[data-secondary-wrap]')!;
     const secondaryTitle = root.querySelector<HTMLElement>('[data-secondary-title]')!;

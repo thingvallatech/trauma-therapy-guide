@@ -59,7 +59,12 @@ const t = {
 const s = t[lang];
 ---
 
-<div class:list={[containerClass]} data-voc-widget data-voc-i18n={JSON.stringify({ labels: s.labels })}>
+<div
+  class:list={[containerClass]}
+  style={!fullscreen ? 'background-color: var(--tool-field-bg, #122E12);' : undefined}
+  data-voc-widget
+  data-voc-i18n={JSON.stringify({ labels: s.labels })}
+>
   {/*
     The standard tool page renders these above the widget via ToolShell, but the
     fullscreen route renders the widget alone — so the warnings have to travel
@@ -86,7 +91,13 @@ const s = t[lang];
   />
 
   <div class="text-center mb-6">
-    <div data-voc-display aria-live="polite" aria-atomic="true" class="font-serif text-7xl font-semibold text-bronze-400 mb-2 tabular-nums">4</div>
+    <div
+      data-voc-display
+      aria-live="polite"
+      aria-atomic="true"
+      class="font-serif text-7xl font-semibold mb-2 tabular-nums"
+      style="color: var(--tool-color, #FFCA28);"
+    >4</div>
     <div data-voc-label aria-live="polite" class="text-forest-300 text-sm">{s.initialDisplay}</div>
   </div>
 
@@ -141,6 +152,13 @@ const s = t[lang];
     const settings = createSettingsController(root, TOOL_ID, DEFAULTS);
     let prefs = settings.get();
     const audio = createAudioEngine();
+
+    // `color` is the foreground accent on `background`'s surface — see the
+    // note in Grounding.astro for why buttons are deliberately left off this.
+    function applyColors(): void {
+      root.style.setProperty('--tool-color', prefs.color);
+      root.style.setProperty('--tool-field-bg', prefs.background);
+    }
 
     // Diffs against the ambient layer's own last-applied state before calling
     // `setAmbient` — see the note in Grounding.astro for why this avoids an
@@ -206,9 +224,11 @@ const s = t[lang];
       else if (soundWentOff) suspendAudio();
 
       pushToEngines();
+      applyColors();
     });
 
     pushToEngines();
+    applyColors();
 
     function update() {
       const v = parseInt(slider.value, 10);

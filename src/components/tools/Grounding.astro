@@ -51,7 +51,11 @@ const t = {
 const s = t[lang];
 ---
 
-<div class:list={[containerClass]} data-grounding-widget data-grounding-i18n={JSON.stringify({
+<div
+  class:list={[containerClass]}
+  style={!fullscreen ? 'background-color: var(--tool-field-bg, #122E12);' : undefined}
+  data-grounding-widget
+  data-grounding-i18n={JSON.stringify({
   stepPrompts: s.stepPrompts,
   stepCounts: s.stepCounts,
   remaining: s.remaining,
@@ -75,11 +79,22 @@ const s = t[lang];
 
   <ToolSettings componentName="Grounding" lang={lang} startOpen={!fullscreen} />
 
-  <h2 data-grounding-prompt aria-live="polite" class="font-serif text-2xl text-forest-100 mb-2">{s.stepPrompts[0]}</h2>
+  <h2
+    data-grounding-prompt
+    aria-live="polite"
+    class="font-serif text-2xl mb-2"
+    style="color: var(--tool-color, #C8E6C9);"
+  >{s.stepPrompts[0]}</h2>
   <p class="text-forest-300 text-sm mb-6">{s.subParagraph}</p>
 
   <div class="flex items-center gap-4 mb-6">
-    <div data-grounding-count aria-live="polite" aria-atomic="true" class="font-serif text-6xl font-semibold text-bronze-400 tabular-nums">5</div>
+    <div
+      data-grounding-count
+      aria-live="polite"
+      aria-atomic="true"
+      class="font-serif text-6xl font-semibold tabular-nums"
+      style="color: var(--tool-color, #FFCA28);"
+    >5</div>
     <div class="text-forest-300 text-sm">{s.remaining}</div>
   </div>
 
@@ -133,6 +148,19 @@ const s = t[lang];
     const settings = createSettingsController(root, TOOL_ID, DEFAULTS);
     let prefs = settings.get();
     const audio = createAudioEngine();
+
+    // `color` is the foreground accent on `background`'s surface — the step
+    // heading and the count numeral read `--tool-color`; the card itself
+    // reads `--tool-field-bg`. This is the same pairing the settings panel's
+    // own contrast warning checks (`contrastRatio(prefs.color,
+    // prefs.background)`), so it stays safe without extra guarding here.
+    // Buttons are deliberately left off this — their labels are a fixed
+    // `text-forest-900`, which an arbitrary dark `color` would make illegible,
+    // and that pairing isn't the one the contrast warning covers.
+    function applyColors(): void {
+      root.style.setProperty('--tool-color', prefs.color);
+      root.style.setProperty('--tool-field-bg', prefs.background);
+    }
 
     // Diffs against the ambient layer's own last-applied state before calling
     // `setAmbient`, rather than always passing every field — `setAmbient`
@@ -209,11 +237,13 @@ const s = t[lang];
       else if (soundWentOff) suspendAudio();
 
       pushToEngines();
+      applyColors();
     });
 
     // The panel is hydrated by now, so this is the one push that carries
     // stored preferences into the engines.
     pushToEngines();
+    applyColors();
 
     let stepIdx = 0;
     let remaining = stepCounts[0] ?? 5;
