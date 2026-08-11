@@ -371,12 +371,21 @@ export function createSettingsController<T extends Record<string, unknown>>(
     // A preset must not record which preset was selected when it was saved —
     // that would be self-referential the moment it is applied.
     const { preset: _preset, ...snapshot } = prefs;
-    saveUserPreset(toolId, name, snapshot);
+    const { persisted } = saveUserPreset(toolId, name, snapshot);
     refreshUserPresetOptions();
+    if (presetNameInput) presetNameInput.value = '';
+    // Storage refused the write: the named preset does not exist to select
+    // (there is no matching `<option>`, and it will not survive a reload), so
+    // the panel stays on whatever preset was active rather than claiming this
+    // one is now saved. The settings the clinician configured are untouched
+    // either way — nothing to reapply, only the save itself failed.
+    if (!persisted) {
+      setPresetStatus(presetI18n.notSaved ?? '');
+      return;
+    }
     setPrefs({ preset: `user:${name}` });
     setControl('preset', prefs.preset);
     updatePresetDeleteVisibility();
-    if (presetNameInput) presetNameInput.value = '';
     setPresetStatus(existedBefore ? (presetI18n.overwritten ?? '') : (presetI18n.saved ?? ''));
     persist();
   };
@@ -384,8 +393,15 @@ export function createSettingsController<T extends Record<string, unknown>>(
   const onPresetDelete = () => {
     if (typeof prefs.preset !== 'string' || !prefs.preset.startsWith('user:')) return;
     const name = prefs.preset.slice('user:'.length);
-    deleteUserPreset(toolId, name);
+    const { persisted } = deleteUserPreset(toolId, name);
     refreshUserPresetOptions();
+    // If the write failed, the preset is still sitting in storage exactly as
+    // it was — switching the panel to "custom" here would tell the clinician
+    // it's gone when it isn't.
+    if (!persisted) {
+      setPresetStatus(presetI18n.notDeleted ?? '');
+      return;
+    }
     setPrefs({ preset: 'custom' });
     setControl('preset', 'custom');
     updatePresetDeleteVisibility();

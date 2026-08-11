@@ -207,6 +207,8 @@ export const ui = {
     'tools.settings.presetDeleted': 'Preset deleted',
     'tools.settings.presetNameNeeded': 'Give the preset a name first',
     'tools.settings.presetOverwritten': 'Preset updated',
+    'tools.settings.presetNotSaved': "Couldn't save — this browser is blocking storage",
+    'tools.settings.presetNotDeleted': "Couldn't delete — this browser is blocking storage",
 
     'tools.settings.speed': 'Speed (Hz)',
     'tools.settings.passes': 'Passes / set',
@@ -647,6 +649,8 @@ export const ui = {
     'tools.settings.presetDeleted': 'Preajuste eliminado',
     'tools.settings.presetNameNeeded': 'Primero dale un nombre al preajuste',
     'tools.settings.presetOverwritten': 'Preajuste actualizado',
+    'tools.settings.presetNotSaved': 'No se pudo guardar: este navegador está bloqueando el almacenamiento',
+    'tools.settings.presetNotDeleted': 'No se pudo eliminar: este navegador está bloqueando el almacenamiento',
 
     'tools.settings.speed': 'Velocidad (Hz)',
     'tools.settings.passes': 'Pases / set',

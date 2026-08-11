@@ -146,7 +146,8 @@ describe('user presets', () => {
 
   it('round-trips a saved preset', () => {
     stubStorage();
-    saveUserPreset('BLSVisual', 'Client A', { speed: 1.4, path: 'infinity' });
+    const result = saveUserPreset('BLSVisual', 'Client A', { speed: 1.4, path: 'infinity' });
+    expect(result.persisted).toBe(true);
     const presets = loadUserPresets('BLSVisual');
     expect(presets).toHaveLength(1);
     expect(presets[0].name).toBe('Client A');
@@ -162,7 +163,7 @@ describe('user presets', () => {
   it('overwrites a preset saved under an existing name rather than duplicating', () => {
     stubStorage();
     saveUserPreset('BLSVisual', 'Client A', { speed: 1.0 });
-    const presets = saveUserPreset('BLSVisual', 'Client A', { speed: 1.8 });
+    const { presets } = saveUserPreset('BLSVisual', 'Client A', { speed: 1.8 });
     expect(presets).toHaveLength(1);
     expect(presets[0].values.speed).toBe(1.8);
   });
@@ -170,13 +171,13 @@ describe('user presets', () => {
   it('treats names case-insensitively and trims whitespace when matching', () => {
     stubStorage();
     saveUserPreset('BLSVisual', 'Client A', { speed: 1.0 });
-    const presets = saveUserPreset('BLSVisual', '  client a  ', { speed: 1.8 });
+    const { presets } = saveUserPreset('BLSVisual', '  client a  ', { speed: 1.8 });
     expect(presets).toHaveLength(1);
   });
 
   it('rejects an empty or whitespace-only name without saving', () => {
     stubStorage();
-    expect(saveUserPreset('BLSVisual', '   ', { speed: 1 })).toEqual([]);
+    expect(saveUserPreset('BLSVisual', '   ', { speed: 1 }).presets).toEqual([]);
     expect(loadUserPresets('BLSVisual')).toEqual([]);
   });
 
@@ -202,7 +203,8 @@ describe('user presets', () => {
     stubStorage();
     saveUserPreset('BLSVisual', 'Client A', { speed: 1 });
     saveUserPreset('BLSVisual', 'Client B', { speed: 2 });
-    const presets = deleteUserPreset('BLSVisual', 'Client A');
+    const { presets, persisted } = deleteUserPreset('BLSVisual', 'Client A');
+    expect(persisted).toBe(true);
     expect(presets.map((p) => p.name)).toEqual(['Client B']);
   });
 
@@ -215,5 +217,34 @@ describe('user presets', () => {
   it('does not throw when storage is blocked', () => {
     stubStorage({ setItem: () => { throw new Error('QuotaExceededError'); } });
     expect(() => saveUserPreset('BLSVisual', 'Client A', { speed: 1 })).not.toThrow();
+  });
+
+  // The bug this pins: a blocked write used to return the presets array
+  // unconditionally, so callers could not tell a save actually failed and
+  // told the clinician "saved" while nothing persisted.
+  it('reports persisted: false when the underlying write throws, without throwing itself', () => {
+    stubStorage({ setItem: () => { throw new Error('QuotaExceededError'); } });
+    let result: ReturnType<typeof saveUserPreset>;
+    expect(() => { result = saveUserPreset('BLSVisual', 'Client A', { speed: 1 }); }).not.toThrow();
+    expect(result!.persisted).toBe(false);
+  });
+
+  it('reports persisted: false for a delete whose write throws', () => {
+    stubStorage();
+    saveUserPreset('BLSVisual', 'Client A', { speed: 1 });
+    // Storage now goes bad (e.g. quota hit mid-session) — reads still work,
+    // but the delete's write must fail loudly-to-the-caller, not silently.
+    vi.spyOn(localStorage, 'setItem').mockImplementation(() => {
+      throw new Error('QuotaExceededError');
+    });
+    let result: ReturnType<typeof deleteUserPreset>;
+    expect(() => { result = deleteUserPreset('BLSVisual', 'Client A'); }).not.toThrow();
+    expect(result!.persisted).toBe(false);
+  });
+
+  it('reports persisted: false when storage is absent entirely', () => {
+    vi.stubGlobal('localStorage', undefined);
+    const result = saveUserPreset('BLSVisual', 'Client A', { speed: 1 });
+    expect(result.persisted).toBe(false);
   });
 });

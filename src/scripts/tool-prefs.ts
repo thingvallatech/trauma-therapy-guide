@@ -155,16 +155,29 @@ export function loadUserPresets(toolId: string): UserPreset[] {
   }
 }
 
-function writeUserPresets(toolId: string, presets: UserPreset[]): UserPreset[] {
+/**
+ * `writeUserPresets` (and therefore `saveUserPreset`/`deleteUserPreset`) used
+ * to return the presets array unconditionally, which let a caller that could
+ * not write to storage tell the clinician "saved" anyway. `persisted` makes
+ * the outcome observable without changing the never-throws contract: a
+ * failed write still yields a normal return value, just one that says so.
+ */
+export interface PresetWriteResult {
+  presets: UserPreset[];
+  /** False when storage is unavailable or the write itself threw. */
+  persisted: boolean;
+}
+
+function writeUserPresets(toolId: string, presets: UserPreset[]): PresetWriteResult {
   const store = storage();
-  if (store) {
-    try {
-      store.setItem(presetKeyFor(toolId), JSON.stringify(presets));
-    } catch {
-      // Storage unavailable — the preset simply does not persist.
-    }
+  if (!store) return { presets, persisted: false };
+  try {
+    store.setItem(presetKeyFor(toolId), JSON.stringify(presets));
+    return { presets, persisted: true };
+  } catch {
+    // Storage unavailable — the preset simply does not persist.
+    return { presets, persisted: false };
   }
-  return presets;
 }
 
 /** Saves under `name`, replacing any existing preset with the same name. */
@@ -172,9 +185,9 @@ export function saveUserPreset(
   toolId: string,
   name: string,
   values: Record<string, unknown>,
-): UserPreset[] {
+): PresetWriteResult {
   const trimmed = name.trim();
-  if (!trimmed) return loadUserPresets(toolId);
+  if (!trimmed) return { presets: loadUserPresets(toolId), persisted: false };
 
   const existing = loadUserPresets(toolId);
   const match = trimmed.toLowerCase();
@@ -184,7 +197,7 @@ export function saveUserPreset(
   return writeUserPresets(toolId, next.slice(-MAX_USER_PRESETS));
 }
 
-export function deleteUserPreset(toolId: string, name: string): UserPreset[] {
+export function deleteUserPreset(toolId: string, name: string): PresetWriteResult {
   const match = name.trim().toLowerCase();
   const next = loadUserPresets(toolId).filter(
     (p) => p.name.trim().toLowerCase() !== match,
