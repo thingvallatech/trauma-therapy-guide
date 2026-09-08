@@ -1,0 +1,10 @@
+---
+import SpanishHandoutLayout from '../../../../layouts/SpanishHandoutLayout.astro';
+import SpanishClinicalHandout from '../../../../components/SpanishClinicalHandout.astro';
+import { Content, frontmatter } from '../../../../data/clinical-handouts-es/phase-4-scripts.md';
+---
+<SpanishHandoutLayout title={frontmatter.title} phase={frontmatter.phase}>
+  <SpanishClinicalHandout title={frontmatter.title} phase={frontmatter.phase}>
+    <Content />
+  </SpanishClinicalHandout>
+</SpanishHandoutLayout>

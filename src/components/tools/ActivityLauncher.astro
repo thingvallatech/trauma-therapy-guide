@@ -1,0 +1,63 @@
+---
+import { getCollection } from 'astro:content';
+import { useTranslatedPath, type Lang } from '../../i18n';
+import { activityContent } from '../../lib/activity-content';
+const { lang = 'en' } = Astro.props as { lang?: Lang };
+const es = lang === 'es';
+const path = useTranslatedPath(lang);
+const tools = await getCollection('tools', tool => tool.data.locale === lang);
+const groups = [
+  { title: es ? 'Algo para este momento' : 'Something for this moment', hint: es ? 'Elige lo que te resulte útil. Puedes cambiar de idea.' : 'Choose what feels useful. You can change your mind.', slugs: ['grounding', 'feeling-wheel', 'breath', 'sandtray'] },
+  { title: es ? 'Explorar con apoyo' : 'Explore with support', hint: es ? 'Con un profesional o un adulto de confianza. No necesitas recordar nada difícil.' : 'With a clinician or trusted adult. You do not need to recall anything difficult.', slugs: ['safe-place', 'container', 'lightstream', 'butterfly-hug'] },
+  { title: es ? 'Para la sesión clínica' : 'For a clinical session', hint: es ? 'Escalas y estimulación bilateral para usar con un profesional con formación.' : 'Scales and bilateral stimulation to use with a trained clinician.', slugs: ['sud', 'voc', 'bls-visual', 'bls-audio', 'bls-combined', 'bls-tapping'] },
+];
+---
+<section class="activity-launcher">
+  <div class="launcher-inner">
+    <p class="launcher-kicker">{es ? 'Sin cuentas · Tú decides el ritmo' : 'No accounts · Your pace'}</p>
+    <h1>{es ? '¿Qué te ayudaría ahora?' : 'What would help right now?'}</h1>
+    <p class="launcher-intro">{es ? 'Actividades para explorar emociones, practicar habilidades y usar juntos en una sesión. No hay que terminarlas ni conseguir una puntuación.' : 'Activities to explore feelings, practice skills and use together in a session. There is no need to finish or earn a score.'}</p>
+    <nav class="launcher-shortcuts" aria-label={es ? 'Referencias profesionales' : 'Professional references'}>
+      <a href={path('/clinicians/emdr')}>{es ? 'Protocolo clínico' : 'Clinical protocol'} →</a>
+      <a href={path('/clinicians/emdr/print-package')}>{es ? 'Materiales para imprimir' : 'Printable handouts'} →</a>
+      <a href={path('/families/emdr')}>{es ? 'Entender la terapia' : 'Understand therapy'} →</a>
+    </nav>
+    {groups.map(group => <section class="launcher-group">
+      <h2>{group.title}</h2><p>{group.hint}</p>
+      <div class="activity-grid">{group.slugs.map(slug => {
+        const tool = tools.find(entry => entry.slug.replace(/es$/, '') === slug);
+        const copy = activityContent(slug, lang);
+        return tool && copy && <a class="activity-card" href={path(`/tools/${slug}`)}>
+          <span class="activity-symbol" aria-hidden="true">{copy.symbol}</span>
+          <h3>{copy.name}</h3><p>{copy.description}</p>
+          <span class="activity-open">{es ? 'Abrir actividad' : 'Open activity'} →</span>
+        </a>;
+      })}</div>
+    </section>)}
+    <p class="launcher-note">{es ? 'Estas actividades son apoyos, no una terapia completa. Su uso en este sitio no ha sido evaluado en un ensayo clínico. Si algo resulta incómodo, puedes parar o pedir apoyo.' : 'These activities are supports, not a complete therapy. Their use on this site has not been evaluated in a clinical trial. If something feels uncomfortable, you can stop or ask for support.'}</p>
+  </div>
+</section>
+<style>
+.activity-launcher { background: var(--color-paper); color: var(--color-ink); }
+.launcher-inner { max-width: 1152px; margin: auto; padding: 40px 24px 64px; }
+.launcher-kicker { color: var(--color-muted); font-size: 13px; margin-bottom: 12px; }
+h1 { font: 500 clamp(30px,5vw,52px)/1.12 var(--font-display); max-width: 20ch; margin-bottom: 18px; }
+.launcher-intro { max-width: 65ch; color: var(--color-ink-2); font-size: 18px; }
+.launcher-shortcuts { display: flex; flex-wrap: wrap; gap: 8px 24px; margin: 20px 0 36px; }
+.launcher-shortcuts a { color: var(--color-deep-forest); text-decoration: underline; padding-block: 8px; }
+.launcher-group { margin-top: 32px; }
+h2 { font-size: 25px; margin-bottom: 8px; }
+.launcher-group > p { color: var(--color-ink-2); margin-bottom: 18px; }
+.activity-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }
+.activity-card { border: 1px solid var(--color-card-border); border-radius: 18px; padding: 24px; background: var(--color-card); color: inherit; display: flex; flex-direction: column; text-decoration: none; }
+.activity-card:hover { border-color: var(--color-deep-forest); background: white; }
+.activity-symbol { width: 56px; height: 56px; border-radius: 18px; background: #dce9d8; display: grid; place-items: center; color: #1f3523; font: 32px/1 var(--font-sans); margin-bottom: 20px; }
+.activity-card:nth-child(2n) .activity-symbol { background: #e9dcee; }
+.activity-card:nth-child(3n) .activity-symbol { background: #d5e7ed; }
+h3 { font-size: 21px; margin-bottom: 8px; }
+.activity-card p { color: var(--color-ink-2); margin-bottom: 20px; }
+.activity-open { margin-top: auto; color: var(--color-deep-forest); font-weight: 600; }
+.launcher-note { border-top: 1px solid var(--color-card-border); margin-top: 32px; padding-top: 20px; color: var(--color-muted); max-width: 75ch; font-size: 14px; }
+@media(min-width:1000px) { .activity-grid { grid-template-columns: repeat(4,minmax(0,1fr)); } }
+@media(max-width:560px) { .launcher-inner { padding: 28px 16px 40px; } .activity-grid { grid-template-columns: minmax(0,1fr); } .activity-card { padding: 20px; } }
+</style>

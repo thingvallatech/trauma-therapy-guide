@@ -301,10 +301,12 @@ export function createSettingsController<T extends Record<string, unknown>>(
     syncBinauralVisibility();
     checkContrast();
     updatePresetDeleteVisibility();
+    root.dispatchEvent(new CustomEvent('tool-preferences-changed', { bubbles: true }));
   }
 
   function emit(key: string): void {
     listeners.forEach((cb) => cb(prefs, key));
+    root.dispatchEvent(new CustomEvent('tool-preferences-changed', { bubbles: true }));
   }
 
   const onInput = (e: Event) => {

@@ -1,4 +1,5 @@
 ---
+import { activityContent } from '../../lib/activity-content';
 import type { CollectionEntry } from 'astro:content';
 import { getLangFromUrl, useTranslations, useTranslatedPath, type Lang } from '../../i18n';
 
@@ -12,7 +13,11 @@ const { tool, lang = detectedLang } = Astro.props;
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 
-const { name, category, evidence, shortDescription } = tool.data;
+const { name: clinicalName, category, evidence, shortDescription: clinicalDescription } = tool.data;
+
+const friendly = activityContent(tool.slug.replace(/es$/, ''), lang);
+const name = friendly?.name ?? clinicalName;
+const shortDescription = friendly?.description ?? clinicalDescription;
 
 const categoryIcon: Record<string, string> = {
   bls: 'M12 2v20M4.93 4.93l14.14 14.14M4.93 19.07L19.07 4.93',

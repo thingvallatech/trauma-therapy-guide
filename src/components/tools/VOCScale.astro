@@ -86,13 +86,17 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     </div>
   )}
 
-  <ToolSettings componentName="VOCScale" lang={lang} startOpen={!fullscreen} />
+  <ToolSettings componentName="VOCScale" lang={lang} startOpen={false} />
 
+  <div data-guided-content class="w-full">
   <h2 class="text-forest-100 font-semibold mb-4">{s.heading}</h2>
 
-  <label class="block text-sm text-forest-300 mb-2">{s.pcLabel}</label>
+  <label for="voc-belief" class="block text-sm text-forest-300 mb-2">{s.pcLabel}</label>
   <input
     type="text"
+    id="voc-belief"
+    maxlength="400"
+    autocomplete="off"
     data-voc-pc
     placeholder={s.pcPlaceholder}
     class="w-full mb-6 px-3 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 placeholder:text-forest-400 focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
@@ -128,9 +132,13 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
   <p class="mt-6 text-sm text-forest-300">
     <em>{s.quote}</em>
   </p>
+    <button data-scale-use class="mt-4 min-h-11 px-4 py-2 rounded-lg bg-bronze-500 text-forest-900 font-semibold">{lang === 'es' ? 'Usar 4' : 'Use 4'}</button>
+    <button data-scale-clear class="mt-4 min-h-11 px-4 py-2 underline text-forest-200">{lang === 'es' ? 'Quitar respuesta' : 'Clear rating'}</button>
+  </div>
 </div>
 
 <script>
+  import { mountGuidedFinish } from '../../scripts/guided-activity';
   import { createSettingsController } from '../../scripts/tool-settings-controller';
   import { createAudioEngine, type AmbientOptions } from '../../scripts/audio-engine';
 
@@ -198,11 +206,13 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     }
 
     let audioLive = false;
+    mountGuidedFinish(root, suspendAudio);
 
     async function startAudio(): Promise<void> {
       try {
         await audio.ensureStarted();
         audioLive = true;
+        if (root.dataset.guidedFinished === 'true') audio.suspend();
       } catch {
         // Autoplay policy or an unavailable AudioContext — the tool still
         // works silently.
@@ -238,15 +248,20 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     pushToEngines();
     applyColors();
 
+    let hasRating = false;
     function update() {
       const v = parseInt(slider.value, 10);
-      display.textContent = String(v);
-      label.textContent = labels[v] || '';
+      root.querySelector<HTMLElement>('[data-scale-use]')!.textContent = document.documentElement.lang === 'es' ? `Usar ${v}` : `Use ${v}`;
+      display.textContent = hasRating ? String(v) : '—';
+      label.textContent = hasRating ? labels[v] || '' : document.documentElement.lang === 'es' ? 'Sin respuesta elegida. Mueve el control si quieres responder.' : 'No rating chosen. Move the slider if you want to respond.';
+      slider.setAttribute('aria-valuetext', hasRating ? `${v}: ${label.textContent}` : label.textContent);
     }
+    root.querySelector('[data-scale-use]')?.addEventListener('click', () => { hasRating = true; update(); display.tabIndex = -1; display.focus(); });
+    root.querySelector('[data-scale-clear]')?.addEventListener('click', () => { hasRating = false; update(); slider.focus(); });
     // Deliberately no per-increment tick here, even with sound enabled — a
     // noise on every step while someone rates how true a belief feels is the
     // wrong instinct for this tool. Only the ambient bed and palette apply.
-    slider.addEventListener('input', () => { update(); ensureAudioLive(); });
+    slider.addEventListener('input', () => { hasRating = true; update(); ensureAudioLive(); });
     update();
   });
 </script>

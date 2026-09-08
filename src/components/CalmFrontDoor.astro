@@ -46,6 +46,7 @@ const tagKeyFor = (type: CollectionEntry<'resources'>['data']['type']) =>
     </h1>
     <p class="cfd-lede">{t('home.lede')}</p>
 
+    <a class="cfd-now" href={translatePath('/tools')}>{lang === 'es' ? 'Encontrar una actividad para ahora' : 'Find an activity for right now'} →</a>
     <div class="cfd-picker">
       <a class="cfd-card" href={translatePath('/clinicians')}>
         <div class="cfd-card-who">{t('home.clinKicker')}</div>
@@ -71,9 +72,10 @@ const tagKeyFor = (type: CollectionEntry<'resources'>['data']['type']) =>
       <h2 id="cfd-new-h" class="cfd-new-heading">{t('home.newHeading')}</h2>
       <ol class="cfd-new-list">
         {recentlyAdded.map((r) => {
-          const external = r.data.fileUrl || r.data.url;
+          const destination = r.data.fileUrl || r.data.url;
+          const external = /^https?:\/\//.test(destination);
           const libraryHref = translatePath(r.data.audience === 'family' ? '/families/resources' : '/clinicians/resources');
-          const href = external || libraryHref;
+          const href = destination || libraryHref;
           return (
             <li class="cfd-new-row">
               <time datetime={r.data.dateAdded.toISOString().slice(0, 10)}>
@@ -345,3 +347,5 @@ const tagKeyFor = (type: CollectionEntry<'resources'>['data']['type']) =>
     .cfd-trust-body { font-size: 18px; }
   }
 </style>
+
+<style>.cfd-now { display: inline-block; padding: 14px 20px; margin: 0 0 24px; border-radius: 10px; background: var(--color-deep-forest); color: white; font-weight: 600; text-decoration: none; } .cfd-now:hover { background: var(--color-deep-forest-2); }</style>

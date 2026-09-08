@@ -3,6 +3,7 @@ import { getLangFromUrl, useTranslations, type Lang } from '../i18n';
 import type { TranslationKey } from '../i18n/ui';
 
 interface Props {
+  id?: string;
   title: string;
   type: 'book' | 'pdf' | 'article' | 'video' | 'worksheet' | 'link';
   audience: 'clinician' | 'family' | 'both';
@@ -15,7 +16,7 @@ interface Props {
 }
 
 const detectedLang = getLangFromUrl(Astro.url);
-const { title, type, tags, url, fileUrl, author, description, lang = detectedLang } = Astro.props;
+const { id, title, type, tags, url, fileUrl, author, description, lang = detectedLang } = Astro.props;
 const t = useTranslations(lang);
 
 const href = fileUrl || url;
@@ -51,10 +52,12 @@ const icon = typeIcons[type] || typeIcons.link;
 const label = t(icon.key);
 
 const Tag = href ? 'a' : 'div';
-const linkAttrs = href ? { href, target: '_blank', rel: 'noopener noreferrer' } : {};
+const external = /^https?:\/\//.test(href);
+const linkAttrs = href ? { href, ...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {}) } : {};
 ---
 
 <Tag
+  id={id}
   {...linkAttrs}
   class="block bg-forest-800 border border-forest-600 rounded-lg p-6 hover:border-forest-500 hover:bg-forest-700 transition-all duration-200 group"
   data-tags={JSON.stringify(tags)}
@@ -74,9 +77,10 @@ const linkAttrs = href ? { href, target: '_blank', rel: 'noopener noreferrer' } 
       <!-- Title + external link icon -->
       <h3 class="font-serif text-lg font-semibold text-forest-100 mb-1 group-hover:text-bronze-400 transition-colors">
         {title}
-        <svg class="w-4 h-4 inline-block ml-1 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        {external && <svg aria-hidden="true" class="w-4 h-4 inline-block ml-1 opacity-0 group-hover:opacity-100 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-        </svg>
+        </svg>}
+        {external && <span class="sr-only">{lang === 'es' ? ' (abre en otra pestaña)' : ' (opens in a new tab)'}</span>}
       </h3>
 
       <!-- Author -->
@@ -89,6 +93,7 @@ const linkAttrs = href ? { href, target: '_blank', rel: 'noopener noreferrer' } 
         {description}
       </p>
 
+      {!href && <p class="text-sm text-forest-200 mb-3">{lang === 'es' ? 'Referencia bibliográfica; no hay descarga en este sitio.' : 'Bibliographic reference; no download on this site.'}</p>}
       <!-- Tags + type label -->
       <div class="flex flex-wrap items-center gap-2">
         <span class="inline-flex items-center gap-1 px-2 py-0.5 bg-forest-700 text-bronze-400 rounded text-xs font-medium">

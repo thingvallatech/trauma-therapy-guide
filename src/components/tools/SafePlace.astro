@@ -38,7 +38,7 @@ const t = {
     step2Sub: 'Pick anything that feels comforting. You can pick more than one.',
     nextButton: 'Next',
     step3Heading: 'Step 3: Use your senses',
-    step3Sub: 'Picture it as clearly as you can. Take your time with each one.',
+    step3Sub: 'Use only the senses that work for you. You can imagine, remember, use words, or skip this step; a clear picture is not required.',
     senses: [
       'What do you <strong>see</strong>?',
       'What do you <strong>hear</strong>?',
@@ -58,7 +58,7 @@ const t = {
     step2Sub: 'Elige todo lo que se sienta reconfortante. Puedes elegir más de uno.',
     nextButton: 'Siguiente',
     step3Heading: 'Paso 3: Usa tus sentidos',
-    step3Sub: 'Imagínalo tan claramente como puedas. Tómate tu tiempo con cada uno.',
+    step3Sub: 'Usa solo los sentidos que te sirvan. Puedes imaginar, recordar, usar palabras u omitir este paso; no necesitas una imagen clara.',
     senses: [
       '¿Qué puedes <strong>ver</strong>?',
       '¿Qué puedes <strong>escuchar</strong>?',
@@ -104,13 +104,14 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     </div>
   )}
 
-  <ToolSettings componentName="SafePlace" lang={lang} startOpen={!fullscreen} />
+  <ToolSettings componentName="SafePlace" lang={lang} startOpen={false} />
 
+  <div data-guided-content class="w-full">
   <div data-step="env" data-step-active>
     <h2 class="font-serif text-xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.step1Heading}</h2>
     <div class="grid grid-cols-2 gap-3">
       {envOptions.map((e) => (
-        <button data-pick-env={e.id} data-label={e.label[lang]} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
+        <button aria-pressed="false" data-pick-env={e.id} data-label={e.label[lang]} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
           {e.label[lang]}
         </button>
       ))}
@@ -118,11 +119,12 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
   </div>
 
   <div data-step="comfort" class="hidden">
+    <button data-back-to="env" class="min-h-11 px-3 py-2 mb-3 underline text-forest-200">{lang === 'es' ? 'Atrás' : 'Back'}</button>
     <h2 class="font-serif text-xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.step2Heading}</h2>
     <p class="text-forest-300 text-sm mb-4">{s.step2Sub}</p>
     <div class="grid grid-cols-2 gap-3 mb-4" data-comfort-options>
       {comfortOptions.map((c) => (
-        <button data-pick-comfort={c.id} data-label={c.label[lang]} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
+        <button aria-pressed="false" data-pick-comfort={c.id} data-label={c.label[lang]} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors text-sm focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
           {c.label[lang]}
         </button>
       ))}
@@ -133,6 +135,7 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
   </div>
 
   <div data-step="senses" class="hidden">
+    <button data-back-to="comfort" class="min-h-11 px-3 py-2 mb-3 underline text-forest-200">{lang === 'es' ? 'Atrás' : 'Back'}</button>
     <h2 class="font-serif text-xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.step3Heading}</h2>
     <p class="text-forest-300 text-sm mb-4">{s.step3Sub}</p>
     <ol class="space-y-3 text-forest-200 text-sm mb-6 list-decimal list-inside">
@@ -140,20 +143,38 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
         <li set:html={sense} />
       ))}
     </ol>
+    <button data-skip-senses class="min-h-11 px-4 py-2 mr-2 text-forest-100 underline">{lang === 'es' ? 'Omitir los sentidos' : 'Skip senses'}</button>
     <button data-to-done class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
       {s.stayButton}
     </button>
   </div>
 
   <div data-step="done" class="hidden text-center">
+    <button data-back-to="senses" class="min-h-11 px-3 py-2 mb-3 underline text-forest-200">{lang === 'es' ? 'Atrás' : 'Back'}</button>
     <h2 class="font-serif text-2xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.doneHeading}</h2>
+    <div class="mb-5 rounded-xl overflow-hidden border border-forest-500" data-scene-preview>
+      {envOptions.map((environment) => (
+        <svg data-safe-scene={environment.id} viewBox="0 0 400 180" role="img" aria-label={environment.label[lang]} class="w-full max-h-56 hidden">
+          <rect width="400" height="180" fill={environment.id === 'room-i-know' ? '#D8BE91' : '#A3CDD0'} />
+          <circle cx="320" cy="36" r="19" fill="#F2CF81" />
+          {environment.id === 'beach' && <><path d="M0 80 Q50 65 100 80 T200 80 T300 80 T400 80 V180 H0Z" fill="#458799"/><path d="M0 142 Q130 116 270 143 T400 143 V180 H0Z" fill="#E3CC98"/><path d="M40 105 Q80 93 120 105 M225 115 Q265 103 305 115" stroke="#D7EFEB" stroke-width="4" fill="none"/></>}
+          {environment.id === 'forest' && <><rect y="130" width="400" height="50" fill="#526C50"/>{[45,120,210,285,350].map((x) => <><rect x={x-5} y="94" width="10" height="67" fill="#6A523A"/><path d={`M${x} 28 L${x-43} 130 H${x+43}Z`} fill="#325C4A"/></>)}</>}
+          {environment.id === 'meadow' && <><path d="M0 120 Q150 65 400 130 V180 H0Z" fill="#719B69"/>{[35,95,155,235,325].map(x=><><path d={`M${x} 165 V135`} stroke="#345B40" stroke-width="3"/><circle cx={x} cy="133" r="7" fill="#EFCA89"/></>)}</>}
+          {environment.id === 'mountain-top' && <><path d="M0 180 L110 38 L220 180 M130 180 L265 20 L400 180" fill="#698A88"/><path d="M79 78 L110 38 L140 78 L109 69Z M231 60 L265 20 L299 60 L263 51Z" fill="#EDF0E1"/></>}
+          {environment.id === 'room-i-know' && <><rect x="28" y="20" width="130" height="83" rx="4" fill="#8DC1CB" stroke="#6F634E" stroke-width="6"/><path d="M93 23 V100 M31 61 H155" stroke="#F5EBD5" stroke-width="5"/><rect x="190" y="83" width="158" height="62" rx="15" fill="#72846B"/><rect x="180" y="110" width="177" height="46" rx="9" fill="#53715C"/><path d="M192 156 V171 M345 156 V171" stroke="#574D3C" stroke-width="6"/></>}
+          {environment.id === 'imagined' && <><rect width="400" height="180" fill="#495E7C"/>{[40,115,205,280,355].map((x,i)=><path d={`M${x} ${25+i%2*30} l4 10 11 1 -9 7 3 11 -9 -6 -9 6 3 -11 -9 -7 11 -1Z`} fill="#F0D592"/>)}<path d="M40 150 Q130 80 210 150 Q290 98 365 150" fill="#91B2A1"/></>}
+        </svg>
+      ))}
+    </div>
     <p data-safe-summary class="text-forest-300 mb-4"></p>
     <p class="text-forest-300 text-sm mb-6">{s.doneSub}</p>
     <button data-restart class="px-4 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.restart}</button>
   </div>
+  </div>
 </div>
 
 <script>
+  import { mountGuidedFinish, focusActivityPanel, setPressedChoice } from '../../scripts/guided-activity';
   import { createSettingsController } from '../../scripts/tool-settings-controller';
   import { createAudioEngine, type AmbientOptions } from '../../scripts/audio-engine';
 
@@ -221,11 +242,13 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     }
 
     let audioLive = false;
+    mountGuidedFinish(root, suspendAudio);
 
     async function startAudio(): Promise<void> {
       try {
         await audio.ensureStarted();
         audioLive = true;
+        if (root.dataset.guidedFinished === 'true') audio.suspend();
       } catch {
         // Autoplay policy or an unavailable AudioContext — the tool still
         // works silently.
@@ -241,7 +264,7 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     async function cue(kind: 'tick' | 'advance' | 'complete'): Promise<void> {
       if (!prefs.soundOn) return;
       await startAudio();
-      audio.playCue(kind);
+      if (root.dataset.guidedFinished !== 'true') audio.playCue(kind);
     }
 
     settings.onChange((next) => {
@@ -268,12 +291,15 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     function showStep(n: string) {
       Object.values(steps).forEach((el) => el.classList.add('hidden'));
       steps[n].classList.remove('hidden');
+      focusActivityPanel(steps[n]);
       if (n !== 'done') void cue('advance');
     }
 
     root.querySelectorAll<HTMLButtonElement>('[data-pick-env]').forEach((btn) => {
       btn.addEventListener('click', () => {
         state.env = btn.getAttribute('data-label')!;
+        setPressedChoice(root, '[data-pick-env]', btn);
+        root.querySelectorAll<SVGElement>('[data-safe-scene]').forEach((scene) => scene.classList.toggle('hidden', scene.dataset.safeScene !== btn.dataset.pickEnv));
         showStep('comfort');
       });
     });
@@ -281,6 +307,7 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     root.querySelectorAll<HTMLButtonElement>('[data-pick-comfort]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const val = btn.getAttribute('data-label')!;
+        btn.setAttribute('aria-pressed', String(!state.comforts.includes(val)));
         if (state.comforts.includes(val)) {
           state.comforts = state.comforts.filter((c) => c !== val);
           btn.classList.remove('bg-bronze-500', 'text-forest-900');
@@ -293,6 +320,8 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
       });
     });
 
+    root.querySelectorAll<HTMLButtonElement>('[data-back-to]').forEach((button) => button.addEventListener('click', () => showStep(button.dataset.backTo!)));
+    root.querySelector('[data-skip-senses]')?.addEventListener('click', () => root.querySelector<HTMLButtonElement>('[data-to-done]')!.click());
     root.querySelector<HTMLButtonElement>('[data-to-senses]')!.addEventListener('click', () => showStep('senses'));
     root.querySelector<HTMLButtonElement>('[data-to-done]')!.addEventListener('click', () => {
       const summary = root.querySelector<HTMLElement>('[data-safe-summary]')!;
@@ -305,10 +334,13 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
       void cue('complete');
     });
     root.querySelector<HTMLButtonElement>('[data-restart]')!.addEventListener('click', () => {
+      suspendAudio();
       state = { env: '', comforts: [] };
+      setPressedChoice(root, '[data-pick-env]', null);
       root.querySelectorAll<HTMLButtonElement>('[data-pick-comfort]').forEach((btn) => {
         btn.classList.remove('bg-bronze-500', 'text-forest-900');
         btn.classList.add('bg-forest-700', 'text-forest-100');
+        btn.setAttribute('aria-pressed', 'false');
       });
       showStep('env');
     });

@@ -3,7 +3,7 @@ name: "Butterfly Hug Guide"
 category: regulation
 audience: [clinician, family]
 useContext: [in-session, practice, home]
-evidence: research-backed
+evidence: widely-used
 shortDescription: "Paced self-hug tapping visual. A gentle, self-administered bilateral technique originally developed for children after disaster."
 componentName: "ButterflyHug"
 citations:
@@ -29,3 +29,8 @@ A guided visual for the butterfly hug: cross your arms over your chest, place yo
 - **Between sets** in a session, as an alternative to clinician-administered BLS.
 - **At bedtime** if a child is wound up.
 - **Anytime** a gentle calming anchor is needed.
+
+
+## Evidence scope
+
+The cited sources describe the technique and its history; they are not trials of this web tool. Use within a protocol does not establish that butterfly tapping alone treats trauma. Choose this practice with your clinician and stop if it feels uncomfortable.

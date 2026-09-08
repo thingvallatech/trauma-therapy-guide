@@ -30,7 +30,7 @@ export const ui = {
 
     // Footer
     'footer.tagline': 'A free resource for trauma therapists and families navigating evidence-based treatment.',
-    'footer.dontSell': "We don't sell anything. We don't track you. This site exists to be useful.",
+    'footer.dontSell': "We don't sell anything. Activity responses stay in your browser. This site exists to be useful.",
     'footer.quickLinks': 'Quick Links',
     'footer.resources': 'Resources',
     'footer.helpPage': 'Crisis help',
@@ -167,8 +167,8 @@ export const ui = {
     'tools.category.preparation': 'Preparation / Resource',
     'tools.category.assessment': 'Assessment Scale',
     'tools.category.regulation': 'Regulation / Body',
-    'tools.evidence.research': 'Research-backed',
-    'tools.evidence.consensus': 'Clinical consensus',
+    'tools.evidence.research': 'Used in studied protocols',
+    'tools.evidence.consensus': 'Clinical practice',
     'tools.evidence.widely': 'Widely used',
     'tools.disclaimerStrong': 'This is a reference tool, not a replacement for EMDR therapy.',
     'tools.disclaimerBody': 'EMDR must be delivered by a trained clinician. If you are using these tools outside of therapy and become distressed, stop, ground yourself, and contact a mental health professional.',
@@ -304,8 +304,8 @@ export const ui = {
     'home.tag.video': 'Video',
     'home.tag.worksheet': 'Worksheet',
     'home.tag.link': 'Link',
-    'home.trust.eyebrow': 'No accounts · no ads · no tracking',
-    'home.trust.body': "We don't sell anything. We don't track you. The site exists to be useful — to clinicians between sessions, and to families trying to understand what's happening for the person they love.",
+    'home.trust.eyebrow': 'No accounts · no ads · private activities',
+    'home.trust.body': "We do not collect what you write or choose in activities. General pages use cookie-free visit counts; activity pages do not load analytics. Free references for clinicians and families.",
     'home.trust.cta': 'About this guide',
 
     // Crisis strip
@@ -330,7 +330,7 @@ export const ui = {
     'home.ctaClinicians': 'For Clinicians',
     'home.ctaFamilies': 'For Patients & Families',
     'home.whatTitle': 'What You\'ll Find Here',
-    'home.whatSubtitle': 'Designed by clinicians, reviewed by experts, and built for busy professionals and concerned families.',
+    'home.whatSubtitle': 'Compiled from published sources for busy professionals and concerned families.',
     'home.cliniciansCardTitle': 'For Clinicians',
     'home.cliniciansCardDesc': 'Quick reference guides for evidence-based trauma protocols. Perfect for newly trained therapists who need a refresher between supervision sessions.',
     'home.cliniciansItem1': 'EMDR 8-phase protocol reference',
@@ -352,7 +352,7 @@ export const ui = {
     'home.tfcbtDesc': 'Trauma-Focused Cognitive Behavioral Therapy reference guide.',
     'home.pcitDesc': 'Parent-Child Interaction Therapy protocol reference.',
     'home.trustTitle': 'Built for Trust',
-    'home.trustDesc': 'This site compiles content from established clinical protocols, peer-reviewed research, and recognized treatment guidelines. Our content is based on published science and reviewed for accuracy. We don\'t sell anything — this is a free resource for clinicians and the patients and families they serve.',
+    'home.trustDesc': 'This site compiles content from established clinical protocols, peer-reviewed research, and recognized treatment guidelines. Our content is based on published science with source limitations described. We don\'t sell anything — this is a free resource for clinicians and the patients and families they serve.',
     'home.trustCta': 'Learn more about us',
 
     // /help page
@@ -472,7 +472,7 @@ export const ui = {
 
     // Footer
     'footer.tagline': 'Un recurso gratuito para terapeutas de trauma y familias que navegan tratamientos basados en evidencia.',
-    'footer.dontSell': 'No vendemos nada. No te rastreamos. Este sitio existe para ser útil.',
+    'footer.dontSell': 'No vendemos nada. Tus respuestas en las actividades permanecen en tu navegador. Este sitio existe para ser útil.',
     'footer.quickLinks': 'Enlaces Rápidos',
     'footer.resources': 'Recursos',
     'footer.helpPage': 'Ayuda en crisis',
@@ -609,8 +609,8 @@ export const ui = {
     'tools.category.preparation': 'Preparación / Recurso',
     'tools.category.assessment': 'Escala de Evaluación',
     'tools.category.regulation': 'Regulación / Cuerpo',
-    'tools.evidence.research': 'Basado en investigación',
-    'tools.evidence.consensus': 'Consenso clínico',
+    'tools.evidence.research': 'Uso en protocolos estudiados',
+    'tools.evidence.consensus': 'Práctica clínica',
     'tools.evidence.widely': 'Ampliamente usado',
     'tools.disclaimerStrong': 'Esta es una herramienta de referencia, no un reemplazo de la terapia EMDR.',
     'tools.disclaimerBody': 'La terapia EMDR debe ser administrada por un clínico capacitado. Si usas estas herramientas fuera de terapia y te sientes angustiado, detente, aterrízate y contacta a un profesional de salud mental.',
@@ -746,8 +746,8 @@ export const ui = {
     'home.tag.video': 'Video',
     'home.tag.worksheet': 'Hoja',
     'home.tag.link': 'Enlace',
-    'home.trust.eyebrow': 'Sin cuentas · sin anuncios · sin rastreo',
-    'home.trust.body': 'No vendemos nada. No te rastreamos. Este sitio existe para ser útil — para los profesionales entre sesiones, y para las familias que intentan entender lo que pasa con la persona que aman.',
+    'home.trust.eyebrow': 'Sin cuentas · sin anuncios · actividades privadas',
+    'home.trust.body': 'No recopilamos lo que escribes o eliges en las actividades. Las páginas generales cuentan visitas sin cookies; las actividades no cargan analítica. Referencias gratuitas para profesionales y familias.',
     'home.trust.cta': 'Acerca de esta guía',
 
     // Crisis strip
@@ -772,7 +772,7 @@ export const ui = {
     'home.ctaClinicians': 'Para Profesionales',
     'home.ctaFamilies': 'Para Pacientes y Familias',
     'home.whatTitle': 'Lo Que Encontrará Aquí',
-    'home.whatSubtitle': 'Diseñado por profesionales, revisado por expertos y creado para profesionales ocupados y familias preocupadas.',
+    'home.whatSubtitle': 'Recopilado de fuentes publicadas para profesionales ocupados y familias preocupadas.',
     'home.cliniciansCardTitle': 'Para Profesionales',
     'home.cliniciansCardDesc': 'Guías de referencia rápida para protocolos de trauma basados en evidencia. Perfecto para terapeutas recién capacitados que necesitan un repaso entre sesiones de supervisión.',
     'home.cliniciansItem1': 'Referencia del protocolo EMDR de 8 fases',
@@ -794,7 +794,7 @@ export const ui = {
     'home.tfcbtDesc': 'Guía de referencia de Terapia Cognitivo-Conductual Enfocada en el Trauma.',
     'home.pcitDesc': 'Referencia del protocolo de Terapia de Interacción Padres-Hijos.',
     'home.trustTitle': 'Construido para la Confianza',
-    'home.trustDesc': 'Este sitio recopila contenido de protocolos clínicos establecidos, investigación revisada por pares y guías de tratamiento reconocidas. Nuestro contenido se basa en ciencia publicada y es revisado para su precisión. No vendemos nada — este es un recurso gratuito para profesionales y los pacientes y familias que atienden.',
+    'home.trustDesc': 'Este sitio recopila contenido de protocolos clínicos establecidos, investigación revisada por pares y guías de tratamiento reconocidas. Nuestro contenido se basa en ciencia publicada y describe los límites de las fuentes. No vendemos nada — este es un recurso gratuito para profesionales y los pacientes y familias que atienden.',
     'home.trustCta': 'Conozca más sobre nosotros',
 
     // /help page

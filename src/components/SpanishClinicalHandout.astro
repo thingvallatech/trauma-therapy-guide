@@ -1,0 +1,61 @@
+---
+interface Props { title: string; phase: number; id?: string; }
+const { title, phase, id } = Astro.props;
+---
+<article class="clinical-handout" id={id}>
+  <header class="handout-heading">
+    <h2>{title}</h2>
+    <p>Fase {phase} de EMDR · Referencia para profesionales</p>
+    <p class="client-line">Paciente: ________________________ · Fecha: ______________</p>
+  </header>
+  <div class="handout-content"><slot /></div>
+  <aside class="handout-disclaimer">
+    <strong>Aviso:</strong> Material adaptado de los protocolos clínicos publicados y las fuentes revisadas de esta guía. Solo para profesionales con formación; no sustituye la formación formal en EMDR, la supervisión ni el juicio clínico. No distribuir este paquete clínico a pacientes. Fuentes citadas por la versión original: Shapiro (2018), directrices de EMDRIA, OMS (2013) y APA (2017).
+  </aside>
+</article>
+<style>
+  .clinical-handout { background: #fffdf9; color: #24382e; padding: clamp(1rem, 4vw, 2.5rem); border: 1px solid #d4c4ad; border-radius: .5rem; overflow-wrap: anywhere; }
+  .handout-heading { border-bottom: 2px solid #486754; padding-bottom: 1rem; margin-bottom: 1.5rem; }
+  .handout-heading h2 { font-family: var(--font-serif, Georgia, serif); font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1.25; margin-bottom: .5rem; }
+  .handout-heading p { margin: .4rem 0; }
+  .client-line { font-size: .875rem; }
+  .handout-content :global(h2) { font-size: 1.4rem; font-weight: 650; font-family: var(--font-serif, Georgia, serif); margin: 2rem 0 .8rem; line-height: 1.35; }
+  .handout-content :global(h3) { font-size: 1.08rem; font-weight: 700; margin: 1.3rem 0 .5rem; }
+  .handout-content :global(p) { margin: .65rem 0; line-height: 1.65; }
+  .handout-content :global(ul), .handout-content :global(ol) { padding-left: 1.35rem; margin: .75rem 0; }
+  .handout-content :global(ul) { list-style: disc; }
+  .handout-content :global(ol) { list-style: decimal; }
+  .handout-content :global(li) { margin: .35rem 0; line-height: 1.5; }
+  .handout-content :global(blockquote) { border-left: 3px solid #486754; background: #f0f5f1; padding: .5rem 1rem; margin: .8rem 0; }
+  .handout-content :global(a) { text-decoration: underline; color: #725031; }
+  .handout-content :global(table) { width: 100%; border-collapse: collapse; font-size: .85rem; table-layout: fixed; margin: 1rem 0; }
+  .handout-content :global(th), .handout-content :global(td) { border: 1px solid #b5bfb7; padding: .55rem; vertical-align: top; overflow-wrap: anywhere; }
+  .handout-content :global(th) { background: #e8eee9; text-align: left; }
+  .handout-content :global(.writing-lines) { min-height: 6rem; margin: .5rem 0 1.5rem; background: repeating-linear-gradient(transparent, transparent 1.7rem, #bdc8c0 1.7rem, #bdc8c0 calc(1.7rem + 1px)); }
+  .handout-content :global(.form-grid) { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; }
+  .handout-content :global(.form-field) { display: block; border-bottom: 1px solid #9baa9e; padding-bottom: 1.5rem; }
+  .handout-disclaimer { font-size: .75rem; line-height: 1.5; margin-top: 2rem; padding-top: .75rem; border-top: 1px solid #bdc8c0; }
+  @media (max-width: 480px) { .handout-content :global(.form-grid) { grid-template-columns: 1fr; } .handout-content :global(th), .handout-content :global(td) { padding: .35rem; } }
+  @media print {
+    .clinical-handout { border: 0; border-radius: 0; background: white; color: black; padding: 0; font-size: 10pt; break-before: page; }
+    .handout-heading { display: block !important; margin-bottom: .6rem; padding-bottom: .3rem; }
+    .handout-heading h2 { font-size: 18pt; }
+    .handout-content :global(h2) { margin-top: 1rem; font-size: 14pt; }
+    .handout-content :global(h3) { font-size: 11pt; }
+    .handout-content :global(h2), .handout-content :global(h3), .handout-heading { break-after: avoid; }
+    .handout-content :global(p), .handout-content :global(li) { line-height: 1.4; orphans: 3; widows: 3; }
+    .handout-content :global(tr), .handout-content :global(.form-field) { break-inside: avoid; }
+    .handout-content :global(thead) { display: table-header-group; }
+    .handout-content :global(.page-break) { display: none; }
+    .handout-content :global(p) { margin: .3rem 0; }
+    .handout-content :global(li) { margin: .15rem 0; }
+    .handout-content :global(blockquote) { padding: .25rem .65rem; margin: .4rem 0; }
+    .handout-content :global(h2) { margin: .8rem 0 .4rem; }
+    .handout-content :global(h3) { margin: .6rem 0 .3rem; }
+    .handout-content :global(.writing-lines) { min-height: 4rem; margin-bottom: .75rem; }
+    .handout-content :global(.form-grid) { gap: .5rem; }
+    .handout-content :global(.form-field) { padding-bottom: .8rem; }
+    .handout-content :global(.form-grid) { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .handout-disclaimer { break-inside: avoid; color: #333; }
+  }
+</style>

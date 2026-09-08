@@ -16,7 +16,7 @@ locale: es
 
 ## Qué es esto
 
-Un regulador visual animado para tres patrones de respiración respaldados por evidencia:
+Un regulador visual animado para tres patrones de respiración de uso habitual:
 
 - **Respiración cuadrada** (4-4-4-4): inhala 4, sostén 4, exhala 4, sostén 4. Usada en contextos militares y clínicamente para la regulación de la ansiedad aguda.
 - **4-7-8**: inhala 4, sostén 7, exhala 8. Enseñanza de Andrew Weil, basada en tradiciones de pranayama.
@@ -31,3 +31,6 @@ Un regulador visual animado para tres patrones de respiración respaldados por e
 ## Notas clínicas
 
 El círculo se expande durante la inhalación y se contrae durante la exhalación. Las pausas detienen la animación. Los preajustes de duración (1, 3, 5 y 10 minutos) ofrecen un punto de parada natural para que el usuario no tenga que mirar el reloj.
+
+
+La investigación sobre respiración lenta no valida cada patrón específico ni esta herramienta. La comodidad importa más que seguir el reloj: puedes omitir las pausas, respirar normalmente o parar. No se ha establecido que estas duraciones sean adecuadas para todos los niños.

@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import ClinicalBanner from '../../../../components/ClinicalBanner.astro';
+import SpanishClinicalHandout from '../../../../components/SpanishClinicalHandout.astro';
+import { Content as Intake, frontmatter as intake } from '../../../../data/clinical-handouts-es/intake-form.md';
+import { Content as Preparation, frontmatter as preparation } from '../../../../data/clinical-handouts-es/phase-2-scripts.md';
+import { Content as SafePlace, frontmatter as safePlace } from '../../../../data/clinical-handouts-es/phase-2-resource-safe-place.md';
+import { Content as Container, frontmatter as container } from '../../../../data/clinical-handouts-es/phase-2-resource-container.md';
+import { Content as Lightstream, frontmatter as lightstream } from '../../../../data/clinical-handouts-es/phase-2-resource-lightstream.md';
+import { Content as Breathing, frontmatter as breathing } from '../../../../data/clinical-handouts-es/phase-2-resource-breathing.md';
+import { Content as Assessment, frontmatter as assessment } from '../../../../data/clinical-handouts-es/phase-3-scripts.md';
+import { Content as Desensitization, frontmatter as desensitization } from '../../../../data/clinical-handouts-es/phase-4-scripts.md';
+import { Content as Installation, frontmatter as installation } from '../../../../data/clinical-handouts-es/phase-5-scripts.md';
+import { Content as BodyScan, frontmatter as bodyScan } from '../../../../data/clinical-handouts-es/phase-6-scripts.md';
+import { Content as Closure, frontmatter as closure } from '../../../../data/clinical-handouts-es/phase-7-scripts.md';
+import { Content as Reevaluation, frontmatter as reevaluation } from '../../../../data/clinical-handouts-es/phase-8-scripts.md';
+const documents = [
+  { slug: 'intake-form', ...intake, Content: Intake },
+  { slug: 'phase-2-scripts', ...preparation, Content: Preparation },
+  { slug: 'phase-2-resource-safe-place', ...safePlace, Content: SafePlace },
+  { slug: 'phase-2-resource-container', ...container, Content: Container },
+  { slug: 'phase-2-resource-lightstream', ...lightstream, Content: Lightstream },
+  { slug: 'phase-2-resource-breathing', ...breathing, Content: Breathing },
+  { slug: 'phase-3-scripts', ...assessment, Content: Assessment },
+  { slug: 'phase-4-scripts', ...desensitization, Content: Desensitization },
+  { slug: 'phase-5-scripts', ...installation, Content: Installation },
+  { slug: 'phase-6-scripts', ...bodyScan, Content: BodyScan },
+  { slug: 'phase-7-scripts', ...closure, Content: Closure },
+  { slug: 'phase-8-scripts', ...reevaluation, Content: Reevaluation },
+];
+---
+<BaseLayout lang="es" title="Paquete de impresión de EMDR en español" description="Selecciona y prepara los formularios y guiones de las ocho fases de EMDR, completamente en español, para imprimir o guardar como PDF.">
+  <div class="spanish-print-package max-w-4xl mx-auto px-4 py-8">
+    <div class="no-print">
+      <ClinicalBanner lang="es" />
+      <a href="/es/clinicians/emdr" class="underline text-sm">Volver al protocolo EMDR</a>
+      <h1 class="font-serif text-3xl my-4">Paquete de impresión en español</h1>
+      <p class="mb-4">Los formularios y guiones están disponibles abajo. Selecciona las secciones que necesitas; cada una comienza en una página nueva al imprimir.</p>
+      <fieldset class="border border-forest-300 rounded-lg p-4">
+        <legend class="font-semibold px-2">Secciones para imprimir</legend>
+        <div class="grid sm:grid-cols-2 gap-2">
+          {documents.map((document) => (
+            <label class="flex items-start gap-3 py-2 cursor-pointer">
+              <input class="mt-1 w-5 h-5 shrink-0" type="checkbox" name="print-section" value={document.slug} checked />
+              <span>{document.title}</span>
+            </label>
+          ))}
+        </div>
+        <div class="flex flex-wrap gap-4 mt-3">
+          <button type="button" id="select-all" class="underline min-h-11">Seleccionar todas</button>
+          <button type="button" id="select-none" class="underline min-h-11">Quitar selección</button>
+        </div>
+      </fieldset>
+      <label for="practice-name" class="block font-medium mt-5">Nombre del consultorio (opcional)</label>
+      <input id="practice-name" type="text" maxlength="160" class="mt-2 w-full rounded-md border border-forest-400 p-3 bg-white text-forest-900" placeholder="Nombre que aparecerá en la portada" />
+      <p class="text-sm mt-2">Este campo solo modifica esta vista; no se guarda en el sitio.</p>
+      <p id="selection-status" class="my-4 font-medium" role="status" aria-live="polite">12 secciones seleccionadas.</p>
+      <button type="button" id="print-selected" class="px-5 py-3 bg-bronze-500 text-forest-900 rounded-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed">Imprimir selección o guardar como PDF</button>
+      <p class="text-sm mt-3 mb-8">En el diálogo de impresión, elige tu impresora o «Guardar como PDF». Usa papel carta o A4 y revisa la vista previa. Puedes desactivar los encabezados y pies del navegador. Las secciones extensas ocupan varias páginas.</p>
+      <noscript><p>Sin JavaScript, se imprimen todas las secciones. Usa la opción Imprimir de tu navegador o abre una hoja individual desde el protocolo.</p></noscript>
+    </div>
+    <div class="package-cover">
+      <h2 class="font-serif text-2xl">EMDR · Referencia clínica en español</h2>
+      <p id="printed-practice-name"></p>
+      <p>Formularios de evaluación y guiones de las fases 1–8. Solo para profesionales con formación en EMDR.</p>
+      <p>No sustituye la formación, la supervisión ni el juicio clínico. No distribuir este paquete clínico a pacientes. Fuentes citadas por los originales: Shapiro (2018), EMDRIA, OMS (2013), APA (2017).</p>
+    </div>
+    <div class="space-y-8">
+      {documents.map(({ slug, title, phase, Content }) => (
+        <section data-print-section={slug}>
+          <SpanishClinicalHandout title={title} phase={phase} id={`document-${slug}`}><Content /></SpanishClinicalHandout>
+        </section>
+      ))}
+    </div>
+  </div>
+</BaseLayout>
+<script>
+  const inputs = Array.from(document.querySelectorAll<HTMLInputElement>('input[name="print-section"]'));
+  const printButton = document.getElementById('print-selected') as HTMLButtonElement;
+  const status = document.getElementById('selection-status')!;
+  function updateSelection() {
+    for (const input of inputs) {
+      const section = document.querySelector<HTMLElement>(`[data-print-section="${input.value}"]`);
+      if (section) section.hidden = !input.checked;
+    }
+    const count = inputs.filter((input) => input.checked).length;
+    status.textContent = count === 1 ? '1 sección seleccionada.' : `${count} secciones seleccionadas.`;
+    printButton.disabled = count === 0;
+  }
+  inputs.forEach((input) => input.addEventListener('change', updateSelection));
+  document.getElementById('select-all')?.addEventListener('click', () => { inputs.forEach((input) => { input.checked = true; }); updateSelection(); });
+  document.getElementById('select-none')?.addEventListener('click', () => { inputs.forEach((input) => { input.checked = false; }); updateSelection(); });
+  printButton.addEventListener('click', () => window.print());
+  document.getElementById('practice-name')?.addEventListener('input', (event) => {
+    document.getElementById('printed-practice-name')!.textContent = (event.target as HTMLInputElement).value;
+  });
+  updateSelection();
+</script>
+<style>
+  .spanish-print-package { color: var(--color-ink, #24382e); background: #fffdf9; }
+  .package-cover { margin: 2rem 0; line-height: 1.6; }
+  .package-cover p { margin-top: .75rem; }
+  #printed-practice-name { font-weight: 600; overflow-wrap: anywhere; }
+  @media print {
+    @page { size: auto; margin: 14mm; }
+    .spanish-print-package { max-width: none; padding: 0; margin: 0; }
+    .package-cover { margin: 0 0 2rem; }
+    [data-print-section][hidden] { display: none !important; }
+    [data-print-section] { margin: 0 !important; }
+  }
+</style>

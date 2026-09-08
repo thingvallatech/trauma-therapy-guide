@@ -106,11 +106,12 @@ The site uses **dark chrome + light content zones** ("calm" overhaul, Apr 2026 �
 
 ```bash
 npm run dev        # Development
-npm run build      # Build (113 pages; must pass before commit)
+npm run build      # Build (126 pages; must pass before commit)
 npm run preview    # Preview production build
 npm run test       # Vitest (logic modules in src/scripts/ only)
 npm run typecheck  # tsc --noEmit
-npm run verify     # Full chain: lint → typecheck → test → build
+npm run verify     # Full chain: lint → typecheck → test → build → route/asset audit
+npm run test:e2e   # Browser usability, responsive, accessibility and recovery checks
 ```
 
 ## Verification
@@ -143,4 +144,4 @@ including `ADMIN_TOKEN` (shared secret; the admin upload page sends it as `X-Adm
 - Accessibility: semantic HTML, heading hierarchy, skip link, focus states, keyboard-operable tools
 - Resource admin page at /admin/upload (noindex, not linked publicly; requires admin token)
 - Resources stored as markdown in src/content/resources/
-- Search index lives in SearchModal.astro (static pages) + tools collection — add new pages there
+- Search index lives in SearchModal.astro (static pages, activities, handouts and resources) — add new pages there

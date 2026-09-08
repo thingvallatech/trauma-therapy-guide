@@ -1,9 +1,7 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import ClinicalBanner from '../../../../components/ClinicalBanner.astro';
-import ContentFallbackBanner from '../../../../components/ContentFallbackBanner.astro';
 import References from '../../../../components/References.astro';
-import Card from '../../../../components/Card.astro';
 import Callout from '../../../../components/Callout.astro';
 import { useTranslations, useTranslatedPath, type Lang } from '../../../../i18n';
 import type { TranslationKey } from '../../../../i18n/ui';
@@ -13,14 +11,14 @@ const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 
 const phases = [
-  { num: 1, title: 'History and Treatment Planning', shortTitle: t('phase.1.short' as TranslationKey), description: 'Comprehensive history-taking and treatment planning' },
-  { num: 2, title: 'Preparation', shortTitle: t('phase.2.short' as TranslationKey), description: 'Teaching stabilization and resource development' },
-  { num: 3, title: 'Assessment', shortTitle: t('phase.3.short' as TranslationKey), description: 'Activating target memory and establishing baselines' },
-  { num: 4, title: 'Desensitization', shortTitle: t('phase.4.short' as TranslationKey), description: 'Processing with bilateral stimulation' },
-  { num: 5, title: 'Installation', shortTitle: t('phase.5.short' as TranslationKey), description: 'Strengthening the positive cognition' },
-  { num: 6, title: 'Body Scan', shortTitle: t('phase.6.short' as TranslationKey), description: 'Checking for residual physical disturbance' },
-  { num: 7, title: 'Closure', shortTitle: t('phase.7.short' as TranslationKey), description: 'Ensuring stability at session end' },
-  { num: 8, title: 'Reevaluation', shortTitle: t('phase.8.short' as TranslationKey), description: 'Evaluating treatment progress' },
+  { num: 1, title: 'Historia y planificación del tratamiento', shortTitle: t('phase.1.short' as TranslationKey), description: 'Recopilación de la historia clínica y planificación del tratamiento' },
+  { num: 2, title: 'Preparación', shortTitle: t('phase.2.short' as TranslationKey), description: 'Estabilización y desarrollo de recursos' },
+  { num: 3, title: 'Evaluación', shortTitle: t('phase.3.short' as TranslationKey), description: 'Identificación del recuerdo blanco y mediciones iniciales' },
+  { num: 4, title: 'Desensibilización', shortTitle: t('phase.4.short' as TranslationKey), description: 'Reprocesamiento con estimulación bilateral' },
+  { num: 5, title: 'Instalación', shortTitle: t('phase.5.short' as TranslationKey), description: 'Fortalecimiento de la cognición positiva' },
+  { num: 6, title: 'Exploración corporal', shortTitle: t('phase.6.short' as TranslationKey), description: 'Comprobación del malestar corporal residual' },
+  { num: 7, title: 'Cierre', shortTitle: t('phase.7.short' as TranslationKey), description: 'Estabilización al finalizar la sesión' },
+  { num: 8, title: 'Reevaluación', shortTitle: t('phase.8.short' as TranslationKey), description: 'Revisión del progreso del tratamiento' },
 ];
 ---
 
@@ -38,7 +36,6 @@ const phases = [
 
     <ClinicalBanner lang={lang} />
 
-    <ContentFallbackBanner lang={lang} />
 
       <!-- Header -->
       <div class="max-w-3xl mb-12">
@@ -88,7 +85,7 @@ const phases = [
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
           </svg>
           Herramientas EMDR interactivas
-          <span class="text-forest-300 text-sm font-normal">(EMB, escalas, contención)</span>
+          <span class="text-forest-300 text-sm font-normal">(estimulación bilateral, escalas, contención)</span>
         </a>
       </div>
 
@@ -133,6 +130,19 @@ const phases = [
         </div>
       </div>
 
+      <section class="mt-10 p-6 border border-linen rounded-lg" aria-labelledby="spanish-handouts-heading">
+        <h2 id="spanish-handouts-heading" class="font-serif text-2xl text-forest-900 mb-4">Formularios y guiones en español</h2>
+        <p class="text-charcoal mb-4">Abre una hoja individual o selecciona varias en el paquete de impresión.</p>
+        <ul class="grid sm:grid-cols-2 gap-3 text-sm text-charcoal">
+          <li><a class="underline" href="/es/clinicians/emdr/intake-form">Fase 1: formulario de evaluación inicial</a></li>
+          {[2, 3, 4, 5, 6, 7, 8].map((phase) => <li><a class="underline" href={`/es/clinicians/emdr/phase-${phase}-scripts`}>Fase {phase}: guiones de {phases[phase - 1].title.toLowerCase()}</a></li>)}
+          <li><a class="underline" href="/es/clinicians/emdr/phase-2-resource-safe-place">Recurso: lugar seguro o tranquilo</a></li>
+          <li><a class="underline" href="/es/clinicians/emdr/phase-2-resource-container">Recurso: contenedor</a></li>
+          <li><a class="underline" href="/es/clinicians/emdr/phase-2-resource-lightstream">Recurso: corriente de luz</a></li>
+          <li><a class="underline" href="/es/clinicians/emdr/phase-2-resource-breathing">Recurso: respiración</a></li>
+        </ul>
+      </section>
+
       <!-- Key Concepts -->
       <div class="mt-16 grid md:grid-cols-2 gap-8">
         <div class="bg-sand rounded-lg p-6">
@@ -141,24 +151,24 @@ const phases = [
           </h3>
           <ul class="space-y-3 text-sm text-charcoal">
             <li class="flex items-start gap-2">
-              <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">NC:</span>
-              Negative Cognition — irrational self-belief
+              <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">CN:</span>
+              Cognición negativa: creencia irracional sobre sí mismo
             </li>
             <li class="flex items-start gap-2">
-              <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">PC:</span>
-              Positive Cognition — desired self-belief
+              <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">CP:</span>
+              Cognición positiva: creencia deseada sobre sí mismo
             </li>
             <li class="flex items-start gap-2">
               <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">VOC:</span>
-              Validity of Cognition — how true PC feels (1-7)
+              Validez de la cognición: qué tan verdadera se siente la CP (1–7)
             </li>
             <li class="flex items-start gap-2">
               <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">SUD:</span>
-              Subjective Units of Disturbance (0-10)
+              Unidades subjetivas de perturbación (0–10)
             </li>
             <li class="flex items-start gap-2">
-              <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">BLS:</span>
-              Bilateral Stimulation — eye movements, taps, or tones
+              <span class="font-semibold text-bronze-500 w-20 flex-shrink-0">EB:</span>
+              Estimulación bilateral: movimientos oculares, golpecitos o tonos
             </li>
           </ul>
         </div>
@@ -168,13 +178,13 @@ const phases = [
             {t('emdr.sessionFlow')}
           </h3>
           <ol class="space-y-2 text-sm text-charcoal list-decimal list-inside">
-            <li>Open with reevaluation (Phase 8)</li>
-            <li>Continue previous target or select new one</li>
-            <li>Assessment if new target (Phase 3)</li>
-            <li>Desensitization until SUD = 0 (Phase 4)</li>
-            <li>Installation until VOC = 7 (Phase 5)</li>
-            <li>Body scan until clear (Phase 6)</li>
-            <li>Closure (Phase 7)</li>
+            <li>Abrir con la reevaluación (fase 8)</li>
+            <li>Continuar con el blanco anterior o seleccionar uno nuevo</li>
+            <li>Evaluar si el blanco es nuevo (fase 3)</li>
+            <li>Desensibilizar hasta SUD = 0 o un nivel ecológico (fase 4)</li>
+            <li>Instalar hasta VOC = 7 o un nivel ecológico (fase 5)</li>
+            <li>Explorar el cuerpo hasta resolver el malestar residual (fase 6)</li>
+            <li>Realizar el cierre (fase 7)</li>
           </ol>
         </div>
       </div>
@@ -189,10 +199,10 @@ const phases = [
         </p>
         <ul class="text-sm text-forest-600 space-y-1">
           <li>
-            <span class="text-bronze-500">EMDRIA:</span> EMDR International Association — emdria.org
+            <span class="text-bronze-500">EMDRIA:</span> Asociación Internacional de EMDR — emdria.org (sitio externo en inglés)
           </li>
           <li>
-            <span class="text-bronze-500">EMDR Institute:</span> Founded by Francine Shapiro — emdr.com
+            <span class="text-bronze-500">EMDR Institute:</span> Fundado por Francine Shapiro — emdr.com (sitio externo en inglés)
           </li>
         </ul>
       </div>

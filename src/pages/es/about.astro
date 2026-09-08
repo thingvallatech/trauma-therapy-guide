@@ -1,4 +1,5 @@
 ---
+import EvidenceNote from '../../components/EvidenceNote.astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { useTranslations, type Lang } from '../../i18n';
 
@@ -39,7 +40,7 @@ const t = useTranslations(lang);
 
         <h2>Nuestro enfoque</h2>
         <ul>
-          <li><strong>Solo basado en evidencia</strong> — Solo cubrimos tratamientos con sólido respaldo de investigación</li>
+          <li><strong>Evidencia con contexto</strong> — Distinguimos tratamientos completos de prácticas de apoyo y describimos la incertidumbre</li>
           <li><strong>Compilado de fuentes establecidas</strong> — El contenido se recopila de protocolos clínicos publicados, investigación revisada por pares y guías de tratamiento reconocidas (p. ej., Shapiro, EMDRIA, APA)</li>
           <li><strong>Gratuito para siempre</strong> — Sin muros de pago, sin suscripciones, sin anuncios</li>
           <li><strong>Lenguaje claro</strong> — El contenido para pacientes y familias está escrito para entenderse, no para impresionar</li>
@@ -54,6 +55,9 @@ const t = useTranslations(lang);
           Buscamos representar fielmente la ciencia publicada y los protocolos estándar. Si encuentras alguna inexactitud o tienes sugerencias de mejora, agradecemos contribuciones y correcciones a través del repositorio del proyecto.
         </p>
 
+<EvidenceNote lang="es" />
+<h2>Privacidad en las actividades</h2>
+<p>Las respuestas, puntuaciones y escenas no se envían a un servidor. Las preferencias de apariencia y sonido se guardan solo en este navegador si permite almacenamiento. Las actividades no cargan analítica. Otras páginas usan GoatCounter para contar visitas sin cookies. No escribas datos identificativos de pacientes en nombres de preajustes; esos nombres sí se guardan localmente.</p>
         <h2>Avisos importantes</h2>
 
         <h3>Para profesionales</h3>
@@ -74,7 +78,7 @@ const t = useTranslations(lang);
 
         <h2>Contacto y contribuciones</h2>
         <p>
-          ¿Preguntas, correcciones o comentarios? Este proyecto se mantiene en <a href="https://github.com/sean/traumaSite">GitHub</a>. No dudes en abrir un issue o enviar un pull request.
+          ¿Preguntas, correcciones o comentarios? Este proyecto se mantiene en <a href="https://github.com/thingvallatech/trauma-therapy-guide">GitHub</a>. No dudes en abrir un issue o enviar un pull request.
         </p>
       </article>
     </div>

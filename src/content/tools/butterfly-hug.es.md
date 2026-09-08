@@ -3,7 +3,7 @@ name: "Guía del Abrazo Mariposa"
 category: regulation
 audience: [clinician, family]
 useContext: [in-session, practice, home]
-evidence: research-backed
+evidence: widely-used
 shortDescription: "Visual de golpeteo con autoabrazo al ritmo marcado. Una técnica bilateral suave y autoadministrada desarrollada originalmente para niños tras un desastre."
 componentName: "ButterflyHug"
 citations:
@@ -30,3 +30,8 @@ Un visual guiado para el abrazo mariposa: cruza los brazos sobre el pecho, coloc
 - **Entre series** en una sesión, como alternativa a la EMB administrada por el clínico.
 - **A la hora de dormir** si un niño está agitado.
 - **En cualquier momento** en que se necesite un ancla calmante y suave.
+
+
+## Alcance de la evidencia
+
+Las fuentes citadas describen la técnica y su historia; no son ensayos de esta herramienta web. Su uso como parte de un protocolo no demuestra que el abrazo de mariposa por sí solo trate el trauma. Elige esta práctica con tu profesional y detente si resulta incómoda.

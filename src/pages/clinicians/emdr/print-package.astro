@@ -19,8 +19,8 @@ const printablePages = [
 ];
 ---
 
-<BaseLayout title="EMDR Print Package" description="Complete EMDR protocol printable package - all phases and resources in one document.">
-  <style>
+<BaseLayout title="EMDR Print Package" description="Select EMDR intake forms, clinical scripts and preparation resources to print or save as PDF.">
+  <style is:global>
     /* ========================================
        COMPREHENSIVE PRINT STYLES
        Includes all formatting from individual pages
@@ -265,10 +265,19 @@ const printablePages = [
   </style>
 
     <ClinicalBanner />
+    <fieldset class="no-print max-w-4xl mx-auto p-4 my-6 border border-forest-300 rounded-lg">
+      <legend class="font-semibold px-2">Choose documents to print</legend>
+      <p class="text-sm mb-3">Intake forms, phase scripts and preparation resources. This package does not include the full phase articles. Long documents span several printed pages.</p>
+      <div class="grid sm:grid-cols-2 gap-2">{printablePages.map((page, index) => <label class="flex items-center gap-3 py-2"><input type="checkbox" name="print-section" value={index} checked class="w-5 h-5" />{page.title}</label>)}</div>
+      <div class="flex gap-6 my-3"><button type="button" id="select-all" class="underline min-h-11">Select all</button><button type="button" id="select-none" class="underline min-h-11">Select none</button></div>
+      <p id="selection-status" role="status" aria-live="polite">Loading documents…</p>
+      <p class="text-sm mt-3">Choose your printer or “Save as PDF” in the print dialog. Use Letter or A4, turn off browser headers and footers if desired, and review the preview.</p>
+      <noscript><p>JavaScript loads this combined package. Open individual documents from the EMDR protocol page to print without JavaScript.</p></noscript>
+    </fieldset>
 
   <!-- Print header bar -->
   <div class="no-print bg-sand text-charcoal py-3 sticky top-0 z-50">
-    <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
+    <div class="max-w-4xl mx-auto px-4 flex flex-wrap gap-3 items-center justify-between">
       <div class="flex items-center gap-3">
         <a href="/clinicians/emdr" class="text-forest-600 hover:text-forest-800 transition-colors flex items-center gap-2">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -295,11 +304,12 @@ const printablePages = [
 
   <!-- Practice Name Customization -->
   <div class="no-print max-w-4xl mx-auto px-4 pt-4">
-    <div class="flex items-center gap-3 p-3 bg-sand border border-linen rounded-lg">
+    <div class="flex flex-wrap items-center gap-3 p-3 bg-sand border border-linen rounded-lg">
       <label for="practice-name" class="text-sm text-forest-600 flex-shrink-0">Practice Name:</label>
       <input
         type="text"
         id="practice-name"
+        style="min-width:0"
         placeholder="Enter your practice name (appears on printed pages)"
         class="flex-1 px-3 py-1.5 bg-forest-50 border border-linen rounded text-sm text-forest-900 placeholder:text-forest-400 focus:outline-none focus:ring-2 focus:ring-forest-500"
       />
@@ -337,145 +347,105 @@ const printablePages = [
   </div>
 
   <script define:vars={{ printablePages }}>
+    const printContent = document.getElementById('print-content');
+    const printBtn = document.getElementById('print-btn');
+    const printBtnText = document.getElementById('print-btn-text');
+    const choices = [...document.querySelectorAll('input[name="print-section"]')];
+    const status = document.getElementById('selection-status');
+    const ready = new Set();
+    const failed = new Set();
+    let loading = true;
+    function updateSelection() {
+      choices.forEach((choice, index) => {
+        const section = document.querySelector(`[data-print-section="${index}"]`);
+        if (section) section.hidden = !choice.checked;
+      });
+      const selected = choices.filter(choice => choice.checked);
+      const missing = selected.filter(choice => !ready.has(Number(choice.value)));
+      printBtn.disabled = loading || !selected.length || missing.length > 0;
+      status.textContent = loading ? 'Loading documents…' : missing.length
+        ? `${missing.length} selected documents could not load. Reload this page to retry, or deselect them before printing.`
+        : `${selected.length} documents selected. Review the print preview for page count.`;
+      printBtnText.textContent = 'Print selection or save as PDF';
+    }
+    choices.forEach(choice => choice.addEventListener('change', updateSelection));
+    document.getElementById('select-all').addEventListener('click', () => { choices.forEach(choice => { choice.checked = true; }); updateSelection(); });
+    document.getElementById('select-none').addEventListener('click', () => { choices.forEach(choice => { choice.checked = false; }); updateSelection(); });
+    document.getElementById('practice-name').addEventListener('input', function() {
+      document.querySelectorAll('.practice-header').forEach(header => { header.textContent = this.value.trim(); });
+    });
     async function loadPrintPackage() {
-      const printContent = document.getElementById('print-content');
-      const loadingState = document.getElementById('loading-state');
-      const printBtn = document.getElementById('print-btn');
-      const printBtnText = document.getElementById('print-btn-text');
       const progressItems = document.querySelectorAll('.progress-item');
-
-      let loadedCount = 0;
-      let errorCount = 0;
-
-      function updateProgress(index, status) {
-        const item = progressItems[index];
-        const checkIcon = item.querySelector('.check-icon');
-        const loadingIcon = item.querySelector('.loading-icon');
-        const errorIcon = item.querySelector('.error-icon');
-        const pendingDot = item.querySelector('.pending-dot');
-
-        // Hide all icons first
-        checkIcon.classList.add('hidden');
-        loadingIcon.classList.add('hidden');
-        errorIcon.classList.add('hidden');
-        pendingDot.classList.add('hidden');
-
-        item.classList.remove('loaded', 'loading', 'error');
-
-        if (status === 'loading') {
-          loadingIcon.classList.remove('hidden');
-          item.classList.add('loading');
-        } else if (status === 'loaded') {
-          checkIcon.classList.remove('hidden');
-          item.classList.add('loaded');
-        } else if (status === 'error') {
-          errorIcon.classList.remove('hidden');
-          item.classList.add('error');
-        } else {
-          pendingDot.classList.remove('hidden');
-        }
-      }
-
-      for (let i = 0; i < printablePages.length; i++) {
-        const page = printablePages[i];
-        updateProgress(i, 'loading');
-
+      for (let index = 0; index < printablePages.length; index++) {
+        const page = printablePages[index];
         try {
-          // Insert section divider if this page starts a new section
-          if (page.section) {
-            const divider = document.createElement('div');
-            divider.className = 'section-divider print-page';
-            divider.innerHTML = `
-              <div class="phase-number">${page.sectionNum}</div>
-              <div class="phase-title">${page.section}</div>
-              <div class="phase-subtitle">EMDR Protocol Reference</div>
-              <div class="emdr-badge">Clinical Scripts & Resources</div>
-            `;
-            printContent.appendChild(divider);
-          }
-
           const response = await fetch(page.url);
           if (!response.ok) throw new Error(`HTTP ${response.status}`);
-
-          const html = await response.text();
-
-          // Parse HTML and extract print-page elements
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(html, 'text/html');
-          const printPages = doc.querySelectorAll('.print-page');
-
-          // Append each print-page to our content
-          printPages.forEach(printPage => {
-            // Clone and import the node
-            const clonedPage = printPage.cloneNode(true);
-            printContent.appendChild(clonedPage);
+          const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+          const pages = doc.querySelectorAll('.print-page');
+          if (!pages.length) throw new Error('No printable content found');
+          const section = document.createElement('section');
+          section.dataset.printSection = String(index);
+          section.hidden = !choices[index].checked;
+          pages.forEach(page => {
+            const clone = page.cloneNode(true);
+            // Source handouts have fixed folios; browser pagination differs in a combined package.
+            clone.querySelectorAll('header p').forEach(label => {
+              if (/^Page \d+ of \d+$/.test(label.textContent.trim())) label.remove();
+            });
+            const header = document.createElement('div'); header.className = 'practice-header';
+            header.textContent = document.getElementById('practice-name').value.trim();
+            clone.prepend(header); section.append(clone);
           });
-
-          // Grab styles from each page that might contain unique styling
-          const styles = doc.querySelectorAll('style');
-          styles.forEach(style => {
-            const content = style.textContent;
-            // Only grab styles with relevant selectors we don't already have
-            if (content.includes('border-left-color') ||
-                content.includes('script-box') ||
-                content.includes('tracking-box') ||
-                content.includes('cognition-')) {
-              // Check if we already have similar styles
-              const existingStyles = document.querySelectorAll('style[data-source]');
-              let isDuplicate = false;
-              existingStyles.forEach(existing => {
-                if (existing.textContent === content) isDuplicate = true;
+          printContent.append(section);
+          for (const style of doc.querySelectorAll('style')) {
+            const duplicate = [...document.querySelectorAll('style[data-source]')].some(existing => existing.textContent === style.textContent);
+            if (!duplicate) { const clone = style.cloneNode(true); clone.dataset.source = page.url; document.head.append(clone); }
+          }
+          // Production Astro extracts each page's scoped styles into linked CSS.
+          // The cloned nodes retain those scope attributes and need their stylesheet.
+          for (const link of doc.querySelectorAll('link[rel="stylesheet"]')) {
+            const href = new URL(link.getAttribute('href'), response.url).href;
+            if (![...document.querySelectorAll('link[rel="stylesheet"]')].some(existing => existing.href === href)) {
+              await new Promise((resolve, reject) => {
+                const stylesheet = document.createElement('link'); stylesheet.rel = 'stylesheet'; stylesheet.href = href;
+                stylesheet.onload = resolve; stylesheet.onerror = () => reject(new Error('Print styles did not load'));
+                document.head.append(stylesheet);
               });
-              if (!isDuplicate) {
-                const clonedStyle = style.cloneNode(true);
-                clonedStyle.setAttribute('data-source', page.url);
-                document.head.appendChild(clonedStyle);
-              }
             }
-          });
-
-          loadedCount++;
-          updateProgress(i, 'loaded');
-
+          }
+          ready.add(index);
+          progressItems[index]?.classList.add('loaded');
+          progressItems[index]?.querySelector('.check-icon')?.classList.remove('hidden');
+          progressItems[index]?.querySelector('.pending-dot')?.classList.add('hidden');
         } catch (error) {
-          console.error(`Failed to load ${page.url}:`, error);
-          errorCount++;
-          updateProgress(i, 'error');
+          failed.add(index);
+          console.error(`Could not load print document ${page.url}`, error);
+          progressItems[index]?.classList.add('error');
         }
       }
-
-      // Hide loading state and enable print button
-      loadingState.style.display = 'none';
-      printBtn.disabled = false;
-
-      // Inject practice-header element at the top of each .print-page
-      const allPrintPages = printContent.querySelectorAll('.print-page');
-      allPrintPages.forEach(page => {
-        const header = document.createElement('div');
-        header.className = 'practice-header';
-        page.insertBefore(header, page.firstChild);
-      });
-
-      if (errorCount > 0) {
-        printBtnText.textContent = `Print Package (${loadedCount}/${printablePages.length} pages)`;
-      } else {
-        printBtnText.textContent = 'Print Full Package';
-      }
+      loading = false;
+      document.getElementById('loading-state').hidden = true;
+      updateSelection();
     }
-
-    // Update all practice headers when the input changes
-    document.getElementById('practice-name').addEventListener('input', function() {
-      const value = this.value.trim();
-      document.querySelectorAll('.practice-header').forEach(header => {
-        header.textContent = value;
-      });
-    });
-
-    // Start loading when page is ready
-    document.addEventListener('DOMContentLoaded', loadPrintPackage);
+    loadPrintPackage();
   </script>
     <!-- Print Disclaimer -->
     <div class="mt-8 pt-4 border-t border-gray-300 text-xs text-gray-500">
       <p><strong>Disclaimer:</strong> This material is compiled from published clinical protocols and peer-reviewed sources. It is intended as a reference for trained clinicians only and does not replace formal EMDR training, supervision, or clinical judgment. Not for distribution to clients. Sources: Shapiro (2018), EMDRIA Guidelines, WHO (2013), APA (2017).</p>
     </div>
 </BaseLayout>
+
+<style is:global>
+@media print {
+  #print-content header { display: block !important; break-inside: avoid; break-after: avoid-page; }
+  #print-content [hidden] { display: none !important; }
+  #print-content [data-print-section] { break-before: auto; margin-bottom: 1.5rem !important; }
+  #print-content .print-page { min-height: 0 !important; break-after: auto !important; page-break-after: auto !important; margin-bottom: 1rem !important; }
+  #print-content h1, #print-content h2, #print-content h3 { display: block !important; break-inside: avoid; break-after: avoid-page; }
+  #print-content h2 > span, #print-content h3 > span { display: inline-flex; vertical-align: middle; margin-right: 0.3rem; }
+  #print-content p, #print-content li { line-height: 1.4 !important; orphans: 3; widows: 3; }
+  #print-content .text-sm { font-size: 10pt !important; }
+}
+@media(max-width:640px) { #print-content { overflow-wrap:anywhere; } #print-content table { display:block; overflow-x:auto; max-width:100%; } }
+</style>

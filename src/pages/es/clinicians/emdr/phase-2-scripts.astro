@@ -1,0 +1,18 @@
+---
+import SpanishHandoutLayout from '../../../../layouts/SpanishHandoutLayout.astro';
+import SpanishClinicalHandout from '../../../../components/SpanishClinicalHandout.astro';
+import { Content, frontmatter } from '../../../../data/clinical-handouts-es/phase-2-scripts.md';
+import { Content as Resource0, frontmatter as resource0 } from '../../../../data/clinical-handouts-es/phase-2-resource-safe-place.md';
+import { Content as Resource1, frontmatter as resource1 } from '../../../../data/clinical-handouts-es/phase-2-resource-container.md';
+import { Content as Resource2, frontmatter as resource2 } from '../../../../data/clinical-handouts-es/phase-2-resource-lightstream.md';
+import { Content as Resource3, frontmatter as resource3 } from '../../../../data/clinical-handouts-es/phase-2-resource-breathing.md';
+---
+<SpanishHandoutLayout title={frontmatter.title} phase={frontmatter.phase}>
+  <SpanishClinicalHandout title={frontmatter.title} phase={frontmatter.phase}>
+    <Content />
+  </SpanishClinicalHandout>
+  <SpanishClinicalHandout title={resource0.title} phase={2}><Resource0 /></SpanishClinicalHandout>
+  <SpanishClinicalHandout title={resource1.title} phase={2}><Resource1 /></SpanishClinicalHandout>
+  <SpanishClinicalHandout title={resource2.title} phase={2}><Resource2 /></SpanishClinicalHandout>
+  <SpanishClinicalHandout title={resource3.title} phase={2}><Resource3 /></SpanishClinicalHandout>
+</SpanishHandoutLayout>

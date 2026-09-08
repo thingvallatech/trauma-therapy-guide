@@ -1,0 +1,15 @@
+---
+import type { Lang } from '../../i18n';
+const { lang = 'en' } = Astro.props as { lang?: Lang };
+const es = lang === 'es';
+---
+<div class="session-controls no-print" data-session-controls hidden aria-label={es ? 'Controles de la actividad' : 'Activity controls'} role="region">
+  <button type="button" data-session-start hidden>{es ? 'Iniciar actividad' : 'Start activity'}</button>
+  <button type="button" data-session-stop hidden>{es ? 'Detener actividad' : 'Stop activity'}</button>
+  <button type="button" data-session-mute hidden>{es ? 'Silenciar' : 'Mute sound'}</button>
+  <button type="button" data-client-view-exit hidden>{es ? 'Volver a la guía' : 'Back to guide'}</button>
+</div>
+<script>
+  import { initSessionControls } from '../../scripts/session-controls';
+  initSessionControls();
+</script>

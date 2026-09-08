@@ -16,10 +16,12 @@ const containerClass = fullscreen
 const t = {
   en: {
     subParagraph: 'Look around. Tap the button as you name each one out loud or in your head.',
+    back: 'Back', skip: 'Skip this sense', alternative: 'Try another prompt',
+    alternatives: ['Name 5 colors or shapes you remember', 'Name 4 textures you remember or imagine', 'Name 3 words or sounds you remember', 'Name 2 places you know or imagine', 'Name 1 thing you notice in the room'],
     remaining: 'remaining',
     tapBtn: 'I named one',
     resetBtn: 'Start over',
-    done: 'You are here.',
+    done: 'You can finish here or revisit a step.',
     doneBtn: 'Done',
     stepPrompts: [
       'Name 5 things you can see',
@@ -32,10 +34,12 @@ const t = {
   },
   es: {
     subParagraph: 'Mira alrededor. Toca el botón mientras nombras cada una en voz alta o en tu mente.',
+    back: 'Atrás', skip: 'Omitir este sentido', alternative: 'Probar otra indicación',
+    alternatives: ['Nombra 5 colores o formas que recuerdes', 'Nombra 4 texturas que recuerdes o imagines', 'Nombra 3 palabras o sonidos que recuerdes', 'Nombra 2 lugares que conozcas o imagines', 'Nombra 1 cosa que notes en la habitación'],
     remaining: 'restantes',
     tapBtn: 'Nombré una',
     resetBtn: 'Empezar de nuevo',
-    done: 'Estás aquí.',
+    done: 'Puedes terminar aquí o volver a un paso.',
     doneBtn: 'Listo',
     stepPrompts: [
       'Nombra 5 cosas que puedes ver',
@@ -65,6 +69,7 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
   data-grounding-widget
   data-grounding-i18n={JSON.stringify({
   stepPrompts: s.stepPrompts,
+  alternatives: s.alternatives,
   stepCounts: s.stepCounts,
   remaining: s.remaining,
   tapBtn: s.tapBtn,
@@ -85,15 +90,16 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     </div>
   )}
 
-  <ToolSettings componentName="Grounding" lang={lang} startOpen={!fullscreen} />
+  <ToolSettings componentName="Grounding" lang={lang} startOpen={false} />
 
+  <div data-guided-content class="w-full">
   <h2
     data-grounding-prompt
     aria-live="polite"
     class="font-serif text-2xl mb-2"
     style="color: var(--tool-color, #C8E6C9);"
   >{s.stepPrompts[0]}</h2>
-  <p class="text-forest-300 text-sm mb-6">{s.subParagraph}</p>
+  <p class="text-forest-300 text-sm mb-6">{s.subParagraph} {lang === 'es' ? 'Puedes omitir cualquier sentido o usar otra indicación. No necesitas tocar, oler ni probar nada.' : 'You can skip any sense or use another prompt. You do not need to touch, smell, or taste anything.'}</p>
 
   <div class="flex items-center gap-4 mb-6">
     <div
@@ -113,15 +119,22 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     {s.tapBtn}
   </button>
 
+  <div class="flex flex-wrap gap-3 mt-3">
+    <button data-grounding-back class="min-h-11 px-3 py-2 border border-forest-500 rounded-lg text-forest-100 disabled:opacity-50">{s.back}</button>
+    <button data-grounding-skip class="min-h-11 px-3 py-2 border border-forest-500 rounded-lg text-forest-100">{s.skip}</button>
+    <button data-grounding-alternative aria-pressed="false" class="min-h-11 px-3 py-2 border border-forest-500 rounded-lg text-forest-100">{s.alternative}</button>
+  </div>
   <button
     data-grounding-reset
     class="w-full mt-3 py-2 text-sm text-forest-400 hover:text-forest-200 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
   >
     {s.resetBtn}
   </button>
+  </div>
 </div>
 
 <script>
+  import { mountGuidedFinish } from '../../scripts/guided-activity';
   import { createSettingsController } from '../../scripts/tool-settings-controller';
   import { createAudioEngine, type AmbientOptions } from '../../scripts/audio-engine';
 
@@ -206,11 +219,13 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     // doesn't clear it, since ensureStarted() is safe to call again on an
     // already-built, merely-suspended context.
     let audioLive = false;
+    const finishActivity = mountGuidedFinish(root, suspendAudio);
 
     async function startAudio(): Promise<void> {
       try {
         await audio.ensureStarted();
         audioLive = true;
+        if (root.dataset.guidedFinished === 'true') audio.suspend();
       } catch {
         // Autoplay policy or an unavailable AudioContext — the tool still
         // works silently.
@@ -230,7 +245,7 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     async function cue(kind: 'tick' | 'advance' | 'complete'): Promise<void> {
       if (!prefs.soundOn) return;
       await startAudio();
-      audio.playCue(kind);
+      if (root.dataset.guidedFinished !== 'true') audio.playCue(kind);
     }
 
     settings.onChange((next) => {
@@ -255,41 +270,46 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
 
     let stepIdx = 0;
     let remaining = stepCounts[0] ?? 5;
-
+    let alternative = false;
+    const back = root.querySelector<HTMLButtonElement>('[data-grounding-back]')!;
+    const skip = root.querySelector<HTMLButtonElement>('[data-grounding-skip]')!;
+    const alternate = root.querySelector<HTMLButtonElement>('[data-grounding-alternative]')!;
     function render() {
-      if (stepIdx >= stepPrompts.length) {
-        promptEl.textContent = doneText;
-        countEl.textContent = '✓';
-        tapBtn.textContent = doneLabel;
-        tapBtn.disabled = true;
-        void cue('complete');
-        return;
-      }
-      promptEl.textContent = stepPrompts[stepIdx];
-      countEl.textContent = String(remaining);
-      tapBtn.textContent = tapLabel;
+      const completed = stepIdx >= stepPrompts.length;
+      promptEl.textContent = completed ? doneText : (alternative ? i18n.alternatives[stepIdx] : stepPrompts[stepIdx]);
+      countEl.textContent = completed ? '—' : String(remaining);
+      tapBtn.textContent = completed ? doneLabel : tapLabel;
       tapBtn.disabled = false;
+      back.disabled = stepIdx === 0;
+      skip.hidden = completed;
+      alternate.hidden = completed;
+      alternate.setAttribute('aria-pressed', String(alternative));
     }
-
+    function advance() {
+      stepIdx += 1;
+      remaining = stepCounts[stepIdx] ?? 0;
+      alternative = false;
+      render();
+      promptEl.tabIndex = -1;
+      promptEl.focus();
+    }
     function tap() {
+      if (stepIdx >= stepPrompts.length) { finishActivity(); return; }
       void cue('tick');
       remaining -= 1;
-      if (remaining <= 0) {
-        stepIdx += 1;
-        if (stepIdx < stepCounts.length) {
-          remaining = stepCounts[stepIdx];
-          void cue('advance');
-        }
-      }
-      render();
+      if (remaining <= 0) advance();
+      else render();
     }
-
+    back.addEventListener('click', () => {
+      stepIdx = Math.max(0, stepIdx - 1); remaining = stepCounts[stepIdx]; alternative = false;
+      render(); promptEl.tabIndex = -1; promptEl.focus();
+    });
+    skip.addEventListener('click', advance);
+    alternate.addEventListener('click', () => { alternative = !alternative; render(); });
     function reset() {
-      stepIdx = 0;
-      remaining = stepCounts[0] ?? 5;
-      render();
+      suspendAudio(); stepIdx = 0; remaining = stepCounts[0] ?? 5; alternative = false;
+      render(); promptEl.tabIndex = -1; promptEl.focus();
     }
-
     tapBtn.addEventListener('click', tap);
     resetBtn.addEventListener('click', reset);
     render();

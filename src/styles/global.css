@@ -53,7 +53,7 @@
   --color-paper-2: #efeadd;
   --color-card: #fdf9ee;
   --color-card-border: #ded2b6;
-  --color-copper: #a55a2b;
+  --color-copper: #984f25;
   --color-copper-2: #c87a4a;
   --color-deep-forest: #2d4a32;
   --color-deep-forest-2: #1f3523;
@@ -406,3 +406,33 @@ details summary:focus-visible {
     min-width: 120px;
   }
 }
+
+/* Activity controls remain reachable even while the settings panel scrolls. */
+.session-controls {
+  position: fixed; inset: auto 0 0; z-index: 80;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem;
+  padding: .65rem .75rem calc(.65rem + env(safe-area-inset-bottom));
+  background: #0a1f0a; color: #e8f5e9; border-top: 1px solid #81c784;
+}
+[hidden] { display: none !important; }
+.session-controls button { min-height: 44px; padding: .5rem .85rem; border: 1px solid #81c784; border-radius: .5rem; font-weight: 600; }
+.session-controls [data-session-stop] { background: #fef3c7; color: #0a1f0a; border: 2px solid #fbbf24; }
+.session-controls [data-session-start] { background: #ffc107; color: #0a1f0a; }
+.has-session-controls { padding-bottom: var(--session-height, 100px); }
+.has-session-controls #back-to-top { bottom: 110px; }
+body[data-client-view="true"] { background: #0a1f0a; }
+body[data-client-view="true"] > header,
+body[data-client-view="true"] > footer,
+body[data-client-view="true"] [data-guide-chrome],
+body[data-client-view="true"] #back-to-top { display: none !important; }
+body[data-client-view="true"] .tool-shell { min-height: calc(100dvh - 100px); padding-block: 1rem; }
+body[data-client-view="true"] [data-activity-widget] { margin-bottom: 0; }
+[data-activity-widget]:focus { outline: none; }
+:focus-visible { outline: 3px solid var(--color-copper); outline-offset: 3px; }
+.dark-zone :focus-visible, .session-controls :focus-visible { outline-color: #ffd54f; }
+.phase-shell > *, .rail-step, .rail-step a, .rail-step a > * { min-width: 0; overflow-wrap: anywhere; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0s !important; animation-duration: 0s !important; }
+}
+
+.print-page .flex > *, .print-container .flex > * { min-width: 0; overflow-wrap: anywhere; }

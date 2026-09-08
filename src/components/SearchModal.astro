@@ -2,6 +2,7 @@
 // SearchModal.astro — Site-wide search overlay
 // Opens via Cmd/Ctrl+K or the search button in Header
 // Client-side filtering against a page index with locale-appropriate URLs
+import { activityContent } from '../lib/activity-content';
 import { getCollection } from 'astro:content';
 import { getLangFromUrl, useTranslations, useTranslatedPath, type Lang } from '../i18n';
 
@@ -16,9 +17,9 @@ const translatePath = useTranslatedPath(lang);
 
 const tools = await getCollection('tools', (tool) => tool.data.locale === lang);
 const toolPages = tools.map((tool) => ({
-  title: tool.data.name,
+  title: activityContent(tool.slug.replace(/es$/, ''), lang)?.name ?? tool.data.name,
   url: translatePath(`/tools/${tool.slug.replace(/es$/, '')}`),
-  description: tool.data.shortDescription,
+  description: `${tool.data.name}: ${tool.data.shortDescription}`,
   section: t('search.sectionTools'),
 }));
 
@@ -46,215 +47,63 @@ const pages = [
   { title: t('search.page.familyResources'), url: translatePath('/families/resources'), description: t('search.page.familyResourcesDesc'), section: t('search.sectionFamilies') },
 ];
 
-const placeholderText = t('search.placeholder');
-const noResultsText = t('search.noResults');
-const hintText = t('search.hint');
-const sectionClinicians = t('search.sectionClinicians');
-const sectionFamilies = t('search.sectionFamilies');
+
+const es = lang === 'es';
+const handouts = [
+  ['intake-form', 'Intake form and history', 'Evaluación inicial e historia clínica', 'intake assessment history form worksheet evaluation inicial formulario historia'],
+  ...[2,3,4,5,6,7,8].map(n => [`phase-${n}-scripts`, `Phase ${n} ${['', '', 'preparation', 'assessment', 'desensitization', 'installation', 'body scan', 'closure', 'reevaluation'][n]} scripts`, `Guiones de la fase ${n}: ${['', '', 'preparación', 'evaluación', 'desensibilización', 'instalación', 'escaneo corporal', 'cierre', 'reevaluación'][n]}`, 'script handout worksheet print guion imprimir hoja']),
+  ['phase-2-resource-breathing', 'Breathing preparation script', 'Guion de respiración', 'breath breathe respirar respiracion preparation script'],
+  ['phase-2-resource-container', 'Container preparation script', 'Guion del contenedor', 'worries container preocupacion contenedor preparation script'],
+  ['phase-2-resource-lightstream', 'Lightstream preparation script', 'Guion del haz de luz', 'lightstream light luz preparation script'],
+  ['phase-2-resource-safe-place', 'Calm place preparation script', 'Guion del lugar tranquilo', 'safe calm safeplace lugar tranquilo seguro preparation script'],
+];
+const toolKeywords: Record<string, string> = {
+  breath: 'breathing breathe anxious anxiety nervous stress respirar respiracion nervios ansiedad',
+  grounding: 'panic overwhelmed here now senses calm panico abrumado sentidos anclaje presente',
+  'feeling-wheel': 'feel feeling emotions name sad angry emocion emociones sentimiento tristeza enojo',
+  'safe-place': 'imagine calm place safe tranquilo imaginar lugar seguro',
+  container: 'worry worries pause set aside preocupaciones pausa contenedor',
+  sandtray: 'play scene build create figures juego escena construir crear figuras',
+  sud: 'distress scale rating upset malestar escala intensidad',
+};
+const resources = await getCollection('resources', resource => resource.data.locale === lang);
+const resourcePages = resources.map(resource => ({ title: resource.data.title, description: resource.body.slice(0, 200), keywords: `${resource.data.author} ${resource.data.tags.join(' ')}`, section: lang === 'es' ? 'Biblioteca' : 'Library', url: translatePath(`/${resource.data.audience === 'family' ? 'families' : 'clinicians'}/resources`) + `#res-${resource.slug}` }));
+const searchIndex = [
+  ...pages.map(page => ({ ...page, keywords: toolKeywords[page.url.split('/').pop() ?? ''] ?? '' })),
+  ...handouts.map(([route, en, esTitle, keywords]) => ({ title: es ? esTitle : en, description: es ? 'Material clínico imprimible para profesionales con formación.' : 'Printable clinical reference for trained professionals.', url: translatePath(`/clinicians/emdr/${route}`), section: t('search.sectionClinicians'), keywords })),
+  ...resourcePages,
+];
 ---
-
-<div id="search-modal" class="fixed inset-0 z-[100] hidden" role="dialog" aria-modal="true" aria-label={t('nav.searchSite')}>
-  <!-- Backdrop -->
-  <div id="search-backdrop" class="absolute inset-0 bg-forest-900/80 backdrop-blur-sm"></div>
-
-  <!-- Modal -->
-  <div class="relative flex justify-center px-4 pt-[15vh]">
-    <div class="w-full max-w-lg bg-cream border border-linen rounded-xl shadow-2xl overflow-hidden">
-      <!-- Search input -->
-      <div class="flex items-center gap-3 px-4 border-b border-linen">
-        <svg class="w-5 h-5 text-forest-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-        <input
-          id="search-input"
-          type="text"
-          placeholder={placeholderText}
-          autocomplete="off"
-          class="flex-1 bg-sand py-3.5 text-charcoal placeholder:text-forest-400 text-sm outline-none rounded px-2"
-        />
-        <kbd class="hidden sm:inline-flex items-center px-1.5 py-0.5 text-[10px] font-mono text-forest-500 bg-sand border border-linen rounded">ESC</kbd>
-      </div>
-
-      <!-- Results -->
-      <ul id="search-results" class="max-h-[360px] overflow-y-auto py-2">
-        <!-- Populated by JS -->
-      </ul>
-
-      <!-- Empty state -->
-      <div id="search-empty" class="hidden px-4 py-8 text-center text-forest-500 text-sm">
-        {noResultsText}
-      </div>
-
-      <!-- Initial hint -->
-      <div id="search-hint" class="px-4 py-8 text-center text-forest-500 text-sm">
-        {hintText}
-      </div>
+<dialog id="search-modal" aria-labelledby="search-title" data-pages={JSON.stringify(searchIndex)}>
+  <div class="search-panel">
+    <div class="search-heading">
+      <h2 id="search-title">{t('nav.searchSite')}</h2>
+      <button type="button" data-search-close aria-label={es ? 'Cerrar búsqueda' : 'Close search'}>{es ? 'Cerrar' : 'Close'} ×</button>
     </div>
+    <label for="search-input">{es ? 'Busca actividades, guías o materiales' : 'Find activities, guides or handouts'}</label>
+    <input id="search-input" type="search" placeholder={t('search.placeholder')} autocomplete="off" />
+    <p id="search-status" role="status" aria-live="polite"></p>
+    <ul id="search-results"></ul>
+    <a class="search-browse" href={translatePath('/tools')}>{es ? 'Explorar todas las actividades' : 'Browse all activities'}</a>
   </div>
-</div>
-
-<script define:vars={{ pages, sectionClinicians, sectionFamilies }}>
-  const PAGES = pages;
-  const MAX_RESULTS = 8;
-
-  const modal = document.getElementById('search-modal');
-  const backdrop = document.getElementById('search-backdrop');
-  const input = document.getElementById('search-input');
-  const resultsList = document.getElementById('search-results');
-  const emptyState = document.getElementById('search-empty');
-  const hintState = document.getElementById('search-hint');
-
-  let activeIndex = -1;
-  let currentResults = [];
-  let lastFocused = null;
-
-  function openSearch() {
-    lastFocused = document.activeElement;
-    modal.classList.remove('hidden');
-    input.value = '';
-    activeIndex = -1;
-    currentResults = [];
-    resultsList.innerHTML = '';
-    emptyState.classList.add('hidden');
-    hintState.classList.remove('hidden');
-    requestAnimationFrame(() => input.focus());
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeSearch() {
-    modal.classList.add('hidden');
-    document.body.style.overflow = '';
-    if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
-  }
-
-  modal.addEventListener('keydown', (e) => {
-    if (e.key !== 'Tab') return;
-    const focusables = modal.querySelectorAll('input, a[href]');
-    if (!focusables.length) return;
-    const first = focusables[0];
-    const last = focusables[focusables.length - 1];
-    if (e.shiftKey && document.activeElement === first) {
-      e.preventDefault();
-      last.focus();
-    } else if (!e.shiftKey && document.activeElement === last) {
-      e.preventDefault();
-      first.focus();
-    }
-  });
-
-  function sectionColor(section) {
-    if (section === sectionClinicians) return 'bg-forest-50 text-bronze-600';
-    if (section === sectionFamilies) return 'bg-amber-50 text-amber-700';
-    return 'bg-sand text-forest-600';
-  }
-
-  function renderResults(results) {
-    currentResults = results;
-    activeIndex = -1;
-
-    if (input.value.trim() === '') {
-      resultsList.innerHTML = '';
-      emptyState.classList.add('hidden');
-      hintState.classList.remove('hidden');
-      return;
-    }
-
-    hintState.classList.add('hidden');
-
-    if (results.length === 0) {
-      resultsList.innerHTML = '';
-      emptyState.classList.remove('hidden');
-      return;
-    }
-
-    emptyState.classList.add('hidden');
-    resultsList.innerHTML = results.map((page, i) => `
-      <li>
-        <a
-          href="${page.url}"
-          class="search-result flex items-start gap-3 px-4 py-2.5 transition-colors hover:bg-sand cursor-pointer"
-          data-index="${i}"
-        >
-          <div class="flex-1 min-w-0">
-            <div class="text-sm font-medium text-forest-900 truncate">${highlight(page.title, input.value)}</div>
-            <div class="text-xs text-forest-500 truncate mt-0.5">${highlight(page.description, input.value)}</div>
-          </div>
-          <span class="shrink-0 text-[10px] font-medium px-2 py-0.5 rounded-full ${sectionColor(page.section)}">${page.section}</span>
-        </a>
-      </li>
-    `).join('');
-  }
-
-  function highlight(text, query) {
-    if (!query.trim()) return text;
-    const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const re = new RegExp(`(${escaped})`, 'gi');
-    return text.replace(re, '<mark class="bg-bronze-200/40 text-bronze-700 rounded px-0.5">$1</mark>');
-  }
-
-  function setActive(index) {
-    const items = resultsList.querySelectorAll('.search-result');
-    items.forEach((el, i) => {
-      if (i === index) {
-        el.classList.add('bg-sand', 'border-l-2', 'border-bronze-600');
-        el.scrollIntoView({ block: 'nearest' });
-      } else {
-        el.classList.remove('bg-sand', 'border-l-2', 'border-bronze-600');
-      }
-    });
-    activeIndex = index;
-  }
-
-  function search(query) {
-    const q = query.toLowerCase().trim();
-    if (!q) {
-      renderResults([]);
-      return;
-    }
-    const results = PAGES.filter(page =>
-      page.title.toLowerCase().includes(q) ||
-      page.description.toLowerCase().includes(q) ||
-      page.section.toLowerCase().includes(q)
-    ).slice(0, MAX_RESULTS);
-    renderResults(results);
-  }
-
-  input.addEventListener('input', () => search(input.value));
-
-  input.addEventListener('keydown', (e) => {
-    const count = currentResults.length;
-
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      if (count > 0) setActive((activeIndex + 1) % count);
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      if (count > 0) setActive(activeIndex <= 0 ? count - 1 : activeIndex - 1);
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      if (activeIndex >= 0 && currentResults[activeIndex]) {
-        window.location.href = currentResults[activeIndex].url;
-      }
-    } else if (e.key === 'Escape') {
-      closeSearch();
-    }
-  });
-
-  backdrop.addEventListener('click', closeSearch);
-
-  document.addEventListener('keydown', (e) => {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-      e.preventDefault();
-      if (modal.classList.contains('hidden')) {
-        openSearch();
-      } else {
-        closeSearch();
-      }
-    }
-    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
-      closeSearch();
-    }
-  });
-
-  window.__openSearch = openSearch;
+</dialog>
+<script>
+  import '../scripts/search-dialog';
 </script>
+<style is:global>
+  #search-modal { width: min(640px, calc(100% - 24px)); max-height: calc(100dvh - 32px); margin: 16px auto; border: 1px solid #ded2b6; border-radius: 16px; background: #fdfaf5; color: #2a2a1e; padding: 0; }
+  #search-modal::backdrop { background: rgb(10 31 10 / .8); }
+  .search-panel { padding: 20px; }
+  .search-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+  .search-heading button { min-height: 44px; padding: 8px 12px; border: 1px solid #6b6455; border-radius: 8px; }
+  #search-modal label { display: block; font-size: 14px; margin-bottom: 6px; }
+  #search-input { width: 100%; min-width: 0; font-size: 16px; padding: 12px; border: 1px solid #6b6455; border-radius: 8px; background: white; color: #2a2a1e; }
+  #search-input::placeholder { color: #6b6455; }
+  #search-status { font-size: 13px; margin: 12px 0; color: #4f4a3d; }
+  #search-results { list-style: none; padding: 0; }
+  .search-result { display: flex; flex-direction: column; padding: 12px 8px; border-top: 1px solid #ded2b6; text-decoration: none; color: #2a2a1e; }
+  .search-result:hover, .search-result:focus { background: #efeadd; }
+  .search-result span { font-size: 14px; color: #4f4a3d; }
+  .search-result small { margin-top: 4px; color: #6b6455; }
+  .search-browse { display: inline-block; padding-block: 12px; color: #1f3523; text-decoration: underline; }
+</style>

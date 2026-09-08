@@ -12,9 +12,10 @@ const smsBody = lang === 'es' ? 'HOLA' : 'HELLO';
 
 <div class="help-page">
   <section class="help-hero">
-    <p class="help-kicker">988 · 741741 · 911</p>
+    <p class="help-kicker">{lang === 'es' ? 'Servicios en Estados Unidos' : 'United States services'} · 988 · 911</p>
     <h1 class="help-h1">{t('help.title')}</h1>
     <p class="help-lede">{t('help.lede')}</p>
+    <p class="mt-3 text-sm">{t('help.smallPrint')}</p>
   </section>
 
   <section class="help-imminent" aria-labelledby="imminent-h">
@@ -26,7 +27,7 @@ const smsBody = lang === 'es' ? 'HOLA' : 'HELLO';
     </a>
   </section>
 
-  <section class="help-grid" aria-label="Crisis lines">
+  <section class="help-grid" aria-label={lang === 'es' ? 'Líneas de ayuda en crisis' : 'Crisis lines'}>
     <article class="help-card">
       <h3>{t('help.section988Title')}</h3>
       <p>{t('help.section988Body')}</p>

@@ -58,17 +58,17 @@ function isParentActive(item: NavItem): boolean {
 
 <header class="bg-forest-900 backdrop-blur-sm border-b border-forest-700 sticky top-0 z-50 no-print">
   <div class="h-[1px] bg-bronze-500"></div>
-  <nav class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex justify-between items-center h-16 gap-4">
+  <nav class="max-w-6xl mx-auto px-2 sm:px-6 lg:px-8">
+    <div class="flex justify-between items-center h-16 gap-2">
       <a href={translatePath('/')} class="group flex items-center gap-2 font-serif text-xl font-semibold transition-colors flex-shrink-0">
         <img src="/logo.png" alt="" class="w-9 h-9 rounded-full" />
-        <span class="sr-only sm:hidden">Trauma Therapy Guide</span>
-        <span class="text-bronze-gradient hidden sm:inline">Trauma Therapy Guide</span>
+        <span class="sr-only lg:hidden">Trauma Therapy Guide</span>
+        <span class="text-bronze-gradient hidden lg:inline">Trauma Therapy Guide</span>
       </a>
 
       <button
         type="button"
-        class="md:hidden p-2 rounded-md text-forest-100 hover:bg-forest-700 transition-colors"
+        class="xl:hidden p-2 rounded-md text-forest-100 hover:bg-forest-700 transition-colors"
         aria-label={t('nav.toggleMenu')}
         aria-expanded="false"
         aria-controls="mobile-menu"
@@ -79,7 +79,7 @@ function isParentActive(item: NavItem): boolean {
         </svg>
       </button>
 
-      <ul class="hidden md:flex items-center gap-6 lg:gap-8 flex-shrink-0">
+      <ul class="hidden xl:flex items-center gap-4 flex-shrink-0">
         {navItems.map((item) => (
           item.submenu ? (
             <li class="relative" data-dropdown>
@@ -91,8 +91,7 @@ function isParentActive(item: NavItem): boolean {
                     ? 'text-bronze-400'
                     : 'text-forest-100 hover:text-bronze-400'
                 ]}
-                aria-haspopup="true"
-                aria-expanded="false"
+                        aria-expanded="false"
                 data-dropdown-trigger
               >
                 {item.label}
@@ -102,13 +101,11 @@ function isParentActive(item: NavItem): boolean {
               </button>
               <div
                 class="hidden absolute top-full left-0 mt-2 w-56 bg-forest-800 border border-forest-700 rounded-lg shadow-2xl py-1 z-50"
-                role="menu"
                 data-dropdown-menu
               >
                 {item.submenu.map((sub) => (
                   <a
                     href={sub.href}
-                    role="menuitem"
                     class:list={[
                       'block px-4 py-2 text-sm transition-colors',
                       currentPath.startsWith(sub.href) && sub.href !== item.href
@@ -141,11 +138,12 @@ function isParentActive(item: NavItem): boolean {
         ))}
       </ul>
 
-      <div class="hidden md:flex items-center gap-3 flex-shrink min-w-0">
+      <div class="flex items-center gap-1 sm:gap-2 flex-shrink-0">
+        <a href={translatePath('/tools')} class="text-xs sm:text-sm text-forest-100 px-1 py-3">{lang === 'es' ? 'Actividades' : 'Activities'}</a>
         <button
           type="button"
           id="search-trigger"
-          class="hidden xl:flex w-56 items-center gap-2 px-3 py-1.5 rounded-md bg-forest-800 border border-forest-700 text-forest-300 hover:text-forest-100 hover:border-forest-600 transition-colors"
+          class="hidden 2xl:flex w-40 items-center gap-2 px-3 py-1.5 rounded-md bg-forest-800 border border-forest-700 text-forest-300 hover:text-forest-100 hover:border-forest-600 transition-colors"
           aria-label={t('nav.searchSite')}
         >
           <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -158,7 +156,7 @@ function isParentActive(item: NavItem): boolean {
         <button
           type="button"
           id="search-trigger-icon"
-          class="xl:hidden flex items-center justify-center w-9 h-9 rounded-md text-forest-300 hover:text-forest-100 hover:bg-forest-800 transition-colors flex-shrink-0"
+          class="2xl:hidden flex items-center justify-center w-11 h-11 rounded-md text-forest-300 hover:text-forest-100 hover:bg-forest-800 transition-colors flex-shrink-0"
           aria-label={t('nav.searchSite')}
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -179,12 +177,12 @@ function isParentActive(item: NavItem): boolean {
           class="text-sm text-forest-200 hover:text-forest-100 underline-offset-4 hover:underline flex-shrink-0 whitespace-nowrap"
           aria-label={t('nav.crisisLinkLabel')}
         >
-          {t('nav.crisisLink')}
+          {lang === 'es' ? 'Ayuda' : 'Help'}
         </a>
       </div>
     </div>
 
-    <ul class="hidden md:hidden pb-4 space-y-1 bg-forest-800 rounded-b-lg -mx-4 px-4" id="mobile-menu">
+    <ul class="hidden xl:hidden pb-4 space-y-1 bg-forest-800 rounded-b-lg -mx-4 px-4" id="mobile-menu">
       {navItems.map((item) => (
         item.submenu ? (
           <li>
@@ -320,6 +318,11 @@ function isParentActive(item: NavItem): boolean {
   });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
+      if (mobileBtn?.getAttribute('aria-expanded') === 'true') {
+        mobileMenu?.classList.add('hidden');
+        mobileBtn.setAttribute('aria-expanded', 'false');
+        mobileBtn.focus();
+      }
       const openTrigger = dropdowns
         .map((d) => d.querySelector<HTMLElement>('[data-dropdown-trigger][aria-expanded="true"]'))
         .find(Boolean);

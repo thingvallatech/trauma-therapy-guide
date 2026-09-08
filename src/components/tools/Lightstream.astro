@@ -15,8 +15,8 @@ const containerClass = fullscreen
 
 const t = {
   en: {
-    heading: 'Pick a healing color',
-    instructions: 'Choose the color that feels most soothing to you right now. There is no wrong answer.',
+    heading: 'Pick a color for this exercise',
+    instructions: 'Choose a color you want to try. Imagining is optional; you can look at the color instead. Skip any body area or finish whenever you want.',
     nextText: 'Next',
     finishText: 'Finish',
     doneHeading: 'The light is with you.',
@@ -24,19 +24,19 @@ const t = {
     doItAgain: 'Do it again',
     colorLabels: ['Gold', 'Blue', 'Green', 'White', 'Pink', 'Violet'],
     bodyAreaLabels: [
-      'Let the color begin at the top of your head. Notice where it feels warm and soft.',
-      'Let it flow down into your face and jaw. Soften anything tight.',
-      'Into your neck and shoulders. Let them drop a little.',
+      'Let the color begin at the top of your head. Notice what you experience, if anything.',
+      'Let it flow down into your face and jaw. Notice any sensation without needing to change it.',
+      'Into your neck and shoulders. Notice how they feel.',
       'Into your chest. Notice your breath under the color.',
-      'Into your belly. Let it warm the center of you.',
+      'Into your belly. Notice any sensation, or skip this area.',
       'Into your hips and low back.',
       'Down through your legs.',
       'All the way to your feet. Let it pool there.',
     ],
   },
   es: {
-    heading: 'Elige un color sanador',
-    instructions: 'Elige el color que se sienta más calmante para ti ahora. No hay respuesta incorrecta.',
+    heading: 'Elige un color para este ejercicio',
+    instructions: 'Elige un color que quieras probar. Imaginar es opcional; puedes mirar el color. Omite cualquier zona del cuerpo o termina cuando quieras.',
     nextText: 'Siguiente',
     finishText: 'Terminar',
     doneHeading: 'La luz está contigo.',
@@ -44,11 +44,11 @@ const t = {
     doItAgain: 'Hazlo de nuevo',
     colorLabels: ['Oro', 'Azul', 'Verde', 'Blanco', 'Rosa', 'Violeta'],
     bodyAreaLabels: [
-      'Deja que el color comience en la parte superior de tu cabeza. Nota dónde se siente cálido y suave.',
-      'Deja que fluya hacia tu cara y mandíbula. Suaviza cualquier tensión.',
-      'Hacia tu cuello y hombros. Déjalos caer un poco.',
+      'Deja que el color comience en la parte superior de tu cabeza. Nota lo que percibas, si percibes algo.',
+      'Deja que fluya hacia tu cara y mandíbula. Nota las sensaciones sin tener que cambiarlas.',
+      'Hacia tu cuello y hombros. Nota cómo se sienten.',
       'Hacia tu pecho. Nota tu respiración bajo el color.',
-      'Hacia tu vientre. Deja que caliente tu centro.',
+      'Hacia tu vientre. Nota alguna sensación u omite esta zona.',
       'Hacia tus caderas y espalda baja.',
       'Hacia abajo por tus piernas.',
       'Hasta tus pies. Deja que se acumule ahí.',
@@ -88,15 +88,17 @@ const colors = [
   )}
 
   <div class="w-full max-w-md">
-    <ToolSettings componentName="Lightstream" lang={lang} startOpen={!fullscreen} />
+    <ToolSettings componentName="Lightstream" lang={lang} startOpen={false} />
   </div>
 
+  <div data-guided-content class="w-full">
   <div data-step="color" data-step-active class="w-full">
     <h2 class="font-serif text-xl text-forest-100 mb-3">{s.heading}</h2>
     <p class="text-forest-300 text-sm mb-4">{s.instructions}</p>
     <div class="grid grid-cols-3 sm:grid-cols-6 gap-3">
       {colors.map((c, i) => (
         <button
+          aria-pressed="false"
           data-pick-color={c.hex}
           data-color-label={s.colorLabels[i]}
           class="aspect-square rounded-full border-2 border-forest-600 hover:border-white transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
@@ -133,6 +135,12 @@ const colors = [
       </svg>
     </div>
     <p data-flow-script aria-live="polite" class="text-forest-100 text-center text-lg mb-6 min-h-[4em]"></p>
+    <div class="flex flex-wrap gap-3 justify-center mb-3">
+      <button data-flow-back class="min-h-11 px-4 py-2 rounded-md border border-forest-400 text-forest-100">{lang === 'es' ? 'Atrás' : 'Back'}</button>
+      <button data-flow-skip class="min-h-11 px-4 py-2 rounded-md border border-forest-400 text-forest-100">{lang === 'es' ? 'Omitir esta zona' : 'Skip this area'}</button>
+      <button data-flow-alternative aria-pressed="false" class="min-h-11 px-4 py-2 rounded-md border border-forest-400 text-forest-100">{lang === 'es' ? 'Mirar la habitación' : 'Look around the room'}</button>
+      <button data-change-color class="min-h-11 px-4 py-2 underline text-forest-200">{lang === 'es' ? 'Cambiar color' : 'Change color'}</button>
+    </div>
     <button
       data-flow-next
       class="px-6 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
@@ -146,9 +154,11 @@ const colors = [
     <p class="text-forest-300 mb-6">{s.doneBody}</p>
     <button data-restart class="px-4 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.doItAgain}</button>
   </div>
+  </div>
 </div>
 
 <script>
+  import { mountGuidedFinish, focusActivityPanel, setPressedChoice } from '../../scripts/guided-activity';
   import { onReducedMotion } from '../../scripts/motion-pref';
   import { createSettingsController } from '../../scripts/tool-settings-controller';
   import { DEFAULT_VISUAL_OPTIONS } from '../../scripts/visual-engine';
@@ -234,11 +244,13 @@ const colors = [
     // triggered by a click, so only "is there a context worth suspending"
     // needs tracking, not a timebase.
     let audioLive = false;
+    mountGuidedFinish(root, suspendAudio);
 
     async function startAudio(): Promise<void> {
       try {
         await audio.ensureStarted();
         audioLive = true;
+        if (root.dataset.guidedFinished === 'true') audio.suspend();
       } catch {
         // Autoplay policy or an unavailable AudioContext; the visualization
         // still runs, just silently.
@@ -260,20 +272,24 @@ const colors = [
     });
 
     let idx = 0;
+    let useAlternative = false;
 
     function showStep(n: string) {
       Object.values(steps).forEach((el) => el.classList.add('hidden'));
       steps[n].classList.remove('hidden');
+      focusActivityPanel(steps[n]);
     }
 
     function renderFlow() {
       if (idx >= bodyAreas.length) {
-        if (prefs.soundOn && prefs.endCue) audio.playCue('complete');
+        suspendAudio();
         showStep('done');
         return;
       }
       const area = bodyAreas[idx];
-      scriptEl.textContent = area.label;
+      scriptEl.textContent = useAlternative ? (document.documentElement.lang === 'es' ? 'Mira la habitación y nota un color, una forma o un objeto. No necesitas centrarte en el cuerpo.' : 'Look around and notice a color, shape, or object. You do not need to focus on your body.') : area.label;
+      scriptEl.tabIndex = -1;
+      scriptEl.focus();
       blob.setAttribute('cy', String(area.cy));
       nextBtn.textContent = idx === bodyAreas.length - 1 ? i18n.finish : i18n.next;
       if (prefs.soundOn) audio.playCue('tick');
@@ -282,8 +298,9 @@ const colors = [
     root.querySelectorAll<HTMLButtonElement>('[data-pick-color]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const hex = btn.getAttribute('data-pick-color')!;
+        setPressedChoice(root, '[data-pick-color]', btn);
         blob.setAttribute('fill', hex);
-        idx = 0;
+        // Editing the color preserves the current body area; only Restart resets progress.
         // Picking a color is the user gesture that starts the session, same
         // as pressing Start elsewhere — the context may not exist yet even
         // if sound was already on from a stored preference.
@@ -293,13 +310,19 @@ const colors = [
       });
     });
 
+    root.querySelector('[data-flow-back]')?.addEventListener('click', () => { if (idx === 0) { suspendAudio(); showStep('color'); } else { idx -= 1; renderFlow(); } });
+    root.querySelector('[data-flow-skip]')?.addEventListener('click', () => { idx += 1; renderFlow(); });
+    root.querySelector('[data-change-color]')?.addEventListener('click', () => { suspendAudio(); showStep('color'); });
+    root.querySelector<HTMLButtonElement>('[data-flow-alternative]')?.addEventListener('click', (event) => { useAlternative = !useAlternative; (event.currentTarget as HTMLButtonElement).setAttribute('aria-pressed', String(useAlternative)); renderFlow(); });
     nextBtn.addEventListener('click', () => {
       idx += 1;
       renderFlow();
     });
 
     root.querySelector<HTMLButtonElement>('[data-restart]')!.addEventListener('click', () => {
-      idx = 0;
+      idx = 0; useAlternative = false;
+      root.querySelector('[data-flow-alternative]')?.setAttribute('aria-pressed', 'false');
+      setPressedChoice(root, '[data-pick-color]', null);
       showStep('color');
       // Returning to the color picker is a session boundary, same as Stop
       // elsewhere — silence rather than leaving the ambient bed running

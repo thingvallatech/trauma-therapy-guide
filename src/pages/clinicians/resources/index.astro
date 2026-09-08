@@ -99,6 +99,7 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
           const description = resource.body || '';
           return (
             <ResourceCard
+              id={`res-${resource.slug}`}
               title={resource.data.title}
               type={resource.data.type}
               audience={resource.data.audience}

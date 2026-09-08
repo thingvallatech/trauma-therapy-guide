@@ -22,6 +22,12 @@ const t = {
     stepBack: 'Step back',
     returnToTray: 'Return to tray',
     saveImage: 'Save image',
+    undo: 'Undo',
+    loading: 'Loading figure…',
+    ready: 'Figure added. You can move it or choose another.',
+    failed: 'This figure could not load. Choose it again to retry, or try another figure.',
+    unavailable: 'The 3D scene could not start in this browser. Try reloading or choose another activity.',
+    undone: 'Last change undone.',
     levelSand: 'Level the sand',
     clearTray: 'Clear tray',
     confirmLevel: 'Level the sand?',
@@ -60,6 +66,12 @@ const t = {
     stepBack: 'Da un paso atrás',
     returnToTray: 'Volver a la bandeja',
     saveImage: 'Guardar imagen',
+    undo: 'Deshacer',
+    loading: 'Cargando figura…',
+    ready: 'Figura añadida. Puedes moverla o elegir otra.',
+    failed: 'No se pudo cargar esta figura. Vuelve a elegirla para reintentar o prueba otra.',
+    unavailable: 'La escena 3D no pudo iniciarse en este navegador. Recarga o elige otra actividad.',
+    undone: 'Se deshizo el último cambio.',
     levelSand: 'Aplanar la arena',
     clearTray: 'Limpiar bandeja',
     confirmLevel: '¿Aplanar la arena?',
@@ -114,8 +126,16 @@ const s = t[lang];
     </div>
   )}
 
-  <ToolSettings componentName="Sandtray" lang={lang} startOpen={!fullscreen} />
+  <ToolSettings componentName="Sandtray" lang={lang} startOpen={false} />
 
+  <p class="text-sm text-forest-100 mb-3">{lang === 'es' ? 'Elige una figura y toca la arena para colocarla. Tu escena permanece solo en esta página. Guarda una imagen antes de salir; la imagen no se puede volver a editar aquí.' : 'Choose a figure, then tap the sand to place it. Your scene stays only on this page. Save an image before leaving; the image cannot be reopened as an editable scene here.'}</p>
+  <p data-sandtray-status role="status" aria-live="polite" class="text-sm text-forest-100 mb-2"></p>
+  <div data-sandtray-error hidden class="p-4 border border-amber-500 rounded-lg text-amber-100 mb-4"><p>{s.unavailable}</p><button type="button" data-sandtray-reload class="underline min-h-11">{lang === 'es' ? 'Recargar página' : 'Reload page'}</button> · <a class="underline" href={lang === 'es' ? '/es/tools' : '/tools'}>{lang === 'es' ? 'Elegir otra actividad' : 'Choose another activity'}</a></div>
+  <dialog data-sandtray-leave aria-labelledby="sandtray-leave-title" class="m-auto max-w-md w-[calc(100%-2rem)] rounded-xl p-6 bg-cream text-forest-900 backdrop:bg-black/70">
+    <h2 id="sandtray-leave-title" class="text-xl mb-3">{lang === 'es' ? '¿Salir de esta escena?' : 'Leave this scene?'}</h2>
+    <p>{lang === 'es' ? 'La escena no se guarda al salir. Puedes quedarte o guardar una imagen antes de salir.' : 'The scene will not be saved when you leave. You can stay or save an image before leaving.'}</p>
+    <div class="flex flex-wrap gap-3 mt-5"><button type="button" data-sandtray-stay class="rounded-md border px-4 py-3">{lang === 'es' ? 'Quedarme' : 'Stay here'}</button><button type="button" data-sandtray-save-stay class="rounded-md border px-4 py-3">{s.saveImage}</button><button type="button" data-sandtray-leave-confirm class="rounded-md border px-4 py-3">{lang === 'es' ? 'Salir sin guardar' : 'Leave without saving'}</button></div>
+  </dialog>
   <div data-sandtray-frame class="relative w-full" style="
     padding: 18px;
     border-radius: 14px;
@@ -143,6 +163,7 @@ const s = t[lang];
     <div class="mt-3 flex flex-wrap gap-2 items-center">
       <button data-sandtray-mode class="px-3 py-1.5 rounded-md bg-forest-700 text-forest-100 text-sm font-medium hover:bg-forest-600 border border-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.digMode}</button>
       <button data-sandtray-witness class="px-3 py-1.5 rounded-md bg-forest-700 text-forest-100 text-sm font-medium hover:bg-forest-600 border border-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.stepBack}</button>
+      <button type="button" data-sandtray-undo disabled class="px-3 py-2 rounded-md bg-forest-700 text-forest-100 border border-forest-600 disabled:opacity-50">{s.undo}</button>
       <button data-sandtray-capture class="px-3 py-1.5 rounded-md bg-forest-700 text-forest-100 text-sm font-medium hover:bg-forest-600 border border-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.saveImage}</button>
       <button data-sandtray-level class="px-3 py-1.5 rounded-md bg-forest-700 text-forest-100 text-sm font-medium hover:bg-forest-600 border border-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.levelSand}</button>
       <button data-sandtray-clear class="px-3 py-1.5 rounded-md bg-forest-700 text-forest-100 text-sm font-medium hover:bg-forest-600 border border-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.clearTray}</button>
@@ -200,7 +221,8 @@ const s = t[lang];
 
   <!-- Palette -->
   <div class="mt-3 flex flex-col gap-2 p-3 bg-forest-800 rounded-lg border border-forest-600">
-    <input
+    <label for="sandtray-search" class="text-sm text-forest-100">{lang === 'es' ? 'Buscar figuras' : 'Find figures'}</label>
+    <input id="sandtray-search"
       data-sandtray-search
       type="search"
       placeholder={lang === 'es' ? 'Buscar figuras...' : 'Search figures...'}
@@ -210,7 +232,7 @@ const s = t[lang];
       data-sandtray-palette
       role="group"
       aria-label={s.paletteLabel}
-      class="overflow-y-auto max-h-40 sm:max-h-64"
+      class="overflow-y-auto max-h-72 sm:max-h-96"
     >
       {sandtrayCategories.map((cat) => {
         const figs = sandtrayFigures.filter((f) => f.category === cat.key);
@@ -231,6 +253,7 @@ const s = t[lang];
                   aria-label={f.alt[lang]}
                   aria-pressed="false"
                 >
+                  <img src={`/sandtray/thumbnails/${f.id}.png`} alt="" width="80" height="80" loading="lazy" class="w-20 h-20 object-contain bg-cream rounded mb-1" />
                   {f.alt[lang]}
                 </button>
               ))}
@@ -765,8 +788,19 @@ const s = t[lang];
     const canvas = root.querySelector<HTMLCanvasElement>('[data-sandtray-canvas]');
     if (!canvas) return;
     const i18n = JSON.parse(root.getAttribute('data-sandtray-i18n') || '{}');
-    const renderer = new SandRenderer(canvas);
-    renderer.resize();
+    const status = root.querySelector<HTMLElement>('[data-sandtray-status]')!;
+    root.querySelector('[data-sandtray-reload]')?.addEventListener('click', () => location.reload());
+    let renderer: SandRenderer;
+    try { renderer = new SandRenderer(canvas); renderer.resize(); }
+    catch (error) {
+      console.error('[sandtray] renderer unavailable', error);
+      root.querySelector<HTMLElement>('[data-sandtray-error]')!.hidden = false;
+      root.querySelectorAll<HTMLButtonElement>('button:not([data-sandtray-reload])').forEach(button => { button.disabled = true; });
+      return;
+    }
+    canvas.addEventListener('webglcontextlost', event => {
+      event.preventDefault(); root.querySelector<HTMLElement>('[data-sandtray-error]')!.hidden = false;
+    });
 
     let resizeTimer: number | null = null;
     window.addEventListener('resize', () => {
@@ -965,6 +999,7 @@ const s = t[lang];
         const figHit = findFigureAtPointer(e);
         if (figHit) {
           // Right-drag on a figure → rotate it around Y.
+          rememberTransform(figHit);
           rightDragFigure = figHit;
           selectedFigure = figHit; // mark as selected for Ctrl+scroll scaling
           rightDragFigureStartX = e.clientX;
@@ -985,15 +1020,19 @@ const s = t[lang];
       // Tap-to-place: if a palette figure is pending, place it and clear selection.
       if (pendingFigure) {
         const pf = pendingFigure;
+        status.textContent = i18n.loading;
+        const generation = sceneGeneration;
+        dirty = true;
         figureManager.place(pf.figureId, pf.modelPath, w.x, w.z, pf.scale)
-          .then((fig) => pushUndo({ type: 'place', instanceId: fig.instanceId }))
-          .catch((err) => console.error('[sandtray] place failed:', err));
+          .then((fig) => { if (generation !== sceneGeneration) { figureManager.remove(fig.instanceId); return; } pushUndo({ type: 'place', instanceId: fig.instanceId }); showToolbar(fig); status.textContent = i18n.ready; })
+          .catch((err) => { console.error('[sandtray] place failed:', err); status.textContent = i18n.failed; });
         setPendingFigure(null);
         return;
       }
       // Drag existing figure? Raycast against placed figures; if we hit one, start dragging it.
       const hit = findFigureAtPointer(e);
       if (hit) {
+        rememberTransform(hit);
         draggingFigure = hit;
         selectedFigure = hit; // mark as selected for Ctrl+scroll scaling
         canvas.setPointerCapture(e.pointerId);
@@ -1095,6 +1134,8 @@ const s = t[lang];
       if (hit) {
         pushUndo({
           type: 'remove',
+          group: hit.group,
+          instanceId: hit.instanceId,
           figureId: hit.figureId,
           modelPath: hit.group.userData.modelPath || '',
           x: hit.x,
@@ -1107,40 +1148,57 @@ const s = t[lang];
       }
     });
 
-    // Ctrl+Z / Cmd+Z → undo last action.
-    document.addEventListener('keydown', (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === 'z') {
-        e.preventDefault();
-        const action = undoStack.pop();
-        if (!action) return;
-        if (action.type === 'place') {
-          // Undo a placement → remove the figure.
-          figureManager.remove(action.instanceId);
-        } else if (action.type === 'remove') {
-          // Undo a removal → re-place the figure.
-          figureManager.place(action.figureId, action.modelPath, action.x, action.z, action.scale)
-            .then((fig) => {
-              fig.rotationY = action.rotationY;
-              fig.group.rotation.y = action.rotationY;
-            })
-            .catch(() => {});
-        } else if (action.type === 'carve' || action.type === 'level') {
-          // Undo a carve stroke or leveling → restore the height map snapshot.
-          renderer.heightData.set(action.snapshot);
-          renderer.heightTexture.needsUpdate = true;
-        } else if (action.type === 'clear') {
-          // Undo a full clear → restore the height map and re-place every figure.
-          renderer.heightData.set(action.snapshot);
-          renderer.heightTexture.needsUpdate = true;
-          for (const f of action.figures) {
-            figureManager.place(f.figureId, f.modelPath, f.x, f.z, f.scale)
-              .then((fig) => {
-                fig.rotationY = f.rotationY;
-                fig.group.rotation.y = f.rotationY;
-              })
-              .catch(() => {});
+    // The button and keyboard shortcut share one serialized undo path.
+    let sceneGeneration = 0;
+    let undoBusy = false;
+    async function undoLast(): Promise<void> {
+      if (undoBusy || !undoStack.length) return;
+      undoBusy = true;
+      sceneGeneration++;
+      const action = undoStack.pop()!;
+      updateUndo();
+      hideToolbar();
+      try {
+        if (action.type === 'place') figureManager.remove(action.instanceId);
+        else if (action.type === 'remove') await restoreFigure(action);
+        else if (action.type === 'tint') {
+          for (const snapshot of action.colors) {
+            const materials = Array.isArray(snapshot.mesh.material) ? snapshot.mesh.material : [snapshot.mesh.material];
+            materials.forEach((material, index) => { const color = (material as THREE.MeshStandardMaterial).color; if (color && snapshot.colors[index]) color.copy(snapshot.colors[index]!); });
           }
+        } else if (action.type === 'transform') {
+          const figure = figureManager.placed.find(item => item.instanceId === action.instanceId);
+          if (figure) {
+            Object.assign(figure, { x: action.x, z: action.z, scale: action.scale, rotationY: action.rotationY });
+            figure.group.position.set(action.x, renderer.sampleHeight(action.x, action.z), action.z);
+            figure.group.rotation.y = action.rotationY; figure.group.scale.setScalar(action.scale);
+          }
+        } else if (action.type === 'carve' || action.type === 'level') {
+          renderer.heightData.set(action.snapshot); renderer.heightTexture.needsUpdate = true;
+        } else if (action.type === 'clear') {
+          renderer.heightData.set(action.snapshot); renderer.heightTexture.needsUpdate = true;
+          for (const figure of action.figures) await restoreFigure(figure);
         }
+        status.textContent = i18n.undone;
+      } catch (error) {
+        console.error('[sandtray] undo failed', error);
+        undoStack.push(action); status.textContent = i18n.failed;
+      } finally { undoBusy = false; updateUndo(); }
+    }
+    async function restoreFigure(state: UndoFigureState): Promise<void> {
+      if (figureManager.placed.some(item => item.instanceId === state.instanceId)) return;
+      const figure: PlacedFigure = state.group ? { instanceId: state.instanceId, figureId: state.figureId, group: state.group, x: state.x, z: state.z, scale: state.scale, rotationY: state.rotationY } : await figureManager.place(state.figureId, state.modelPath, state.x, state.z, state.scale);
+      if (state.group) { renderer.scene.add(state.group); figureManager.placed.push(figure); }
+      figure.group.position.set(state.x, renderer.sampleHeight(state.x, state.z), state.z);
+      figure.group.scale.setScalar(state.scale);
+      figure.instanceId = state.instanceId;
+      figure.rotationY = state.rotationY; figure.group.rotation.y = state.rotationY;
+    }
+    root.querySelector('[data-sandtray-undo]')?.addEventListener('click', () => { void undoLast(); });
+    document.addEventListener('keydown', (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === 'z' && !event.shiftKey
+          && root.contains(event.target as Node) && !(event.target instanceof HTMLInputElement) && !(event.target instanceof HTMLTextAreaElement)) {
+        event.preventDefault(); void undoLast();
       }
     });
 
@@ -1153,6 +1211,7 @@ const s = t[lang];
     canvas.addEventListener('wheel', (e: WheelEvent) => {
       e.preventDefault();
       if ((e.ctrlKey || e.metaKey) && selectedFigure) {
+        rememberTransform(selectedFigure);
         // Scale the selected figure.
         const scaleSpeed = 0.01;
         const newScale = Math.max(0.2, Math.min(5.0, selectedFigure.scale - e.deltaY * scaleSpeed));
@@ -1173,19 +1232,28 @@ const s = t[lang];
     }, { passive: false });
 
     // ----- Undo stack -----
-    type UndoFigureState = { figureId: string; modelPath: string; x: number; z: number; rotationY: number; scale: number };
+    type UndoFigureState = { group?: THREE.Group; instanceId: string; figureId: string; modelPath: string; x: number; z: number; rotationY: number; scale: number };
     type UndoAction =
       | { type: 'place'; instanceId: string }
       | { type: 'remove' } & UndoFigureState
+      | { type: 'transform' } & UndoFigureState
+      | { type: 'tint'; group: THREE.Group; colors: Array<{ mesh: THREE.Mesh; colors: Array<THREE.Color | null> }> }
       | { type: 'carve'; snapshot: Float32Array }
       | { type: 'level'; snapshot: Float32Array }
       | { type: 'clear'; snapshot: Float32Array; figures: UndoFigureState[] };
     const undoStack: UndoAction[] = [];
     const MAX_UNDO = 30;
 
+    let dirty = false;
+    const undoButton = root.querySelector<HTMLButtonElement>('[data-sandtray-undo]')!;
+    function updateUndo(): void { undoButton.disabled = undoBusy || undoStack.length === 0; }
+    function rememberTransform(figure: PlacedFigure): void {
+      pushUndo({ type: 'transform', instanceId: figure.instanceId, figureId: figure.figureId, modelPath: figure.group.userData.modelPath || '', x: figure.x, z: figure.z, scale: figure.scale, rotationY: figure.rotationY });
+    }
     function pushUndo(action: UndoAction): void {
       undoStack.push(action);
       if (undoStack.length > MAX_UNDO) undoStack.shift();
+      dirty = true; root.dataset.sessionDirty = 'true'; updateUndo();
     }
 
     function snapshotHeightMap(): Float32Array {
@@ -1235,6 +1303,10 @@ const s = t[lang];
       });
     });
 
+    root.addEventListener('keydown', event => {
+      if (event.key !== 'Escape' || event.defaultPrevented || (event.target as Element).closest('dialog') || event.target instanceof HTMLInputElement) return;
+      if (pendingFigure || selectedFigure) { event.preventDefault(); event.stopPropagation(); setPendingFigure(null); hideToolbar(); }
+    });
     // ----- Witness mode -----
     const witnessBtn = root.querySelector<HTMLButtonElement>('[data-sandtray-witness]');
     witnessBtn?.addEventListener('click', () => {
@@ -1242,6 +1314,18 @@ const s = t[lang];
       witnessBtn.textContent = stepped ? i18n.returnToTray : i18n.stepBack;
     });
 
+    // Explicit navigation protects a scene; returning to the same-page guide keeps it.
+    const leaveDialog = root.querySelector<HTMLDialogElement>('[data-sandtray-leave]')!;
+    let destination = '';
+    root.querySelector('[data-sandtray-stay]')?.addEventListener('click', () => leaveDialog.close());
+    root.querySelector('[data-sandtray-save-stay]')?.addEventListener('click', () => root.querySelector<HTMLButtonElement>('[data-sandtray-capture]')?.click());
+    root.querySelector('[data-sandtray-leave-confirm]')?.addEventListener('click', () => { dirty = false; location.href = destination; });
+    document.addEventListener('click', event => {
+      const link = (event.target as Element).closest<HTMLAnchorElement>('a[href]');
+      if (!dirty || !link || link.target === '_blank' || event.ctrlKey || event.metaKey || event.shiftKey || link.origin !== location.origin || link.hash && link.pathname === location.pathname) return;
+      event.preventDefault(); destination = link.href; leaveDialog.showModal();
+    });
+    window.addEventListener('beforeunload', event => { if (dirty) { event.preventDefault(); event.returnValue = ''; } });
     // ----- Capture / level / clear -----
     root.querySelector<HTMLButtonElement>('[data-sandtray-capture]')?.addEventListener('click', () => {
       // Force one render so the back buffer is current before we read it.
@@ -1268,10 +1352,15 @@ const s = t[lang];
       i18n.clearTray,
       i18n.confirmClear,
       () => {
+        sceneGeneration++;
+        setPendingFigure(null);
+        status.textContent = '';
         pushUndo({
           type: 'clear',
           snapshot: snapshotHeightMap(),
           figures: figureManager.placed.map((f) => ({
+            group: f.group,
+            instanceId: f.instanceId,
             figureId: f.figureId,
             modelPath: f.group.userData.modelPath || '',
             x: f.x,
@@ -1281,6 +1370,7 @@ const s = t[lang];
           })),
         });
         figureManager.clearAll();
+        hideToolbar();
         renderer.level();
       },
     );
@@ -1292,6 +1382,7 @@ const s = t[lang];
         renderer.setSandColor(hex);
         // Highlight selected swatch.
         root.querySelectorAll<HTMLButtonElement>('[data-sand-color]').forEach((b) => {
+          b.setAttribute('aria-pressed', String(b === btn));
           b.classList.toggle('ring-bronze-500', b === btn);
           b.classList.toggle('ring-transparent', b !== btn);
         });
@@ -1304,6 +1395,7 @@ const s = t[lang];
         const hex = parseInt(btn.dataset.waterColor || '0x3b7ea1');
         renderer.setWaterColor(hex);
         root.querySelectorAll<HTMLButtonElement>('[data-water-color]').forEach((b) => {
+          b.setAttribute('aria-pressed', String(b === btn));
           b.classList.toggle('ring-bronze-500', b === btn);
           b.classList.toggle('ring-transparent', b !== btn);
         });
@@ -1316,6 +1408,7 @@ const s = t[lang];
         const hex = parseInt(btn.dataset.rockColor || '0x7a7265');
         renderer.setRockColor(hex);
         root.querySelectorAll<HTMLButtonElement>('[data-rock-color]').forEach((b) => {
+          b.setAttribute('aria-pressed', String(b === btn));
           b.classList.toggle('ring-bronze-500', b === btn);
           b.classList.toggle('ring-transparent', b !== btn);
         });
@@ -1325,9 +1418,10 @@ const s = t[lang];
     // ----- Figure search / filter -----
     const searchInput = root.querySelector<HTMLInputElement>('[data-sandtray-search]');
     searchInput?.addEventListener('input', () => {
-      const q = (searchInput.value || '').toLowerCase().trim();
+      const normalize = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+      const q = normalize(searchInput.value || '');
       root.querySelectorAll<HTMLButtonElement>('[data-sandtray-palette-item]').forEach((btn) => {
-        const label = (btn.textContent || '').toLowerCase();
+        const label = normalize(btn.textContent || '');
         btn.style.display = q && !label.includes(q) ? 'none' : '';
       });
       root.querySelectorAll<HTMLElement>('[data-sandtray-palette] > div').forEach((catDiv) => {
@@ -1360,12 +1454,14 @@ const s = t[lang];
     // Scale buttons
     root.querySelector('[data-fig-scale-up]')?.addEventListener('click', () => {
       if (!selectedFigure) return;
+      rememberTransform(selectedFigure);
       const s = Math.min(5.0, selectedFigure.scale + 0.15);
       selectedFigure.scale = s;
       selectedFigure.group.scale.setScalar(s);
     });
     root.querySelector('[data-fig-scale-down]')?.addEventListener('click', () => {
       if (!selectedFigure) return;
+      rememberTransform(selectedFigure);
       const s = Math.max(0.2, selectedFigure.scale - 0.15);
       selectedFigure.scale = s;
       selectedFigure.group.scale.setScalar(s);
@@ -1374,11 +1470,13 @@ const s = t[lang];
     // Rotate buttons (22.5° per click = 16 clicks for full rotation)
     root.querySelector('[data-fig-rotate-left]')?.addEventListener('click', () => {
       if (!selectedFigure) return;
+      rememberTransform(selectedFigure);
       selectedFigure.rotationY -= Math.PI / 8;
       selectedFigure.group.rotation.y = selectedFigure.rotationY;
     });
     root.querySelector('[data-fig-rotate-right]')?.addEventListener('click', () => {
       if (!selectedFigure) return;
+      rememberTransform(selectedFigure);
       selectedFigure.rotationY += Math.PI / 8;
       selectedFigure.group.rotation.y = selectedFigure.rotationY;
     });
@@ -1389,6 +1487,8 @@ const s = t[lang];
       if (!selectedFigure) return;
       pushUndo({
         type: 'remove',
+        group: selectedFigure.group,
+        instanceId: selectedFigure.instanceId,
         figureId: selectedFigure.figureId,
         modelPath: selectedFigure.group.userData.modelPath || '',
         x: selectedFigure.x,
@@ -1459,7 +1559,17 @@ const s = t[lang];
         });
       });
     }
-    skinPicker?.addEventListener('input', () => applyModelTint(skinPicker.value));
+    skinPicker?.addEventListener('input', () => {
+      if (!selectedFigure) return;
+      const colors: Array<{ mesh: THREE.Mesh; colors: Array<THREE.Color | null> }> = [];
+      selectedFigure.group.traverse(child => {
+        const mesh = child as THREE.Mesh; if (!mesh.isMesh) return;
+        const materials = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+        colors.push({ mesh, colors: materials.map(material => (material as THREE.MeshStandardMaterial).color?.clone() ?? null) });
+      });
+      pushUndo({ type: 'tint', group: selectedFigure.group, colors });
+      applyModelTint(skinPicker.value);
+    });
 
     // Deselect button
     root.querySelector('[data-fig-deselect]')?.addEventListener('click', () => {
@@ -1503,18 +1613,23 @@ const s = t[lang];
       if ((e.key === 'Enter' || e.key === ' ') && pendingFigure) {
         e.preventDefault();
         const pf = pendingFigure;
+        status.textContent = i18n.loading;
+        const generation = sceneGeneration;
+        dirty = true;
         figureManager.place(pf.figureId, pf.modelPath, 0, 0, pf.scale)
           .then((fig) => {
+            if (generation !== sceneGeneration) { figureManager.remove(fig.instanceId); return; }
             pushUndo({ type: 'place', instanceId: fig.instanceId });
             selectedFigure = fig;
-            showToolbar(fig);
+            showToolbar(fig); status.textContent = i18n.ready;
           })
-          .catch((err) => console.error('[sandtray] place failed:', err));
+          .catch((err) => { console.error('[sandtray] place failed:', err); status.textContent = i18n.failed; });
         setPendingFigure(null);
         return;
       }
 
       if (e.key === 'Escape') {
+        e.stopPropagation();
         if (pendingFigure) {
           e.preventDefault();
           setPendingFigure(null);
@@ -1528,6 +1643,7 @@ const s = t[lang];
       }
 
       if (!selectedFigure) return;
+      if (['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', '+', '=', '-', '_', '[', ']'].includes(e.key)) rememberTransform(selectedFigure);
       const fig = selectedFigure;
       // ~0.05 of the tray's short dimension per press; Shift for larger steps.
       const step = (e.shiftKey ? 0.15 : 0.05) * SandRenderer.TRAY_H;

@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import ResourceCard from '../../../../components/ResourceCard.astro';
-import ContentFallbackBanner from '../../../../components/ContentFallbackBanner.astro';
 import { getCollection } from 'astro:content';
 import { useTranslations, useTranslatedPath, type Lang, type TranslationKey } from '../../../../i18n';
 
@@ -9,10 +8,7 @@ const lang: Lang = 'es';
 const t = useTranslations(lang);
 const translatePath = useTranslatedPath(lang);
 
-let allResources = await getCollection('resources', (r) => r.data.locale === 'es');
-if (allResources.length === 0) {
-  allResources = await getCollection('resources', (r) => r.data.locale !== 'es');
-}
+const allResources = await getCollection('resources', (r) => r.data.locale === 'es');
 const resources = allResources
   .filter((r) => r.data.audience === 'family' || r.data.audience === 'both')
   .sort((a, b) => b.data.dateAdded.getTime() - a.data.dateAdded.getTime());
@@ -39,7 +35,7 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
         </p>
       </div>
 
-      <ContentFallbackBanner lang={lang} />
+      <p class="text-sm text-forest-200 mb-6">Las descripciones están en español. Las fichas indican «original en inglés» cuando el enlace lleva a material en ese idioma. Los enlaces externos se abren en otra pestaña.</p>
 
       <!-- Search + Filters -->
       <div class="mb-8 space-y-4">
@@ -67,7 +63,7 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
         </button>
 
         <div id="filter-drawer" class="hidden md:block space-y-3">
-          <div class="flex flex-wrap gap-2" id="type-filters" role="group" aria-label="Filter by type">
+          <div class="flex flex-wrap gap-2" id="type-filters" role="group" aria-label="Filtrar por tipo">
             {allTypes.map((type) => (
               <button
                 data-filter-type={type}
@@ -79,7 +75,7 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
             ))}
           </div>
 
-          <div class="flex flex-wrap gap-2" id="tag-filters" role="group" aria-label="Filter by tag">
+          <div class="flex flex-wrap gap-2" id="tag-filters" role="group" aria-label="Filtrar por tema">
             {allTags.map((tag) => (
               <button
                 data-filter-tag={tag}
@@ -93,7 +89,7 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
         </div>
       </div>
 
-      <p class="text-sm text-forest-400 mb-6" id="resource-count">
+      <p class="text-sm text-forest-400 mb-6" id="resource-count" role="status" aria-live="polite">
         {resources.length} {resources.length !== 1 ? 'recursos' : 'recurso'}
       </p>
 
@@ -102,6 +98,7 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
           const description = resource.body || '';
           return (
             <ResourceCard
+              id={`res-${resource.slug}`}
               title={resource.data.title}
               type={resource.data.type}
               audience={resource.data.audience}
@@ -139,8 +136,8 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
     const filterDrawer = document.getElementById('filter-drawer');
     const activeCountBadge = document.getElementById('active-filter-count');
 
-    let activeTypes = new Set<string>();
-    let activeTags = new Set<string>();
+    const activeTypes = new Set<string>();
+    const activeTags = new Set<string>();
 
     filterToggle?.addEventListener('click', () => {
       if (filterDrawer && window.innerWidth < 768) {
@@ -162,8 +159,10 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
       }
     }
 
+    const normalizeSearch = (value: string) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+
     function filterCards() {
-      const query = searchInput.value.toLowerCase().trim();
+      const query = normalizeSearch(searchInput.value).trim();
       let visible = 0;
 
       cards.forEach((card) => {
@@ -172,7 +171,7 @@ const allTypes = [...new Set(resources.map((r) => r.data.type))].sort();
         const type = card.getAttribute('data-type') || '';
         const tags: string[] = JSON.parse(card.getAttribute('data-tags') || '[]');
 
-        const matchesSearch = !query || title.includes(query) || description.includes(query) || tags.some((t) => t.includes(query));
+        const matchesSearch = !query || normalizeSearch(title).includes(query) || normalizeSearch(description).includes(query) || tags.some((tag) => normalizeSearch(tag).includes(query));
         const matchesType = activeTypes.size === 0 || activeTypes.has(type);
         const matchesTags = activeTags.size === 0 || tags.some((t) => activeTags.has(t));
 

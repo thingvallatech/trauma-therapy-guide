@@ -24,13 +24,7 @@ export function useTranslatedPath(lang: Lang) {
 // English-only routes with no Spanish counterpart yet. The locale switcher
 // falls back to the Spanish homepage for these, and hreflang alternates are
 // suppressed so we never advertise URLs that 404.
-const EN_ONLY_ROUTES: RegExp[] = [
-  /^\/admin\//,
-  /^\/clinicians\/emdr\/intake-form\/?$/,
-  /^\/clinicians\/emdr\/print-package\/?$/,
-  /^\/clinicians\/emdr\/phase-\d+-scripts\/?$/,
-  /^\/clinicians\/emdr\/phase-2-resource-/,
-];
+const EN_ONLY_ROUTES: RegExp[] = [/^\/admin(?:\/|$)/, /^\/404(?:\/|$|\.html)/];
 
 export function hasAlternateLocale(url: URL, currentLang: Lang): boolean {
   if (currentLang !== defaultLang) return true;

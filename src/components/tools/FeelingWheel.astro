@@ -16,8 +16,8 @@ const containerClass = fullscreen
 const t = {
   en: {
     heading: 'What are you feeling?',
-    intro: 'Start at the center. If a word fits, tap it. If it almost fits, look at the words around it for something closer.',
-    bodyPrompt: 'Where do you feel it in your body? What does it want you to do?',
+    intro: 'Choose a word from the cards. More specific words will appear below. You can change your choice, choose neutral, or say none fit.',
+    bodyPrompt: 'If useful, notice a body sensation or what you might need. You can skip this question.',
     moreSpecifically: 'More specifically, is it...',
     core: [
       { name: 'Sad', color: '#6B8FB3', secondary: [
@@ -26,7 +26,7 @@ const t = {
         { name: 'Hurt', desc: 'Sad because someone or something wounded you.' },
         { name: 'Bored', desc: 'A restless, unsatisfied kind of sad — nothing interests you.' },
       ]},
-      { name: 'Mad', color: '#B36B6B', secondary: [
+      { name: 'Mad', color: '#CA8D8D', secondary: [
         { name: 'Frustrated', desc: 'Mad because something keeps getting in your way.' },
         { name: 'Jealous', desc: 'Mad because someone has something you want, or is taking something that feels yours.' },
         { name: 'Furious', desc: 'Very big anger — a mad that feels out of control.' },
@@ -46,7 +46,7 @@ const t = {
       ]},
       { name: 'Peaceful', color: '#7BB39B', secondary: [
         { name: 'Relaxed', desc: 'Your body is loose and your breath is slow.' },
-        { name: 'Safe', desc: 'You know nothing bad is about to happen.' },
+        { name: 'Safe', desc: 'A sense of enough safety in this moment.' },
         { name: 'Loved', desc: 'You know someone cares about you.' },
         { name: 'Calm', desc: 'Your mind is quiet and still.' },
       ]},
@@ -60,8 +60,8 @@ const t = {
   },
   es: {
     heading: '¿Qué estás sintiendo?',
-    intro: 'Comienza en el centro. Si una palabra encaja, tócala. Si casi encaja, mira las palabras alrededor para encontrar algo más cercano.',
-    bodyPrompt: '¿Dónde lo sientes en tu cuerpo? ¿Qué quiere que hagas?',
+    intro: 'Elige una palabra de las tarjetas. Abajo aparecerán palabras más específicas. Puedes cambiar tu elección, elegir neutral o indicar que ninguna encaja.',
+    bodyPrompt: 'Si te sirve, nota una sensación corporal o algo que puedas necesitar. Puedes omitir esta pregunta.',
     moreSpecifically: 'Más específicamente, ¿es...?',
     core: [
       { name: 'Triste', color: '#6B8FB3', secondary: [
@@ -70,7 +70,7 @@ const t = {
         { name: 'Herido/a', desc: 'Triste porque alguien o algo te lastimó.' },
         { name: 'Aburrido/a', desc: 'Un tipo de tristeza inquieta e insatisfecha — nada te interesa.' },
       ]},
-      { name: 'Enojado/a', color: '#B36B6B', secondary: [
+      { name: 'Enojado/a', color: '#CA8D8D', secondary: [
         { name: 'Frustrado/a', desc: 'Enojado porque algo sigue interponiéndose en tu camino.' },
         { name: 'Celoso/a', desc: 'Enojado porque alguien tiene algo que quieres, o está tomando algo que sientes tuyo.' },
         { name: 'Furioso/a', desc: 'Enojo muy grande — un enojo que se siente fuera de control.' },
@@ -84,13 +84,13 @@ const t = {
       ]},
       { name: 'Alegre', color: '#8DB47B', secondary: [
         { name: 'Emocionado/a', desc: 'Alegre con energía — algo bueno está pasando o viene.' },
-        { name: 'Contento/a', desc: 'Alegría calma y asentada — un suficiente tranquilo.' },
+        { name: 'Contento/a', desc: 'Una alegría tranquila: sentir que este momento está bien.' },
         { name: 'Agradecido/a', desc: 'Alegre por algo o alguien que aprecias.' },
         { name: 'Juguetón/a', desc: 'Alegre de una manera tonta y ligera.' },
       ]},
       { name: 'En paz', color: '#7BB39B', secondary: [
         { name: 'Relajado/a', desc: 'Tu cuerpo está suelto y tu respiración es lenta.' },
-        { name: 'Seguro/a', desc: 'Sabes que nada malo va a pasar.' },
+        { name: 'Seguro/a', desc: 'Una sensación de suficiente seguridad en este momento.' },
         { name: 'Amado/a', desc: 'Sabes que alguien se preocupa por ti.' },
         { name: 'Calma', desc: 'Tu mente está quieta y tranquila.' },
       ]},
@@ -124,8 +124,9 @@ const s = t[lang];
     </div>
   )}
 
-  <ToolSettings componentName="FeelingWheel" lang={lang} startOpen={!fullscreen} />
+  <ToolSettings componentName="FeelingWheel" lang={lang} startOpen={false} />
 
+  <div data-guided-content class="w-full">
   <h2 class="font-serif text-xl mb-4" style="color: var(--tool-color, #C8E6C9);">{s.heading}</h2>
   <p class="text-forest-300 text-sm mb-6">{s.intro}</p>
 
@@ -134,7 +135,7 @@ const s = t[lang];
       <button
         data-core-button={String(i)}
         aria-pressed="false"
-        class="p-4 rounded-lg text-white font-semibold hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
+        class="p-4 rounded-lg text-forest-900 font-semibold hover:opacity-90 transition-opacity focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800"
         style={`background-color: ${c.color}`}
       >
         {c.name}
@@ -142,6 +143,11 @@ const s = t[lang];
     ))}
   </div>
 
+  <div class="flex flex-wrap gap-3 mb-5">
+    <button data-feeling-neutral aria-pressed="false" class="min-h-11 px-4 py-2 rounded-lg border border-forest-400 text-forest-100">{lang === 'es' ? 'Neutral' : 'Neutral'}</button>
+    <button data-feeling-none aria-pressed="false" class="min-h-11 px-4 py-2 rounded-lg border border-forest-400 text-forest-100">{lang === 'es' ? 'Ninguna encaja / No sé' : 'None fit / Not sure'}</button>
+    <button data-feeling-clear class="min-h-11 px-4 py-2 underline text-forest-200">{lang === 'es' ? 'Quitar elección' : 'Clear choice'}</button>
+  </div>
   <div data-secondary-wrap class="hidden mb-6">
     <h3 class="text-forest-200 text-sm mb-2" data-secondary-title></h3>
     <div class="grid grid-cols-2 sm:grid-cols-3 gap-2" data-secondary-grid></div>
@@ -157,9 +163,11 @@ const s = t[lang];
     <p data-detail-desc class="text-forest-200 text-sm mb-3"></p>
     <p class="text-forest-300 text-xs">{s.bodyPrompt}</p>
   </div>
+  </div>
 </div>
 
 <script>
+  import { mountGuidedFinish, focusActivityPanel, setPressedChoice } from '../../scripts/guided-activity';
   import { createSettingsController } from '../../scripts/tool-settings-controller';
   import { createAudioEngine, type AmbientOptions } from '../../scripts/audio-engine';
 
@@ -229,11 +237,13 @@ const s = t[lang];
     }
 
     let audioLive = false;
+    mountGuidedFinish(root, suspendAudio);
 
     async function startAudio(): Promise<void> {
       try {
         await audio.ensureStarted();
         audioLive = true;
+        if (root.dataset.guidedFinished === 'true') audio.suspend();
       } catch {
         // Autoplay policy or an unavailable AudioContext — the tool still
         // works silently.
@@ -249,7 +259,7 @@ const s = t[lang];
     async function cue(kind: 'tick' | 'advance' | 'complete'): Promise<void> {
       if (!prefs.soundOn) return;
       await startAudio();
-      audio.playCue(kind);
+      if (root.dataset.guidedFinished !== 'true') audio.playCue(kind);
     }
 
     settings.onChange((next) => {
@@ -279,25 +289,46 @@ const s = t[lang];
       const c = core[parseInt(btn.getAttribute('data-core-button')!, 10)];
       if (!c) return;
       btn.addEventListener('click', () => {
-        coreButtons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+        setPressedChoice(root, '[data-core-button], [data-feeling-neutral], [data-feeling-none]', btn);
         secondaryTitle.textContent = moreSpecifically;
         secondaryGrid.innerHTML = '';
         c.secondary.forEach((s) => {
           const sbtn = document.createElement('button');
           sbtn.textContent = s.name;
+          sbtn.type = 'button';
+          sbtn.setAttribute('aria-pressed', 'false');
           sbtn.className = 'px-3 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800';
           sbtn.addEventListener('click', () => {
+            setPressedChoice(secondaryGrid, 'button', sbtn);
             detailName.textContent = s.name;
             detailDesc.textContent = s.desc;
             detailWrap.classList.remove('hidden');
+            focusActivityPanel(detailWrap);
             void cue('tick');
           });
           secondaryGrid.appendChild(sbtn);
         });
         secondaryWrap.classList.remove('hidden');
-        detailWrap.classList.add('hidden');
+        detailName.textContent = c.name;
+        detailDesc.textContent = document.documentElement.lang === 'es' ? 'Puedes quedarte con esta palabra. Elegir una más específica es opcional.' : 'This word can be enough. Choosing a more specific word is optional.';
+        detailWrap.classList.remove('hidden');
+        focusActivityPanel(secondaryWrap);
         void cue('advance');
       });
+    });
+    root.querySelectorAll<HTMLButtonElement>('[data-feeling-neutral], [data-feeling-none]').forEach((button) => {
+      button.addEventListener('click', () => {
+        setPressedChoice(root, '[data-core-button], [data-feeling-neutral], [data-feeling-none]', button);
+        secondaryWrap.classList.add('hidden'); secondaryGrid.replaceChildren();
+        detailName.textContent = button.textContent;
+        detailDesc.textContent = document.documentElement.lang === 'es' ? 'No necesitas encontrar una palabra exacta.' : 'You do not need to find an exact word.';
+        detailWrap.classList.remove('hidden'); focusActivityPanel(detailWrap);
+      });
+    });
+    root.querySelector('[data-feeling-clear]')?.addEventListener('click', () => {
+      setPressedChoice(root, '[data-core-button], [data-feeling-neutral], [data-feeling-none], [data-secondary-grid] button', null);
+      secondaryWrap.classList.add('hidden'); detailWrap.classList.add('hidden');
+      secondaryGrid.replaceChildren(); coreButtons[0]?.focus(); suspendAudio();
     });
   });
 </script>

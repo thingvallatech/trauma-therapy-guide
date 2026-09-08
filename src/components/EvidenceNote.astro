@@ -1,0 +1,17 @@
+---
+import type { Lang } from '../i18n';
+const { lang = 'en' } = Astro.props as { lang?: Lang };
+const es = lang === 'es';
+---
+<div class="evidence-note">
+  <h2>{es ? 'Qué respalda la evidencia' : 'What the evidence supports'}</h2>
+  <p>{es ? 'La investigación sobre una terapia completa no demuestra que una actividad aislada o este sitio web produzcan los mismos resultados. EMDR incluye evaluación, preparación, trabajo con recuerdos y seguimiento con un profesional con formación. Los mecanismos de acción siguen investigándose.' : 'Research on a complete therapy does not establish that an isolated activity or this website produces the same outcomes. EMDR includes assessment, preparation, memory work and follow-up with a trained clinician. Its mechanisms are still being studied.'}</p>
+  <p>{es ? 'Estas páginas recopilan fuentes publicadas. No se presenta una revisión clínica independiente de este sitio ni un ensayo de sus herramientas. Las etiquetas describen el contexto de uso de la técnica; no son una certificación de eficacia.' : 'These pages compile published sources. An independent clinical review of this site and a trial of its tools are not documented here. Labels describe the technique’s use context; they are not an efficacy certification.'}</p>
+  <p><a href="https://www.ptsd.va.gov/professional/treat/txessentials/emdr_pro.asp">{es ? 'VA: evidencia y límites de EMDR (inglés)' : 'VA: EMDR evidence and limitations'}</a> · <a href="https://www.nice.org.uk/guidance/ng116/chapter/recommendations">{es ? 'NICE: recomendaciones por edad y contexto (inglés)' : 'NICE: recommendations by age and context'}</a></p>
+</div>
+<style>
+.evidence-note { margin: 24px 0; font-size: 14px; line-height: 1.6; }
+h2 { font-size: 18px; margin-bottom: 10px; }
+p { margin: 10px 0; }
+a { color: inherit; text-decoration: underline; }
+</style>

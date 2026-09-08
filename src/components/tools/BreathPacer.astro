@@ -57,24 +57,25 @@ const s = t[lang];
   )}
 
   <div class="w-full max-w-md">
-    <ToolSettings componentName="BreathPacer" lang={lang} startOpen={!fullscreen} />
+    <ToolSettings componentName="BreathPacer" lang={lang} startOpen={false} />
   </div>
 
+  <p class="text-sm text-forest-100 mb-4 max-w-md">{lang === 'es' ? 'Sigue solo un ritmo que te resulte cómodo. Puedes respirar normalmente, omitir las pausas o parar. No tienes que llenar completamente los pulmones.' : 'Follow only a pace that feels comfortable. You can breathe normally, skip holds or stop. There is no need to fill your lungs completely.'}</p>
   <div class="mb-4 flex flex-wrap gap-2 justify-center">
-    <button data-breath-pattern="box" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800 disabled:opacity-50 disabled:cursor-not-allowed">
+    <button data-breath-pattern="box" aria-pressed="true" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800 disabled:opacity-50 disabled:cursor-not-allowed">
       {s.patternBox}
     </button>
-    <button data-breath-pattern="478" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800 disabled:opacity-50 disabled:cursor-not-allowed">
+    <button data-breath-pattern="478" aria-pressed="false" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800 disabled:opacity-50 disabled:cursor-not-allowed">
       {s.pattern478}
     </button>
-    <button data-breath-pattern="coherent" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800 disabled:opacity-50 disabled:cursor-not-allowed">
+    <button data-breath-pattern="coherent" aria-pressed="false" class="px-3 py-1.5 rounded-md bg-forest-700 border border-forest-600 text-forest-100 text-sm hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800 disabled:opacity-50 disabled:cursor-not-allowed">
       {s.patternCoherent}
     </button>
   </div>
 
   <div class="mb-4 flex gap-2 justify-center">
     {[1, 3, 5, 10].map((m) => (
-      <button data-breath-minutes={m} class="px-3 py-1 rounded-md bg-forest-700 border border-forest-600 text-forest-200 text-xs hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800 disabled:opacity-50 disabled:cursor-not-allowed">
+      <button data-breath-minutes={m} aria-pressed={m === 3 ? "true" : "false"} class="px-3 py-1 rounded-md bg-forest-700 border border-forest-600 text-forest-200 text-xs hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800 disabled:opacity-50 disabled:cursor-not-allowed">
         {m} min
       </button>
     ))}
@@ -273,6 +274,10 @@ const s = t[lang];
       root.querySelectorAll(`[data-breath-${group}]`).forEach((b) => {
         const active = b.getAttribute(`data-breath-${group}`) === value;
         b.classList.toggle('bg-bronze-600', active);
+        b.classList.toggle('bg-forest-700', !active);
+        b.classList.toggle('text-forest-100', !active);
+        b.classList.remove('text-forest-200');
+        b.setAttribute('aria-pressed', String(active));
         b.classList.toggle('text-forest-900', active);
       });
     }
@@ -404,3 +409,8 @@ const s = t[lang];
     applyColors();
   });
 </script>
+
+<style>
+  [data-breath-pattern], [data-breath-minutes] { transition: none !important; }
+  [data-breath-pattern][aria-pressed="true"], [data-breath-minutes][aria-pressed="true"] { background: #e5a100 !important; color: #0a1f0a !important; }
+</style>

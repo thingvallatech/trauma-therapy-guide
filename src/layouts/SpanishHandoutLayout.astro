@@ -1,0 +1,28 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import ClinicalBanner from '../components/ClinicalBanner.astro';
+interface Props { title: string; phase: number; }
+const { title, phase } = Astro.props;
+---
+<BaseLayout lang="es" title={title} description={`${title}: guiones y hojas de referencia clínica en español, listos para imprimir.`}>
+  <div class="spanish-handout-page max-w-4xl mx-auto px-4 py-8">
+    <div class="no-print">
+      <ClinicalBanner lang="es" />
+      <nav class="mb-4 flex flex-wrap gap-4 text-sm" aria-label="Navegación de guiones">
+        <a class="underline" href={`/es/clinicians/emdr/phase-${phase}`}>Volver a la fase {phase}</a>
+        <a class="underline" href="/es/clinicians/emdr/print-package">Paquete completo en español</a>
+      </nav>
+      <h1 class="font-serif text-3xl mb-4">{title}</h1>
+      <button class="print-handout px-5 py-3 bg-bronze-500 text-forest-900 rounded-lg font-semibold" type="button">Imprimir o guardar como PDF</button>
+      <p class="text-sm mt-3 mb-6">En el diálogo de impresión, elige tu impresora o «Guardar como PDF». El contenido se ajusta a papel carta o A4. Desactiva los encabezados y pies del navegador si no los necesitas.</p>
+    </div>
+    <slot />
+  </div>
+</BaseLayout>
+<script>
+  document.querySelector('.print-handout')?.addEventListener('click', () => window.print());
+</script>
+<style>
+  .spanish-handout-page { color: var(--color-ink, #24382e); background: var(--color-cream, #fffdf9); }
+  @media print { @page { size: auto; margin: 14mm; } .spanish-handout-page { max-width: none; padding: 0; margin: 0; } }
+</style>

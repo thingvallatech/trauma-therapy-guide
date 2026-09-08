@@ -15,7 +15,7 @@ warnings: []
 
 ## What this is
 
-An animated visual pacer for three evidence-based breathing patterns:
+An animated visual pacer for three commonly taught breathing patterns:
 
 - **Box breathing** (4-4-4-4): inhale 4, hold 4, exhale 4, hold 4. Used in tactical/combat contexts and clinically for acute anxiety regulation.
 - **4-7-8**: inhale 4, hold 7, exhale 8. Andrew Weil's teaching, draws on pranayama traditions.
@@ -30,3 +30,6 @@ An animated visual pacer for three evidence-based breathing patterns:
 ## Clinical notes
 
 The circle expands during inhalation and contracts during exhalation. Holds pause the animation. Duration presets (1, 3, 5, 10 minutes) give a natural stop so the user doesn't have to watch the clock.
+
+
+Research on slow breathing does not validate every specific pattern or this tool. Comfort matters more than keeping time: you can skip holds, breathe normally or stop. These durations have not been established as suitable for every child.

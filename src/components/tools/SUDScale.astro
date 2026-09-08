@@ -16,7 +16,7 @@ const containerClass = fullscreen
 const t = {
   en: {
     heading: 'How disturbing is it right now?',
-    kidMode: 'Kid mode',
+    kidMode: 'Simple words',
     lowLabel: '0 — none',
     midLabel: '5',
     highLabel: '10 — worst imaginable',
@@ -35,7 +35,7 @@ const t = {
       'Worst imaginable',
     ],
     kidLabels: [
-      'Not yucky at all',
+      'No discomfort',
       'A tiny bit',
       'A little',
       'Some',
@@ -48,11 +48,11 @@ const t = {
       'The biggest',
     ],
     adultWording: '"On a scale of 0 to 10, where 0 is no disturbance or neutral and 10 is the worst disturbance you can imagine, how disturbing does the incident feel to you now?"',
-    kidWording: '"How yucky does it feel in your body right now? Zero is not yucky at all, ten is the worst yucky you can imagine."',
+    kidWording: '"How uncomfortable does it feel in your body right now? Zero is no discomfort; ten is the most discomfort you can imagine."',
   },
   es: {
     heading: '¿Qué tan perturbador se siente ahora?',
-    kidMode: 'Modo niño',
+    kidMode: 'Palabras sencillas',
     lowLabel: '0 — nada',
     midLabel: '5',
     highLabel: '10 — lo peor imaginable',
@@ -71,7 +71,7 @@ const t = {
       'Lo peor imaginable',
     ],
     kidLabels: [
-      'Nada yucky',
+      'Nada de malestar',
       'Un poquito',
       'Un poco',
       'Algo',
@@ -84,7 +84,7 @@ const t = {
       'Lo más grande',
     ],
     adultWording: '"En una escala de 0 a 10, donde 0 es ninguna perturbación o neutral y 10 es la peor perturbación que puedas imaginar, ¿qué tan perturbador se siente el incidente ahora?"',
-    kidWording: '"¿Qué tan yucky se siente en tu cuerpo ahora? Cero no es nada yucky, diez es el peor yucky que puedas imaginar."',
+    kidWording: '"¿Qué tan incómodo se siente en tu cuerpo ahora? Cero es nada de malestar y diez es el mayor malestar que puedas imaginar."',
   },
 };
 
@@ -122,9 +122,10 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     </div>
   )}
 
-  <ToolSettings componentName="SUDScale" lang={lang} startOpen={!fullscreen} />
+  <ToolSettings componentName="SUDScale" lang={lang} startOpen={false} />
 
-  <div class="flex items-center justify-between mb-4">
+  <div data-guided-content class="w-full">
+  <div class="flex flex-wrap gap-4 items-center justify-between mb-4">
     <h2 class="text-forest-100 font-semibold">
       {s.heading}
     </h2>
@@ -168,9 +169,13 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
   <div class="mt-6 text-sm text-forest-300" data-sud-wording>
     <em>{s.adultWording}</em>
   </div>
+    <button data-scale-use class="mt-4 min-h-11 px-4 py-2 rounded-lg bg-bronze-500 text-forest-900 font-semibold">{lang === 'es' ? 'Usar 5' : 'Use 5'}</button>
+    <button data-scale-clear class="mt-4 min-h-11 px-4 py-2 underline text-forest-200">{lang === 'es' ? 'Quitar respuesta' : 'Clear rating'}</button>
+  </div>
 </div>
 
 <script>
+  import { mountGuidedFinish } from '../../scripts/guided-activity';
   import { createSettingsController } from '../../scripts/tool-settings-controller';
   import { createAudioEngine, type AmbientOptions } from '../../scripts/audio-engine';
 
@@ -246,11 +251,13 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     }
 
     let audioLive = false;
+    mountGuidedFinish(root, suspendAudio);
 
     async function startAudio(): Promise<void> {
       try {
         await audio.ensureStarted();
         audioLive = true;
+        if (root.dataset.guidedFinished === 'true') audio.suspend();
       } catch {
         // Autoplay policy or an unavailable AudioContext — the tool still
         // works silently.
@@ -286,10 +293,12 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     pushToEngines();
     applyColors();
 
+    let hasRating = false;
     function update() {
       const val = parseInt(slider.value, 10);
+      root.querySelector<HTMLElement>('[data-scale-use]')!.textContent = document.documentElement.lang === 'es' ? `Usar ${val}` : `Use ${val}`;
       const isKid = kidToggle.checked;
-      display.textContent = String(val);
+      display.textContent = hasRating ? String(val) : '—';
       if (isKid) {
         faces.textContent = kidFaces[val];
         faces.classList.remove('hidden');
@@ -300,12 +309,20 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
         label.textContent = adultLabels[val];
         wording.innerHTML = `<em>${adultWording}</em>`;
       }
+      if (!hasRating) {
+        label.textContent = document.documentElement.lang === 'es' ? 'Sin respuesta elegida. Mueve el control si quieres responder.' : 'No rating chosen. Move the slider if you want to respond.';
+        faces.classList.add('hidden');
+      }
+      slider.setAttribute('aria-valuetext', hasRating ? `${val}: ${label.textContent}` : label.textContent!);
     }
+
+    root.querySelector('[data-scale-use]')?.addEventListener('click', () => { hasRating = true; update(); display.tabIndex = -1; display.focus(); });
+    root.querySelector('[data-scale-clear]')?.addEventListener('click', () => { hasRating = false; update(); slider.focus(); });
 
     // Deliberately no per-increment tick here, even with sound enabled — a
     // noise on every step while someone rates their own distress is the
     // wrong instinct for this tool. Only the ambient bed and palette apply.
-    slider.addEventListener('input', () => { update(); ensureAudioLive(); });
+    slider.addEventListener('input', () => { hasRating = true; update(); ensureAudioLive(); });
     kidToggle.addEventListener('change', () => { update(); ensureAudioLive(); });
     update();
   });

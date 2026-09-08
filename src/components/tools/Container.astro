@@ -39,14 +39,14 @@ const t = {
     step1Heading: 'Step 1: Pick your container',
     step1Sub: 'Which of these feels right for today?',
     step2Heading: 'Step 2: Put things inside',
-    step2Sub: 'Type a word or phrase for something you want to set aside, then add it. You can add as many as you want.',
+    step2Sub: 'Writing is optional. You can imagine what you want to set aside, or add a short word without personal details. Continue with an empty list if you prefer.',
     step3Heading: 'Step 3: Lock it',
     step3Sub: 'Imagine closing your container. What kind of lock does it have?',
     step4Heading: 'Step 4: Put it somewhere safe',
     step4Sub: "Where will you keep it until you're ready to come back?",
-    step5Heading: "It's put away.",
+    step5Heading: 'Your container plan.',
     step5Sub: 'Take a slow breath. You can come back to it whenever you\'re ready.',
-    restart: 'Do it again',
+    restart: 'Clear and start over',
     closeContainer: 'Close the container',
     addButton: 'Add',
     inputPlaceholder: 'e.g. the test on Friday',
@@ -56,14 +56,14 @@ const t = {
     step1Heading: 'Paso 1: Elige tu contenedor',
     step1Sub: '¿Cuál de estos se siente bien hoy?',
     step2Heading: 'Paso 2: Pon cosas adentro',
-    step2Sub: 'Escribe una palabra o frase para algo que quieras dejar a un lado, luego agrégalo. Puedes agregar tantos como quieras.',
+    step2Sub: 'Escribir es opcional. Puedes imaginar lo que quieres dejar a un lado o agregar una palabra breve sin datos personales. Puedes continuar con la lista vacía.',
     step3Heading: 'Paso 3: Ciérralo',
     step3Sub: 'Imagina cerrar tu contenedor. ¿Qué tipo de cerradura tiene?',
     step4Heading: 'Paso 4: Ponlo en un lugar seguro',
     step4Sub: '¿Dónde lo guardarás hasta que estés listo para regresar?',
-    step5Heading: 'Está guardado.',
+    step5Heading: 'Tu plan de contención.',
     step5Sub: 'Respira lento. Puedes volver a esto cuando estés listo.',
-    restart: 'Hazlo de nuevo',
+    restart: 'Borrar y empezar de nuevo',
     closeContainer: 'Cerrar el contenedor',
     addButton: 'Agregar',
     inputPlaceholder: 'p. ej. el examen del viernes',
@@ -86,7 +86,7 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
   class:list={[containerClass]}
   style={fieldBgStyle}
   data-container-widget
-  data-container-i18n={JSON.stringify({ summaryTemplate: s.summaryTemplate })}
+  data-container-i18n={JSON.stringify({ summaryTemplate: s.summaryTemplate, add: s.addButton, edit: lang === 'es' ? 'Editar' : 'Edit', remove: lang === 'es' ? 'Quitar' : 'Remove', save: lang === 'es' ? 'Guardar cambio' : 'Save change', restart: s.restart, confirm: lang === 'es' ? 'Confirmar borrado' : 'Confirm clearing', confirmRemove: lang === 'es' ? 'Confirmar quitar' : 'Confirm removal' })}
 >
   {/*
     The standard tool page renders these above the widget via ToolShell, but the
@@ -101,15 +101,16 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     </div>
   )}
 
-  <ToolSettings componentName="Container" lang={lang} startOpen={!fullscreen} />
+  <ToolSettings componentName="Container" lang={lang} startOpen={false} />
 
+  <div data-guided-content class="w-full">
   <!-- Step 1: choose container -->
   <div data-step="1" data-step-active>
     <h2 class="font-serif text-xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.step1Heading}</h2>
     <p class="text-forest-300 text-sm mb-4">{s.step1Sub}</p>
     <div class="grid grid-cols-2 gap-3">
       {containers.map((c) => (
-        <button data-pick-container={c.id} data-label={c.label[lang]} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
+        <button aria-pressed="false" data-pick-container={c.id} data-label={c.label[lang]} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
           {c.label[lang]}
         </button>
       ))}
@@ -118,12 +119,14 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
 
   <!-- Step 2: add worries -->
   <div data-step="2" class="hidden">
+    <button data-back-to="1" class="min-h-11 px-3 py-2 mb-3 underline text-forest-200">{lang === 'es' ? 'Atrás' : 'Back'}</button>
     <h2 class="font-serif text-xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.step2Heading}</h2>
     <p class="text-forest-300 text-sm mb-4">{s.step2Sub}</p>
     <div class="flex gap-2 mb-4">
-      <input type="text" data-worry-input aria-label="Something to set aside" placeholder={s.inputPlaceholder} class="flex-1 px-3 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 placeholder:text-forest-400 focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" />
+      <input type="text" data-worry-input maxlength="400" autocomplete="off" aria-label={lang === 'es' ? 'Algo para dejar a un lado (opcional)' : 'Something to set aside (optional)'} placeholder={s.inputPlaceholder} class="min-w-0 flex-1 px-3 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 placeholder:text-forest-400 focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800" />
       <button data-worry-add class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.addButton}</button>
     </div>
+    <p class="text-forest-300 text-xs mb-4">{lang === 'es' ? 'Las notas permanecen en esta página abierta; esta herramienta no las envía ni las guarda. Otras personas que usen este dispositivo pueden verlas. Puedes quitarlas o empezar de nuevo.' : 'Notes stay in this open page; this tool does not send or save them. Other people using this device can see them. You can remove notes or start over.'}</p>
     <ul data-worry-list class="mb-4 space-y-1 text-forest-200 text-sm"></ul>
     <button data-to-step-3 class="px-4 py-2 rounded-md bg-forest-700 border border-forest-600 text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">
       {s.closeContainer}
@@ -132,36 +135,47 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
 
   <!-- Step 3: lock -->
   <div data-step="3" class="hidden">
+    <button data-back-to="2" class="min-h-11 px-3 py-2 mb-3 underline text-forest-200">{lang === 'es' ? 'Atrás' : 'Back'}</button>
     <h2 class="font-serif text-xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.step3Heading}</h2>
     <p class="text-forest-300 text-sm mb-4">{s.step3Sub}</p>
     <div class="grid grid-cols-2 gap-3 mb-4">
       {locks.map((l) => (
-        <button data-pick-lock={l.id} data-label={l.label[lang]} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{l.label[lang]}</button>
+        <button aria-pressed="false" data-pick-lock={l.id} data-label={l.label[lang]} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{l.label[lang]}</button>
       ))}
     </div>
   </div>
 
   <!-- Step 4: place -->
   <div data-step="4" class="hidden">
+    <button data-back-to="3" class="min-h-11 px-3 py-2 mb-3 underline text-forest-200">{lang === 'es' ? 'Atrás' : 'Back'}</button>
     <h2 class="font-serif text-xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.step4Heading}</h2>
     <p class="text-forest-300 text-sm mb-4">{s.step4Sub}</p>
     <div class="grid grid-cols-2 gap-3 mb-4">
       {places.map((p) => (
-        <button data-pick-place={p.id} data-label={p.label[lang]} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{p.label[lang]}</button>
+        <button aria-pressed="false" data-pick-place={p.id} data-label={p.label[lang]} class="p-4 bg-forest-700 border border-forest-600 rounded-lg text-forest-100 hover:bg-forest-600 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{p.label[lang]}</button>
       ))}
     </div>
   </div>
 
   <!-- Step 5: done -->
   <div data-step="5" class="hidden text-center">
+    <button data-back-to="4" class="min-h-11 px-3 py-2 mb-3 underline text-forest-200">{lang === 'es' ? 'Atrás' : 'Back'}</button>
     <h2 class="font-serif text-2xl mb-3" style="color: var(--tool-color, #C8E6C9);">{s.step5Heading}</h2>
+    <svg viewBox="0 0 240 140" role="img" aria-label={lang === 'es' ? 'Tu contenedor imaginado' : 'Your imagined container'} class="w-full max-w-xs mx-auto mb-4" data-container-preview>
+      <g data-container-box><rect x="40" y="48" width="160" height="70" rx="8" fill="#A07950" stroke="#E0C28E" stroke-width="4"/><path d="M40 75 H200" stroke="#E0C28E" stroke-width="4"/><rect x="108" y="65" width="24" height="25" rx="4" fill="#E0C28E"/></g>
+      <g data-container-balloon class="hidden"><ellipse cx="120" cy="50" rx="40" ry="45" fill="#8FB3C5"/><path d="M120 95 Q100 116 125 140" stroke="#E0C28E" stroke-width="3" fill="none"/></g>
+    </svg>
     <p data-summary class="text-forest-300 mb-6"></p>
     <p class="text-forest-300 text-sm mb-6">{s.step5Sub}</p>
     <button data-restart class="px-4 py-2 rounded-md bg-bronze-500 text-forest-900 font-semibold hover:bg-bronze-400 transition-colors focus:outline-none focus:ring-2 focus:ring-bronze-500 focus:ring-offset-2 focus:ring-offset-forest-800">{s.restart}</button>
   </div>
+    <button data-container-undo hidden class="mt-4 min-h-11 px-4 py-2 underline text-bronze-300">{lang === 'es' ? 'Deshacer el último borrado' : 'Undo last removal'}</button>
+  </div>
 </div>
 
 <script>
+  import { confirmable } from '../../scripts/confirmable';
+  import { mountGuidedFinish, focusActivityPanel, setPressedChoice } from '../../scripts/guided-activity';
   import { createSettingsController } from '../../scripts/tool-settings-controller';
   import { createAudioEngine, type AmbientOptions } from '../../scripts/audio-engine';
 
@@ -229,11 +243,13 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     }
 
     let audioLive = false;
+    mountGuidedFinish(root, suspendAudio);
 
     async function startAudio(): Promise<void> {
       try {
         await audio.ensureStarted();
         audioLive = true;
+        if (root.dataset.guidedFinished === 'true') audio.suspend();
       } catch {
         // Autoplay policy or an unavailable AudioContext — the tool still
         // works silently.
@@ -249,7 +265,7 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     async function cue(kind: 'tick' | 'advance' | 'complete'): Promise<void> {
       if (!prefs.soundOn) return;
       await startAudio();
-      audio.playCue(kind);
+      if (root.dataset.guidedFinished !== 'true') audio.playCue(kind);
     }
 
     settings.onChange((next) => {
@@ -274,27 +290,73 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     function showStep(n: string) {
       Object.values(steps).forEach((el) => el.classList.add('hidden'));
       steps[n].classList.remove('hidden');
+      focusActivityPanel(steps[n]);
       void cue('advance');
     }
 
+    root.querySelectorAll<HTMLButtonElement>('[data-back-to]').forEach((button) => button.addEventListener('click', () => showStep(button.dataset.backTo!)));
     root.querySelectorAll<HTMLButtonElement>('[data-pick-container]').forEach((btn) => {
       btn.addEventListener('click', () => {
         state.container = btn.getAttribute('data-label')!;
+        setPressedChoice(root, '[data-pick-container]', btn);
+        const balloon = btn.dataset.pickContainer === 'balloon';
+        root.querySelector('[data-container-box]')?.classList.toggle('hidden', balloon);
+        root.querySelector('[data-container-balloon]')?.classList.toggle('hidden', !balloon);
+        root.querySelector('[data-container-box] rect')?.setAttribute('fill', btn.dataset.pickContainer === 'steel-vault' ? '#75878A' : btn.dataset.pickContainer === 'treasure-chest' ? '#8C6942' : '#A07950');
         showStep('2');
       });
     });
 
     const input = root.querySelector<HTMLInputElement>('[data-worry-input]')!;
     const list = root.querySelector<HTMLElement>('[data-worry-list]')!;
-    root.querySelector<HTMLButtonElement>('[data-worry-add]')!.addEventListener('click', () => {
-      const v = input.value.trim();
-      if (!v) return;
-      state.worries.push(v);
-      const li = document.createElement('li');
-      li.textContent = `• ${v}`;
-      list.appendChild(li);
-      input.value = '';
-      input.focus();
+    const addButton = root.querySelector<HTMLButtonElement>('[data-worry-add]')!;
+    let editingIndex: number | null = null;
+    let undoState: typeof state | null = null;
+    let undoDraft = '';
+    const undoButton = root.querySelector<HTMLButtonElement>('[data-container-undo]')!;
+    function saveUndo() {
+      undoState = { ...state, worries: [...state.worries] };
+      undoDraft = input.value;
+      undoButton.hidden = false;
+    }
+    undoButton.addEventListener('click', () => {
+      if (!undoState) return;
+      state = undoState; undoState = null; input.value = undoDraft; editingIndex = null;
+      addButton.textContent = i18n.add;
+      for (const [selector, label] of [['[data-pick-container]', state.container], ['[data-pick-lock]', state.lock], ['[data-pick-place]', state.place]]) {
+        const choice = Array.from(root.querySelectorAll<HTMLElement>(selector)).find((button) => button.dataset.label === label) ?? null;
+        setPressedChoice(root, selector, choice);
+      }
+      renderWorries(); undoButton.hidden = true; showStep('2');
+    });
+    function renderWorries() {
+      list.replaceChildren();
+      state.worries.forEach((worry, index) => {
+        const li = document.createElement('li');
+        li.className = 'flex flex-wrap items-center gap-2 border-b border-forest-600 py-2';
+        const text = document.createElement('span'); text.textContent = worry;
+        text.className = 'min-w-0 flex-1 break-words';
+        const edit = document.createElement('button'); edit.type = 'button'; edit.dataset.worryEdit = '';
+        edit.textContent = i18n.edit; edit.className = 'min-h-11 px-2 underline text-forest-100';
+        edit.addEventListener('click', () => { editingIndex = index; input.value = worry; addButton.textContent = i18n.save; input.focus(); });
+        const remove = document.createElement('button'); remove.type = 'button'; remove.dataset.worryRemove = '';
+        remove.textContent = i18n.remove; remove.className = 'min-h-11 px-2 underline text-forest-100';
+        confirmable(remove, i18n.remove, i18n.confirmRemove, () => {
+          saveUndo();
+          state.worries.splice(index, 1); editingIndex = null; input.value = ''; addButton.textContent = i18n.add;
+          renderWorries(); input.focus();
+        });
+        li.append(text, edit, remove); list.append(li);
+      });
+    }
+    addButton.addEventListener('click', () => {
+      const value = input.value.trim();
+      if (!value) return;
+      undoState = null; undoButton.hidden = true;
+      if (editingIndex === null) state.worries.push(value);
+      else state.worries[editingIndex] = value;
+      editingIndex = null; addButton.textContent = i18n.add; renderWorries();
+      input.value = ''; input.focus();
     });
     input.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') root.querySelector<HTMLButtonElement>('[data-worry-add]')!.click();
@@ -305,6 +367,7 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     root.querySelectorAll<HTMLButtonElement>('[data-pick-lock]').forEach((btn) => {
       btn.addEventListener('click', () => {
         state.lock = btn.getAttribute('data-label')!;
+        setPressedChoice(root, '[data-pick-lock]', btn);
         showStep('4');
       });
     });
@@ -312,6 +375,7 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     root.querySelectorAll<HTMLButtonElement>('[data-pick-place]').forEach((btn) => {
       btn.addEventListener('click', () => {
         state.place = btn.getAttribute('data-label')!;
+        setPressedChoice(root, '[data-pick-place]', btn);
         const summary = root.querySelector<HTMLElement>('[data-summary]')!;
         const tpl = i18n.summaryTemplate || '';
         summary.textContent = tpl
@@ -322,8 +386,12 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
       });
     });
 
-    root.querySelector<HTMLButtonElement>('[data-restart]')!.addEventListener('click', () => {
+    confirmable(root.querySelector<HTMLButtonElement>('[data-restart]'), i18n.restart, i18n.confirm, () => {
+      saveUndo();
+      suspendAudio();
       state = { container: '', lock: '', place: '', worries: [] };
+      editingIndex = null; input.value = ''; addButton.textContent = i18n.add;
+      setPressedChoice(root, '[data-pick-container], [data-pick-lock], [data-pick-place]', null);
       list.innerHTML = '';
       showStep('1');
     });
