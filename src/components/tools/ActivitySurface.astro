@@ -1,0 +1,18 @@
+---
+import type { Lang } from '../../i18n';
+const { lang = 'en' } = Astro.props as { lang?: Lang };
+const es = lang === 'es';
+---
+<div data-activity-surface>
+  <div data-activity-loading class="mb-4 p-4 rounded-lg border border-forest-500 text-forest-100">
+    <p role="status">{es ? 'Cargando la actividad…' : 'Loading activity…'}</p>
+    <p class="text-sm mt-2">
+      {es ? 'Si no termina de cargar, puedes ' : 'If loading does not finish, you can '}
+      <a href={Astro.url.pathname} class="underline">{es ? 'recargar la página' : 'reload the page'}</a>
+      {es ? ' o ' : ' or '}
+      <a href={es ? '/es/tools' : '/tools'} class="underline">{es ? 'elegir otra actividad' : 'choose another activity'}</a>.
+    </p>
+    <noscript><p class="mt-2">{es ? 'Activa JavaScript para utilizar las actividades interactivas.' : 'Enable JavaScript to use interactive activities.'}</p></noscript>
+  </div>
+  <div data-activity-widget tabindex="-1" inert><slot /></div>
+</div>

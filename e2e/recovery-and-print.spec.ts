@@ -18,11 +18,12 @@ for (const locale of ['', '/es']) {
   });
 }
 test('sandtray undo restores removals and protects unsaved navigation', async ({ page }) => {
+  test.setTimeout(60000); // Includes model fetch, decode and WebGL initialization.
   await page.goto('/tools/sandtray/fullscreen');
   await page.locator('[data-sandtray-palette-item]').first().click();
   const canvas = page.locator('[data-sandtray-canvas]');
   await canvas.focus(); await page.keyboard.press('Enter');
-  await expect(page.locator('[data-sandtray-figure-toolbar]')).toBeVisible();
+  await expect(page.locator('[data-sandtray-figure-toolbar]')).toBeVisible({ timeout: 15000 });
   await page.locator('[data-fig-remove]').click();
   await page.locator('[data-sandtray-undo]').click();
   await expect(page.locator('[data-sandtray-status]')).toHaveText('Last change undone.');
@@ -35,6 +36,7 @@ test('sandtray undo restores removals and protects unsaved navigation', async ({
   await expect(page.locator('[data-sandtray-undo]')).toBeDisabled();
 });
 test('sandtray failed model exposes a retryable message', async ({ page }) => {
+  test.setTimeout(60000); // Includes model fetch, decode and WebGL initialization.
   await page.route('**/sandtray/models/Knight.glb', route => route.abort());
   await page.goto('/tools/sandtray/fullscreen');
   await page.locator('[data-sandtray-palette-item="knight"]').click();
@@ -43,10 +45,11 @@ test('sandtray failed model exposes a retryable message', async ({ page }) => {
   await page.unroute('**/sandtray/models/Knight.glb');
   await page.locator('[data-sandtray-palette-item="knight"]').click();
   await page.locator('[data-sandtray-canvas]').focus(); await page.keyboard.press('Enter');
-  await expect(page.locator('[data-sandtray-figure-toolbar]')).toBeVisible();
+  await expect(page.locator('[data-sandtray-figure-toolbar]')).toBeVisible({ timeout: 15000 });
 });
 
 test('Escape cancels a palette choice while focus remains on its button', async ({ page }) => {
+  test.setTimeout(60000); // Includes model fetch, decode and WebGL initialization.
   await page.goto('/tools/sandtray');
   await page.locator('[data-client-view-toggle]').click();
   const figure = page.locator('[data-sandtray-palette-item]').first();

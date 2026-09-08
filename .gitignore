@@ -49,4 +49,5 @@ functions/packages/**/package-lock.json
 
 # Browser test artifacts
 test-results/
+test-results-webkit/
 playwright-report/

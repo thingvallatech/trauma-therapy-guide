@@ -275,9 +275,9 @@ function isParentActive(item: NavItem): boolean {
   const searchTrigger = document.getElementById('search-trigger');
   const searchTriggerIcon = document.getElementById('search-trigger-icon');
   const mobileSearchTrigger = document.querySelector('.search-trigger-mobile');
-  function handleSearchOpen() {
+  function handleSearchOpen(event: Event) {
     if (typeof (window as any).__openSearch === 'function') {
-      (window as any).__openSearch();
+      (window as any).__openSearch(event.currentTarget);
     }
   }
   searchTrigger?.addEventListener('click', handleSearchOpen);
@@ -318,6 +318,8 @@ function isParentActive(item: NavItem): boolean {
   });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
+      // Let the active dialog handle Escape and restore focus to its visible opener.
+      if (e.defaultPrevented || document.querySelector('dialog[open]')) return;
       if (mobileBtn?.getAttribute('aria-expanded') === 'true') {
         mobileMenu?.classList.add('hidden');
         mobileBtn.setAttribute('aria-expanded', 'false');

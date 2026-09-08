@@ -266,6 +266,7 @@ const s = t[lang];
 </div>
 
 <script>
+  import { markActivityReady } from '../../scripts/activity-ready';
   import * as THREE from 'three';
   import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
   import * as SkeletonUtils from 'three/examples/jsm/utils/SkeletonUtils.js';
@@ -1298,6 +1299,8 @@ const s = t[lang];
     root.querySelectorAll<HTMLButtonElement>('[data-sandtray-palette-item]').forEach((btn) => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
+        // WebKit does not focus buttons on pointer activation; keep Escape local to the tray.
+        btn.focus({ preventScroll: true });
         const already = btn.getAttribute('aria-pressed') === 'true';
         setPendingFigure(already ? null : btn);
       });
@@ -1687,4 +1690,5 @@ const s = t[lang];
       }
     });
   });
+  markActivityReady('[data-sandtray-widget]');
 </script>

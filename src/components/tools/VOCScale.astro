@@ -138,6 +138,7 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
 </div>
 
 <script>
+  import { markActivityReady } from '../../scripts/activity-ready';
   import { mountGuidedFinish } from '../../scripts/guided-activity';
   import { createSettingsController } from '../../scripts/tool-settings-controller';
   import { createAudioEngine, type AmbientOptions } from '../../scripts/audio-engine';
@@ -264,4 +265,5 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
     slider.addEventListener('input', () => { hasRating = true; update(); ensureAudioLive(); });
     update();
   });
+  markActivityReady('[data-voc-widget]');
 </script>

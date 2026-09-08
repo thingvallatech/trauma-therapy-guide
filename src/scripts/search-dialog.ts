@@ -26,12 +26,16 @@ if (dialog) {
     }
   };
   let opener: HTMLElement | null = null;
-  function openSearch() {
+  function openSearch(trigger?: HTMLElement) {
     if (dialog!.open) return;
-    opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    opener = trigger ?? (document.activeElement instanceof HTMLElement ? document.activeElement : null);
     input.value = ''; render(); dialog!.showModal(); input.focus();
   }
-  dialog.addEventListener('close', () => opener?.focus());
+  dialog.addEventListener('close', () => {
+    const visibleOpener = opener?.getClientRects().length && opener !== document.body ? opener : null;
+    const fallback = [...document.querySelectorAll<HTMLElement>('#search-trigger, #search-trigger-icon, #mobile-menu-button')].find(button => button.getClientRects().length);
+    (visibleOpener ?? fallback)?.focus();
+  });
   dialog.querySelector('[data-search-close]')?.addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', event => { if (event.target === dialog) dialog.close(); });
   input.addEventListener('input', render);
@@ -49,5 +53,5 @@ if (dialog) {
       event.preventDefault(); if (dialog.open) dialog.close(); else openSearch();
     }
   });
-  (window as Window & { __openSearch?: () => void }).__openSearch = openSearch;
+  (window as Window & { __openSearch?: (trigger?: HTMLElement) => void }).__openSearch = openSearch;
 }

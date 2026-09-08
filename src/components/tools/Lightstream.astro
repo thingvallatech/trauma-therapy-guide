@@ -158,6 +158,7 @@ const colors = [
 </div>
 
 <script>
+  import { markActivityReady } from '../../scripts/activity-ready';
   import { mountGuidedFinish, focusActivityPanel, setPressedChoice } from '../../scripts/guided-activity';
   import { onReducedMotion } from '../../scripts/motion-pref';
   import { createSettingsController } from '../../scripts/tool-settings-controller';
@@ -355,4 +356,5 @@ const colors = [
     pushToEngines();
     applyColors();
   });
+  markActivityReady('[data-lightstream-widget]');
 </script>

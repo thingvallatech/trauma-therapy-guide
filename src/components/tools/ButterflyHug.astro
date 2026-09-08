@@ -100,6 +100,7 @@ const s = t[lang];
 </div>
 
 <script>
+  import { markActivityReady } from '../../scripts/activity-ready';
   import { createBlsClock, type BlsSide } from '../../scripts/bls-clock';
   import { onReducedMotion } from '../../scripts/motion-pref';
   import { createSettingsController } from '../../scripts/tool-settings-controller';
@@ -416,4 +417,5 @@ const s = t[lang];
       toggle.click();
     });
   }
+  markActivityReady('[data-butterfly-widget]');
 </script>

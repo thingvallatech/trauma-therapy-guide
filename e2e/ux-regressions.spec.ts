@@ -1,6 +1,55 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
+for (const locale of ['', '/es']) {
+  test(`keyboard focus follows activity Start and Stop ${locale || 'en'}`, async ({ page }) => {
+    for (const slug of ['bls-visual', 'bls-audio', 'bls-combined', 'bls-tapping', 'breath', 'butterfly-hug']) {
+      await page.goto(`${locale}/tools/${slug}`);
+      const start = page.locator('[data-session-start]');
+      const stop = page.locator('[data-session-stop]');
+      await start.focus();
+      await page.keyboard.press('Enter');
+      await expect(stop).toBeFocused();
+      await page.keyboard.press('Enter');
+      await expect(start).toBeFocused();
+    }
+  });
+  test(`activity choices wait for scripts and accept the first ready click ${locale || 'en'}`, async ({ page }) => {
+    let release!: () => void;
+    const blocked = new Promise<void>(resolve => { release = resolve; });
+    await page.route('**/_astro/*.js', async route => { await blocked; await route.continue(); });
+    try {
+      await page.goto(`${locale}/tools/safe-place`, { waitUntil: 'commit' });
+      await expect(page.locator('[data-activity-loading]')).toBeVisible();
+      await expect(page.locator('[data-activity-widget]')).toHaveAttribute('inert', '');
+      const first = page.locator('[data-pick-env]').first();
+      await first.click({ force: true });
+      await expect(first).toHaveAttribute('aria-pressed', 'false');
+      await page.locator('[data-activity-loading] a').last().focus();
+      release();
+      await expect(page.locator('[data-activity-loading]')).toBeHidden();
+      await expect(page.locator('[data-activity-widget]')).toBeFocused();
+      await first.click();
+      await expect(first).toHaveAttribute('aria-pressed', 'true');
+      await expect(page.locator('[data-pick-comfort]').first()).toBeVisible();
+    } finally { release(); }
+  });
+  test(`search Escape preserves mobile menu and restores visible focus ${locale || 'en'}`, async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto(`${locale}/clinicians`);
+    await page.locator('#mobile-menu-button').click();
+    await page.locator('.search-trigger-mobile').click();
+    await expect(page.locator('#search-input')).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#search-modal')).not.toBeVisible();
+    await expect(page.locator('#mobile-menu')).toBeVisible();
+    await expect(page.locator('.search-trigger-mobile')).toBeFocused();
+    await page.keyboard.press('Escape');
+    await expect(page.locator('#mobile-menu')).not.toBeVisible();
+    await expect(page.locator('#mobile-menu-button')).toBeFocused();
+  });
+}
+
 test('clinical content reflows on phones', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/clinicians/emdr/phase-2');
@@ -69,12 +118,13 @@ test('breathing selected controls and emotion choices meet contrast requirements
 });
 
 test('Escape deselects a sandtray figure without leaving or losing it', async ({ page }) => {
+  test.setTimeout(60000); // Includes model fetch, decode and WebGL initialization.
   await page.goto('/tools/sandtray/fullscreen');
   await page.locator('[data-sandtray-palette-item]').first().click();
   const canvas = page.locator('[data-sandtray-canvas]');
   await canvas.focus();
   await page.keyboard.press('Enter');
-  await expect(page.locator('[data-sandtray-figure-toolbar]')).toBeVisible();
+  await expect(page.locator('[data-sandtray-figure-toolbar]')).toBeVisible({ timeout: 15000 });
   await page.keyboard.press('Escape');
   await expect(page).toHaveURL(/\/tools\/sandtray\/fullscreen\/?$/);
   await expect(page.locator('[data-sandtray-figure-toolbar]')).toBeHidden();

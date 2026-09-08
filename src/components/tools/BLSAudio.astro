@@ -88,6 +88,7 @@ const s = t[lang];
 </div>
 
 <script>
+  import { markActivityReady } from '../../scripts/activity-ready';
   import { createBlsClock } from '../../scripts/bls-clock';
   import { createSettingsController } from '../../scripts/tool-settings-controller';
   import { DEFAULT_VISUAL_OPTIONS } from '../../scripts/visual-engine';
@@ -442,4 +443,5 @@ const s = t[lang];
       toggle.click();
     });
   }
+  markActivityReady('[data-bls-audio-widget]');
 </script>

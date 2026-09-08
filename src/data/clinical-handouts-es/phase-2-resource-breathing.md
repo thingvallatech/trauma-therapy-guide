@@ -6,6 +6,8 @@ phase: 2
 
 Estos guiones acompañan la práctica de regulación de la fase 2. Elegir y ajustar la técnica según la respuesta de la persona; los conteos son pautas de práctica, no metas que deba forzar.
 
+Respira con comodidad, sin forzar. Puedes acortar los conteos, omitir las pausas o volver a tu respiración habitual. Para o elige otra actividad si sientes incomodidad. No necesitas sentir calma para terminar.
+
 ### 1. Respiración 4-7-8
 
 > «Vamos a practicar una respiración con la salida del aire más larga que la entrada:
@@ -33,7 +35,7 @@ Estos guiones acompañan la práctica de regulación de la fase 2. Elegir y ajus
 >
 > Pon una mano sobre el pecho y otra sobre el abdomen. Al inhalar, observa si el abdomen sube mientras el pecho se mueve menos. Inhala despacio por la nariz… Nota que el abdomen se expande… Exhala despacio por la boca… Nota que vuelve a bajar…
 >
-> Practiquemos hasta encontrar un ritmo natural y cómodo. Puede ser una de tus estrategias para recuperar la calma».
+> Practiquemos mientras te resulte cómodo y observemos si este ritmo te sirve».
 
 ### 4. Exhalación contada 5-5-7
 
@@ -43,7 +45,7 @@ Estos guiones acompañan la práctica de regulación de la fase 2. Elegir y ajus
 > - Mantén el aire **5 tiempos**.
 > - Exhala lentamente durante **7 tiempos**.
 >
-> La pauta original propone repetir 4–6 veces o hasta sentir más calma. Vamos a observar si este ritmo te resulta cómodo».
+> La pauta propone 4–6 repeticiones; puedes parar antes. No necesitas sentir más calma para terminar».
 
 ### 5. Respiración con atención al cuerpo y al presente
 
@@ -51,13 +53,15 @@ Estos guiones acompañan la práctica de regulación de la fase 2. Elegir y ajus
 >
 > Imagina que recibes fuerza de la tierra al inhalar y sueltas tensión o preocupaciones al exhalar… Nota tu apoyo, tu cuerpo y este momento…
 >
-> Continúa mientras te ayude a sentirte presente y tranquilo».
+> Continúa solo mientras te resulte cómodo. Puedes parar sin tener que sentir calma».
 
 **Orientación para adolescentes:** el original utiliza ejemplos deportivos y militares para explicar algunas técnicas. Adaptar la explicación a los intereses de la persona y explicar el propósito de la regulación sin prometer una respuesta fisiológica o un resultado específico.
 
 <div class="page-break"></div>
 
 ## Técnicas para niños y niñas de 6 a 12 años
+
+Respira con comodidad, sin forzar. Puedes acortar los conteos, omitir las pausas o volver a tu respiración habitual. Para o elige otra actividad si sientes incomodidad. No necesitas sentir calma para terminar.
 
 ### 1. Respiración del globo
 

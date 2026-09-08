@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import SessionControls from '../components/tools/SessionControls.astro';
+import ActivitySurface from '../components/tools/ActivitySurface.astro';
 import { getLangFromUrl, useTranslations, type Lang } from '../i18n';
 
 interface Props {
@@ -36,7 +37,7 @@ const t = useTranslations(lang);
       </svg>
     </a>
     <main class="w-full min-h-dvh flex items-center justify-center pt-20 pb-32">
-      <slot />
+      <div class="w-full"><ActivitySurface lang={lang}><slot /></ActivitySurface></div>
     </main>
     <SessionControls lang={lang} />
   </body>

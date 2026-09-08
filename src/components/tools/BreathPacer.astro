@@ -111,6 +111,7 @@ const s = t[lang];
 </div>
 
 <script>
+  import { markActivityReady } from '../../scripts/activity-ready';
   import { onReducedMotion } from '../../scripts/motion-pref';
   import { createSettingsController } from '../../scripts/tool-settings-controller';
   import { DEFAULT_VISUAL_OPTIONS } from '../../scripts/visual-engine';
@@ -408,6 +409,7 @@ const s = t[lang];
     pushToEngines();
     applyColors();
   });
+  markActivityReady('[data-breath-widget]');
 </script>
 
 <style>

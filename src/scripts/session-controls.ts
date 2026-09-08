@@ -12,13 +12,23 @@ export function initSessionControls(): void {
   const running = () => /^(stop|detener)$/i.test(primary?.textContent?.trim() ?? '');
   const clientView = () => document.body.dataset.clientView === 'true';
   const sync = () => {
+    const focused = document.activeElement;
+    const ready = !document.querySelector('[data-activity-widget][inert]');
     const active = running();
+    if (presentation) presentation.disabled = !ready;
+    start.disabled = stop.disabled = mute.disabled = !ready;
     start.hidden = !primary || active;
     stop.hidden = !primary || !active;
     mute.hidden = !sound?.checked;
     exit.hidden = !clientView();
     rail.hidden = start.hidden && stop.hidden && mute.hidden && exit.hidden;
     document.body.classList.toggle('has-session-controls', !rail.hidden);
+    if (focused === start && start.hidden && !stop.hidden) stop.focus({ preventScroll: true });
+    else if (focused === stop && stop.hidden && !start.hidden) start.focus({ preventScroll: true });
+    else if (focused === mute && mute.hidden) {
+      const next = [stop, start, exit].find(button => !button.hidden) ?? document.querySelector<HTMLElement>('[data-activity-widget]');
+      next?.focus({ preventScroll: true });
+    }
   };
   start.addEventListener('click', () => { if (!running()) primary?.click(); sync(); });
   stop.addEventListener('click', () => { if (running()) primary?.click(); sync(); });
@@ -56,6 +66,7 @@ export function initSessionControls(): void {
   if (primary) new MutationObserver(sync).observe(primary, { childList: true, characterData: true, subtree: true });
   document.addEventListener('change', sync);
   document.addEventListener('tool-preferences-changed', sync);
+  document.addEventListener('activity-ready', sync);
   new ResizeObserver(() => { document.body.style.setProperty('--session-height', `${rail.getBoundingClientRect().height + 16}px`); }).observe(rail);
   sync();
   if (location.hash === '#activity' && presentation) setPresentation(true);

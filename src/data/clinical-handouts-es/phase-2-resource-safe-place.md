@@ -16,11 +16,11 @@ Esperar a que identifique el lugar.
 >
 > Observa cómo se siente tu cuerpo: quizá los músculos estén relajados y sientas calidez o comodidad…
 >
-> Concéntrate en esas sensaciones agradables. ¿En qué parte del cuerpo notas la calma o la paz?»
+> Si notas una sensación agradable o neutra, ¿dónde la notas? Está bien si no notas ninguna.»
 
 Añadir estimulación bilateral lenta mediante golpecitos o movimientos oculares. El guion original indica 6–8 series; las recomendaciones de refuerzo indican 4–6 pasadas lentas por serie. Ajustar a la respuesta de la persona.
 
-> «Piensa en una palabra o frase que represente este lugar y que puedas usar para recordar esta sensación cuando la necesites».
+> «Elige una palabra o frase que te recuerde este lugar. Podemos probarla y observar qué ocurre».
 
 Pedirle que diga la palabra mientras se añade estimulación bilateral. Practicar evocar el lugar utilizando solo la palabra.
 
@@ -56,9 +56,9 @@ Dejar que describa el lugar.
 
 Añadir abrazo de mariposa lento o golpecitos alternados.
 
-> «Ahora pongámosle un nombre especial: una palabra que te ayude a recordar la calma cuando la digas o la pienses. ¿Cómo lo llamamos?»
+> «Pongámosle un nombre especial a tu lugar para que puedas recordarlo. ¿Cómo lo llamamos?»
 
-Practicar la palabra con el abrazo de mariposa. Explicar que puede recordar este lugar cuando necesite calma.
+Practicar la palabra con el abrazo de mariposa. Invitarle a recordar el lugar cuando le resulte útil y a parar o elegir otra actividad si siente incomodidad.
 
 ### Notas de la sesión
 

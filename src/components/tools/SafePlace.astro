@@ -174,6 +174,7 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
 </div>
 
 <script>
+  import { markActivityReady } from '../../scripts/activity-ready';
   import { mountGuidedFinish, focusActivityPanel, setPressedChoice } from '../../scripts/guided-activity';
   import { createSettingsController } from '../../scripts/tool-settings-controller';
   import { createAudioEngine, type AmbientOptions } from '../../scripts/audio-engine';
@@ -345,4 +346,5 @@ const fieldBgStyle = `background-color: var(--tool-field-bg, ${fullscreen ? '#00
       showStep('env');
     });
   });
+  markActivityReady('[data-safeplace-widget]');
 </script>

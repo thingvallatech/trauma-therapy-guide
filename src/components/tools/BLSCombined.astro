@@ -95,6 +95,7 @@ const s = t[lang];
 </div>
 
 <script>
+  import { markActivityReady } from '../../scripts/activity-ready';
   import { createBlsClock } from '../../scripts/bls-clock';
   import { onReducedMotion } from '../../scripts/motion-pref';
   import { createSettingsController } from '../../scripts/tool-settings-controller';
@@ -464,4 +465,5 @@ const s = t[lang];
       toggle.click();
     });
   }
+  markActivityReady('[data-bls-combined-widget]');
 </script>

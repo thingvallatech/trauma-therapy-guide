@@ -167,6 +167,7 @@ const s = t[lang];
 </div>
 
 <script>
+  import { markActivityReady } from '../../scripts/activity-ready';
   import { mountGuidedFinish, focusActivityPanel, setPressedChoice } from '../../scripts/guided-activity';
   import { createSettingsController } from '../../scripts/tool-settings-controller';
   import { createAudioEngine, type AmbientOptions } from '../../scripts/audio-engine';
@@ -331,4 +332,5 @@ const s = t[lang];
       secondaryGrid.replaceChildren(); coreButtons[0]?.focus(); suspendAudio();
     });
   });
+  markActivityReady('[data-feeling-widget]');
 </script>
